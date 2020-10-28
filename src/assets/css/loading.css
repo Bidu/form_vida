@@ -1,0 +1,71 @@
+/*
+Error: Undefined variable: "$primary".
+        on line 21 of src/assets/scss/loading.scss
+
+16:   top: 3px;
+17:   left: 37px;
+18:   width: 6px;
+19:   height: 18px;
+20:   border-radius: 20%;
+21:   background: $primary;
+22: }
+23: .lds-spinner div:nth-child(1) {
+24:   transform: rotate(0deg);
+25:   animation-delay: -1.1s;
+26: }
+
+Backtrace:
+src/assets/scss/loading.scss:21
+/home/vinicius/.rbenv/versions/2.7.1/lib/ruby/gems/2.7.0/gems/sass-3.7.4/lib/sass/script/tree/variable.rb:49:in `_perform'
+/home/vinicius/.rbenv/versions/2.7.1/lib/ruby/gems/2.7.0/gems/sass-3.7.4/lib/sass/script/tree/node.rb:50:in `perform'
+/home/vinicius/.rbenv/versions/2.7.1/lib/ruby/gems/2.7.0/gems/sass-3.7.4/lib/sass/tree/visitors/perform.rb:398:in `visit_prop'
+/home/vinicius/.rbenv/versions/2.7.1/lib/ruby/gems/2.7.0/gems/sass-3.7.4/lib/sass/tree/visitors/base.rb:36:in `visit'
+/home/vinicius/.rbenv/versions/2.7.1/lib/ruby/gems/2.7.0/gems/sass-3.7.4/lib/sass/tree/visitors/perform.rb:158:in `block in visit'
+/home/vinicius/.rbenv/versions/2.7.1/lib/ruby/gems/2.7.0/gems/sass-3.7.4/lib/sass/stack.rb:79:in `block in with_base'
+/home/vinicius/.rbenv/versions/2.7.1/lib/ruby/gems/2.7.0/gems/sass-3.7.4/lib/sass/stack.rb:135:in `with_frame'
+/home/vinicius/.rbenv/versions/2.7.1/lib/ruby/gems/2.7.0/gems/sass-3.7.4/lib/sass/stack.rb:79:in `with_base'
+/home/vinicius/.rbenv/versions/2.7.1/lib/ruby/gems/2.7.0/gems/sass-3.7.4/lib/sass/tree/visitors/perform.rb:158:in `visit'
+/home/vinicius/.rbenv/versions/2.7.1/lib/ruby/gems/2.7.0/gems/sass-3.7.4/lib/sass/tree/visitors/perform.rb:440:in `block (2 levels) in visit_rule'
+/home/vinicius/.rbenv/versions/2.7.1/lib/ruby/gems/2.7.0/gems/sass-3.7.4/lib/sass/tree/visitors/perform.rb:440:in `map'
+/home/vinicius/.rbenv/versions/2.7.1/lib/ruby/gems/2.7.0/gems/sass-3.7.4/lib/sass/tree/visitors/perform.rb:440:in `block in visit_rule'
+/home/vinicius/.rbenv/versions/2.7.1/lib/ruby/gems/2.7.0/gems/sass-3.7.4/lib/sass/tree/visitors/perform.rb:179:in `with_environment'
+/home/vinicius/.rbenv/versions/2.7.1/lib/ruby/gems/2.7.0/gems/sass-3.7.4/lib/sass/tree/visitors/perform.rb:438:in `visit_rule'
+/home/vinicius/.rbenv/versions/2.7.1/lib/ruby/gems/2.7.0/gems/sass-3.7.4/lib/sass/tree/visitors/base.rb:36:in `visit'
+/home/vinicius/.rbenv/versions/2.7.1/lib/ruby/gems/2.7.0/gems/sass-3.7.4/lib/sass/tree/visitors/perform.rb:158:in `block in visit'
+/home/vinicius/.rbenv/versions/2.7.1/lib/ruby/gems/2.7.0/gems/sass-3.7.4/lib/sass/stack.rb:79:in `block in with_base'
+/home/vinicius/.rbenv/versions/2.7.1/lib/ruby/gems/2.7.0/gems/sass-3.7.4/lib/sass/stack.rb:135:in `with_frame'
+/home/vinicius/.rbenv/versions/2.7.1/lib/ruby/gems/2.7.0/gems/sass-3.7.4/lib/sass/stack.rb:79:in `with_base'
+/home/vinicius/.rbenv/versions/2.7.1/lib/ruby/gems/2.7.0/gems/sass-3.7.4/lib/sass/tree/visitors/perform.rb:158:in `visit'
+/home/vinicius/.rbenv/versions/2.7.1/lib/ruby/gems/2.7.0/gems/sass-3.7.4/lib/sass/tree/visitors/base.rb:52:in `block in visit_children'
+/home/vinicius/.rbenv/versions/2.7.1/lib/ruby/gems/2.7.0/gems/sass-3.7.4/lib/sass/tree/visitors/base.rb:52:in `map'
+/home/vinicius/.rbenv/versions/2.7.1/lib/ruby/gems/2.7.0/gems/sass-3.7.4/lib/sass/tree/visitors/base.rb:52:in `visit_children'
+/home/vinicius/.rbenv/versions/2.7.1/lib/ruby/gems/2.7.0/gems/sass-3.7.4/lib/sass/tree/visitors/perform.rb:167:in `block in visit_children'
+/home/vinicius/.rbenv/versions/2.7.1/lib/ruby/gems/2.7.0/gems/sass-3.7.4/lib/sass/tree/visitors/perform.rb:179:in `with_environment'
+/home/vinicius/.rbenv/versions/2.7.1/lib/ruby/gems/2.7.0/gems/sass-3.7.4/lib/sass/tree/visitors/perform.rb:166:in `visit_children'
+/home/vinicius/.rbenv/versions/2.7.1/lib/ruby/gems/2.7.0/gems/sass-3.7.4/lib/sass/tree/visitors/base.rb:36:in `block in visit'
+/home/vinicius/.rbenv/versions/2.7.1/lib/ruby/gems/2.7.0/gems/sass-3.7.4/lib/sass/tree/visitors/perform.rb:186:in `visit_root'
+/home/vinicius/.rbenv/versions/2.7.1/lib/ruby/gems/2.7.0/gems/sass-3.7.4/lib/sass/tree/visitors/base.rb:36:in `visit'
+/home/vinicius/.rbenv/versions/2.7.1/lib/ruby/gems/2.7.0/gems/sass-3.7.4/lib/sass/tree/visitors/perform.rb:157:in `visit'
+/home/vinicius/.rbenv/versions/2.7.1/lib/ruby/gems/2.7.0/gems/sass-3.7.4/lib/sass/tree/visitors/perform.rb:10:in `visit'
+/home/vinicius/.rbenv/versions/2.7.1/lib/ruby/gems/2.7.0/gems/sass-3.7.4/lib/sass/tree/root_node.rb:36:in `css_tree'
+/home/vinicius/.rbenv/versions/2.7.1/lib/ruby/gems/2.7.0/gems/sass-3.7.4/lib/sass/tree/root_node.rb:29:in `render_with_sourcemap'
+/home/vinicius/.rbenv/versions/2.7.1/lib/ruby/gems/2.7.0/gems/sass-3.7.4/lib/sass/engine.rb:389:in `_render_with_sourcemap'
+/home/vinicius/.rbenv/versions/2.7.1/lib/ruby/gems/2.7.0/gems/sass-3.7.4/lib/sass/engine.rb:307:in `render_with_sourcemap'
+/home/vinicius/.rbenv/versions/2.7.1/lib/ruby/gems/2.7.0/gems/sass-3.7.4/lib/sass/plugin/compiler.rb:462:in `update_stylesheet'
+/home/vinicius/.rbenv/versions/2.7.1/lib/ruby/gems/2.7.0/gems/sass-3.7.4/lib/sass/plugin/compiler.rb:215:in `block in update_stylesheets'
+/home/vinicius/.rbenv/versions/2.7.1/lib/ruby/gems/2.7.0/gems/sass-3.7.4/lib/sass/plugin/compiler.rb:209:in `each'
+/home/vinicius/.rbenv/versions/2.7.1/lib/ruby/gems/2.7.0/gems/sass-3.7.4/lib/sass/plugin/compiler.rb:209:in `update_stylesheets'
+/home/vinicius/.rbenv/versions/2.7.1/lib/ruby/gems/2.7.0/gems/sass-3.7.4/lib/sass/plugin/compiler.rb:294:in `watch'
+/home/vinicius/.rbenv/versions/2.7.1/lib/ruby/gems/2.7.0/gems/sass-3.7.4/lib/sass/plugin.rb:109:in `method_missing'
+/home/vinicius/.rbenv/versions/2.7.1/lib/ruby/gems/2.7.0/gems/sass-3.7.4/lib/sass/exec/sass_scss.rb:358:in `watch_or_update'
+/home/vinicius/.rbenv/versions/2.7.1/lib/ruby/gems/2.7.0/gems/sass-3.7.4/lib/sass/exec/sass_scss.rb:51:in `process_result'
+/home/vinicius/.rbenv/versions/2.7.1/lib/ruby/gems/2.7.0/gems/sass-3.7.4/lib/sass/exec/base.rb:50:in `parse'
+/home/vinicius/.rbenv/versions/2.7.1/lib/ruby/gems/2.7.0/gems/sass-3.7.4/lib/sass/exec/base.rb:18:in `parse!'
+/home/vinicius/.rbenv/versions/2.7.1/lib/ruby/gems/2.7.0/gems/sass-3.7.4/bin/sass:13:in `<top (required)>'
+/home/vinicius/.rbenv/versions/2.7.1/bin/sass:23:in `load'
+/home/vinicius/.rbenv/versions/2.7.1/bin/sass:23:in `<main>'
+*/
+body:before {
+  white-space: pre;
+  font-family: monospace;
+  content: "Error: Undefined variable: \"$primary\".\A         on line 21 of src/assets/scss/loading.scss\A \A 16:   top: 3px;\A 17:   left: 37px;\A 18:   width: 6px;\A 19:   height: 18px;\A 20:   border-radius: 20%;\A 21:   background: $primary;\A 22: }\A 23: .lds-spinner div:nth-child(1) {\A 24:   transform: rotate(0deg);\A 25:   animation-delay: -1.1s;\A 26: }"; }

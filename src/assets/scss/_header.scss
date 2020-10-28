@@ -1,0 +1,116 @@
+.header {
+  background: #ffff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.42rem 0;
+  box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.2);
+  position: fixed;
+  width: 100%;
+  z-index: 5;
+  .MuiIconButton-root {
+    padding: 14px 16px;
+  }
+  .MuiSvgIcon-root {
+    font-size: 1.6rem;
+  }
+  .logo-bidu {
+    text-align: center;
+    img {
+      width: 100px;
+      height: auto;
+      padding-top: 0.3125rem;
+    }
+  } 
+}
+
+.menu-header {
+  display: flex;
+  color: $dark;
+  .left {
+    padding: 1.45rem 1rem 1rem;
+    .label {
+      display: block;
+      padding-top: 0.1rem;
+      font-size: 1rem;
+    }      
+  }
+  .right {
+    padding: 1.45rem 1rem 1rem;
+    margin-left: auto;
+  }
+}
+.btn-menu-mobile {
+  .label {
+      font-size: 1rem;
+      color: $dark;
+    }
+}
+.menu-mobile {
+  display: flex;
+  justify-content: flex-end;
+  position:fixed;
+  top: 0;
+  right: 0;
+  z-index: 99999;
+  .btn-menu-mobile {
+    .label {
+      font-size: 1rem;
+      color: $dark;
+    }
+  } 
+  .MuiTreeView-root{
+    padding-top: 0.5rem;
+    .MuiTreeItem-root {
+      padding: 0.5rem;
+    }
+  }
+}
+.search-mobile {
+  border-top: 1px solid rgba(0, 0, 0, 0.42);
+  position: fixed;
+  top: 67px;
+  z-index: 9999;
+  width: 100%;
+  background-color: #fff;
+  padding: 1rem;
+  box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.2);
+  form {
+    position: relative;
+    .search-field {
+      width: 100%;
+      height: 2.5rem;
+      border-radius: 5px;
+      border: 1px solid rgba(0, 0, 0, 0.42);
+      width: 100%;
+      font-size: 1rem;
+      line-height: 2.5rem;
+      padding: 0 .5em;
+    }
+    .search-submit {
+      background-color: transparent;
+      border: none;
+      position: absolute;
+      right: 0.5rem;
+      top: 0.5rem;
+      color: rgba(0, 0, 0, 0.54);
+    }
+  }
+}
+@media (min-width: 768px) {  
+  .menu-header {
+    .left {
+      padding: 1.45rem 1rem 1rem;     
+    }
+    .right {
+      padding: 1.45rem 1rem 1rem;
+    }
+  }  
+}
+@media (min-width: 769px) {
+  #root[aria-hidden="true"] {
+    .header {
+      padding-right: 17px!important;
+    }
+  }
+}

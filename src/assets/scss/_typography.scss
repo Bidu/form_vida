@@ -1,0 +1,26 @@
+html {
+  font-size: $font_size_mobile;
+}
+.page-title {
+	display: inline-block;
+	h1 {
+		font-size: 2.0625rem;
+		margin: 0.75rem 0 0.5rem 0;
+	}
+}
+.subtitle {
+	font-size: 1.25rem;
+}
+.remark {
+	font-size: 0.875rem;
+	font-style: italic;
+}
+
+.txt-primary {color: $primary;}
+.txt-dark {color: $dark;}
+
+@media (min-width: 768px) {
+  html {
+    font-size: $font_size_desktop;
+  }
+}

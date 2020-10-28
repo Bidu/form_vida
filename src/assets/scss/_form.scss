@@ -1,0 +1,366 @@
+form.quote {
+  width: 100%;
+}
+input {
+  &:focus {
+    outline: none;
+  }
+}
+select {
+  &:focus {
+    outline: none;
+  }
+}
+textarea {
+  width: 100%;
+  border-color: $primary;
+  margin: 0.375rem 0;
+  padding: 0.375rem;
+  &:focus {
+    outline: none;
+  }
+}
+button {
+  &:focus {
+    outline: none;
+  }
+}
+.MuiInputBase-root {
+  color: $dark;
+}
+.MuiFormControl-root {
+  width: 100%;
+}
+.MuiTypography-body1 {
+  font-family: $default_font !important;
+}
+.MuiFormControlLabel-label.MuiTypography-body1 {
+  line-height: 1.2rem;
+}
+.MuiFormHelperText-root.Mui-error {
+  line-height: 1rem;
+}
+.MuiRadio-root {
+  padding-right: 4px !important;
+}
+.MuiRadio-colorPrimary {
+  color: $light_gray !important;
+}
+.MuiRadio-colorPrimary.Mui-checked {
+  color: $primary !important;
+}
+.MuiTypography-body1 {
+  color: $dark;
+}
+.MuiSwitch-root {
+  padding: 8px !important;
+}
+.MuiSwitch-track {
+  border-radius: 14px !important;
+  opacity: 1 !important;
+  background-color: $light_gray !important;
+}
+.MuiSwitch-colorPrimary.Mui-checked + .MuiSwitch-track {
+  background-color: $primary !important;
+  opacity: 0.38 !important;
+}
+.MuiCheckbox-root {
+  opacity: 1 !important;
+  color: $light_gray !important;
+}
+.MuiCheckbox-colorPrimary.Mui-checked {
+  color: $primary !important;
+}
+
+.MuiFormLabel-root.Mui-error {
+  color: rgba(0, 0, 0, 0.54) !important;
+}
+
+.MuiInputLabel-shrink {
+  margin-right: -3rem;
+}
+
+.switch-range {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  .value {
+    border: 1px solid $primary;
+    min-width: 45px;
+    height: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 10px;
+    border-radius: 25px;
+  }
+}
+.lightbox {
+  position: fixed;
+  z-index: 9999999999999999999999;
+  background: rgba(0, 0, 0, 0.7);
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  padding: 20px 16px;
+  overflow: auto;
+  text-align: center;
+  .content {
+    box-shadow: none;
+    background: #ffff;
+    border-radius: 14px;
+    height: auto;
+    max-width: 480px;
+    display: inline-block;
+    text-align: left;
+    .header-title {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      position: relative;
+      .btn-close {
+        position: absolute;
+        right: -1.6875rem;
+        top: -2rem;
+      }
+    }
+    .entry {
+      margin-top: 1rem;
+      .list {
+        text-transform: capitalize;
+      }
+      .actions {
+        margin-top: 0;
+      }
+    }
+    h1 {
+      margin: 0;
+    }
+  }
+}
+ul.pgto {
+  li.pgto-card {
+    display: inline-block;
+    width: 35px;
+    padding: 0 0.25rem 0.25rem 0;
+    img {
+      width: 100%;
+      height: auto;
+    }
+  }
+}
+.label-range {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.line-txt {
+  width: 100%;
+  text-align: center;
+  border-bottom: 1px solid $light-gray;
+  line-height: 0.1em;
+  margin: 1.5rem 0;
+  span {
+    background: #fff;
+    padding: 0 10px;
+  }
+}
+.MuiPopover-root {
+  z-index: 99999 !important;
+}
+.loading-request {
+  background: rgba(255, 255, 255, 0.8);
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 99;
+}
+.agree-container {
+  .agree {
+    display: inline-flex;
+    align-items: center;
+    vertical-align: middle;
+    height: 30px;
+    width: 100%;
+    .MuiFormControlLabel-root {
+      margin-right: 0;
+    }
+    .termos-label {
+      vertical-align: middle;
+      line-height: 1.5rem;
+    }
+  }
+}
+.validate-swich .label-range label {
+  color: #ff0000;
+}
+.warning-validation {
+  color: #ff0000;
+  font-size: 11px;
+  font-style: italic;
+  text-align: center;
+  margin: 0;
+  strong {
+    font-weight: bold;
+    text-transform: uppercase;
+    display: block;
+    font-size: 12px;
+  }
+  &.warning-left {
+    text-align: left;
+  }
+}
+.validate-radio-button {
+  .MuiRadio-root:not(.Mui-checked) {
+    .MuiFormControlLabel-label {
+      color: #ff0000;
+    }
+    .MuiSvgIcon-root {
+      fill: #ff0000;
+    }
+  }
+  .MuiFormControlLabel-label {
+    color: #ff0000 !important;
+  }
+}
+p.validate-radio-button.bold {
+  color: #ff0000;
+}
+.warning-switch {
+  /*.MuiSwitch-root {
+    .MuiButtonBase-root:not(.Mui-checked) {
+      color: #ff0000;
+    }
+  })*/
+  .MuiFormControlLabel-label {
+    color: #ff0000;
+  }
+}
+.invalid-checkbox svg path {
+  color: #ff0000;
+}
+.componentloading {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: 0;
+  z-index: 9999999999;
+  background: rgba(255, 255, 255, 0.9);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.actions {
+  & > div {
+    width: 100%;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+  }
+}
+.error-quote {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  color: #721c24;
+  background-color: #f8d7da;
+  border-color: #f5c6cb;
+  padding: 0.75rem 1.25rem;
+  border-radius: 0.25rem;
+}
+.parcelas {
+  p {
+    position: relative;
+    top: 10px;
+  }
+}
+.warning-quote {
+  position: absolute;
+  right: 0;
+  background: #001446;
+  font-size: 10px;
+  color: $primary;
+  font-weight: 600;
+  width: 50%;
+  height: 40px;
+  display: flex;
+  justify-content: flex-end;
+  padding: 7px 12px 0 0;
+  z-index: 1;
+  top: -29px;
+  border-top-right-radius: 14px;
+  border-top-left-radius: 14px;
+}
+#menu-banco li,
+#banco {
+  text-transform: capitalize;
+}
+.loading-cotacoes {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 50px 0;
+  span {
+    display: block;
+    color: #000;
+    font-size: 14px;
+  }
+}
+#menu-modeloRastreador.MuiPopover-root {
+  position: fixed !important;
+  z-index: 999999999999 !important;
+}
+#menu-id_marca {
+  .MuiListItem-button {
+    text-transform: uppercase;
+  }
+}
+.edit-values {
+  color: #0df2e7;
+  font-weight: 400;
+  font-size: 14px;
+  display: block;
+  margin-top: 5px;
+}
+.zip-error {
+  color: rgba(0, 0, 0, 0.54);
+  margin: 0;
+  font-size: 0.75rem;
+  margin-top: 3px;
+  text-align: left;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  font-weight: 400;
+  line-height: 1rem;
+  letter-spacing: 0.03333em;
+  color: #f44336;
+}
+.horaPreferencia {
+  display: block;
+  margin-bottom: 20px !important;
+}
+.complemento {
+  margin-top: 15px !important;
+  display: block;
+}
+.error-transmission {
+  color: #721c24;
+  background-color: #f8d7da;
+  border-color: #f5c6cb;
+  padding: 0.75rem 1.25rem;
+  margin-bottom: 1rem;
+  border: 1px solid transparent;
+  border-radius: 0.25rem;
+  margin-top: 30px;
+  text-align: center;
+}

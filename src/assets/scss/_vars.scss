@@ -1,0 +1,38 @@
+$primary: #00f1e7;
+$primary-light: #9ffaf6;
+$dark_gray: #9fb1c2;
+$light_gray: #e4eaee;
+$dark: #393f4d;
+$orange: #fe7b00;
+$yellow: #faed00;
+
+$primary-gradient-h: linear-gradient(
+  90deg,
+  rgba(250, 194, 52, 1) 0%,
+  rgba(247, 113, 82, 1) 100%
+);
+$primary-gradient-v: linear-gradient(
+  180deg,
+  rgba(250, 194, 52, 1) 0%,
+  rgba(247, 113, 82, 1) 100%
+);
+$secondary-gradient-h: linear-gradient(
+  90deg,
+  rgba(0, 254, 253, 1) 0%,
+  rgba(37, 206, 209, 1) 100%
+);
+$secondary-gradient-v: linear-gradient(
+  180deg,
+  rgba(0, 254, 253, 1) 0%,
+  rgba(37, 206, 209, 1) 100%
+);
+
+$gradient-error: linear-gradient(
+  180deg,
+  rgba(0, 254, 253, 1) 0%,
+  rgba(19, 112, 181, 1) 100%
+);
+
+$default_font: "Source Sans Pro", sans-serif;
+$font_size_mobile: 16px;
+$font_size_desktop: 16px;
