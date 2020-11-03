@@ -150,6 +150,9 @@ export default function TemporaryDrawer() {
           <a href="https://cotacao.bidu.com.br/f/seguro-pet/" target="_blank">
             <TreeItem nodeId="25" label="Seguro PET" />
           </a>
+          <a href=" " target="_blank">
+            <TreeItem nodeId="24" label="Seguro Saúde" />
+          </a>
         </TreeItem>
       </TreeView>
     </div>
