@@ -23,7 +23,7 @@ import { withFormik } from "formik";
 import * as Yup from "yup";
 import * as API from "../../services/bd/CadastrarCotacao";
 import { adicionarLeadCotacao } from "../../store/actions/addLeadBd";
-import { apiBdBo } from "../../services/bdBo";
+import { apiQualicorp } from "../../services/bdBo";
 import axios from "axios";
 import {
   textMaskPhone,
@@ -124,32 +124,26 @@ class About extends Component {
     }, 500);
     //}
   };
-  getAddress = (e) => {
+  getAddress = async (e) => {
     this.setState({ loading: true });
-    apiCEP
-      .get(`${this.state.cep}/json/`)
-      .then((res) => {
-        const content = res.data;
-        this.setState({
-          usuario: {
-            ...this.state.usuario,
-            rua: content.logradouro,
-            cidade: content.localidade,
-            bairro: content.bairro,
-            estado: content.uf,
-            cep: content.cep,
-          },
-          loading: false,
-        });
-        this.props.values.rua = content.logradouro;
-        this.props.values.cidade = content.localidade;
-        this.props.values.bairro = content.bairro;
-        this.props.values.estado = content.uf;
-        this.props.values.cep = content.cep;
-      })
-      .catch((error) => {
-        this.setState({ error: true, loading: false });
-      });
+    let content = await apiQualicorp.consultarEndereco(this.state.cep)
+    this.setState({
+      usuario: {
+        ...this.state.usuario,
+        rua: content.ENDERECO_NOME,
+        cidade: content.CIDADE_NOME,
+        bairro: content.CIDADE_NOME,
+        estado: content.ESTADO_NOME,
+        cep: content.TIPO_ENDERECO,
+      },
+      loading: false,
+    });
+    this.props.values.rua = content.ENDERECO_NOME;
+        this.props.values.cidade = content.CIDADE_NOME;
+        this.props.values.bairro = content.CIDADE_NOME;
+        this.props.values.estado = content.ESTADO_NOME;
+        this.props.values.cep = content.TIPO_ENDERECO;
+    
   };
 
   handleChange = (event) => {
@@ -205,7 +199,7 @@ class About extends Component {
     } = this.props;
 
     if (this.props.status) {
-      return <Redirect to="/veiculo" />;
+      return <Redirect to="/cotacacao/123" />;
     }
 
     return (
@@ -723,7 +717,7 @@ const primeiroProximo = async (values) => {
   };
   let cpf = { documento: segurado.documento };
   console.log("CPF", cpf);
-  let cliente = await apiBdBo.pesquisarSegurado(cpf);
+  let cliente = await apiQualicorp.pesquisarSegurado(cpf);
   cliente = cliente[0];
   console.log("CLIENTE\n", cliente);
   if (cliente) {
@@ -754,7 +748,7 @@ const primeiroProximo = async (values) => {
       let id = parseInt(cliente.address_id);
 
       //ATUALIZAR ENDEREÇO DO SEGURADO
-      let idEndereco = await apiBdBo.atualizarEndereco(
+      let idEndereco = await apiQualicorp.atualizarEndereco(
         id,
         usoEndereco,
         endereco
@@ -769,7 +763,7 @@ const primeiroProximo = async (values) => {
       segurado = { idEndereco, ...segurado };
 
       //ATUALIZAR DADOS DO SEGURADO COM EXCEÇÃO AO CPF, NOMEE DATA DE NASCIMENTO
-      let idPessoa = await apiBdBo.atualizarSegurado(
+      let idPessoa = await apiQualicorp.atualizarSegurado(
         pessoa,
         paramsSegurado,
         segurado
@@ -792,7 +786,7 @@ const primeiroProximo = async (values) => {
       }
       //DO CONTRARIO SERA GERADO UM NOVO ID DE COTAÇÃO PARA O MESMO
       else {
-        idCotacao = await apiBdBo.cadastrarCotacao();
+        idCotacao = await apiQualicorp.cadastrarCotacao();
         idCotacao = idCotacao[0].idCotacao;
         console.log("IDCOTACAO - NOVACOTACAO", idCotacao);
       }
@@ -803,7 +797,7 @@ const primeiroProximo = async (values) => {
 
       let endPoint = "completo";
 
-      let atualizarCotacao = await apiBdBo.atualizarCotacao(
+      let atualizarCotacao = await apiQualicorp.atualizarCotacao(
         paramsCotacao,
         endPoint,
         putCotacao
@@ -831,13 +825,13 @@ const primeiroProximo = async (values) => {
   //CLIENTE NÃO ENCONTRADO NO BANCO DE DADOS DA BIDU
   else {
     console.log("CLIENTE NÂO CADASTRADO");
-    let idCotacao = await apiBdBo.cadastrarCotacao();
+    let idCotacao = await apiQualicorp.cadastrarCotacao();
     idCotacao = idCotacao[0].idCotacao;
     console.log("IDCOTACAO", idCotacao);
 
     let paramsEndereco = "residencia";
 
-    let idEndereco = await apiBdBo.cadastrarEndereco(
+    let idEndereco = await apiQualicorp.cadastrarEndereco(
       paramsEndereco,
       endereco
     );
@@ -849,7 +843,7 @@ const primeiroProximo = async (values) => {
 
     let paramsSegurado = "completo";
 
-    let idPessoa = await apiBdBo.cadastrarSegurado(paramsSegurado, segurado);
+    let idPessoa = await apiQualicorp.cadastrarSegurado(paramsSegurado, segurado);
     idPessoa = idPessoa[0].insuredId;
     console.log("IDPESSOA", idPessoa);
 
@@ -866,7 +860,7 @@ const primeiroProximo = async (values) => {
 
     let endPoint = "completo";
 
-    let atualizarCotacao = await apiBdBo.atualizarCotacao(
+    let atualizarCotacao = await apiQualicorp.atualizarCotacao(
       paramsCotacao,
       endPoint,
       putCotacao

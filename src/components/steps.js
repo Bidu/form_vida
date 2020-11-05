@@ -26,7 +26,7 @@ export class Steps extends Component {
                 </Link>
               </Fab>
             </li>
-            <li class="flex-item">
+            {/* <li class="flex-item">
               <Fab
                 className={step2 ? "step-active" : "step-inactive"}
                 size="small"
@@ -42,7 +42,7 @@ export class Steps extends Component {
                 </Link>
                  }
               </Fab>
-            </li>
+            </li> */}
             <li class="flex-item">
               <Fab
                 className={step3 ? "step-active" : "step-inactive"}
