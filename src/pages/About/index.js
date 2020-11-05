@@ -23,7 +23,7 @@ import { withFormik } from "formik";
 import * as Yup from "yup";
 import * as API from "../../services/bd/CadastrarCotacao";
 import { adicionarLeadCotacao } from "../../store/actions/addLeadBd";
-import { apiBdBo } from "../../services/bdBo";
+import { apiQualicorp } from "../../services/bdBo";
 import axios from "axios";
 import {
   textMaskPhone,
@@ -124,32 +124,26 @@ class About extends Component {
     }, 500);
     //}
   };
-  getAddress = (e) => {
+  getAddress = async (e) => {
     this.setState({ loading: true });
-    apiCEP
-      .get(`${this.state.cep}/json/`)
-      .then((res) => {
-        const content = res.data;
-        this.setState({
-          usuario: {
-            ...this.state.usuario,
-            rua: content.logradouro,
-            cidade: content.localidade,
-            bairro: content.bairro,
-            estado: content.uf,
-            cep: content.cep,
-          },
-          loading: false,
-        });
-        this.props.values.rua = content.logradouro;
-        this.props.values.cidade = content.localidade;
-        this.props.values.bairro = content.bairro;
-        this.props.values.estado = content.uf;
-        this.props.values.cep = content.cep;
-      })
-      .catch((error) => {
-        this.setState({ error: true, loading: false });
-      });
+    let content = await apiQualicorp.consultarEndereco(this.state.cep)
+    this.setState({
+      usuario: {
+        ...this.state.usuario,
+        rua: content.ENDERECO_NOME,
+        cidade: content.CIDADE_NOME,
+        bairro: content.CIDADE_NOME,
+        estado: content.ESTADO_NOME,
+        cep: content.TIPO_ENDERECO,
+      },
+      loading: false,
+    });
+    this.props.values.rua = content.ENDERECO_NOME;
+        this.props.values.cidade = content.CIDADE_NOME;
+        this.props.values.bairro = content.CIDADE_NOME;
+        this.props.values.estado = content.ESTADO_NOME;
+        this.props.values.cep = content.TIPO_ENDERECO;
+    
   };
 
   handleChange = (event) => {
@@ -205,7 +199,7 @@ class About extends Component {
     } = this.props;
 
     if (this.props.status) {
-      return <Redirect to="/cotacacao/123"/>;
+      return <Redirect to="/cotacacao/123" />;
     }
 
     return (
