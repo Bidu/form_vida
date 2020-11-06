@@ -18,7 +18,7 @@ import { GTM } from "../../helpers";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import Loading from "../../components/loading";
-import { apiBdBo } from "../../services/bdBo";
+import { apiQualicorp } from "../../services/bdBo";
 
 import { createBrowserHistory } from 'history';
 
@@ -87,7 +87,7 @@ export class PriceQuote extends Component {
       localStorage.setItem("@bidu2/idcotacao", idUrl);
       localStorage.removeItem("@bidu2/cotacao");
       
-      let obterIdCotacao = await apiBdBo.pesquisarCotacao(localStorage.getItem("@bidu2/idcotacao"));
+      let obterIdCotacao = await apiQualicorp.pesquisarCotacao(localStorage.getItem("@bidu2/idcotacao"));
       localStorage.setItem("@bidu2/cotacao", JSON.stringify(obterIdCotacao[0]))
     }
     if (JSON.parse(localStorage.getItem("@bidu2/user")).cpf &&

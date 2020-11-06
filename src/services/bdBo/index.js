@@ -19,7 +19,7 @@ const apiQualicorp= {
       .get(url)
       .then(function (res) {
         console.log(res);
-        statusEndereço.push(res.data);
+        statusEndereço = res.data;
       })
       .catch(function (error) {
         console.log(error);
@@ -27,9 +27,9 @@ const apiQualicorp= {
     return statusEndereço;
   },
 
-  async consultarProfissao(profissao) {
+  async consultarProfissao() {
     let statusProfissao = [];
-    const url = `${server}/${profissao}?api-key=${apiKey}`;
+    const url = `${server}/profissao/SP/S%C3%A3o%20Paulo?api-key=${apiKey}`;
     await axios
       .get(url)
       .then(function (res) {
@@ -42,7 +42,7 @@ const apiQualicorp= {
     return statusProfissao;
   },
 
-  async listarPlanos(planos) {
+  async listarPlanos(plano) {
     let planos = [];
     const url = `${server}/plano/?api-key=${apiKey}`;
     await axios
@@ -61,7 +61,7 @@ const apiQualicorp= {
   
   async consultarSimulacacao(simulacao) {
     let simulacaoAtual = [];
-    const url = `${server}/simulacacao/?api-key=${apiKey}`;
+    const url = `${server}/simulacao?api-key=${apiKey}`;
     await axios
       .post(url, simulacao)
       .then(function (res) {
@@ -76,7 +76,7 @@ const apiQualicorp= {
 
    async consultarIformacoesAdicionais(params) {
     let infoAdd = [];
-    const url = `${server}/informacoes-adicionais/${params}/${}?api-key=${apiKey}`;
+    const url = `${server}/informacoes-adicionais/${params}/${params}?api-key=${apiKey}`;
     await axios
       .get(url)
       .then(function (res) {
@@ -90,7 +90,7 @@ const apiQualicorp= {
   },
   async consultarRede(rede) {
     let statusRede = [];
-    const url = `${server}/rede-resumida/hospital/${}?api-key=${apiKey}`;
+    const url = `${server}/rede-resumida/hospital/${rede}?api-key=${apiKey}`;
     await axios
       .get(url)
       .then(function (res) {
@@ -104,7 +104,7 @@ const apiQualicorp= {
   },
   async consultarReembolso(reembolso) {
     let statusReembolso = [];
-    const url = `${server}/reembolso/${}?api-key=${apiKey}`;
+    const url = `${server}/reembolso/${reembolso}?api-key=${apiKey}`;
     await axios
       .get(url)
       .then(function (res) {

@@ -127,6 +127,7 @@ class About extends Component {
   getAddress = async (e) => {
     this.setState({ loading: true });
     let content = await apiQualicorp.consultarEndereco(this.state.cep)
+    console.log(content)
     this.setState({
       usuario: {
         ...this.state.usuario,
@@ -138,7 +139,7 @@ class About extends Component {
       },
       loading: false,
     });
-    this.props.values.rua = content.ENDERECO_NOME;
+        this.props.values.rua = content.ENDERECO_NOME;
         this.props.values.cidade = content.CIDADE_NOME;
         this.props.values.bairro = content.CIDADE_NOME;
         this.props.values.estado = content.ESTADO_NOME;
