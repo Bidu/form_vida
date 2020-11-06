@@ -190,7 +190,7 @@ class About extends Component {
     } = this.props;
 
     if (this.props.status) {
-      return <Redirect to="/cotacacao/123" />;
+      return <Redirect to="/cotacao" />;
     }
 
     return (
@@ -652,7 +652,7 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-/* if (!user) primeiroProximo(values);
+/* if (!user) primeiropmo(values);
   else primeiroNext(user.id, user.address_id, user.person_id);
 };
 
