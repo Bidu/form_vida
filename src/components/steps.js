@@ -60,7 +60,7 @@ export class Steps extends Component {
                 }
               </Fab>
             </li>
-            <li class="flex-item">
+            {/* <li class="flex-item">
               <Fab
                 className={step4 ? "step-active" : "step-inactive"}
                 size="small"
@@ -76,7 +76,7 @@ export class Steps extends Component {
                </Link>
                 }
               </Fab>
-            </li>
+            </li> */}
           </ul>
         </div>
         <Grid container spacing={0} className="stepbar-grid">

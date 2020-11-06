@@ -319,13 +319,13 @@ export class PriceQuote extends Component {
             </p>
           </div>
           <div className="actions mt0">
-            <Link className="btn-back" to="/veiculo/condutor">
+            <Link className="btn-back" to="/sobrevoce">
               <KeyboardBackspaceIcon /> Voltar
       </Link>
           </div>
         </Wrapper>
-        <StepCompleted text="Sobre o" bold="veículo" />
-        <StepCompleted text="Sobre" bold="você" />
+        {/* <StepCompleted text="Sobre o" bold="veículo" />
+        <StepCompleted text="Sobre" bold="você" /> */}
       </>
     );
   }
