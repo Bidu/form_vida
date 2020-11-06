@@ -190,7 +190,7 @@ class About extends Component {
     } = this.props;
 
     if (this.props.status) {
-      return <Redirect to="/cotacacao/123" />;
+      return <Redirect to="/cotacao" />;
     }
 
     return (
@@ -250,7 +250,7 @@ class About extends Component {
                 />
               </Grid>
 
-              <Grid item xs={12} sm={12}>
+              {/* <Grid item xs={12} sm={12}>
                 <FormControlLabel
                   control={
                     <Switch
@@ -264,7 +264,7 @@ class About extends Component {
                   }
                   label="Me considero uma pessoa politicamente exposta"
                 />
-              </Grid>
+              </Grid> */}
 
               <Grid item xs={12} sm={6}>
                 <TextField
@@ -625,7 +625,7 @@ class About extends Component {
                 className="btn-next"
                 disabled={isSubmitting}
               >
-                Próximo
+                Cotar
               </Button>
               {/*<Link className="btn-back" to="/">
                 <KeyboardBackspaceIcon /> Voltar
@@ -652,7 +652,7 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-/* if (!user) primeiroProximo(values);
+/* if (!user) primeiropmo(values);
   else primeiroNext(user.id, user.address_id, user.person_id);
 };
 
