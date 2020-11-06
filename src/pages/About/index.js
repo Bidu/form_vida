@@ -39,7 +39,7 @@ import {
 import { checkValidateRadios } from "../../helpers";
 import Loading from "../../components/loading";
 import { CadastrarCotacaoBd } from "../../services/bd/CadastrarCotacao";
-import { occupations } from "../../helpers/occupations";
+
 import { createBrowserHistory } from 'history';
 class About extends Component {
   constructor(props) {
@@ -50,6 +50,7 @@ class About extends Component {
       // request: true,
       //redirect: false,
       cep: "",
+      occupations: [],
       usuario: {
         cpf: "",
         nome: "",
@@ -82,13 +83,19 @@ class About extends Component {
     });
   }; */
 
-  componentDidMount() {
+  async componentDidMount() {
 
     
     this.props.values.profissao = "Selecione";
     
 
+    let occupations = await apiQualicorp.consultarProfissao()
+    this.setState({occupations})
+
+
+
     const storage = JSON.parse(localStorage.getItem("@bidu2/user"));
+
     if (storage.length !== 0) {
       this.setState(storage);
       this.props.setValues(storage);
@@ -425,8 +432,9 @@ class About extends Component {
                   <MenuItem value="Selecione" disabled>
                     Selecione
                   </MenuItem>
-                  {occupations.map((e, key) => (
-                    <MenuItem value={e.occupation}>{e.occupation}</MenuItem>
+                  
+                  {this.state.occupations.map((e, key) => (
+                    <MenuItem value={e.profissao}>{e.profissao}</MenuItem>
                   ))}
                 </Select>
 
@@ -653,197 +661,197 @@ const primeiroNext = (idCotacao, idEndereco, idPessoa) => {
   localStorage.setItem("BdBo/cadastrarCotacao", JSON.stringify(passo));
 };*/
 
-const primeiroProximo = async (values) => {
-  const endereco = {
-    tipoEndereco: "residencia",
-    cep: values.cep,
-    rua: values.rua,
-    bairro: values.bairro,
-    numero: values.numero,
-    complemento: values.complemento,
-    cidade: values.cidade,
-    estado: values.estado,
-  };
+// const primeiroProximo = async (values) => {
+//   const endereco = {
+//     tipoEndereco: "residencia",
+//     cep: values.cep,
+//     rua: values.rua,
+//     bairro: values.bairro,
+//     numero: values.numero,
+//     complemento: values.complemento,
+//     cidade: values.cidade,
+//     estado: values.estado,
+//   };
 
-  let segurado = {
-    nome: values.nome,
-    documento: values.cpf,
-    tipoPessoa: "FISICA",
-    email: values.email,
-    telefone: values.telefone,
-    dataNascimento: new Date(
-      `${values.nasc_ano}-${values.nasc_mes}-${values.nasc_dia}`
-    ).getTime(),
-    genero: values.genero,
-    profissoes: values.profissao,
-    tipoResidencia: values.moradia,
-    perfilEducacional: values.escolaridade,
-    politicamente_exp: values.politicamente_exp == "" ? false : true,
-  };
-  let cpf = { documento: segurado.documento };
-  console.log("CPF", cpf);
-  let cliente = await apiQualicorp.pesquisarSegurado(cpf);
-  cliente = cliente[0];
-  console.log("CLIENTE\n", cliente);
-  if (cliente) {
-    let date = new Date(
-      values.nasc_ano,
-      values.nasc_mes - 1,
-      values.nasc_dia
-    ).getTime();
+//   let segurado = {
+//     nome: values.nome,
+//     documento: values.cpf,
+//     tipoPessoa: "FISICA",
+//     email: values.email,
+//     telefone: values.telefone,
+//     dataNascimento: new Date(
+//       `${values.nasc_ano}-${values.nasc_mes}-${values.nasc_dia}`
+//     ).getTime(),
+//     genero: values.genero,
+//     profissoes: values.profissao,
+//     tipoResidencia: values.moradia,
+//     perfilEducacional: values.escolaridade,
+//     politicamente_exp: values.politicamente_exp == "" ? false : true,
+//   };
+//   let cpf = { documento: segurado.documento };
+//   console.log("CPF", cpf);
+//   let cliente = await apiQualicorp.pesquisarSegurado(cpf);
+//   cliente = cliente[0];
+//   console.log("CLIENTE\n", cliente);
+//   if (cliente) {
+//     let date = new Date(
+//       values.nasc_ano,
+//       values.nasc_mes - 1,
+//       values.nasc_dia
+//     ).getTime();
 
-    var d = new Date(date),
-      month = "" + (d.getMonth() + 1),
-      day = "" + d.getDate(),
-      year = d.getFullYear();
+//     var d = new Date(date),
+//       month = "" + (d.getMonth() + 1),
+//       day = "" + d.getDate(),
+//       year = d.getFullYear();
 
-    if (month.length < 2) month = "0" + month;
-    if (day.length < 2) day = "0" + day;
+//     if (month.length < 2) month = "0" + month;
+//     if (day.length < 2) day = "0" + day;
 
-    date = [year, month, day].join("-");
-    console.log("DATANASCIMENTO", date);
-    let verifyDb = cliente.name.substring(0, cliente.name.indexOf(" "));
-    let verify = segurado.nome.substring(0, segurado.nome.indexOf(" "));
-    if (
-      verifyDb.toLowerCase().normalize("NFD").replace(/[^a-zA-Zs]/g, "") == verify.toLowerCase().normalize("NFD").replace(/[^a-zA-Zs]/g, "") &&
-      date == cliente.birthdate
-    ) {
-      console.log("CLIENTE BIDU ACEITO");
-      let usoEndereco = "residencia";
-      let id = parseInt(cliente.address_id);
+//     date = [year, month, day].join("-");
+//     console.log("DATANASCIMENTO", date);
+//     let verifyDb = cliente.name.substring(0, cliente.name.indexOf(" "));
+//     let verify = segurado.nome.substring(0, segurado.nome.indexOf(" "));
+//     if (
+//       verifyDb.toLowerCase().normalize("NFD").replace(/[^a-zA-Zs]/g, "") == verify.toLowerCase().normalize("NFD").replace(/[^a-zA-Zs]/g, "") &&
+//       date == cliente.birthdate
+//     ) {
+//       console.log("CLIENTE BIDU ACEITO");
+//       let usoEndereco = "residencia";
+//       let id = parseInt(cliente.address_id);
 
-      //ATUALIZAR ENDEREÇO DO SEGURADO
-      let idEndereco = await apiQualicorp.atualizarEndereco(
-        id,
-        usoEndereco,
-        endereco
-      );
-      idEndereco = idEndereco[0].idAddress;
-      console.log("IDENDERECO", idEndereco);
+//       //ATUALIZAR ENDEREÇO DO SEGURADO
+//       let idEndereco = await apiQualicorp.atualizarEndereco(
+//         id,
+//         usoEndereco,
+//         endereco
+//       );
+//       idEndereco = idEndereco[0].idAddress;
+//       console.log("IDENDERECO", idEndereco);
 
-      let paramsSegurado = "sobre";
+//       let paramsSegurado = "sobre";
 
-      let pessoa = parseInt(cliente.person_id);
+//       let pessoa = parseInt(cliente.person_id);
 
-      segurado = { idEndereco, ...segurado };
+//       segurado = { idEndereco, ...segurado };
 
-      //ATUALIZAR DADOS DO SEGURADO COM EXCEÇÃO AO CPF, NOMEE DATA DE NASCIMENTO
-      let idPessoa = await apiQualicorp.atualizarSegurado(
-        pessoa,
-        paramsSegurado,
-        segurado
-      );
-      idPessoa = idPessoa[0].insuredId;
-      console.log("IDPESSOA", idPessoa);
+//       //ATUALIZAR DADOS DO SEGURADO COM EXCEÇÃO AO CPF, NOMEE DATA DE NASCIMENTO
+//       let idPessoa = await apiQualicorp.atualizarSegurado(
+//         pessoa,
+//         paramsSegurado,
+//         segurado
+//       );
+//       idPessoa = idPessoa[0].insuredId;
+//       console.log("IDPESSOA", idPessoa);
 
-      let putCotacao = {
-        idBidu: 0,
-        status: "lead",
-        cotacaoBidu: null,
-        idVeiculo: null,
-      };
-      let idCotacao;
+//       let putCotacao = {
+//         idBidu: 0,
+//         status: "lead",
+//         cotacaoBidu: null,
+//         idVeiculo: null,
+//       };
+//       let idCotacao;
 
-      //CASO O SEGURADO TENHA ALGUMA VISITA NO FORMULÁRIO E NÃO TENHA GERADO UMA
-      //COTAÇÃO O SISTEMA DEVERA UTILIZAR O MESMO NUMERO DO ID DA COTAÇÃO EM ABERTO
-      if (cliente.bidu_id_quotation == "0") {
-        idCotacao = parseInt(cliente.id);
-      }
-      //DO CONTRARIO SERA GERADO UM NOVO ID DE COTAÇÃO PARA O MESMO
-      else {
-        idCotacao = await apiQualicorp.cadastrarCotacao();
-        idCotacao = idCotacao[0].idCotacao;
-        console.log("IDCOTACAO - NOVACOTACAO", idCotacao);
-      }
+//       //CASO O SEGURADO TENHA ALGUMA VISITA NO FORMULÁRIO E NÃO TENHA GERADO UMA
+//       //COTAÇÃO O SISTEMA DEVERA UTILIZAR O MESMO NUMERO DO ID DA COTAÇÃO EM ABERTO
+//       if (cliente.bidu_id_quotation == "0") {
+//         idCotacao = parseInt(cliente.id);
+//       }
+//       //DO CONTRARIO SERA GERADO UM NOVO ID DE COTAÇÃO PARA O MESMO
+//       else {
+//         idCotacao = await apiQualicorp.cadastrarCotacao();
+//         idCotacao = idCotacao[0].idCotacao;
+//         console.log("IDCOTACAO - NOVACOTACAO", idCotacao);
+//       }
 
-      putCotacao = { idPessoa, ...putCotacao };
+//       putCotacao = { idPessoa, ...putCotacao };
 
-      let paramsCotacao = idCotacao;
+//       let paramsCotacao = idCotacao;
 
-      let endPoint = "completo";
+//       let endPoint = "completo";
 
-      let atualizarCotacao = await apiQualicorp.atualizarCotacao(
-        paramsCotacao,
-        endPoint,
-        putCotacao
-      );
-      console.log(atualizarCotacao);
+//       let atualizarCotacao = await apiQualicorp.atualizarCotacao(
+//         paramsCotacao,
+//         endPoint,
+//         putCotacao
+//       );
+//       console.log(atualizarCotacao);
 
-      const passo = { idCotacao, idEndereco, idPessoa };
-      if (idCotacao && idEndereco && idPessoa) {
-        const passo = { idCotacao, idEndereco, idPessoa };
-        localStorage.setItem("BdBo/cadastrarCotacao", JSON.stringify(passo));
-        return true
-      } else {
-        localStorage.setItem("BdBo/cadastrarCotacao", "error");
-       // return false
-      }
-      //return passo;
-    } else {
-      console.log(
-        "OPS, DADOS DIVERGENTES NO NOSSO SISTEMA, FAVOR ENTRAR EM CONTATO COM NOSSO TIME DE OPERAÇÃO"
-      );
-      return false;
-    }
-  }
+//       const passo = { idCotacao, idEndereco, idPessoa };
+//       if (idCotacao && idEndereco && idPessoa) {
+//         const passo = { idCotacao, idEndereco, idPessoa };
+//         localStorage.setItem("BdBo/cadastrarCotacao", JSON.stringify(passo));
+//         return true
+//       } else {
+//         localStorage.setItem("BdBo/cadastrarCotacao", "error");
+//        // return false
+//       }
+//       //return passo;
+//     } else {
+//       console.log(
+//         "OPS, DADOS DIVERGENTES NO NOSSO SISTEMA, FAVOR ENTRAR EM CONTATO COM NOSSO TIME DE OPERAÇÃO"
+//       );
+//       return false;
+//     }
+//   }
 
-  //CLIENTE NÃO ENCONTRADO NO BANCO DE DADOS DA BIDU
-  else {
-    console.log("CLIENTE NÂO CADASTRADO");
-    let idCotacao = await apiQualicorp.cadastrarCotacao();
-    idCotacao = idCotacao[0].idCotacao;
-    console.log("IDCOTACAO", idCotacao);
+//   //CLIENTE NÃO ENCONTRADO NO BANCO DE DADOS DA BIDU
+//   else {
+//     console.log("CLIENTE NÂO CADASTRADO");
+//     let idCotacao = await apiQualicorp.cadastrarCotacao();
+//     idCotacao = idCotacao[0].idCotacao;
+//     console.log("IDCOTACAO", idCotacao);
 
-    let paramsEndereco = "residencia";
+//     let paramsEndereco = "residencia";
 
-    let idEndereco = await apiQualicorp.cadastrarEndereco(
-      paramsEndereco,
-      endereco
-    );
-    idEndereco = idEndereco[0].idAddress;
-    console.log("IDENDERECO", idEndereco);
+//     let idEndereco = await apiQualicorp.cadastrarEndereco(
+//       paramsEndereco,
+//       endereco
+//     );
+//     idEndereco = idEndereco[0].idAddress;
+//     console.log("IDENDERECO", idEndereco);
 
-    //INCLUIR ID DO ENDEREÇO NO SEGURADO
-    segurado = { idEndereco, ...segurado };
+//     //INCLUIR ID DO ENDEREÇO NO SEGURADO
+//     segurado = { idEndereco, ...segurado };
 
-    let paramsSegurado = "completo";
+//     let paramsSegurado = "completo";
 
-    let idPessoa = await apiQualicorp.cadastrarSegurado(paramsSegurado, segurado);
-    idPessoa = idPessoa[0].insuredId;
-    console.log("IDPESSOA", idPessoa);
+//     let idPessoa = await apiQualicorp.cadastrarSegurado(paramsSegurado, segurado);
+//     idPessoa = idPessoa[0].insuredId;
+//     console.log("IDPESSOA", idPessoa);
 
-    let putCotacao = {
-      idBidu: 0,
-      status: "lead",
-      cotacaoBidu: null,
-      idVeiculo: null,
-    };
+//     let putCotacao = {
+//       idBidu: 0,
+//       status: "lead",
+//       cotacaoBidu: null,
+//       idVeiculo: null,
+//     };
 
-    putCotacao = { idPessoa, ...putCotacao };
+//     putCotacao = { idPessoa, ...putCotacao };
 
-    let paramsCotacao = idCotacao;
+//     let paramsCotacao = idCotacao;
 
-    let endPoint = "completo";
+//     let endPoint = "completo";
 
-    let atualizarCotacao = await apiQualicorp.atualizarCotacao(
-      paramsCotacao,
-      endPoint,
-      putCotacao
-    );
-    console.log(atualizarCotacao);
+//     let atualizarCotacao = await apiQualicorp.atualizarCotacao(
+//       paramsCotacao,
+//       endPoint,
+//       putCotacao
+//     );
+//     console.log(atualizarCotacao);
 
-    const passo = { idCotacao, idEndereco, idPessoa };
-    // return passo;
-    if (idCotacao && idEndereco && idPessoa) {
-      const passo = { idCotacao, idEndereco, idPessoa };
-      localStorage.setItem("BdBo/cadastrarCotacao", JSON.stringify(passo));
-      return true
-    } else {
-      localStorage.setItem("BdBo/cadastrarCotacao", "error");
-     // return false
-    }
-  }
-};
+//     const passo = { idCotacao, idEndereco, idPessoa };
+//     // return passo;
+//     if (idCotacao && idEndereco && idPessoa) {
+//       const passo = { idCotacao, idEndereco, idPessoa };
+//       localStorage.setItem("BdBo/cadastrarCotacao", JSON.stringify(passo));
+//       return true
+//     } else {
+//       localStorage.setItem("BdBo/cadastrarCotacao", "error");
+//      // return false
+//     }
+//   }
+// };
 
 const Form = withFormik({
   mapPropsToValues: ({
@@ -919,29 +927,19 @@ const Form = withFormik({
   }),
 
   handleSubmit: async (values, { props, setStatus, setValues, setSubmitting }) => {
-    axios.defaults.headers.common["X-CSRF-Token"] =
-      "EPY5pC81PhRuld9r00HF4ECdBUnGgTri/GfvbTik3hP2DplRfVy36mhYtN/Fu1C2ZEsFbfM7G+J3oT7q1SpolQ==";
-
-    const passo = JSON.parse(localStorage.getItem("BdBo/cadastrarCotacao"));
+    // const passo = JSON.parse(localStorage.getItem("BdBo/cadastrarCotacao"));
 
     // BANCO DE DADOS BACKOFFICE - BO
-    console.log("REQUEST")
-    let request = await primeiroProximo(values)
+    // console.log("REQUEST")
+    // let request = await primeiroProximo(values)
     
-    if (!request) {
-      localStorage.setItem("bdbo/errorAbout", true)
-    return false  
-    }
-    localStorage.removeItem("bdbo/errorAbout")
-    //getUser(values);
+    // if (!request) {
+    //   localStorage.setItem("bdbo/errorAbout", true)
+    // return false  
+    // }
+    // localStorage.removeItem("bdbo/errorAbout")
+    // //getUser(values);
     
-
-    axios
-      .post("http://web:3000/data-informations", JSON.stringify(values))
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((err) => console.log(err));
     setTimeout(() => {
       //submit to the server
       //alert(JSON.stringify(values, null, 2));

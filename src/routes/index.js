@@ -15,7 +15,7 @@ const Routes = () => (
          <Redirect to="/sobrevoce" />
       </Route>
       <Route exact path="/sobrevoce" component={About} forceRefresh={true} />
-      <Route exact path="/cotacao/:id" component={PriceQuote} />      
+      <Route exact path="/cotacao" component={PriceQuote} />      
     </Switch>
   </BrowserRouter>
 );

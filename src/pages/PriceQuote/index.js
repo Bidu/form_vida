@@ -19,6 +19,7 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import Loading from "../../components/loading";
 import { apiQualicorp } from "../../services/bdBo";
+import { card } from "../../helpers/card"
 
 import { createBrowserHistory } from 'history';
 
@@ -34,8 +35,6 @@ export class PriceQuote extends Component {
     };
     this.getCustomQuote = this.getCustomQuote.bind(this);
 
-    // if(localStorage.getItem("@bidu2/user") == null || JSON.parse(localStorage.getItem("@bidu2/user")).length == 0)
-    // window.location.href="/sobrevoce"   
   }
 
   getCustomQuote = (customQuote) => {
@@ -46,37 +45,24 @@ export class PriceQuote extends Component {
     });
   };
 
-  /*getValores = v => {
-  const valores = JSON.parse(v);
-  const filtros = [];
-  valores.resultadoCotacao.planosPagamento.map((v, index) =>
-  filtros.push(v.planoParcela[9].valorParcela)
-  );
-  console.log(filtros);
-  setTimeout(() => {
-  this.setState({
-  ...this.state,
-  valores: filtros
-  });
-  }, 3000);
-  };*/
+
 
   componentDidMount() {
-    /*Google Tag Manager*/
-    // window.dataLayer.push({
-    //   event: GTM("Cotacao"),
-    // });
-    /*End Google Tag Manager*/
-    // var history = createBrowserHistory();
-    // window.ga('set', 'page', history.location.pathname + history.location.search);
-    // window.ga('send', 'pageview');
+    
     this.setState({
       loading: true,
     });
 
-    this.getCotacoes()
-
+    // this.getCotacoes()
+    console.log(card[0].planos[0].abrangencia)
+    this.setState({
+      loading: false,
+    });
     }
+   
+
+
+
 
   getCotacoes = async (sortBy = null) => {
     this.setState({
@@ -104,108 +90,7 @@ export class PriceQuote extends Component {
       localStorage.setItem("@bidu2/seguro", JSON.stringify(obj))
     }
     const idcotacao = idUrl ? idUrl : localStorage.getItem("@bidu2/idcotacao");
-    const AuthStr = "Bearer ".concat(
-      "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJPbmxpbmUgSldUIEJ1aWxkZXIiLCJpYXQiOjE1ODk5OTQ2MDQsImV4cCI6MTYyMTUzMDYwNCwiYXVkIjoid3d3LmV4YW1wbGUuY29tIiwic3ViIjoianJvY2tldEBleGFtcGxlLmNvbSIsIkdpdmVuTmFtZSI6IkpvaG5ueSIsIlN1cm5hbWUiOiJSb2NrZXQiLCJFbWFpbCI6Impyb2NrZXRAZXhhbXBsZS5jb20iLCJSb2xlIjpbIk1hbmFnZXIiLCJQcm9qZWN0IEFkbWluaXN0cmF0b3IiXX0.iiMMWhNwVSqKz4FuraSGxlRL2l5hPGaUGWvXfFsRuUc"
-    );
-    //const URL = `https://api-auto-dot-bidu-digital-prod.rj.r.appspot.com/cotacao/${idcotacao}`;
-    const URL = `https://api-auto-dot-bidu-digital-dev.appspot.com/cotacao/${idcotacao}`;
-    axios
-      .get(URL, { headers: { Authorization: AuthStr } })
-      .then((res) => {
-        const cotacoes = res.data;
-        let cotValid = []
-        let cotSortBy = []
-
-        switch (sortBy) {
-
-          case "0":
-            /**
-             * Ordena quando o radio button é ativado
-             * MAIOR valor
-             */
-
-
-            cotSortBy = []
-            cotacoes.body.map((item) => {
-              if (item.statusComunicacao === "SUCESSO") {
-                cotSortBy.push(item)
-              }
-            })
-
-            cotValid = cotSortBy.sort((a, b) => {
-              return b.resultadoCotacao.premioTotal - a.resultadoCotacao.premioTotal
-            })
-
-            cotacoes.body.map((item) => {
-              if (item.statusComunicacao !== "SUCESSO") {
-                cotValid.push(item)
-              }
-            })
-
-
-
-
-            break;
-          case "1":
-            /**
-             * Ordena quando o radio button é ativado
-            * MENOR  valor
-            */
-            this.setState({
-              loading: true
-            });
-
-            cotSortBy = []
-            cotacoes.body.map((item) => {
-              if (item.statusComunicacao === "SUCESSO") {
-                cotSortBy.push(item)
-              }
-            })
-
-            cotValid = cotSortBy.sort((a, b) => {
-              return a.resultadoCotacao.premioTotal - b.resultadoCotacao.premioTotal
-            })
-
-            cotacoes.body.map((item) => {
-              if (item.statusComunicacao !== "SUCESSO") {
-                cotValid.push(item)
-              }
-            })
-
-            break;
-          default:
-            /**
-             * O codigo abaixo ordena e apresenta o que teve retorno com o STATUS SUCESSO primeiro que o teve FALHA
-             */
-            cotacoes.body.map((item) => {
-              if (item.statusComunicacao === "SUCESSO") {
-                cotValid.push(item)
-              }
-            })
-            cotacoes.body.map((item) => {
-              if (item.statusComunicacao !== "SUCESSO") {
-                cotValid.push(item)
-              }
-            })
-
-            console.log(cotValid)
-
-            break;
-        }
-
-
-        this.setState({
-          cotacoes: cotValid,
-          loading: false,
-        });
-      })
-      .catch((error) => {
-        this.setState({
-          ...this.state,
-          loading: false,
-        });
-        // console.log(error);
-      });
+  
   }
 
   OpenChat = (e) => {
@@ -363,7 +248,8 @@ export class PriceQuote extends Component {
     ))*/}
           <div className="price-quote">
             <Steps step1={true} step2={true} step3={true} />
-            <Title bold="Cotação" idquote={localStorage.getItem("@bidu2/idcotacao")} />
+            {/* <Title bold="Cotação" idquote={localStorage.getItem("@bidu2/idcotacao")} /> */}
+            {<Title bold="Cotação" />} 
           </div>
           <div className="filter">
             <div>

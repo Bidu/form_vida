@@ -29,12 +29,12 @@ const apiQualicorp= {
 
   async consultarProfissao() {
     let statusProfissao = [];
-    const url = `${server}/profissao/SP/S%C3%A3o%20Paulo?api-key=${apiKey}`;
+    const url = `${server}/profissao/SP/S%C3%A3o%20Paulo?api-key=dd4d2522-b35b-4cff-9d99-d56cfba5c44f`;
     await axios
       .get(url)
       .then(function (res) {
         console.log(res);
-        statusProfissao.push(res.data);
+        statusProfissao = res.data;
       })
       .catch(function (error) {
         console.log(error);
