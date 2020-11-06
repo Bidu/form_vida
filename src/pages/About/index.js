@@ -83,27 +83,10 @@ class About extends Component {
   }; */
 
   componentDidMount() {
-    // var history = createBrowserHistory();
-    // window.ga('set', 'page', history.location.pathname + history.location.search);
-    // window.ga('send', 'pageview');
+
     
     this.props.values.profissao = "Selecione";
-    /*Google Tag Manager*/
-    // window.dataLayer.push({
-    //   event: GTM("SobreVoce"),
-    // });
-    /*End Google Tag Manager*/
-
-    //Check exists idCotacao BD
-    /*     if (!localStorage.getItem("@bidu2/idCotacao")) {
-      CadastrarCotacaoBd("cotacao/pre_lead")
-        .then((res) => {
-          localStorage.setItem("@bidu2/idCotacao", res.idCotacao);
-        })
-        .catch((error) => {
-          console.log("Houve um erro");
-        });
-    } */
+    
 
     const storage = JSON.parse(localStorage.getItem("@bidu2/user"));
     if (storage.length !== 0) {
@@ -447,25 +430,6 @@ class About extends Component {
                   ))}
                 </Select>
 
-                {/*                 <TextField
-                  value={
-                    this.props.values.profissao
-                      ? this.props.values.profissao
-                      : ""
-                  }
-                  id="profissao"
-                  name="profissao"
-                  label="Profissão"
-                  placeholder="Digite aqui"
-                  fullWidth
-                  onChange={handleChange}
-                  onBlur={this.handleChange}
-                  helperText={touched.profissao ? errors.profissao : ""}
-                  error={touched.profissao && Boolean(errors.profissao)}
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                /> */}
               </Grid>
               <Grid item xs={12} sm={6}>
                 <InputLabel shrink id="formation">
