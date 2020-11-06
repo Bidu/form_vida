@@ -250,7 +250,7 @@ class About extends Component {
                 />
               </Grid>
 
-              <Grid item xs={12} sm={12}>
+              {/* <Grid item xs={12} sm={12}>
                 <FormControlLabel
                   control={
                     <Switch
@@ -264,7 +264,7 @@ class About extends Component {
                   }
                   label="Me considero uma pessoa politicamente exposta"
                 />
-              </Grid>
+              </Grid> */}
 
               <Grid item xs={12} sm={6}>
                 <TextField
