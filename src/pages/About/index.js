@@ -625,7 +625,7 @@ class About extends Component {
                 className="btn-next"
                 disabled={isSubmitting}
               >
-                Próximo
+                Cotar
               </Button>
               {/*<Link className="btn-back" to="/">
                 <KeyboardBackspaceIcon /> Voltar
