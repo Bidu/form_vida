@@ -2,10 +2,18 @@ import axios from "axios";
 
 //DEV
 const server = "https://apisimulador.qualicorp.com.br";
-const apiKey = "16935032-593a-4187-8c0e-e30253194e87"
+const apiKeyConsultarEndereco = "16935032-593a-4187-8c0e-e30253194e87"
+const apiKeyConsultarEntidades = "edbc5aff-6cdd-4045-8871-62eeb5ea89fb"
+const apiKeyConsultarProfissao = "dd4d2522-b35b-4cff-9d99-d56cfba5c44f"
+const apiKeyConsultarListarPlanos = "d06547cf-dae5-4274-a03b-6a4cdf455bd0"
+const apiKeyConsultarSimulacacao = "0df65d77-c63c-46fc-ab10-dae5f8574010"
+const apiKeyConsultarInfoAdcionais = "9d675da6-1d85-4f26-91cb-8722feb97089"
+const apiKeyConsultarRede = "0f03fd0f-658b-4564-b45e-fa6077d656a6"
+const apiKeyConsultarReembolso = "55c14f1e-db71-4562-b2ef-9a9e3e81ac76"
+const apiKeyFatorModerador = "2db79cf2-e878-4d09-94ba-623f4f9adcee"
 
-//PROD
-//const server = "https://api-banco-dados-dot-bidu-digital-prod.rj.r.appspot.com/auto"
+
+
 
 const headers = {
   "Content-Type": "application/json",
@@ -14,7 +22,7 @@ const headers = {
 const apiQualicorp= {
   async consultarEndereco(cep) {
     let statusEndereço = [];
-    const url = `${server}/endereco/Enderecos/${cep}?api-key=${apiKey}`;
+    const url = `${server}/endereco/Enderecos/${cep}?api-key=${apiKeyConsultarEndereco}`;
     await axios
       .get(url)
       .then(function (res) {
@@ -44,7 +52,7 @@ const apiQualicorp= {
 
   async listarPlanos(plano) {
     let planos = [];
-    const url = `${server}/plano/?api-key=${apiKey}`;
+    const url = `${server}/plano/?api-key=${apiKeyConsultarListarPlanos}`;
     await axios
       .post(url, {
         timeout: 1000,
@@ -61,7 +69,7 @@ const apiQualicorp= {
   
   async consultarSimulacacao(simulacao) {
     let simulacaoAtual = [];
-    const url = `${server}/simulacao?api-key=${apiKey}`;
+    const url = `${server}/simulacao?api-key=${apiKeyConsultarSimulacacao}`;
     await axios
       .post(url, simulacao)
       .then(function (res) {
@@ -76,7 +84,7 @@ const apiQualicorp= {
 
    async consultarIformacoesAdicionais(params) {
     let infoAdd = [];
-    const url = `${server}/informacoes-adicionais/${params}/${params}?api-key=${apiKey}`;
+    const url = `${server}/informacoes-adicionais/${params}/${params}?api-key=${apiKeyConsultarInfoAdcionais}`;
     await axios
       .get(url)
       .then(function (res) {
@@ -90,7 +98,7 @@ const apiQualicorp= {
   },
   async consultarRede(rede) {
     let statusRede = [];
-    const url = `${server}/rede-resumida/hospital/${rede}?api-key=${apiKey}`;
+    const url = `${server}/rede-resumida/hospital/${rede}?api-key=${apiKeyConsultarRede}`;
     await axios
       .get(url)
       .then(function (res) {
@@ -104,7 +112,7 @@ const apiQualicorp= {
   },
   async consultarReembolso(reembolso) {
     let statusReembolso = [];
-    const url = `${server}/reembolso/${reembolso}?api-key=${apiKey}`;
+    const url = `${server}/reembolso/${reembolso}?api-key=${apiKeyConsultarReembolso}`;
     await axios
       .get(url)
       .then(function (res) {
@@ -118,7 +126,7 @@ const apiQualicorp= {
   },
   async fatorModerador(fator) {
     let statusFatorModerador = [];
-    const url = `${server}/fator-moderador/${fator}?api-key=${apiKey}`;
+    const url = `${server}/fator-moderador/${fator}?api-key=${apiKeyFatorModerador}`;
     await axios
       .get(url)
       .then(function (res) {

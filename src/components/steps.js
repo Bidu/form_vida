@@ -25,24 +25,7 @@ export class Steps extends Component {
                   <PersonIcon />
                 </Link>
               </Fab>
-            </li>
-            {/* <li class="flex-item">
-              <Fab
-                className={step2 ? "step-active" : "step-inactive"}
-                size="small"
-                color={step2 ? "primary" : "lightGray"}
-                aria-label="edit"
-              >
-               {localStorage.getItem("@bidu/user") != null || JSON.parse(localStorage.getItem("@bidu2/user")).length != 0 ?
-                <Link to="/veiculo"> 
-                  <DriveEtaIcon />
-                </Link> : 
-                <Link>
-                  <DriveEtaIcon />
-                </Link>
-                 }
-              </Fab>
-            </li> */}
+            </li>        
             <li class="flex-item">
               <Fab
                 className={step3 ? "step-active" : "step-inactive"}
@@ -60,23 +43,7 @@ export class Steps extends Component {
                 }
               </Fab>
             </li>
-            {/* <li class="flex-item">
-              <Fab
-                className={step4 ? "step-active" : "step-inactive"}
-                size="small"
-                color={step4 ? "primary" : "lightGray"}
-                aria-label="edit"
-              >
-                {this.props.transmission_return === "SUCESSO" ?
-                <Link to="/sucesso">
-                  <VerifiedUserIcon color="darkGray" />
-                </Link> :
-                 <Link>
-                 <VerifiedUserIcon />
-               </Link>
-                }
-              </Fab>
-            </li> */}
+           
           </ul>
         </div>
         <Grid container spacing={0} className="stepbar-grid">
