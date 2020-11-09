@@ -54,7 +54,7 @@ export class PriceQuote extends Component {
     });
 
     // this.getCotacoes()
-    console.log(card[0].planos[0].abrangencia)
+    console.log(card[0].planos)
     this.setState({
       loading: false,
     });
@@ -164,18 +164,9 @@ export class PriceQuote extends Component {
         <div>{this.getValores(JSON.stringify(cotacoes[index]))}</div>
         ))*/}
 
-              {cotacoes.map((c, index) => (
+              {card[0].planos.map((c, index) => (
                 <>
-
-                  {
-                    c.susep !== 5908 ? (
-                      <ListPriceQuotation key={index} quote={c} getQuote={this.getCustomQuote} />
-
-                    ) : (
-                        <ListPriceQuotationPPU key={index} quote={JSON.stringify(cotacoes[index])} getQuote={this.getCustomQuote} />
-                      )
-                  }
-
+                    <ListPriceQuotation key={index} quote={c} getQuote={this.getCustomQuote} />
                 </>
               ))}
             </Grid>

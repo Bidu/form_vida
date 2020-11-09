@@ -314,11 +314,7 @@ export class ListPriceQuotation extends Component {
     e.preventDefault();
     this.setState({ lightbox_custom: true });
     this.lightboxBehaviorOpen();
-    /*Google Tag Manager*/
-    // window.dataLayer.push({
-    //   event: GTM("Cotacao_Customizar"),
-    // });
-    /*End Google Tag Manager*/
+  
   };
 
   lightboxBehaviorClose() {
@@ -345,11 +341,7 @@ export class ListPriceQuotation extends Component {
   BtnLightboxDetailsOpen = () => {
     this.setState({ lightbox_details: true });
     this.lightboxBehaviorOpen();
-    /*Google Tag Manager*/
-    // window.dataLayer.push({
-    //   event: GTM("Cotacao_VerDetalhes"),
-    // });
-    /*End Google Tag Manager*/
+  
   };
   BtnLightboxAgreeClose = (e) => {
     e.preventDefault();
@@ -362,11 +354,7 @@ export class ListPriceQuotation extends Component {
       this.setState({ lightbox_agree: false });
       this.lightboxBehaviorClose();
     }
-    /*Google Tag Manager*/
-    // window.dataLayer.push({
-    //   event: GTM("Cotacao_MsgImportantes_NConcordo"),
-    // });
-    /*End Google Tag Manager*/
+   
   };
   BtnLightboxAgreeOpen = (e) => {
     this.setState({ lightbox_agree: true });
@@ -375,11 +363,7 @@ export class ListPriceQuotation extends Component {
   BtnRedirectCheckout = () => {
     localStorage.removeItem("@bidu2/transmissao");
     localStorage.removeItem("@bidu2/dados_cotacao");
-    /*Google Tag Manager*/
-    // window.dataLayer.push({
-    //   event: GTM("Cotacao_MsgImportantes_Concordo"),
-    // });
-    /*End Google Tag Manager*/
+   
 
     this.lightboxBehaviorClose();
     this.setState({
@@ -390,54 +374,7 @@ export class ListPriceQuotation extends Component {
       },
     });
 
-    const propriedadeSeguradora = this.state.cotacao.resultadoCotacao
-      .propriedadeSeguradora;
-
-    localStorage.setItem(
-      "@bidu2/dados_cotacao",
-      JSON.stringify({
-        susep: this.state.cotacao.susep,
-        preco: this.state.cotacao.resultadoCotacao.premioTotal,
-        parcelas:
-          this.state.cotacao.resultadoCotacao.planosPagamento.length >= 1
-            ? this.getMaxValue(
-                this.state.cotacao.resultadoCotacao.planosPagamento.map((p) =>
-                  p.planoParcela.map((v) => v.quantidadeParcelas)
-                )
-              )
-            : this.state.cotacao.resultadoCotacao.planosPagamento.planoParcela
-                .length,
-        dadosParcelas:
-          this.state.cotacao.resultadoCotacao.planosPagamento.length >= 1
-            ? this.state.cotacao.resultadoCotacao.planosPagamento
-            : this.state.cotacao.resultadoCotacao.planosPagamento.planoParcela,
-        idProtocolo: this.state.cotacao.resultadoCotacao.idProtocolo,
-        coberturas: this.state.cotacao.resultadoCotacao.coberturas,
-        servicos: this.state.cotacao.resultadoCotacao.servicos,
-        fipe: this.state.cotacao.resultadoCotacao.coberturaFipe,
-        bancos:
-          this.state.cotacao.resultadoCotacao.planosPagamento.length >= 1
-            ? this.state.cotacao.resultadoCotacao.planosPagamento
-                .filter((b) => b.modoPagamento === "DEBIT")
-                .map((p) => p.provedorPagemento)
-            : this.state.cotacao.resultadoCotacao.planosPagamento
-                .provedorPagemento,
-        /* bancos: this.state.cotacao.resultadoCotacao.planosPagamento
-          .filter((b) => b.modoPagamento === "DEBIT")
-          .map((p) => p.provedorPagemento), */
-        /* planosPagamento: this.state.cotacao.resultadoCotacao.planosPagamento
-          .modoPagamento, */
-        planosPagamento:
-          this.state.cotacao.resultadoCotacao.planosPagamento.length >= 1
-            ? this.state.cotacao.resultadoCotacao.planosPagamento.map(
-                (opt) => opt.modoPagamento
-              )
-            : this.state.cotacao.resultadoCotacao.planosPagamento.modoPagamento,
-        "x-track-id": this.state.cotacao.resultadoCotacao["x-track-id"],
-        uuidHdi: this.state.cotacao.resultadoCotacao.uuidHdi,
-        propriedadeSeguradora,
-      })
-    );
+  
   };
 
   escExitLightbox(event) {
@@ -522,27 +459,22 @@ export class ListPriceQuotation extends Component {
     } else {
       return (
         <>
-          {cotacao.statusComunicacao === "SUCESSO"
-            ? cotacao.resultadoCotacao.tipoPlanoCobertura !== "COMPREENSIVA_DETERMINADA" &&
-                cotacao.resultadoCotacao.tipoPlanoCobertura !== "COL_INC_ROUBOS E FURTOS" &&
-                cotacao.resultadoCotacao.tipoPlanoCobertura !== "INCENDIOS_ROUBOS_FURTOS" &&
-                cotacao.resultadoCotacao.tipoPlanoCobertura !== "SEGURO DE TERCEIROS" && (
-                <Grid key={cotacao.susep} item xs={12} sm={6}>
+          
+                <Grid key={cotacao.id} item xs={12} sm={6}>
                   <div className="list-price-quotation">
                     <div className="logo-container">
                       <figure className="seguradoras">
                         <img
                           alt="hdmi"
-                          src={`${require(`../assets/img/${cotacao.susep}.svg`)}`}
+                          src={cotacao.operadoraLogo}
                         />
                       </figure>
                     </div>
 
                     <div class="warning-quote">
                       {
-                        Dictionary.quote[
-                          cotacao.resultadoCotacao.tipoPlanoCobertura
-                        ]
+                        `${cotacao.plano}`
+                        
                       }
                     </div>
                     <Grid item spacing={0} className="table-header" container>
@@ -551,72 +483,20 @@ export class ListPriceQuotation extends Component {
                           <span className="top-label">Valor total</span>
                           <span className="valor-total">
                             {ConvertCurrency(
-                              cotacao.resultadoCotacao.premioTotal
+                              cotacao.precos.total
                             )}
                           </span>
                         </>
                       </Grid>
-                      <Grid item xs={6} className="txt-right">
-                        {
-                          <span className="top-label">
-                            {cotacao.resultadoCotacao.planosPagamento.length >=
-                            1
-                              ? this.getMaxValue(
-                                  cotacao.resultadoCotacao.planosPagamento.map(
-                                    (p) =>
-                                      p.planoParcela.map(
-                                        (v) => v.quantidadeParcelas
-                                      )
-                                  )
-                                )
-                              : Math.max(
-                                  ...cotacao.resultadoCotacao.planosPagamento.planoParcela.map(
-                                    (v) => v.quantidadeParcelas
-                                  )
-                                )}
-                            x
-                          </span>
-                        }
-
-                        {
-                          <span className="valor-parcela">
-                            {cotacao.resultadoCotacao.planosPagamento.length >=
-                            1
-                              ? ConvertCurrency(
-                                  this.getMinValue(
-                                    cotacao.resultadoCotacao.planosPagamento.map(
-                                      (p) =>
-                                        p.planoParcela.map(
-                                          (v) => v.valorParcela
-                                        )
-                                    )
-                                  )
-                                )
-                              : ConvertCurrency(
-                                  Math.min(
-                                    ...cotacao.resultadoCotacao.planosPagamento.planoParcela.map(
-                                      (v) => v.valorParcela
-                                    )
-                                  )
-                                )}
-                          </span>
-                        }
-                      </Grid>
+                      
                     </Grid>
 
                     <ListPriceQuotationServices cotacao={cotacao} />
                     <Grid item spacing={0} className="table-footer" container>
                       <Grid item xs={3}>
-                        {/*<a
-                    href="#"
-                    className="bottom-links"
-                    onClick={(e) => this.BtnCustomboxOpen(e)}
-                  >
-                    Customizar
-                  </a>*/}
                         <Grid className="txt-left bottom-idProtocolo">
                           <p >
-                            {cotacao.resultadoCotacao.idProtocolo}
+                            {cotacao.id}
                           </p>
                         </Grid>
                       </Grid>
@@ -628,11 +508,11 @@ export class ListPriceQuotation extends Component {
                       >
                         <div
                           className="btn-comprar"
-                          onClick={(e) =>
-                            cotacao.resultadoCotacao.mensagens.length
-                              ? this.BtnLightboxAgreeOpen(cotacao.id)
-                              : this.BtnRedirectCheckout(cotacao.uuidPpu)
-                          }
+                          // onClick={(e) =>
+                          //   cotacao.resultadoCotacao.mensagens.length
+                          //     ? this.BtnLightboxAgreeOpen(cotacao.id)
+                          //     : this.BtnRedirectCheckout(cotacao.id)
+                          // }
                           
                         >
                           Comprar
@@ -652,14 +532,8 @@ export class ListPriceQuotation extends Component {
                     </Grid>
                   </div>
                 </Grid>
-              )
-            : cotacao.erro !== false && (
-                <ErrorQuote
-                  susep={cotacao.susep}
-                  msg={cotacao.erro.messages[0]}
-                />
-              )}
-          {lightbox_details && (
+           
+          {/* {lightbox_details && (
             <div
               className="custom lightbox"
               onClick={this.BtnLightboxDetailsOutClose}
@@ -735,9 +609,9 @@ export class ListPriceQuotation extends Component {
                 </div>
               </div>
             </div>
-          )}
+          )} */}
 
-          {lightbox_custom && (
+          {/* {lightbox_custom && (
             <div className="custom lightbox" onClick={this.BtnCustomOutClose}>
               <div className="content">
                 <div className="header-title mb1">
@@ -1046,9 +920,9 @@ export class ListPriceQuotation extends Component {
                 </div>
               </div>
             </div>
-          )}
+          )} */}
 
-          {lightbox_agree && (
+          {/* {lightbox_agree && (
             <div
               className="custom lightbox"
               onClick={this.BtnLightboxAgreeOutClose}
@@ -1097,7 +971,7 @@ export class ListPriceQuotation extends Component {
                 </div>
               </div>
             </div>
-          )}
+          )} */}
         </>
       );
     }

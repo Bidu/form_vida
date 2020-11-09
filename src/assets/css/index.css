@@ -482,7 +482,7 @@ p.validate-radio-button.bold {
   font-size: 10px;
   color: #00f1e7;
   font-weight: 600;
-  width: 50%;
+  width: 75%;
   height: 40px;
   display: flex;
   justify-content: flex-end;
@@ -747,7 +747,7 @@ p.validate-radio-button.bold {
   font-size: 1rem; }
   .list-price-quotation .logo-container {
     top: -40px;
-    left: 50%;
+    left: 30%;
     margin-left: -40px;
     height: 80px;
     width: 80px;
