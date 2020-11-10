@@ -85,20 +85,6 @@ export const card = [ {
                     "Cidade": "SURUBIM",
                     "Estado": "PE",
                     "CEP": ""
-                },
-                {
-                    "Prestador": "CLINICA DA CRIANCA",
-                    "Top": "0",
-                    "TipoAtendimento": [
-                        "INT,PS"
-                    ],
-                    "TipoPrestador": "Hospital",
-                    "id": 89087,
-                    "Bairro": "",
-                    "Endereco": " ",
-                    "Cidade": "SERRA TALHADA",
-                    "Estado": "PE",
-                    "CEP": ""
                 }
             ],
             "eComercializado": false,

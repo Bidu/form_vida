@@ -14,43 +14,43 @@ export default ({ cotacao }) => {
               <figure className="icon">
                 <img
                   alt="hdmi"
-                  src={`${require("../assets/img/svg-icons/icon_colisao.svg")}`}
+                  src={`${require("../assets/img/svg-icons/human-pregnant.svg")}`}
                 />
               </figure>
               <br />
-              Colisão
+              Obstetrícia
             </td>
 
             <td className="coberturas">
               <figure className="icon">
                 <img
                   alt="hdmi"
-                  src={`${require("../assets/img/svg-icons/icon_furto.svg")}`}
+                  src={`${require("../assets/img/svg-icons/hospital.svg")}`}
                 />
               </figure>
               <br />
-              Roubo e Furto
+              Ambulatorial + Hospitalar
             </td>
 
             <td className="coberturas">
               <figure className="icon">
                 <img
                   alt="hdmi"
-                  src={`${require("../assets/img/svg-icons/icon_guincho.svg")}`}
+                  src={`${require("../assets/img/svg-icons/brazil.svg")}`}
                 />
               </figure>
               <br />
-              Guincho
+              Nacional
             </td>
             <td className="coberturas">
               <figure className="icon">
                 <img
                   alt="hdmi"
-                  src={`${require("../assets/img/svg-icons/icon_vidros.svg")}`}
+                  src={`${require("../assets/img/svg-icons/bed-outline.svg")}`}
                 />
               </figure>
               <br />
-              Vidro
+              Coletiva
             </td>
           </tr>
 

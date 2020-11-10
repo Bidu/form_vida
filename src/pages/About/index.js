@@ -63,6 +63,7 @@ class About extends Component {
         cidade: "",
         cep: "",
         estado: "",
+        uf: "",
         complemento: "",
         nasc_dia: "",
         nasc_mes: "",
@@ -121,6 +122,7 @@ class About extends Component {
         bairro: content.CIDADE_NOME,
         estado: content.ESTADO_NOME,
         cep: content.TIPO_ENDERECO,
+        uf: content.ESTADO_SIGLA
       },
       loading: false,
     });
@@ -129,6 +131,7 @@ class About extends Component {
         this.props.values.bairro = content.CIDADE_NOME;
         this.props.values.estado = content.ESTADO_NOME;
         this.props.values.cep = content.TIPO_ENDERECO;
+        this.props.values.uf = content.ESTADO_SIGLA;
     
   };
 

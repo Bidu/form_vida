@@ -26,7 +26,7 @@ const apiQualicorp= {
     await axios
       .get(url)
       .then(function (res) {
-        console.log(res);
+        
         statusEndereço = res.data;
       })
       .catch(function (error) {
@@ -41,7 +41,7 @@ const apiQualicorp= {
     await axios
       .get(url)
       .then(function (res) {
-        console.log(res);
+        
         statusProfissao = res.data;
       })
       .catch(function (error) {
@@ -50,14 +50,24 @@ const apiQualicorp= {
     return statusProfissao;
   },
 
+  async consultarEntidade(profissao, uf, cidade) {
+    let entidade = [];
+    const url = `${server}/entidade/${profissao}/${uf}/${cidade}?api-key=${apiKeyConsultarEntidades}`;
+    await axios
+      .get(url)
+      .then(function (res) {
+        entidade = res.data;
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+    return entidade;
+  },
   async listarPlanos(plano) {
     let planos = [];
-    const url = `${server}/plano/?api-key=${apiKeyConsultarListarPlanos}`;
+    const url = `${server}/plano?api-key=${apiKeyConsultarListarPlanos}`;
     await axios
-      .post(url, {
-        timeout: 1000,
-        headers: headers,
-      })
+      .post(url, plano)
       .then(function (res) {
         planos.push(res.data);
       })
@@ -73,7 +83,7 @@ const apiQualicorp= {
     await axios
       .post(url, simulacao)
       .then(function (res) {
-        console.log(res);
+        
         simulacaoAtual.push(res.data);
       })
       .catch(function (error) {
@@ -88,7 +98,7 @@ const apiQualicorp= {
     await axios
       .get(url)
       .then(function (res) {
-        console.log(res);
+        
         infoAdd.push(res.data);
       })
       .catch(function (error) {
@@ -102,7 +112,7 @@ const apiQualicorp= {
     await axios
       .get(url)
       .then(function (res) {
-        console.log(res);
+        
         statusRede.push(res.data);
       })
       .catch(function (error) {
@@ -116,7 +126,7 @@ const apiQualicorp= {
     await axios
       .get(url)
       .then(function (res) {
-        console.log(res);
+        
         statusReembolso.push(res.data);
       })
       .catch(function (error) {
@@ -130,7 +140,7 @@ const apiQualicorp= {
     await axios
       .get(url)
       .then(function (res) {
-        console.log(res);
+        
         statusFatorModerador.push(res.data);
       })
       .catch(function (error) {

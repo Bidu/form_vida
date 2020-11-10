@@ -521,7 +521,6 @@ export class ListPriceQuotation extends Component {
 
                       <Grid item xs={3} className="txt-right">
                         <a
-                          href="#"
                           title="Ver detalhes"
                           onClick={(e) => this.BtnLightboxDetailsOpen(e)}
                           className="bottom-links"
@@ -533,7 +532,7 @@ export class ListPriceQuotation extends Component {
                   </div>
                 </Grid>
            
-          {/* {lightbox_details && (
+          {lightbox_details && (
             <div
               className="custom lightbox"
               onClick={this.BtnLightboxDetailsOutClose}
@@ -550,22 +549,40 @@ export class ListPriceQuotation extends Component {
                 </div>
                 <div className="entry">
                   <p className="subtitle bold">
-                    Detalhes e assistências do seguro{" "}
-                    {Dictionary.company[cotacao.susep]}
+                  Detalhes e assistências do seguro - {cotacao.id}
+                   <br/>
                   </p>
+                  
                   <p>
-                    <span className="bold">Coberturas</span>
+                    <span className="bold">Plano:</span>  {cotacao.plano} <br/>
+                    <span className="bold"> Coparticipativo:</span> {cotacao.coparticipacao == true ? "SIM" : "NÃO"}<br/>
+                    <span className="bold"> Abrangência:</span> {cotacao.abrangencia}<br/>
+                    <span className="bold"> Acomodação:</span> {cotacao.tipo_acomodacao}
+                   </p>
+                   <p>
+                    <span className="bold">Total Rede  Referência:</span>
                   </p>
-                  {cotacao.resultadoCotacao.coberturas
-                    .filter((v) => v.valor !== 0)
+                      <p>
+                        <span className="bold">Hospital:</span> {cotacao.total_rede_referencia.Hospital}<br/>
+                        <span className="bold">Laboratório:</span> {cotacao.total_rede_referencia.Laboratório}<br/>
+                        <span className="bold">Maternidade:</span> {cotacao.total_rede_referencia.Maternidade}<br/>
+                        <span className="bold">Pronto Socorro:</span> {cotacao.total_rede_referencia.["Pronto Socorro"]}<br/>             
+                      </p>
+                   
+
+                  <p>
+                    <span className="bold">Rede Referência: </span>
+                  </p>
+                  {cotacao.rede_referencia
                     .map((q, index) => (
                       <p key={index}>
-                        <span className="bold">{q.descricao}</span>
-                        <br />
-                        {ConvertCurrency(q.valor)}
+                        <span className="">{q.Prestador}</span><br/>
+                        <span className="">{q.TipoPrestador}</span><br/>
+                    <span className="">{q.Bairro}/{q.Cidade}-{q.Estado}</span>
+                        <br />                      
                       </p>
                     ))}
-                  <p>
+                  {/* <p>
                     <span className="bold">Valor da franquia</span> <br />
                     {cotacao.resultadoCotacao.franquias &&
                       cotacao.resultadoCotacao.franquias.map(
@@ -605,11 +622,11 @@ export class ListPriceQuotation extends Component {
                       <br />
                       {cotacao.resultadoCotacao.idProtocolo}
                     </p>
-                  )}
+                  )} */}
                 </div>
               </div>
             </div>
-          )} */}
+          )}
 
           {/* {lightbox_custom && (
             <div className="custom lightbox" onClick={this.BtnCustomOutClose}>

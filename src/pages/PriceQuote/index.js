@@ -19,7 +19,7 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import Loading from "../../components/loading";
 import { apiQualicorp } from "../../services/bdBo";
-import { card } from "../../helpers/card"
+
 
 import { createBrowserHistory } from 'history';
 
@@ -45,53 +45,89 @@ export class PriceQuote extends Component {
     });
   };
 
+  getCotacoes = async () => {
 
 
-  componentDidMount() {
+    let user = JSON.parse(localStorage.getItem("@bidu2/user"))
+    let entidade = await apiQualicorp.consultarEntidade(user.profissao, user.uf, user.cidade)
+    console.log("Entidade", entidade)
+    if(entidade.length > 0)
+    {
+      let getPlan = {
+        "entidade": entidade[1].NomeFantasia,
+        "uf": user.uf,
+        "cidade": user.cidade ,
+        "datanascimento": [`${user.nasc_ano}-${user.nasc_mes}-${user.nasc_dia}` ]
+      }
+     
+     let plans =  await apiQualicorp.listarPlanos(getPlan)
+     if(plans[0].planos.length > 0)
+     {
+       this.setState({cotacoes: plans})
+     }
+  
+    }
+    
+
+  }
+
+
+  sortBy = (order) =>{
+    this.setState({
+      loading: true
+    });
+
+    let cotacoes = this.state.cotacoes
+   console.log(cotacoes)
+
+
+    let planosOrder = []
+
+    cotacoes[0].planos.map((item) => {
+      planosOrder.push(item)
+    })
+
+
+    switch (order) {
+
+      case "0":
+        planosOrder = planosOrder.sort((a, b) => {
+          return b.precos.total - a.precos.total
+        })
+        break;
+      case "1":
+        planosOrder = planosOrder.sort((a, b) => {
+          return a.precos.total - b.precos.total
+        })
+        break;
+      default:
+        break;
+      }
+
+ 
+    cotacoes[0].planos = planosOrder
+
+    this.setState({cotacoes})
+
+    this.setState({
+      loading: false
+    });
+  }
+
+  async componentDidMount() {
     
     this.setState({
       loading: true,
     });
 
-    // this.getCotacoes()
-    console.log(card[0].planos)
+    await this.getCotacoes()
+
     this.setState({
       loading: false,
     });
     }
    
 
-
-
-
-  getCotacoes = async (sortBy = null) => {
-    this.setState({
-      loading: true
-    });
-    const idUrl = this.props.match.params.id;
-    if (idUrl || localStorage.getItem("@bidu2/cotacao")) {
-      localStorage.setItem("@bidu2/idcotacao", idUrl);
-      localStorage.removeItem("@bidu2/cotacao");
-      
-      let obterIdCotacao = await apiQualicorp.pesquisarCotacao(localStorage.getItem("@bidu2/idcotacao"));
-      localStorage.setItem("@bidu2/cotacao", JSON.stringify(obterIdCotacao[0]))
-    }
-    if (JSON.parse(localStorage.getItem("@bidu2/user")).cpf &&
-    JSON.parse(localStorage.getItem("@bidu2/user")).cpf.replace(/[.-]/g,"") != 
-    JSON.parse(localStorage.getItem("@bidu2/cotacao")).segurado.documento.replace(/[.-]/g,"")){
-      const obj = [];
-      localStorage.setItem("@bidu2/user", JSON.stringify(obj))
-      localStorage.setItem("@bidu2/condutor", JSON.stringify(obj))
-      localStorage.setItem("@bidu2/dados_cotacao", JSON.stringify(obj))
-      localStorage.setItem("@bidu2/veiculo", JSON.stringify(obj))
-      localStorage.setItem("@bidu2/seu-veiculo", JSON.stringify(obj))
-      localStorage.setItem("@bidu2/utilizacao", JSON.stringify(obj))
-      localStorage.setItem("@bidu2/passa_noite", JSON.stringify(obj))
-      localStorage.setItem("@bidu2/seguro", JSON.stringify(obj))
-    }
-    const idcotacao = idUrl ? idUrl : localStorage.getItem("@bidu2/idcotacao");
-  
-  }
 
   OpenChat = (e) => {
     e.preventDefault();
@@ -127,18 +163,18 @@ export class PriceQuote extends Component {
                 <RadioGroup aria-label="filtro" name="filter" value={this.state.value} onChange={this.handleChange} row>
                   <FormControlLabel value="0" control={<Radio color="primary" />}
                     label="Maior valor"
-                    onChange={(e) => { this.getCotacoes(e.target.value) }}
+                    onChange={(e) => { this.sortBy(e.target.value) }}
                   />
                   <FormControlLabel value="1" control={<Radio color="primary" />}
                     label="Menor valor"
-                    onChange={(e) => { this.getCotacoes(e.target.value) }}
+                    onChange={(e) => { this.sortBy(e.target.value) }}
                   />
                 </RadioGroup>
               </FormControl>
             </div>
           </div>
 
-          {!this.state.cotacoes.length && !this.state.loading && (
+          {cotacoes.length == 0 && !this.state.loading && (
             <div className="loading-cotacoes">
               <IconButton onClick={this.ReloadCotacoes}>
                 <CachedIcon style={{ fontSize: 60, color: "#000000" }} />
@@ -157,18 +193,20 @@ export class PriceQuote extends Component {
               ) : (
                   ""
                 )}
+
               {loading &&
                 <Loading />}
 
               {/*cotacoes.map((c, index) => (
         <div>{this.getValores(JSON.stringify(cotacoes[index]))}</div>
         ))*/}
-
-              {card[0].planos.map((c, index) => (
-                <>
-                    <ListPriceQuotation key={index} quote={c} getQuote={this.getCustomQuote} />
-                </>
-              ))}
+            
+               {cotacoes.length > 0 && cotacoes[0].planos.map((c, index) => (
+                 <>
+                     <ListPriceQuotation key={index} quote={c} getQuote={this.getCustomQuote} />
+                 </>
+               ))} 
+               
             </Grid>
           </div>
           <div className="more-options">
