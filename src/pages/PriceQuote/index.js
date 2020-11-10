@@ -153,7 +153,8 @@ export class PriceQuote extends Component {
         <Wrapper>
       
           <div className="price-quote">
-            <Steps step1={true} step2={true} step3={true} />
+            <Steps step1={true} step2={true} step3={true} step4={true} step5={true} />
+            
             {/* <Title bold="Cotação" idquote={localStorage.getItem("@bidu2/idcotacao")} /> */}
             {<Title bold="Cotação" />} 
           </div>

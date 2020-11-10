@@ -194,7 +194,7 @@ class About extends Component {
     return (
       <>
         <Wrapper>
-          <Steps />
+          <Steps step1={true} step2={true} />
           <Title text="Sobre" bold="você" />
           <p>
             Para preparar a melhor opção de seguro para você, precisamos te
