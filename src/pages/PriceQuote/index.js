@@ -54,7 +54,7 @@ export class PriceQuote extends Component {
     if(entidade.length > 0)
     {
       let getPlan = {
-        "entidade": entidade[1].NomeFantasia,
+        "entidade": entidade[0].NomeFantasia,
         "uf": user.uf,
         "cidade": user.cidade ,
         "datanascimento": [`${user.nasc_ano}-${user.nasc_mes}-${user.nasc_dia}` ]
