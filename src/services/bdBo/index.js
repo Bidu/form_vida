@@ -1,16 +1,16 @@
 import axios from "axios";
 
 //DEV
-const server = "https://apisimulador.qualicorp.com.br";
-const apiKeyConsultarEndereco = "16935032-593a-4187-8c0e-e30253194e87"
-const apiKeyConsultarEntidades = "edbc5aff-6cdd-4045-8871-62eeb5ea89fb"
-const apiKeyConsultarProfissao = "dd4d2522-b35b-4cff-9d99-d56cfba5c44f"
-const apiKeyConsultarListarPlanos = "d06547cf-dae5-4274-a03b-6a4cdf455bd0"
-const apiKeyConsultarSimulacacao = "0df65d77-c63c-46fc-ab10-dae5f8574010"
-const apiKeyConsultarInfoAdcionais = "9d675da6-1d85-4f26-91cb-8722feb97089"
-const apiKeyConsultarRede = "0f03fd0f-658b-4564-b45e-fa6077d656a6"
-const apiKeyConsultarReembolso = "55c14f1e-db71-4562-b2ef-9a9e3e81ac76"
-const apiKeyFatorModerador = "2db79cf2-e878-4d09-94ba-623f4f9adcee"
+const server = "https://apiceluladigitalhm.qualicorp.com.bR";
+const apiKeyOperadoras= "1b2f206d-26e9-4fcc-8be6-1c1ed19f00bc";
+const apiKeyRedeReferenciadas= "2bb30205-520c-4721-9290-b2dc862b32bf";
+const apiKeyFatoresModeradores="2e1b29c8-6153-45dd-af7a-a0eb111c37ab";
+const apiKeyEntidades="b5539012-ed84-43f6-96d0-2f59f7bc208f";
+const apiKeyPublicoAlvo="f2578d0c-423e-4c9f-8cd9-5b5f8bed946f"; 
+const apiKeyInformacoesAdicionaisPorPlano="ddfca8f5-064b-4db6-b3f2-30f27a92d2e4";
+const apiKeyCep="b0f0f3ac-a1c2-4f99-882b-8df176ba97c5"; 
+const apiKeyPlanos="ddfca8f5-064b-4db6-b3f2-30f27a92d2e4";
+const apiKeyPlanosIdPorFatura="ddfca8f5-064b-4db6-b3f2-30f27a92d2e4";
 
 
 
@@ -20,52 +20,104 @@ const headers = {
 };
 
 const apiQualicorp= {
-  async consultarEndereco(cep) {
-    let statusEndereço = [];
-    const url = `${server}/endereco/Enderecos/${cep}?api-key=${apiKeyConsultarEndereco}`;
+  async operadoras(uf, cidade) {
+    let statusOperadoras = [];
+    const url = `${server}/qvenda/operadoras/:entidade?${uf}&${cidade}&api-key=${apiKeyOperadoras}`
+      .get(url)
+      .then(function (res) {
+        
+       statusOperadoras = res.data;
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+    return statusOperadoras;
+  },
+
+  async redeReferenciadas(idProdutoFatura, tipo, prestador) {
+    let statusRede = [];
+    const url = `${server}/qvenda/rede-referenciadas/${idProdutoFatura}/${tipo}/${prestador}?api-key=${apiKeyRedeReferenciadas}`;
     await axios
       .get(url)
       .then(function (res) {
         
-        statusEndereço = res.data;
+        statusRede = res.data;
       })
       .catch(function (error) {
         console.log(error);
       });
-    return statusEndereço;
+    return statusRede;
   },
 
-  async consultarProfissao() {
-    let statusProfissao = [];
-    const url = `${server}/profissao/SP/S%C3%A3o%20Paulo?api-key=dd4d2522-b35b-4cff-9d99-d56cfba5c44f`;
+  async fatoresModeradores(idProdutoFatura) {
+    let statusFatoresModeradores = [];
+    const url = `${server}/fatores-moderadores/${idProdutoFatura}?api-key=${apiKeyFatoresModeradores}`;
     await axios
       .get(url)
       .then(function (res) {
-        
-        statusProfissao = res.data;
+        statusFatoresModeradores = res.data;
       })
       .catch(function (error) {
         console.log(error);
       });
-    return statusProfissao;
+    return statusFatoresModeradores;
   },
 
-  async consultarEntidade(profissao, uf, cidade) {
-    let entidade = [];
-    const url = `${server}/entidade/${profissao}/${uf}/${cidade}?api-key=${apiKeyConsultarEntidades}`;
+  async entidades(publicoAlvo, uf, cidade) {
+    let statusEntidades = [];
+    const url = `${server}/qvenda/entidades/?${publicoAlvo}&${uf}&${cidade}}&api-key=${apiKeyEntidades}`;
     await axios
       .get(url)
       .then(function (res) {
-        entidade = res.data;
+        statusEntidades = res.data;
       })
       .catch(function (error) {
         console.log(error);
       });
-    return entidade;
+    return statusEntidades;
+  },
+  async publicoAlvo(uf, cidade) {
+    let statusPublicoAlvo = [];
+    const url = `${server}/qvenda/publicos-alvo?${uf}&${cidade}&api-key=${apiKeyPublicoAlvo}`;
+    await axios
+      .get(url)
+      .then(function (res) {
+        statusPublicoAlvo = res.data;
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+    return statusPublicoAlvo;
+  }, 
+  async informacoesAdicionaisPorPlano(idProdutoFatura) {
+    let statusInformacoesAddPlano = [];
+    const url = `${server}/qvenda/planos/${idProdutoFatura}/informacoesAdicionais?api-key=${apiKeyInformacoesAdicionaisPorPlano}`;
+    await axios
+      .get(url)
+      .then(function (res) {
+        statusInformacoesAddPlano = res.data;
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+    return statusInformacoesAddPlano;
+  },
+  async Endereco(cep) {
+    let statusEndereco = [];
+    const url = `${server}/qvenda/enderecos/cep/${cep}?api-key=${apiKeyCep}`;
+    await axios
+      .get(url)
+      .then(function (res) {
+        statusEndereco = res.data;
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+    return statusEndereco;
   },
   async listarPlanos(plano) {
     let planos = [];
-    const url = `${server}/plano?api-key=${apiKeyConsultarListarPlanos}`;
+    const url = `${server}/qvenda/planos/lista?api-key=${apiKeyPlanos}`;
     await axios
       .post(url, plano)
       .then(function (res) {
@@ -77,77 +129,21 @@ const apiQualicorp= {
     return planos;
   },
   
-  async consultarSimulacacao(simulacao) {
-    let simulacaoAtual = [];
-    const url = `${server}/simulacao?api-key=${apiKeyConsultarSimulacacao}`;
+  async planosIdPorFatura() {
+    let statusPlanosIdPorFatura = [];
+    const url = `${server}/qvenda/planos/lista?api-key=${apiKeyPlanosIdPorFatura}`;
     await axios
       .post(url, simulacao)
       .then(function (res) {
         
-        simulacaoAtual.push(res.data);
+        statusPlanosIdPorFatura.push(res.data);
       })
       .catch(function (error) {
         console.log(error);
       });
-    return simulacaoAtual;
+    return statusPlanosIdPorFatura;
   },
 
-   async consultarIformacoesAdicionais(params) {
-    let infoAdd = [];
-    const url = `${server}/informacoes-adicionais/${params}/${params}?api-key=${apiKeyConsultarInfoAdcionais}`;
-    await axios
-      .get(url)
-      .then(function (res) {
-        
-        infoAdd.push(res.data);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-    return infoAdd;
-  },
-  async consultarRede(rede) {
-    let statusRede = [];
-    const url = `${server}/rede-resumida/hospital/${rede}?api-key=${apiKeyConsultarRede}`;
-    await axios
-      .get(url)
-      .then(function (res) {
-        
-        statusRede.push(res.data);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-    return statusRede;
-  },
-  async consultarReembolso(reembolso) {
-    let statusReembolso = [];
-    const url = `${server}/reembolso/${reembolso}?api-key=${apiKeyConsultarReembolso}`;
-    await axios
-      .get(url)
-      .then(function (res) {
-        
-        statusReembolso.push(res.data);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-    return statusReembolso;
-  },
-  async fatorModerador(fator) {
-    let statusFatorModerador = [];
-    const url = `${server}/fator-moderador/${fator}?api-key=${apiKeyFatorModerador}`;
-    await axios
-      .get(url)
-      .then(function (res) {
-        
-        statusFatorModerador.push(res.data);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-    return statusFatorModerador;
-  },
 };
 
 export { apiQualicorp };
