@@ -85,7 +85,7 @@ class About extends Component {
     this.props.values.profissao = "Selecione";
     
 
-    let occupations = await apiQualicorp.consultarProfissao()
+    let occupations = await apiQualicorp.publicoAlvo()
     this.setState({occupations})
 
 
@@ -609,7 +609,7 @@ class About extends Component {
                 className="btn-next"
                 disabled={isSubmitting}
               >
-                Cotar
+                Contratar
               </Button>
               {/*<Link className="btn-back" to="/">
                 <KeyboardBackspaceIcon /> Voltar

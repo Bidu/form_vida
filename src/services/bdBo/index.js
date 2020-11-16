@@ -129,11 +129,11 @@ const apiQualicorp= {
     return planos;
   },
   
-  async planosIdPorFatura() {
+  async planosIdPorFatura(params) {
     let statusPlanosIdPorFatura = [];
     const url = `${server}/qvenda/planos/lista?api-key=${apiKeyPlanosIdPorFatura}`;
     await axios
-      .post(url, simulacao)
+      .post(url, params)
       .then(function (res) {
         
         statusPlanosIdPorFatura.push(res.data);
