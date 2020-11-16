@@ -78,7 +78,7 @@ const apiQualicorp= {
   },
   async publicoAlvo(uf, cidade) {
     let statusPublicoAlvo = [];
-    const url = `${server}/qvenda/publicos-alvo?${uf}&${cidade}&api-key=${apiKeyPublicoAlvo}`;
+    const url = `${server}/qvenda/publicos-alvo?uf=${uf}&cidade=${cidade}&api-key=${apiKeyPublicoAlvo}`;
     await axios
       .get(url)
       .then(function (res) {
@@ -102,7 +102,7 @@ const apiQualicorp= {
       });
     return statusInformacoesAddPlano;
   },
-  async Endereco(cep) {
+  async endereco(cep) {
     let statusEndereco = [];
     const url = `${server}/qvenda/enderecos/cep/${cep}?api-key=${apiKeyCep}`;
     await axios
