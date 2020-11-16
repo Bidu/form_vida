@@ -85,8 +85,7 @@ class About extends Component {
     this.props.values.profissao = "Selecione";
     
 
-    let occupations = await apiQualicorp.consultarProfissao()
-    this.setState({occupations})
+
 
 
 
@@ -112,26 +111,28 @@ class About extends Component {
   };
   getAddress = async (e) => {
     this.setState({ loading: true });
-    let content = await apiQualicorp.consultarEndereco(this.state.cep)
-    console.log(content)
+    let content = await apiQualicorp.endereco(this.state.cep.replace("-", "")) 
+    console.log("OLA",content.data)   
+    let occupations = await apiQualicorp.publicoAlvo(content.data.estado, content.data.cidade)
+    this.setState({occupations:occupations.data})
     this.setState({
       usuario: {
         ...this.state.usuario,
-        rua: content.ENDERECO_NOME,
-        cidade: content.CIDADE_NOME,
-        bairro: content.CIDADE_NOME,
-        estado: content.ESTADO_NOME,
-        cep: content.TIPO_ENDERECO,
-        uf: content.ESTADO_SIGLA
+        rua: content.data.logradouro,
+        cidade: content.data.cidade,
+        bairro: content.data.bairro,
+        estado: content.data.estado,
+        cep: content.data.cep,
+        uf: content.data.estado
       },
       loading: false,
     });
-        this.props.values.rua = content.ENDERECO_NOME;
-        this.props.values.cidade = content.CIDADE_NOME;
-        this.props.values.bairro = content.CIDADE_NOME;
-        this.props.values.estado = content.ESTADO_NOME;
-        this.props.values.cep = content.TIPO_ENDERECO;
-        this.props.values.uf = content.ESTADO_SIGLA;
+        this.props.values.rua = content.data.logradouro;
+        this.props.values.cidade = content.data.cidade;
+        this.props.values.bairro = content.data.bairro;
+        this.props.values.estado = content.data.estado;
+        this.props.values.cep = content.data.cep;
+        this.props.values.uf = content.data.estado;
     
   };
 
@@ -393,36 +394,7 @@ class About extends Component {
                   <MenuItem value="FEMININO">Feminino</MenuItem>
                 </Select>
               </Grid>
-              <Grid item xs={12} sm={6}>
-                <InputLabel shrink id="gender">
-                  Profissão
-                </InputLabel>
-                <Select
-                  name="profissao"
-                  fullWidth
-                  displayEmpty
-                  labelId="profissao"
-                  id="profissao"
-                  value={
-                    this.props.values.profissao
-                      ? this.props.values.profissao
-                      : "Não informado"
-                  }
-                  onChange={handleChange("profissao")}
-                  onBlur={this.handleChange}
-                  helperText={touched.profissao ? errors.profissao : ""}
-                  error={touched.profissao && Boolean(errors.profissao)}
-                >
-                  <MenuItem value="Selecione" disabled>
-                    Selecione
-                  </MenuItem>
-                  
-                  {this.state.occupations.map((e, key) => (
-                    <MenuItem value={e.profissao}>{e.profissao}</MenuItem>
-                  ))}
-                </Select>
-
-              </Grid>
+              
               <Grid item xs={12} sm={6}>
                 <InputLabel shrink id="formation">
                   Escolaridade
@@ -538,6 +510,36 @@ class About extends Component {
                   }}
                 />
               </Grid>
+              <Grid item xs={12} sm={6}>
+                <InputLabel shrink id="gender">
+                  Profissão
+                </InputLabel>
+                <Select
+                  name="profissao"
+                  fullWidth
+                  displayEmpty
+                  labelId="profissao"
+                  id="profissao"
+                  value={
+                    this.props.values.profissao
+                      ? this.props.values.profissao
+                      : "Não informado"
+                  }
+                  onChange={handleChange("profissao")}
+                  onBlur={this.handleChange}
+                  helperText={touched.profissao ? errors.profissao : ""}
+                  error={touched.profissao && Boolean(errors.profissao)}
+                >
+                  <MenuItem value="Selecione" disabled>
+                    Selecione
+                  </MenuItem>
+                  
+                  {this.state.occupations.length > 0 && this.state.occupations.map((e, key) => (
+                    <MenuItem value={e.id}>{e.nome}</MenuItem>
+                  ))}
+                </Select>
+                </Grid>   
+              </Grid>
               <Grid item xs={12}>
                 <FormControl component="fieldset">
                   <RadioGroup
@@ -609,7 +611,7 @@ class About extends Component {
                 className="btn-next"
                 disabled={isSubmitting}
               >
-                Cotar
+                Contratar
               </Button>
               {/*<Link className="btn-back" to="/">
                 <KeyboardBackspaceIcon /> Voltar

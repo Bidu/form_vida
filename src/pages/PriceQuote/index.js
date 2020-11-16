@@ -49,7 +49,7 @@ export class PriceQuote extends Component {
 
 
     let user = JSON.parse(localStorage.getItem("@bidu2/user"))
-    let entidade = await apiQualicorp.consultarEntidade(user.profissao, user.uf, user.cidade)
+    let entidade = await apiQualicorp.entidades(user.profissao, user.uf, user.cidade)
     console.log("Entidade", entidade)
     if(entidade.length > 0)
     {
