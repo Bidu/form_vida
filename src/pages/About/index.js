@@ -538,7 +538,7 @@ class About extends Component {
                     <MenuItem value={e.id}>{e.nome}</MenuItem>
                   ))}
                 </Select>
-
+                </Grid>   
               </Grid>
               <Grid item xs={12}>
                 <FormControl component="fieldset">
