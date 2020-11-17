@@ -234,6 +234,27 @@ class About extends Component {
                   type="text"
                   id="name"
                   name="nome"
+                  label="Nome da Empresa"
+                  placeholder="Empresa LTDA"
+                  fullWidth
+                  onChange={handleChange}
+                  onBlur={this.handleChange}
+                  helperText={touched.nome ? errors.nome : ""}
+                  error={touched.nome && Boolean(errors.nome)}
+                  InputProps={{
+                    inputComponent: onlyLetters,
+                  }}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  value={this.props.values.nome ? this.props.values.nome : ""}
+                  type="text"
+                  id="name"
+                  name="nome"
                   label="Nome do Contato"
                   placeholder="João da Silva"
                   fullWidth
@@ -521,6 +542,7 @@ const mapDispatchToProps = (dispatch) => {
 const Form = withFormik({
   mapPropsToValues: ({
     cnpj,
+    nome_empresa
     nome_contato,
     email,
     telefone,
@@ -531,6 +553,7 @@ const Form = withFormik({
   }) => {
     return {
       cnpj: cnpj|| "",
+      nome_empresa: nome_empresa|| "",
       nome_contato: nome_contato|| "",
       email: email || "",
       telefone: telefone || "",
