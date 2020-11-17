@@ -760,26 +760,26 @@ export function CheckCNPJ(cnpj) {
   if (!cnpj) {
     const cnpjt = "00000000000000";
     const test = cnpjt.replace(/[^\d]+/g, "");
-    if (!/[0-9]{11}/.test(test)) return false;
+    if (!/[0-9]{14}/.test(test)) return false;
     cppj = test;
   } else {
     const test = cnpj.replace(/[^\d]+/g, "");
-    if (!/[0-9]{11}/.test(test)) return false;
+    if (!/[0-9]{14}/.test(test)) return false;
     if (cnpj === "00000000000000") return false;
     cpnpj = test;
   }
   if (
-    cpf.length !== 14 ||
-    cpf === "00000000000000" ||
-    cpf === "11111111111111" ||
-    cpf === "22222222222222" ||
-    cpf === "33333333333333" ||
-    cpf === "44444444444444" ||
-    cpf === "55555555555555" ||
-    cpf === "66666666666666" ||
-    cpf === "77777777777777" ||
-    cpf === "88888888888888" ||
-    cpf === "99999999999999"
+    cnpj.length !== 14 ||
+    cnpj === "00000000000000" ||
+    cnpj === "11111111111111" ||
+    cnpj === "22222222222222" ||
+    cnpj === "33333333333333" ||
+    cnpj === "44444444444444" ||
+    cnpj === "55555555555555" ||
+    cnpj === "66666666666666" ||
+    cnpj === "77777777777777" ||
+    cnpj === "88888888888888" ||
+    cnpj === "99999999999999"
   )
     return false;
   let add = 0;

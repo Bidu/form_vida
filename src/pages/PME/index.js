@@ -190,7 +190,7 @@ class About extends Component {
     } = this.props;
 
     if (this.props.status) {
-      return <Redirect to="/cotacao" />;
+      return <Redirect to="/contratar" />;
     }
 
     return (
