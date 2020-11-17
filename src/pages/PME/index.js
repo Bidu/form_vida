@@ -235,7 +235,7 @@ class About extends Component {
                   id="name"
                   name="nome"
                   label="Nome da Empresa"
-                  placeholder="Empresa LTDA"
+                  placeholder="Nome da Empresa.LTDA"
                   fullWidth
                   onChange={handleChange}
                   onBlur={this.handleChange}

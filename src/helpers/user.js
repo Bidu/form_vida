@@ -756,6 +756,44 @@ export function CheckCPF(cpf) {
   if (rev !== parseInt(cpf.charAt(10))) return false;
   return true;
 }
+export function CheckCNPJ(cnpj) {
+  if (!cnpj) {
+    const cnpjt = "00000000000000";
+    const test = cnpjt.replace(/[^\d]+/g, "");
+    if (!/[0-9]{11}/.test(test)) return false;
+    cppj = test;
+  } else {
+    const test = cnpj.replace(/[^\d]+/g, "");
+    if (!/[0-9]{11}/.test(test)) return false;
+    if (cnpj === "00000000000000") return false;
+    cpnpj = test;
+  }
+  if (
+    cpf.length !== 14 ||
+    cpf === "00000000000000" ||
+    cpf === "11111111111111" ||
+    cpf === "22222222222222" ||
+    cpf === "33333333333333" ||
+    cpf === "44444444444444" ||
+    cpf === "55555555555555" ||
+    cpf === "66666666666666" ||
+    cpf === "77777777777777" ||
+    cpf === "88888888888888" ||
+    cpf === "99999999999999"
+  )
+    return false;
+  let add = 0;
+  for (let i = 0; i < 9; i++) add += parseInt(cpf.charAt(i)) * (10 - i);
+  let rev = 11 - (add % 11);
+  if (rev === 10 || rev === 11) rev = 0;
+  if (rev !== parseInt(cpf.charAt(9))) return false;
+  add = 0;
+  for (let i = 0; i < 10; i++) add += parseInt(cpf.charAt(i)) * (11 - i);
+  rev = 11 - (add % 11);
+  if (rev === 10 || rev === 11) rev = 0;
+  if (rev !== parseInt(cpf.charAt(10))) return false;
+  return true;
+}
 export function nameField(value) {
   if (!value) return false;
   const letters = /^([a-zàèìòùÀÈÌÒÙáéíóúýÁÉÍÓÚÝâêîôûÂÊÎÔÛãñõÃÑÕäëïöüÿÄËÏÖÜŸçÇ ]{2,}\s[a-zàèìòùÀÈÌÒÙáéíóúýÁÉÍÓÚÝâêîôûÂÊÎÔÛãñõÃÑÕäëïöüÿÄËÏÖÜŸçÇ ]{1,})/i;
