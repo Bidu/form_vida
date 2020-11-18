@@ -32,6 +32,7 @@ import {
   textMaskCEP,
   onlyNumbers,
   CheckCPF,
+  CheckCNPJ,
   onlyLetters,
   nameField,
   textMaskCNPJ,
@@ -502,8 +503,6 @@ class About extends Component {
                     </div>
                   </Grid>
                 )}
-                
-            </Grid>
             <div className="actions">
               <Button
                 type="submit"
@@ -542,7 +541,7 @@ const mapDispatchToProps = (dispatch) => {
 const Form = withFormik({
   mapPropsToValues: ({
     cnpj,
-    nome_empresa
+    nome_empresa,
     nome_contato,
     email,
     telefone,
@@ -568,7 +567,7 @@ const Form = withFormik({
       .min(14, "CNPJ precisa ter no mínimo 14 caracteres")
       //.matches(true, "Not a valid expiration date. Example: MM/YY")
       //.required("CPF é obrigatorio.")
-      .test("cpf", "Informe um CPF válido", (value) => {
+      .test("cnpj", "Informe um CNPJ válido", (value) => {
         return CheckCNPJ(value);
       }),
 

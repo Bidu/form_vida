@@ -250,7 +250,7 @@ export const textMaskCEP = (props) => {
     <MaskedInput
       {...other}
       ref={inputRef}
-      mask={[/\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/]}
+      mask={[/\d/, /\d/, /\d/, /\d/, /\d/, "-", /\d/, /\d/, /\d/]}
       placeholderChar={"\u2000"}
       guide={false}
       keepCharPositions={false}
