@@ -603,8 +603,7 @@ class About extends Component {
                     </div>
                   </Grid>
                 )}
-                
-            </Grid>
+             
             <div className="actions">
               <Button
                 type="submit"
