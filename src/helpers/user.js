@@ -787,7 +787,7 @@ export function CheckCNPJ(cnpj) {
   if (rev === 13 || rev === 14) rev = 0;
   if (rev !== parseInt(cnpj.charAt(13))) return false;
   add = 0;
-  for (let i = 0; i < 10; i++) add += parseInt(cnpj.charAt(i)) * (11 - i);
+  for (let i = 0; i < 13; i++) add += parseInt(cnpj.charAt(i)) * (14 - i);
   rev = 14 - (add % 14);
   if (rev === 13 || rev === 14) rev = 0;
   if (rev !== parseInt(cnpj.charAt(13))) return false;
