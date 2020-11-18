@@ -515,7 +515,7 @@ export class ListPriceQuotation extends Component {
                           // }
                           
                         >
-                          Comprar
+                          Contratar
                         </div>
                       </Grid>
 
