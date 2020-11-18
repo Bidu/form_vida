@@ -198,7 +198,7 @@ class About extends Component {
       <>
         <Wrapper>
           <Steps step1={true} step2={true} />
-          <Title text="Sobre" bold="você" />
+          <Title text="Sobre" bold="a empresa" />
           <p>
             Para preparar a melhor opção de seguro para você, precisamos te
             conhecer um pouco melhor...
@@ -219,8 +219,8 @@ class About extends Component {
                   margin="20px"
                   onChange={handleChange}
                   onBlur={this.handleChange}
-                  helperText={touched.cpf ? errors.cpf : ""}
-                  error={touched.cpf && Boolean(errors.cpf)}
+                  helperText={touched.cnpj ? errors.cnpj : ""}
+                  error={touched.cnpj && Boolean(errors.cnpj)}
                   InputLabelProps={{
                     shrink: true,
                   }}
@@ -317,7 +317,7 @@ class About extends Component {
                 <TextField
                   value={this.props.values.cep ? this.props.values.cep : ""}
                   id="cep"
-                  label="CEP"
+                  label="CEP da Empresa"
                   placeholder="00000-000"
                   fullWidth
                   name="cep"
@@ -344,28 +344,6 @@ class About extends Component {
                   id="numero"
                   name="numero"
                   label="Número"
-                  placeholder="Digite aqui"
-                  fullWidth
-                  onChange={handleChange}
-                  onBlur={this.handleChange}
-                  helperText={touched.numero ? errors.numero : ""}
-                  error={touched.numero && Boolean(errors.numero)}
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                  InputProps={{
-                    inputComponent: textMaskNumber,
-                  }}
-                />
-              </Grid>
-              <Grid item xs={4} sm={6}>
-                <TextField
-                  value={
-                    this.props.values.numero ? this.props.values.numero : ""
-                  }
-                  id="numero"
-                  name="numero"
-                  label="Número de Vidas"
                   placeholder="Digite aqui"
                   fullWidth
                   onChange={handleChange}
@@ -410,7 +388,29 @@ class About extends Component {
                   }}
                 />
               </Grid>
-              <Grid item xs={12} sm={6}>
+              <Grid item xs={4} sm={6}>
+                <TextField
+                  value={
+                    this.props.values.numero ? this.props.values.numero : ""
+                  }
+                  id="numero"
+                  name="numero"
+                  label="Número de Vidas"
+                  placeholder="Digite aqui"
+                  fullWidth
+                  onChange={handleChange}
+                  onBlur={this.handleChange}
+                  helperText={touched.numero ? errors.numero : ""}
+                  error={touched.numero && Boolean(errors.numero)}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  InputProps={{
+                    inputComponent: textMaskNumber,
+                  }}
+                />
+              </Grid>
+              {/* <Grid item xs={12} sm={6}>
                 <InputLabel shrink id="gender">
                   Profissão
                 </InputLabel>
@@ -439,8 +439,9 @@ class About extends Component {
                   ))}
                 </Select>
                 </Grid>   
+              </Grid> */}
               </Grid>
-              <Grid item xs={12}>
+              {/* <Grid item xs={12}>
                 <FormControl component="fieldset">
                   <RadioGroup
                     value={
@@ -485,8 +486,8 @@ class About extends Component {
                       </Grid>
                     </Grid>
                   </RadioGroup>
-                </FormControl>
-              </Grid>
+                </FormControl> */}
+
               {this.props.isValid ||
                 (this.props.submitCount > 0 && (
                   <Grid item xs={12} sm={12}>
