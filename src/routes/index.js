@@ -17,7 +17,7 @@ const Routes = () => (
       </Route>
       <Route exact path="/sobrevoce" component={About} forceRefresh={true} />
       <Route exact path="/cotacao" component={PriceQuote} />   
-      <Route exact path="/sobreaempresa/pme" component={PME} />    
+      <Route exact path="/sobreaempresa" component={PME} />    
     </Switch>
   </BrowserRouter>
 );

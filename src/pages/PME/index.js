@@ -201,8 +201,8 @@ class About extends Component {
           <Steps step1={true} step2={true} />
           <Title text="Sobre" bold="a empresa" />
           <p>
-            Para preparar a melhor opção de seguro para você, precisamos te
-            conhecer um pouco melhor...
+            Para preparar a melhor opção de seguro para sua empresa, precisamos
+            conhece-la um pouco melhor...
           </p>
 
           <form onSubmit={handleSubmit}>
@@ -237,7 +237,7 @@ class About extends Component {
                   id="name"
                   name="nome"
                   label="Nome da Empresa"
-                  placeholder="Nome da Empresa.LTDA"
+                  placeholder="Nome da Empresa"
                   fullWidth
                   onChange={handleChange}
                   onBlur={this.handleChange}
