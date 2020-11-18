@@ -378,6 +378,77 @@ export const textMaskRG = (props) => {
     />
   );
 };
+export const textMaskCpf = (props) => {
+  const { inputRef, ...other } = props;
+  return (
+    <MaskedInput
+      {...other}
+      ref={inputRef}
+      mask={[
+        /\d/,
+        /\d/,
+        /\d/,
+        ".",
+        /\d/,
+        /\d/,
+        /\d/,
+        ".",
+        /\d/,
+        /\d/,
+        /\d/,
+        "-",
+        /\d/,
+        /\d/,
+      ]}
+      placeholderChar={"\u2000"}
+      guide={false}
+      keepCharPositions={false}
+    />
+  );
+};
+export const textMaskNumber= (props) => {
+  const { inputRef, ...other } = props;
+  return (
+    <MaskedInput
+      {...other}
+      ref={inputRef}
+      mask={[
+        /[a-z\A-Z\d]/,
+        /[a-z\A-Z\d]/,
+        /[a-z\A-Z\d]/,
+        /[a-z\A-Z\d]/,
+        /[a-z\A-Z\d]/,
+        /[a-z\A-Z\d]/,
+        /[a-z\A-Z\d]/,      
+      ]}
+      placeholderChar={"\u2000"}
+      guide={false}
+      keepCharPositions={false}
+    />
+  );
+};
+export const textMaskNumberOfLifes= (props) => {
+  const { inputRef, ...other } = props;
+  return (
+    <MaskedInput
+      {...other}
+      ref={inputRef}
+      mask={[
+        /[a-z\A-Z\d]/,
+        /[a-z\A-Z\d]/,
+        /[a-z\A-Z\d]/,
+        /[a-z\A-Z\d]/,
+        /[a-z\A-Z\d]/,
+        /[a-z\A-Z\d]/,
+        /[a-z\A-Z\d]/,      
+      ]}
+      placeholderChar={"\u2000"}
+      guide={false}
+      keepCharPositions={false}
+    />
+  );
+};
+
 export const textMaskCNPJ = (props) => {
   const { inputRef, ...other } = props;
   return (
@@ -666,57 +737,6 @@ export const textMaskDispositivoSeg = (props) => {
     />
   );
 };
-export const textMaskCpf = (props) => {
-  const { inputRef, ...other } = props;
-  return (
-    <MaskedInput
-      {...other}
-      ref={inputRef}
-      mask={[
-        /\d/,
-        /\d/,
-        /\d/,
-        ".",
-        /\d/,
-        /\d/,
-        /\d/,
-        ".",
-        /\d/,
-        /\d/,
-        /\d/,
-        "-",
-        /\d/,
-        /\d/,
-      ]}
-      placeholderChar={"\u2000"}
-      guide={false}
-      keepCharPositions={false}
-    />
-  );
-};
-
-export const textMaskNumber= (props) => {
-  const { inputRef, ...other } = props;
-  return (
-    <MaskedInput
-      {...other}
-      ref={inputRef}
-      mask={[
-        /[a-z\A-Z\d]/,
-        /[a-z\A-Z\d]/,
-        /[a-z\A-Z\d]/,
-        /[a-z\A-Z\d]/,
-        /[a-z\A-Z\d]/,
-        /[a-z\A-Z\d]/,
-        /[a-z\A-Z\d]/,      
-      ]}
-      placeholderChar={"\u2000"}
-      guide={false}
-      keepCharPositions={false}
-    />
-  );
-};
-
 
 export function CheckCPF(cpf) {
   if (!cpf) {
@@ -755,6 +775,44 @@ export function CheckCPF(cpf) {
   if (rev === 10 || rev === 11) rev = 0;
   if (rev !== parseInt(cpf.charAt(10))) return false;
   return true;
+}
+export function CheckCNPJ(cnpj) {
+  if (!cnpj) {
+    const cnpjt = "00000000000000";
+    const test = cnpjt.replace(/[^\d]+/g,'');
+    if (!/[0-9]{14}/.test(test)) return false;
+    cnpj = test;
+  } else {
+    const test = cnpj.replace(/[^\d]+/g, "");
+    if (!/[0-9]{14}/.test(test)) return false;
+    if (cnpj === "00000000000000") return false;
+    cnpj = test;
+  }
+  if (
+    cnpj.length !== 14 ||
+    cnpj === "00000000000000" ||
+    cnpj === "11111111111111" ||
+    cnpj === "22222222222222" ||
+    cnpj === "33333333333333" ||
+    cnpj === "44444444444444" ||
+    cnpj === "55555555555555" ||
+    cnpj === "66666666666666" ||
+    cnpj === "77777777777777" ||
+    cnpj === "88888888888888" ||
+    cnpj === "99999999999999"
+  )
+    return false;
+    let add = 0;
+    for (let i = 0; i < 9; i++) add += parseInt(cnpj.charAt(i)) * (10 - i);
+    let rev = 11 - (add % 11);
+    if (rev === 10 || rev === 11) rev = 0;
+    if (rev !== parseInt(cnpj.charAt(9))) return false;
+    add = 0;
+    for (let i = 0; i < 10; i++) add += parseInt(cnpj.charAt(i)) * (11 - i);
+    rev = 11 - (add % 11);
+    if (rev === 10 || rev === 11) rev = 0;
+    if (rev !== parseInt(cnpj.charAt(10))) return false;
+    return true;
 }
 export function nameField(value) {
   if (!value) return false;

@@ -28,12 +28,15 @@ import axios from "axios";
 import {
   textMaskPhone,
   textMaskNumber,
+  textMaskNumberOfLifes,
   textMaskCpf,
   textMaskCEP,
   onlyNumbers,
   CheckCPF,
+  CheckCNPJ,
   onlyLetters,
   nameField,
+  textMaskCNPJ,
 } from "../../helpers/user";
 
 import { checkValidateRadios } from "../../helpers";
@@ -189,17 +192,17 @@ class About extends Component {
     } = this.props;
 
     if (this.props.status) {
-      return <Redirect to="/cotacao" />;
+      return <Redirect to="/contratar" />;
     }
 
     return (
       <>
         <Wrapper>
           <Steps step1={true} step2={true} />
-          <Title text="Sobre" bold="você" />
+          <Title text="Sobre" bold="a empresa" />
           <p>
-            Para preparar a melhor opção de seguro para você, precisamos te
-            conhecer um pouco melhor...
+            Para preparar a melhor opção de seguro para sua empresa, precisamos
+            conhece-la um pouco melhor...
           </p>
 
           <form onSubmit={handleSubmit}>
@@ -207,23 +210,23 @@ class About extends Component {
               <Grid item xs={12} sm={6}>
                 <TextField
                   value={
-                    this.props.values.cpf ? this.props.values.cpf : usuario.cpf
+                    this.props.values.cnpj ? this.props.values.cnpj : usuario.cpf
                   }
-                  id="cpf"
-                  name="cpf"
-                  label="CPF"
-                  placeholder="000.000.000-00"
+                  id="cnpj"
+                  name="cnpj"
+                  label="CNPJ"
+                  placeholder="00.000.000/0000-00"
                   fullWidth
                   margin="20px"
                   onChange={handleChange}
                   onBlur={this.handleChange}
-                  helperText={touched.cpf ? errors.cpf : ""}
-                  error={touched.cpf && Boolean(errors.cpf)}
+                  helperText={touched.cnpj ? errors.cnpj : ""}
+                  error={touched.cnpj && Boolean(errors.cnpj)}
                   InputLabelProps={{
                     shrink: true,
                   }}
                   InputProps={{
-                    inputComponent: textMaskCpf,
+                    inputComponent: textMaskCNPJ,
                   }}
                 />
               </Grid>
@@ -233,13 +236,34 @@ class About extends Component {
                   type="text"
                   id="name"
                   name="nome"
-                  label="Nome"
-                  placeholder="João da Silva"
+                  label="Nome da Empresa"
+                  placeholder="Nome da Empresa"
                   fullWidth
                   onChange={handleChange}
                   onBlur={this.handleChange}
                   helperText={touched.nome ? errors.nome : ""}
                   error={touched.nome && Boolean(errors.nome)}
+                  InputProps={{
+                    inputComponent: onlyLetters,
+                  }}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  value={this.props.values.nomecontato ? this.props.values.nomecontato : ""}
+                  type="text"
+                  id="contactname"
+                  name="nomecontato"
+                  label="Nome do Contato"
+                  placeholder="João da Silva"
+                  fullWidth
+                  onChange={handleChange}
+                  onBlur={this.handleChange}
+                  helperText={touched.nome ? errors.nome : ""}
+                  error={touched.nomecontato && Boolean(errors.nomecontato)}
                   InputProps={{
                     inputComponent: onlyLetters,
                   }}
@@ -256,7 +280,7 @@ class About extends Component {
                   value={this.props.values.email ? this.props.values.email : ""}
                   id="email"
                   name="email"
-                  label="Email"
+                  label="Email do contato"
                   placeholder="joao@email.com"
                   fullWidth
                   onChange={handleChange}
@@ -275,7 +299,7 @@ class About extends Component {
                   }
                   id="phone"
                   name="telefone"
-                  label="Celular"
+                  label="Celular do contato"
                   placeholder="(00) 00000-0000"
                   fullWidth
                   onChange={handleChange}
@@ -290,156 +314,11 @@ class About extends Component {
                   }}
                 />
               </Grid>
-              <Grid item xs={12} sm={12} className="pb0">
-                <InputLabel shrink id="birth">
-                  Nascimento
-                </InputLabel>
-              </Grid>
-              <Grid item xs={4} className="pt0">
-                <Select
-                  name="nasc_dia"
-                  fullWidth
-                  displayEmpty
-                  labelId="birth"
-                  id="day"
-                  value={
-                    this.props.values.nasc_dia ? this.props.values.nasc_dia : ""
-                  }
-                  onChange={handleChange("nasc_dia")}
-                  onBlur={this.handleChange}
-                  helperText={touched.nasc_dia ? errors.nasc_dia : ""}
-                  error={touched.nasc_dia && Boolean(errors.nasc_dia)}
-                >
-                  <MenuItem value="" disabled>
-                    Dia
-                  </MenuItem>
-                  {dias.map(this.renderDay)}
-                </Select>
-              </Grid>
-              <Grid item xs={4} className="pt0">
-                <Select
-                  name="nasc_mes"
-                  fullWidth
-                  displayEmpty
-                  labelId="birth"
-                  id="month"
-                  value={
-                    this.props.values.nasc_mes ? this.props.values.nasc_mes : ""
-                  }
-                  onChange={handleChange("nasc_mes")}
-                  onBlur={this.handleChange}
-                  helperText={touched.nasc_mes ? errors.nasc_mes : ""}
-                  error={touched.nasc_mes && Boolean(errors.nasc_mes)}
-                >
-                  <MenuItem value="" disabled>
-                    Mês
-                  </MenuItem>
-                  <MenuItem value="01">Janeiro</MenuItem>
-                  <MenuItem value="02">Fevereiro</MenuItem>
-                  <MenuItem value="03">Março</MenuItem>
-                  <MenuItem value="04">Abril</MenuItem>
-                  <MenuItem value="05">Maio</MenuItem>
-                  <MenuItem value="06">Junho</MenuItem>
-                  <MenuItem value="07">Julho</MenuItem>
-                  <MenuItem value="08">Agosto</MenuItem>
-                  <MenuItem value="09">Setembro</MenuItem>
-                  <MenuItem value="10">Outubro</MenuItem>
-                  <MenuItem value="11">Novembro</MenuItem>
-                  <MenuItem value="12">Dezembro</MenuItem>
-                </Select>
-              </Grid>
-              <Grid item xs={4} className="pt0">
-                <Select
-                  name="nasc_ano"
-                  fullWidth
-                  displayEmpty
-                  labelId="birth"
-                  id="year"
-                  value={
-                    this.props.values.nasc_ano ? this.props.values.nasc_ano : ""
-                  }
-                  onChange={handleChange("nasc_ano")}
-                  onBlur={this.handleChange}
-                  helperText={touched.nasc_ano ? errors.nasc_ano : ""}
-                  error={touched.nasc_ano && Boolean(errors.nasc_ano)}
-                >
-                  <MenuItem value="" disabled>
-                    Ano
-                  </MenuItem>
-                  {anos.map(this.renderYear)}
-                </Select>
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <InputLabel shrink id="gender">
-                  Gênero
-                </InputLabel>
-                <Select
-                  name="genero"
-                  fullWidth
-                  displayEmpty
-                  labelId="gender"
-                  id="gender"
-                  value={
-                    this.props.values.genero ? this.props.values.genero : ""
-                  }
-                  onChange={handleChange("genero")}
-                  onBlur={this.handleChange}
-                  helperText={touched.genero ? errors.genero : ""}
-                  error={touched.genero && Boolean(errors.genero)}
-                >
-                  <MenuItem value="" disabled>
-                    Selecione
-                  </MenuItem>
-                  <MenuItem value="MASCULINO">Masculino</MenuItem>
-                  <MenuItem value="FEMININO">Feminino</MenuItem>
-                </Select>
-              </Grid>
-              
-              <Grid item xs={12} sm={6}>
-                <InputLabel shrink id="formation">
-                  Escolaridade
-                </InputLabel>
-                <Select
-                  name="escolaridade"
-                  fullWidth
-                  displayEmpty
-                  labelId="escolaridade"
-                  id="escolaridade"
-                  value={
-                    this.props.values.escolaridade
-                      ? this.props.values.escolaridade
-                      : ""
-                  }
-                  onChange={handleChange("escolaridade")}
-                  onBlur={this.handleChange}
-                  helperText={touched.escolaridade ? errors.escolaridade : ""}
-                  error={touched.escolaridade && Boolean(errors.escolaridade)}
-                >
-                  <MenuItem className="txt-dark_gray" value="" disabled>
-                    Selecione
-                  </MenuItem>
-                  <MenuItem value="EDUCACAO_PRIMARIA">
-                    Ensino Fundamental
-                  </MenuItem>
-                  <MenuItem value="ENSINO_MEDIO">Ensino Médio</MenuItem>
-                  <MenuItem value="ENSINO_MEDIO_TECNICO">
-                    Ensino Técnico
-                  </MenuItem>
-                  <MenuItem value="ENSINO_SUPERIOR">Ensino Superior</MenuItem>
-                  <MenuItem value="ENSINO_SUPERIOR_TECNOLOGO">
-                    Ensino Superior Tecnólogo
-                  </MenuItem>
-                  <MenuItem value="POS_GRADUACAO">Pós-graduação</MenuItem>
-                  <MenuItem value="MESTRADO">Mestrado</MenuItem>
-                  <MenuItem value=">DOUTORADO">Doutorado</MenuItem>
-                  <MenuItem value="POS_DOUTORADO">Pós Doutorado</MenuItem>
-                </Select>
-              </Grid>
               <Grid item xs={8} sm={6}>
                 <TextField
                   value={this.props.values.cep ? this.props.values.cep : ""}
                   id="cep"
-                  label="CEP"
+                  label="CEP da Empresa"
                   placeholder="00000-000"
                   fullWidth
                   name="cep"
@@ -510,7 +389,29 @@ class About extends Component {
                   }}
                 />
               </Grid>
-              <Grid item xs={12} sm={12}>
+              <Grid item xs={4} sm={12}>
+                <TextField
+                  value={
+                    this.props.values.number ? this.props.values.number : ""
+                  }
+                  id="number"
+                  name="number"
+                  label="Número de Vidas"
+                  placeholder="Digite aqui"
+                  fullWidth
+                  onChange={handleChange}
+                  onBlur={this.handleChange}
+                  helperText={touched.number ? errors.number : ""}
+                  error={touched.number && Boolean(errors.number)}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  InputProps={{
+                    inputComponent: textMaskNumberOfLifes,
+                  }}
+                />
+              </Grid>
+              {/* <Grid item xs={12} sm={6}>
                 <InputLabel shrink id="gender">
                   Profissão
                 </InputLabel>
@@ -539,8 +440,9 @@ class About extends Component {
                   ))}
                 </Select>
                 </Grid>   
+              </Grid> */}
               </Grid>
-              <Grid item xs={12}>
+              {/* <Grid item xs={12}>
                 <FormControl component="fieldset">
                   <RadioGroup
                     value={
@@ -585,8 +487,8 @@ class About extends Component {
                       </Grid>
                     </Grid>
                   </RadioGroup>
-                </FormControl>
-              </Grid>
+                </FormControl> */}
+
               {this.props.isValid ||
                 (this.props.submitCount > 0 && (
                   <Grid item xs={12} sm={12}>
@@ -603,14 +505,13 @@ class About extends Component {
                     </div>
                   </Grid>
                 )}
-             
             <div className="actions">
               <Button
                 type="submit"
                 className="btn-next"
                 disabled={isSubmitting}
               >
-                Cotar
+                Contratar
               </Button>
               {/*<Link className="btn-back" to="/">
                 <KeyboardBackspaceIcon /> Voltar
@@ -641,48 +542,35 @@ const mapDispatchToProps = (dispatch) => {
 
 const Form = withFormik({
   mapPropsToValues: ({
-    cpf,
-    nome,
-    politicamente_exp,
+    cnpj,
+    nome_empresa,
+    nome_contato,
     email,
     telefone,
     cep,
     complemento,
-    profissao,
     numero,
-    escolaridade,
-    nasc_dia,
-    nasc_mes,
-    nasc_ano,
-    genero,
-    moradia,
+
   }) => {
     return {
-      cpf: cpf || "",
-      nome: nome || "",
-      politicamente_exp: politicamente_exp || "",
+      cnpj: cnpj|| "",
+      nome_empresa: nome_empresa|| "",
+      nome_contato: nome_contato|| "",
       email: email || "",
       telefone: telefone || "",
       cep: cep || "",
       complemento: complemento || "",
-      profissao: profissao || "",
       numero: numero || "",
-      escolaridade: escolaridade || "",
-      nasc_dia: nasc_dia || "",
-      nasc_mes: nasc_mes || "",
-      nasc_ano: nasc_ano || "",
-      genero: genero || "",
-      moradia: moradia || "",
     };
   },
 
   validationSchema: Yup.object().shape({
-    cpf: Yup.string()
-      .min(11, "CPF precisa ter no mínimo 11 caracteres")
+    cnpj: Yup.string()
+      .min(14, "CNPJ precisa ter no mínimo 14 caracteres")
       //.matches(true, "Not a valid expiration date. Example: MM/YY")
       //.required("CPF é obrigatorio.")
-      .test("cpf", "Informe um CPF válido", (value) => {
-        return CheckCPF(value);
+      .test("cnpj", "Informe um CNPJ válido", (value) => {
+        return CheckCNPJ(value);
       }),
 
     nome: Yup.string()
