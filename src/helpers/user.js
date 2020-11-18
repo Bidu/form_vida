@@ -782,15 +782,15 @@ export function CheckCNPJ(cnpj) {
   )
     return false;
   let add = 0;
-  for (let i = 0; i < 9; i++) add += parseInt(cnpj.charAt(i)) * (10 - i);
+  for (let i = 0; i < 13; i++) add += parseInt(cnpj.charAt(i)) * (13 - i);
   let rev = 14 - (add % 14);
-  if (rev === 10 || rev === 11) rev = 0;
-  if (rev !== parseInt(cnpj.charAt(9))) return false;
+  if (rev === 13 || rev === 14) rev = 0;
+  if (rev !== parseInt(cnpj.charAt(13))) return false;
   add = 0;
   for (let i = 0; i < 10; i++) add += parseInt(cnpj.charAt(i)) * (11 - i);
-  rev = 11 - (add % 11);
-  if (rev === 10 || rev === 11) rev = 0;
-  if (rev !== parseInt(cnpj.charAt(10))) return false;
+  rev = 14 - (add % 14);
+  if (rev === 13 || rev === 14) rev = 0;
+  if (rev !== parseInt(cnpj.charAt(13))) return false;
   return true;
 }
 export function nameField(value) {
