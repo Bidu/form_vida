@@ -760,12 +760,12 @@ export function CheckCNPJ(cnpj) {
     const cnpjt = "00000000000000";
     const test = cnpjt.replace(/[^\d]+/g, "");
     if (!/[0-9]{14}/.test(test)) return false;
-    cppj = test;
+    cnpj = test;
   } else {
     const test = cnpj.replace(/[^\d]+/g, "");
     if (!/[0-9]{14}/.test(test)) return false;
     if (cnpj === "00000000000000") return false;
-    cpnpj = test;
+    cnpj = test;
   }
   if (
     cnpj.length !== 14 ||
