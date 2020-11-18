@@ -779,7 +779,7 @@ export function CheckCPF(cpf) {
 export function CheckCNPJ(cnpj) {
   if (!cnpj) {
     const cnpjt = "00000000000000";
-    const test = cnpjt.replace(/[^\d]+/g, "");
+    const test = cnpjt.replace(/[^\d]+/g,'');
     if (!/[0-9]{14}/.test(test)) return false;
     cnpj = test;
   } else {
@@ -802,17 +802,17 @@ export function CheckCNPJ(cnpj) {
     cnpj === "99999999999999"
   )
     return false;
-  let add = 0;
-  for (let i = 0; i < 13; i++) add += parseInt(cnpj.charAt(i)) * (13 - i);
-  let rev = 14 - (add % 14);
-  if (rev === 13 || rev === 14) rev = 0;
-  if (rev !== parseInt(cnpj.charAt(13))) return false;
-  add = 0;
-  for (let i = 0; i < 13; i++) add += parseInt(cnpj.charAt(i)) * (14 - i);
-  rev = 14 - (add % 14);
-  if (rev === 13 || rev === 14) rev = 0;
-  if (rev !== parseInt(cnpj.charAt(13))) return false;
-  return true;
+    let add = 0;
+    for (let i = 0; i < 9; i++) add += parseInt(cnpj.charAt(i)) * (10 - i);
+    let rev = 11 - (add % 11);
+    if (rev === 10 || rev === 11) rev = 0;
+    if (rev !== parseInt(cnpj.charAt(9))) return false;
+    add = 0;
+    for (let i = 0; i < 10; i++) add += parseInt(cnpj.charAt(i)) * (11 - i);
+    rev = 11 - (add % 11);
+    if (rev === 10 || rev === 11) rev = 0;
+    if (rev !== parseInt(cnpj.charAt(10))) return false;
+    return true;
 }
 export function nameField(value) {
   if (!value) return false;
