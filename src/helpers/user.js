@@ -427,6 +427,27 @@ export const textMaskNumber= (props) => {
     />
   );
 };
+export const textMaskNumberOfLifes= (props) => {
+  const { inputRef, ...other } = props;
+  return (
+    <MaskedInput
+      {...other}
+      ref={inputRef}
+      mask={[
+        /[a-z\A-Z\d]/,
+        /[a-z\A-Z\d]/,
+        /[a-z\A-Z\d]/,
+        /[a-z\A-Z\d]/,
+        /[a-z\A-Z\d]/,
+        /[a-z\A-Z\d]/,
+        /[a-z\A-Z\d]/,      
+      ]}
+      placeholderChar={"\u2000"}
+      guide={false}
+      keepCharPositions={false}
+    />
+  );
+};
 
 export const textMaskCNPJ = (props) => {
   const { inputRef, ...other } = props;

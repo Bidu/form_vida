@@ -28,6 +28,7 @@ import axios from "axios";
 import {
   textMaskPhone,
   textMaskNumber,
+  textMaskNumberOfLifes,
   textMaskCpf,
   textMaskCEP,
   onlyNumbers,
@@ -393,20 +394,20 @@ class About extends Component {
                   value={
                     this.props.values.numero ? this.props.values.numero : ""
                   }
-                  id="numero"
-                  name="numero"
+                  id="number"
+                  name="number"
                   label="Número de Vidas"
                   placeholder="Digite aqui"
                   fullWidth
                   onChange={handleChange}
                   onBlur={this.handleChange}
-                  helperText={touched.numero ? errors.numero : ""}
-                  error={touched.numero && Boolean(errors.numero)}
+                  helperText={touched.number ? errors.number : ""}
+                  error={touched.number && Boolean(errors.number)}
                   InputLabelProps={{
                     shrink: true,
                   }}
                   InputProps={{
-                    inputComponent: textMaskNumber,
+                    inputComponent: textMaskNumberOfLifes,
                   }}
                 />
               </Grid>
