@@ -510,7 +510,7 @@ class About extends Component {
                   }}
                 />
               </Grid>
-              <Grid item xs={12} sm={6}>
+              <Grid item xs={12} sm={12}>
                 <InputLabel shrink id="gender">
                   Profissão
                 </InputLabel>

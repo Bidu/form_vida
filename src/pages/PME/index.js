@@ -210,7 +210,7 @@ class About extends Component {
               <Grid item xs={12} sm={6}>
                 <TextField
                   value={
-                    this.props.values.cpf ? this.props.values.cpf : usuario.cpf
+                    this.props.values.cnpj ? this.props.values.cnpj : usuario.cpf
                   }
                   id="cnpj"
                   name="cnpj"
@@ -253,17 +253,17 @@ class About extends Component {
               </Grid>
               <Grid item xs={12} sm={6}>
                 <TextField
-                  value={this.props.values.nome ? this.props.values.nome : ""}
+                  value={this.props.values.nomecontato ? this.props.values.nomecontato : ""}
                   type="text"
-                  id="name"
-                  name="nome"
+                  id="contactname"
+                  name="nomecontato"
                   label="Nome do Contato"
                   placeholder="João da Silva"
                   fullWidth
                   onChange={handleChange}
                   onBlur={this.handleChange}
                   helperText={touched.nome ? errors.nome : ""}
-                  error={touched.nome && Boolean(errors.nome)}
+                  error={touched.nomecontato && Boolean(errors.nomecontato)}
                   InputProps={{
                     inputComponent: onlyLetters,
                   }}
@@ -389,10 +389,10 @@ class About extends Component {
                   }}
                 />
               </Grid>
-              <Grid item xs={4} sm={6}>
+              <Grid item xs={4} sm={12}>
                 <TextField
                   value={
-                    this.props.values.numero ? this.props.values.numero : ""
+                    this.props.values.number ? this.props.values.number : ""
                   }
                   id="number"
                   name="number"
