@@ -395,7 +395,7 @@ class About extends Component {
                 </Select>
               </Grid>
               
-              <Grid item xs={12} sm={6}>
+              {/* <Grid item xs={12} sm={6}>
                 <InputLabel shrink id="formation">
                   Escolaridade
                 </InputLabel>
@@ -434,7 +434,7 @@ class About extends Component {
                   <MenuItem value=">DOUTORADO">Doutorado</MenuItem>
                   <MenuItem value="POS_DOUTORADO">Pós Doutorado</MenuItem>
                 </Select>
-              </Grid>
+              </Grid> */}
               <Grid item xs={8} sm={6}>
                 <TextField
                   value={this.props.values.cep ? this.props.values.cep : ""}
@@ -458,7 +458,7 @@ class About extends Component {
                   <p class="zip-error">CEP não encontrado</p>
                 )}
               </Grid>
-              <Grid item xs={4} sm={6}>
+              {/* <Grid item xs={4} sm={6}>
                 <TextField
                   value={
                     this.props.values.numero ? this.props.values.numero : ""
@@ -479,8 +479,8 @@ class About extends Component {
                     inputComponent: textMaskNumber,
                   }}
                 />
-              </Grid>
-              {loading && <Loading />}
+              </Grid> */}
+              {/* {loading && <Loading />}
               {this.state.usuario.rua && (
                 <Grid item xs={12} sm={6}>
                   <div className="results">
@@ -509,8 +509,8 @@ class About extends Component {
                     shrink: true,
                   }}
                 />
-              </Grid>
-              <Grid item xs={12} sm={12}>
+              </Grid> */}
+              <Grid item xs={12} sm={6}>
                 <InputLabel shrink id="gender">
                   Profissão
                 </InputLabel>
@@ -540,7 +540,37 @@ class About extends Component {
                 </Select>
                 </Grid>   
               </Grid>
-              <Grid item xs={12}>
+              {/* <Grid item xs={12} sm={6}>
+                <InputLabel shrink id="gender">
+                  Profissão
+                </InputLabel>
+                <Select
+                  name="entidades"
+                  fullWidth
+                  displayEmpty
+                  labelId="entidades"
+                  id="entidades"
+                  value={
+                    this.props.values.entidades
+                      ? this.props.values.entidades
+                      : "Não informado"
+                  }
+                  onChange={handleChange("entidades")}
+                  onBlur={this.handleChange}
+                  helperText={touched.entidades ? errors.entidades : ""}
+                  error={touched.profissao && Boolean(errors.profissao)}
+                >
+                  <MenuItem value="Selecione" disabled>
+                    Selecione
+                  </MenuItem>
+                  
+                  {this.state.occupations.length > 0 && this.state.occupations.map((e, key) => (
+                    <MenuItem value={e.id}>{e.nome}</MenuItem>
+                  ))}
+                </Select>
+                </Grid>    */}
+            
+              {/* <Grid item xs={12}>
                 <FormControl component="fieldset">
                   <RadioGroup
                     value={
@@ -585,8 +615,8 @@ class About extends Component {
                       </Grid>
                     </Grid>
                   </RadioGroup>
-                </FormControl>
-              </Grid>
+                </FormControl> */}
+              {/* </Grid>
               {this.props.isValid ||
                 (this.props.submitCount > 0 && (
                   <Grid item xs={12} sm={12}>
@@ -603,14 +633,14 @@ class About extends Component {
                     </div>
                   </Grid>
                 )}
-             
+              */}
             <div className="actions">
               <Button
                 type="submit"
                 className="btn-next"
                 disabled={isSubmitting}
               >
-                Cotar
+                Ver planos
               </Button>
               {/*<Link className="btn-back" to="/">
                 <KeyboardBackspaceIcon /> Voltar
