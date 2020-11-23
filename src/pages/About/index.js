@@ -19,6 +19,11 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Switch from "@material-ui/core/Switch";
 import { Link, Redirect } from "react-router-dom";
 import Button from "@material-ui/core/Button";
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
 import { withFormik } from "formik";
 import * as Yup from "yup";
 import * as API from "../../services/bd/CadastrarCotacao";
@@ -41,6 +46,7 @@ import Loading from "../../components/loading";
 import { CadastrarCotacaoBd } from "../../services/bd/CadastrarCotacao";
 
 import { createBrowserHistory } from 'history';
+import { entities } from "../../helpers/entities";
 class About extends Component {
   constructor(props) {
     super(props);
@@ -51,6 +57,7 @@ class About extends Component {
       //redirect: false,
       cep: "",
       occupations: [],
+      entities: [],
       usuario: {
         cpf: "",
         nome: "",
@@ -115,6 +122,8 @@ class About extends Component {
     console.log("OLA",content.data)   
     let occupations = await apiQualicorp.publicoAlvo(content.data.estado, content.data.cidade)
     this.setState({occupations:occupations.data})
+    let entities = await apiQualicorp.emtidades(content.data.estado, content.data.cidade, content.data.publicoAlvo)
+    this.setState({entities:entities.data})
     this.setState({
       usuario: {
         ...this.state.usuario,
@@ -393,48 +402,7 @@ class About extends Component {
                   <MenuItem value="MASCULINO">Masculino</MenuItem>
                   <MenuItem value="FEMININO">Feminino</MenuItem>
                 </Select>
-              </Grid>
-              
-              {/* <Grid item xs={12} sm={6}>
-                <InputLabel shrink id="formation">
-                  Escolaridade
-                </InputLabel>
-                <Select
-                  name="escolaridade"
-                  fullWidth
-                  displayEmpty
-                  labelId="escolaridade"
-                  id="escolaridade"
-                  value={
-                    this.props.values.escolaridade
-                      ? this.props.values.escolaridade
-                      : ""
-                  }
-                  onChange={handleChange("escolaridade")}
-                  onBlur={this.handleChange}
-                  helperText={touched.escolaridade ? errors.escolaridade : ""}
-                  error={touched.escolaridade && Boolean(errors.escolaridade)}
-                >
-                  <MenuItem className="txt-dark_gray" value="" disabled>
-                    Selecione
-                  </MenuItem>
-                  <MenuItem value="EDUCACAO_PRIMARIA">
-                    Ensino Fundamental
-                  </MenuItem>
-                  <MenuItem value="ENSINO_MEDIO">Ensino Médio</MenuItem>
-                  <MenuItem value="ENSINO_MEDIO_TECNICO">
-                    Ensino Técnico
-                  </MenuItem>
-                  <MenuItem value="ENSINO_SUPERIOR">Ensino Superior</MenuItem>
-                  <MenuItem value="ENSINO_SUPERIOR_TECNOLOGO">
-                    Ensino Superior Tecnólogo
-                  </MenuItem>
-                  <MenuItem value="POS_GRADUACAO">Pós-graduação</MenuItem>
-                  <MenuItem value="MESTRADO">Mestrado</MenuItem>
-                  <MenuItem value=">DOUTORADO">Doutorado</MenuItem>
-                  <MenuItem value="POS_DOUTORADO">Pós Doutorado</MenuItem>
-                </Select>
-              </Grid> */}
+              </Grid>           
               <Grid item xs={8} sm={6}>
                 <TextField
                   value={this.props.values.cep ? this.props.values.cep : ""}
@@ -458,59 +426,7 @@ class About extends Component {
                   <p class="zip-error">CEP não encontrado</p>
                 )}
               </Grid>
-              {/* <Grid item xs={4} sm={6}>
-                <TextField
-                  value={
-                    this.props.values.numero ? this.props.values.numero : ""
-                  }
-                  id="numero"
-                  name="numero"
-                  label="Número"
-                  placeholder="Digite aqui"
-                  fullWidth
-                  onChange={handleChange}
-                  onBlur={this.handleChange}
-                  helperText={touched.numero ? errors.numero : ""}
-                  error={touched.numero && Boolean(errors.numero)}
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                  InputProps={{
-                    inputComponent: textMaskNumber,
-                  }}
-                />
-              </Grid> */}
-              {/* {loading && <Loading />}
-              {this.state.usuario.rua && (
-                <Grid item xs={12} sm={6}>
-                  <div className="results">
-                    {this.state.usuario.rua}, {this.state.usuario.bairro} -{" "}
-                    {this.state.usuario.cidade}
-                  </div>
-                </Grid>
-              )}
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  value={
-                    this.props.values.complemento
-                      ? this.props.values.complemento
-                      : ""
-                  }
-                  id="complemento"
-                  name="complemento"
-                  label="Complemento"
-                  placeholder="Digite aqui"
-                  fullWidth
-                  onChange={handleChange}
-                  onBlur={this.handleChange}
-                  helperText={touched.complemento ? errors.complemento : ""}
-                  error={touched.complemento && Boolean(errors.complemento)}
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                />
-              </Grid> */}
-              <Grid item xs={12} sm={6}>
+              <Grid item xs={6} sm={6}>
                 <InputLabel shrink id="gender">
                   Profissão
                 </InputLabel>
@@ -540,100 +456,81 @@ class About extends Component {
                 </Select>
                 </Grid>   
               </Grid>
-              {/* <Grid item xs={12} sm={6}>
+              <Grid item xs={12} sm={6}>
                 <InputLabel shrink id="gender">
-                  Profissão
+                  Entidades
                 </InputLabel>
                 <Select
-                  name="entidades"
+                  name="entidade"
                   fullWidth
                   displayEmpty
-                  labelId="entidades"
-                  id="entidades"
+                  labelId="entidade"
+                  id="entidade"
                   value={
-                    this.props.values.entidades
-                      ? this.props.values.entidades
+                    this.props.values.profissao
+                      ? this.props.values.profissao
                       : "Não informado"
                   }
-                  onChange={handleChange("entidades")}
+                  onChange={handleChange("entidade")}
                   onBlur={this.handleChange}
-                  helperText={touched.entidades ? errors.entidades : ""}
-                  error={touched.profissao && Boolean(errors.profissao)}
+                  helperText={touched.entidade? errors.entidade : ""}
+                  error={touched.entidade && Boolean(errors.ent)}
                 >
                   <MenuItem value="Selecione" disabled>
                     Selecione
                   </MenuItem>
                   
-                  {this.state.occupations.length > 0 && this.state.occupations.map((e, key) => (
+                  {this.entities.length > 0 && this.state.entities.map((e, key) => (
                     <MenuItem value={e.id}>{e.nome}</MenuItem>
                   ))}
                 </Select>
-                </Grid>    */}
-            
-              {/* <Grid item xs={12}>
-                <FormControl component="fieldset">
-                  <RadioGroup
-                    value={
-                      this.props.values.moradia ? this.props.values.moradia : ""
+                </Grid>  
+                <Grid item xs={6} sm={6}>
+                  export default function FormDialog() {
+                    const [open, setOpen] = React.useState(false);
+
+                    const handleClickOpen = () => {
+                      setOpen(true)
                     }
-                    aria-label="moradia"
-                    name="moradia"
-                    className={checkValidateRadios("moradia", this.props)}
-                    onChange={handleChange("moradia")}
-                    onBlur={this.handleChange}
-                    helperText={touched.moradia ? errors.moradia : ""}
-                    error={touched.moradia && Boolean(errors.moradia)}
-                  >
-                    <Grid item xs={12} sm container>
-                      <Grid item xs={12} sm={3}>
-                        <FormControlLabel
-                          value="CASA"
-                          control={<Radio color="primary" />}
-                          label="Casa"
-                        />
-                      </Grid>
-                      <Grid item xs={12} sm={3}>
-                        <FormControlLabel
-                          value="APARTAMENTO"
-                          control={<Radio color="primary" />}
-                          label="Apartamento"
-                        />
-                      </Grid>
-                      <Grid item xs={12} sm={3}>
-                        <FormControlLabel
-                          value="CONDOMINIO"
-                          control={<Radio color="primary" />}
-                          label="Condomínio fechado"
-                        />
-                      </Grid>
-                      <Grid item xs={12} sm={3}>
-                        <FormControlLabel
-                          value="OUTROS"
-                          control={<Radio color="primary" />}
-                          label="Outros"
-                        />
-                      </Grid>
-                    </Grid>
-                  </RadioGroup>
-                </FormControl> */}
-              {/* </Grid>
-              {this.props.isValid ||
-                (this.props.submitCount > 0 && (
-                  <Grid item xs={12} sm={12}>
-                    <div className="warning-validation warning-left">
-                      <strong>Atenção!</strong>- Preenchimento obrigatório dos
-                      campos destacados.
-                    </div>
-                  </Grid>
-                ))}
-                {localStorage.getItem("bdbo/errorAbout") && (
-                  <Grid item xs={12} sm={12}>
-                    <div className="warning-validation warning-left">
-                      <strong>OPS!</strong>- DADOS DIVERGENTES. NOME OU DATA DE NASCIMENTO INCORRETOS.
-                    </div>
-                  </Grid>
-                )}
-              */}
+
+                    const handleClose = () => {
+                      setOpen(false)
+                    }
+
+                    return (
+                      <div>
+                        <Button variant="outlined" color="#00f1e7" onClick={handleClickOpen}>
+                          Incluir dependente
+                        </Button>
+                        <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
+                          <DialogTitle id="form-dialog-title">Dependentes</DialogTitle>
+                          <DialogContent>
+                            <DialogContentText>
+                            Por favor, incluir nome e data de nascimento dos dependentes
+                            </DialogContentText>
+                            <TextField
+                              autoFocus
+                              margin="dense"
+                              id="name"
+                              label="Nome"
+                              type="text"
+                              fullWidth
+                            />
+                          </DialogContent>
+                          <DialogActions>
+                            <Button onClick={handleClose} color="#00f1e7">
+                              Cancelar
+                            </Button>
+                            <Button onClick={handleClose} color="#00f1e7">
+                              Incluir
+                            </Button>
+                          </DialogActions>
+                        </Dialog>
+                      </div>
+                    );
+                  }
+
+                </Grid>   
             <div className="actions">
               <Button
                 type="submit"
@@ -642,9 +539,6 @@ class About extends Component {
               >
                 Ver planos
               </Button>
-              {/*<Link className="btn-back" to="/">
-                <KeyboardBackspaceIcon /> Voltar
-              </Link>)*/}
             </div>
           </form>
         </Wrapper>
