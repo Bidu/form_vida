@@ -484,13 +484,19 @@ class About extends Component {
                     </div>
                   </Grid>
                 )}
-                <h3>
-                  Quantidade de Vidas
-               </h3>
-               <p>Para quantas pessoas deseja contratar, entre depentes ou funcionários</p>
+                <div class="vidas">
+                  <Title text="Quantidade de" bold="vidas" /> 
+                </div>
+                <div class="texto-vidas">
+                  <p>Para quantas pessoas deseja contratar, entre depentes ou funcionários</p>
+                </div>
+                
                 <div className="actions">
                   <DialogDependents titleName="Adicionar Pessoas"className="bnt-next"/>
                 </div>
+                <span>
+                  Mínimo 2 pessoas para plano PME*
+                </span>
             <div className="actions">
               <Button
                 type="submit"

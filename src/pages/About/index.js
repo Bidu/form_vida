@@ -485,10 +485,12 @@ class About extends Component {
                   ))}
                 </Select>
                 </Grid> <br/>
-                <h3>
-                  Quantidade de Vidas
-               </h3>
-               <p>Para quantas pessoas deseja contratar, entre depentes ou funcionários</p>
+                <div class="vidas">
+                  <Title  text="Quantidade de" bold="vidas" /> 
+                </div>
+                <div class="texto-vidas">
+                  <p>Para quantas pessoas deseja contratar, entre depentes ou funcionários</p>
+                </div>
                <div className="actions">
                  <DialogDependents titleName="Adicionar Pessoas" className="bnt-next"/>
                </div>
