@@ -1539,3 +1539,23 @@ p.validate-radio-button.bold {
   margin-bottom: 14px; }
 
 /*# sourceMappingURL=index.css.map */
+.vidas{ 
+  font-family: Open Sans;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 24px;
+  line-height: 33px;  
+  text-align: center;
+  color: #001447;
+}
+.texto-vidas {
+font-family: Open Sans;
+font-style: normal;
+font-weight: normal;
+font-size: 16px;
+line-height: 22px;
+text-align: center;
+
+color: #5A5A5A;
+
+}

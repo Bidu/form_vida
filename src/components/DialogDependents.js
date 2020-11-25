@@ -10,13 +10,19 @@ import InputLabel from '@material-ui/core/InputLabel';
 import {makeStyles} from '@material-ui/core/styles';
 
 const useStyles = makeStyles({
-    camila:{
+    btn:{
         background: '#00FEFD',
-        color: '#fff'
+        color: '#001447',
+        marginTop: "15px",
+        borderRadius: "60px",       
+    },
+    dialogo:{
+      width: "100%"
     }
+
 })
 
-export default function DialogDependents() {
+export default function DialogDependents(props) {
   const [open, setOpen] = React.useState(false);
 
   const classes = useStyles()
@@ -30,10 +36,10 @@ export default function DialogDependents() {
 
   return (
     <div>
-      <Button variant="outlined" color="primary" className={classes.camila} onClick={handleClickOpen}>
-        Adicionar dependente
+      <Button variant="outlined" color="primary" className={classes.btn} onClick={handleClickOpen}>
+        {props.titleName}
       </Button>
-      <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
+      <Dialog open={open} onClose={handleClose} className={classes.dialogo} aria-labelledby="form-dialog-title">
         <DialogTitle id="form-dialog-title">Preencha as informações abaixo</DialogTitle>
         <DialogContent>
         <InputLabel>Nome *</InputLabel>

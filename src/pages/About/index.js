@@ -206,10 +206,9 @@ class About extends Component {
       <>
         <Wrapper>
           <Steps step1={true} step2={true} />
-          <Title text="Sobre" bold="você" />
+          <Title text="Plano de" bold="Saúde" />
           <p>
-            Para preparar a melhor opção de seguro para você, precisamos te
-            conhecer um pouco melhor...
+
           </p>
 
           <form onSubmit={handleSubmit}>
@@ -379,7 +378,7 @@ class About extends Component {
                   {anos.map(this.renderYear)}
                 </Select>
               </Grid>
-              <Grid item xs={12} sm={6}>
+              {/* <Grid item xs={12} sm={6}>
                 <InputLabel shrink id="gender">
                   Gênero
                 </InputLabel>
@@ -403,7 +402,7 @@ class About extends Component {
                   <MenuItem value="MASCULINO">Masculino</MenuItem>
                   <MenuItem value="FEMININO">Feminino</MenuItem>
                 </Select>
-              </Grid>           
+              </Grid>            */}
               <Grid item xs={8} sm={6}>
                 <TextField
                   value={this.props.values.cep ? this.props.values.cep : ""}
@@ -485,11 +484,17 @@ class About extends Component {
                     <MenuItem value={e.id}>{e.nome}</MenuItem>
                   ))}
                 </Select>
-                </Grid>  
-                <Grid item xs={6} sm={6}>
-                <DialogDependents/>
+                </Grid> <br/>
+                <div class="vidas">
+                  <Title  text="Quantidade de" bold="vidas" /> 
+                </div>
+                <div class="texto-vidas">
+                  <p>Para quantas pessoas deseja contratar, entre depentes ou funcionários</p>
+                </div>
+               <div className="actions">
+                 <DialogDependents titleName="Adicionar Pessoas" className="bnt-next"/>
+               </div>
 
-                </Grid>   
             <div className="actions">
               <Button
                 type="submit"

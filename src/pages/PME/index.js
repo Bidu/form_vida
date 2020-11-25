@@ -25,6 +25,8 @@ import * as API from "../../services/bd/CadastrarCotacao";
 import { adicionarLeadCotacao } from "../../store/actions/addLeadBd";
 import { apiQualicorp } from "../../services/bdBo";
 import axios from "axios";
+import DialogDependents from '../../components/DialogDependents'
+
 import {
   textMaskPhone,
   textMaskNumber,
@@ -199,10 +201,9 @@ class About extends Component {
       <>
         <Wrapper>
           <Steps step1={true} step2={true} />
-          <Title text="Sobre" bold="a empresa" />
+          <Title text="Plano de" bold="Saúde" />
           <p>
-            Para preparar a melhor opção de seguro para sua empresa, precisamos
-            conhece-la um pouco melhor...
+ 
           </p>
 
           <form onSubmit={handleSubmit}>
@@ -337,7 +338,7 @@ class About extends Component {
                   <p class="zip-error">CEP não encontrado</p>
                 )}
               </Grid>
-              <Grid item xs={4} sm={6}>
+              {/* <Grid item xs={4} sm={6}>
                 <TextField
                   value={
                     this.props.values.numero ? this.props.values.numero : ""
@@ -358,7 +359,7 @@ class About extends Component {
                     inputComponent: textMaskNumber,
                   }}
                 />
-              </Grid>
+              </Grid> */}
               {loading && <Loading />}
               {this.state.usuario.rua && (
                 <Grid item xs={12} sm={6}>
@@ -368,7 +369,7 @@ class About extends Component {
                   </div>
                 </Grid>
               )}
-              <Grid item xs={12} sm={6}>
+              {/* <Grid item xs={12} sm={6}>
                 <TextField
                   value={
                     this.props.values.complemento
@@ -388,29 +389,7 @@ class About extends Component {
                     shrink: true,
                   }}
                 />
-              </Grid>
-              <Grid item xs={4} sm={12}>
-                <TextField
-                  value={
-                    this.props.values.number ? this.props.values.number : ""
-                  }
-                  id="number"
-                  name="number"
-                  label="Número de Vidas"
-                  placeholder="Digite aqui"
-                  fullWidth
-                  onChange={handleChange}
-                  onBlur={this.handleChange}
-                  helperText={touched.number ? errors.number : ""}
-                  error={touched.number && Boolean(errors.number)}
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                  InputProps={{
-                    inputComponent: textMaskNumberOfLifes,
-                  }}
-                />
-              </Grid>
+              </Grid> */}
               {/* <Grid item xs={12} sm={6}>
                 <InputLabel shrink id="gender">
                   Profissão
@@ -505,13 +484,22 @@ class About extends Component {
                     </div>
                   </Grid>
                 )}
+               <div class="vidas">
+                  <Title  text="Quantidade de" bold="vidas" /> 
+                </div>
+                <div class="texto-vidas">
+                  <p>Para quantas pessoas deseja contratar, entre depentes ou funcionários</p>
+                </div>
+               <div className="actions">
+                 <DialogDependents titleName="Adicionar Pessoas" className="bnt-next"/>
+               </div>
             <div className="actions">
               <Button
                 type="submit"
                 className="btn-next"
                 disabled={isSubmitting}
               >
-                Contratar
+                Simular
               </Button>
               {/*<Link className="btn-back" to="/">
                 <KeyboardBackspaceIcon /> Voltar
