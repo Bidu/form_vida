@@ -7,9 +7,19 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import InputLabel from '@material-ui/core/InputLabel';
+import {makeStyles} from '@material-ui/core/styles';
+
+const useStyles = makeStyles({
+    camila:{
+        background: '#00FEFD',
+        color: '#fff'
+    }
+})
+
 export default function DialogDependents() {
   const [open, setOpen] = React.useState(false);
 
+  const classes = useStyles()
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -20,7 +30,7 @@ export default function DialogDependents() {
 
   return (
     <div>
-      <Button variant="outlined" color="primary" onClick={handleClickOpen}>
+      <Button variant="outlined" color="primary" className={classes.camila} onClick={handleClickOpen}>
         Adicionar dependente
       </Button>
       <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
