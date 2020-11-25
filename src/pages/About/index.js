@@ -30,6 +30,7 @@ import * as API from "../../services/bd/CadastrarCotacao";
 import { adicionarLeadCotacao } from "../../store/actions/addLeadBd";
 import { apiQualicorp } from "../../services/bdBo";
 import axios from "axios";
+import DialogDependents from '../../components/DialogDependents'
 import {
   textMaskPhone,
   textMaskNumber,
@@ -480,55 +481,13 @@ class About extends Component {
                     Selecione
                   </MenuItem>
                   
-                  {this.entities.length > 0 && this.state.entities.map((e, key) => (
+                  {this.state.entities.length > 0 && this.state.entities.map((e, key) => (
                     <MenuItem value={e.id}>{e.nome}</MenuItem>
                   ))}
                 </Select>
                 </Grid>  
                 <Grid item xs={6} sm={6}>
-                  export default function FormDialog() {
-                    const open = React.useState(false);
-
-                    const handleClickOpen = () => {
-                      setOpen(true)
-                    }
-
-                    const handleClose = () => {
-                      setOpen(false)
-                    }
-
-                    return (
-                      <div>
-                        <Button variant="outlined" color="#00f1e7" onClick={handleClickOpen}>
-                          Incluir dependente
-                        </Button>
-                        <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
-                          <DialogTitle id="form-dialog-title">Dependentes</DialogTitle>
-                          <DialogContent>
-                            <DialogContentText>
-                            Por favor, incluir nome e data de nascimento dos dependentes
-                            </DialogContentText>
-                            <TextField
-                              autoFocus
-                              margin="dense"
-                              id="name"
-                              label="Nome"
-                              type="text"
-                              fullWidth
-                            />
-                          </DialogContent>
-                          <DialogActions>
-                            <Button onClick={handleClose} color="#00f1e7">
-                              Cancelar
-                            </Button>
-                            <Button onClick={handleClose} color="#00f1e7">
-                              Incluir
-                            </Button>
-                          </DialogActions>
-                        </Dialog>
-                      </div>
-                    );
-                  };
+                <DialogDependents/>
 
                 </Grid>   
             <div className="actions">
