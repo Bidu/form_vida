@@ -12,7 +12,8 @@ import {makeStyles} from '@material-ui/core/styles';
 const useStyles = makeStyles({
     btn:{
         background: '#00FEFD',
-        color: '#fff',
+        color: '#001447',
+        marginTop: "15px",
         borderRadius: "60px",       
     },
     dialogo:{
