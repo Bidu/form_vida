@@ -29,7 +29,6 @@ import * as Yup from "yup";
 import * as API from "../../services/bd/CadastrarCotacao";
 import { adicionarLeadCotacao } from "../../store/actions/addLeadBd";
 import { apiQualicorp } from "../../services/bdBo";
-import entities from "../../helpers";
 import axios from "axios";
 import {
   textMaskPhone,
@@ -488,7 +487,7 @@ class About extends Component {
                 </Grid>  
                 <Grid item xs={6} sm={6}>
                   export default function FormDialog() {
-                    const [open, setOpen] = React.useState(false);
+                    const open = React.useState(false);
 
                     const handleClickOpen = () => {
                       setOpen(true)
