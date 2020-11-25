@@ -206,10 +206,9 @@ class About extends Component {
       <>
         <Wrapper>
           <Steps step1={true} step2={true} />
-          <Title text="Sobre" bold="você" />
+          <Title text="Plano de" bold="Saúde" />
           <p>
-            Para preparar a melhor opção de seguro para você, precisamos te
-            conhecer um pouco melhor...
+
           </p>
 
           <form onSubmit={handleSubmit}>
@@ -486,9 +485,13 @@ class About extends Component {
                   ))}
                 </Select>
                 </Grid> <br/>
-                <div className="actions">
-                  <DialogDependents titleName="Adicionar Dependentes" className="bnt-next"/>
-                </div>
+                <h3>
+                  Quantidade de Vidas
+               </h3>
+               <p>Para quantas pessoas deseja contratar, entre depentes ou funcionários</p>
+               <div className="actions">
+                 <DialogDependents titleName="Adicionar Pessoas" className="bnt-next"/>
+               </div>
 
             <div className="actions">
               <Button
