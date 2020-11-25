@@ -25,6 +25,8 @@ import * as API from "../../services/bd/CadastrarCotacao";
 import { adicionarLeadCotacao } from "../../store/actions/addLeadBd";
 import { apiQualicorp } from "../../services/bdBo";
 import axios from "axios";
+import DialogDependents from '../../components/DialogDependents'
+
 import {
   textMaskPhone,
   textMaskNumber,
@@ -505,6 +507,9 @@ class About extends Component {
                     </div>
                   </Grid>
                 )}
+                <div className="actions">
+                  <DialogDependents titleName="Adicionar Pessoas"className="bnt-next"/>
+                </div>
             <div className="actions">
               <Button
                 type="submit"

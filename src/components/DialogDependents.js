@@ -13,11 +13,15 @@ const useStyles = makeStyles({
     btn:{
         background: '#00FEFD',
         color: '#fff',
-        borderRadius: "60px",        
+        borderRadius: "60px",       
+    },
+    dialogo:{
+      width: "100%"
     }
+
 })
 
-export default function DialogDependents() {
+export default function DialogDependents(props) {
   const [open, setOpen] = React.useState(false);
 
   const classes = useStyles()
@@ -32,9 +36,9 @@ export default function DialogDependents() {
   return (
     <div>
       <Button variant="outlined" color="primary" className={classes.btn} onClick={handleClickOpen}>
-        Adicionar dependente
+        {props.titleName}
       </Button>
-      <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
+      <Dialog open={open} onClose={handleClose} className={classes.dialogo} aria-labelledby="form-dialog-title">
         <DialogTitle id="form-dialog-title">Preencha as informações abaixo</DialogTitle>
         <DialogContent>
         <InputLabel>Nome *</InputLabel>

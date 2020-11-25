@@ -487,7 +487,7 @@ class About extends Component {
                 </Select>
                 </Grid> <br/>
                 <div className="actions">
-                  <DialogDependents className="bnt-next"/>
+                  <DialogDependents titleName="Adicionar Dependentes" className="bnt-next"/>
                 </div>
 
             <div className="actions">
