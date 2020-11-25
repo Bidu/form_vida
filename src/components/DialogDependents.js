@@ -13,15 +13,7 @@ const useStyles = makeStyles({
     btn:{
         background: '#00FEFD',
         color: '#fff',
-        display: "flex",
-        justifyContent: "center",
-        alignSelf: "center",
-        alignItems: "center",
-        height: "35px",
-        width: "100%",
-        maxWidth: "320px",
-        borderRadius: "35px",
-        
+        borderRadius: "60px",        
     }
 })
 

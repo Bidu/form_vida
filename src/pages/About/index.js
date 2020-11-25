@@ -379,7 +379,7 @@ class About extends Component {
                   {anos.map(this.renderYear)}
                 </Select>
               </Grid>
-              <Grid item xs={12} sm={6}>
+              {/* <Grid item xs={12} sm={6}>
                 <InputLabel shrink id="gender">
                   Gênero
                 </InputLabel>
@@ -403,7 +403,7 @@ class About extends Component {
                   <MenuItem value="MASCULINO">Masculino</MenuItem>
                   <MenuItem value="FEMININO">Feminino</MenuItem>
                 </Select>
-              </Grid>           
+              </Grid>            */}
               <Grid item xs={8} sm={6}>
                 <TextField
                   value={this.props.values.cep ? this.props.values.cep : ""}
@@ -485,11 +485,11 @@ class About extends Component {
                     <MenuItem value={e.id}>{e.nome}</MenuItem>
                   ))}
                 </Select>
-                </Grid>  
-                <Grid item xs={6} sm={6}>
-                <DialogDependents/>
+                </Grid> <br/>
+                <div className="actions">
+                  <DialogDependents className="bnt-next"/>
+                </div>
 
-                </Grid>   
             <div className="actions">
               <Button
                 type="submit"
