@@ -29,6 +29,7 @@ import * as Yup from "yup";
 import * as API from "../../services/bd/CadastrarCotacao";
 import { adicionarLeadCotacao } from "../../store/actions/addLeadBd";
 import { apiQualicorp } from "../../services/bdBo";
+import entities from "../../helpers";
 import axios from "axios";
 import {
   textMaskPhone,
@@ -528,7 +529,7 @@ class About extends Component {
                         </Dialog>
                       </div>
                     );
-                  }
+                  };
 
                 </Grid>   
             <div className="actions">
