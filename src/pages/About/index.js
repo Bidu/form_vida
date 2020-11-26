@@ -144,7 +144,7 @@ class About extends Component {
     console.log(content)
     if(content && content.data)    
     {
-      this.getOccupations(content.data)
+      await this.getOccupations(content.data)
      
       this.setState({
         usuario: {
@@ -181,10 +181,21 @@ class About extends Component {
 
   getOccupations = async (address) =>{
   
+    this.setState({
+      loading: true,
+      occupations: [],
+      occupationsFalse: true
+    })
     let occupations = await apiQualicorp.publicoAlvo(address.estado, address.cidade)
-    if(occupations && occupations.data)
+    if(occupations && occupations.data && occupations.data.length > 0)
     {
       this.setState({occupations:occupations.data})   
+    }
+    else{
+      this.setState({
+        occupations: [],
+        occupationsFalse: false
+      })
     }
    
 
@@ -519,34 +530,40 @@ class About extends Component {
                 />
                  
                 </Grid>
-                <Grid item xs={12} sm={6}>
-                <InputLabel shrink id="gender">
-                  Profissão
-                </InputLabel>
-                <Select
-                  name="profissao"
-                  fullWidth
-                  displayEmpty
-                  labelId="profissao"
-                  id="profissao"
-                  value={
-                    this.props.values.profissao
-                      ? this.props.values.profissao
-                      : "Não informado"
-                  }
-                  onChange={this.handleChange}
-                  helperText={touched.profissao ? errors.profissao : ""}
-                  error={touched.profissao && Boolean(errors.profissao)}
-                >
-                  <MenuItem value="Selecione" disabled>
-                    Selecione
-                  </MenuItem>
+                {this.state.occupations.length > 0 &&
+                      <Grid item xs={12} sm={6}>
+                            <InputLabel shrink id="gender">
+                              Profissão
+                            </InputLabel>
+                            <Select
+                              name="profissao"
+                              fullWidth
+                              displayEmpty
+                              labelId="profissao"
+                              id="profissao"
+                              value={
+                                this.props.values.profissao
+                                  ? this.props.values.profissao
+                                  : "Não informado"
+                              }
+                              onChange={this.handleChange}
+                              helperText={touched.profissao ? errors.profissao : ""}
+                              error={touched.profissao && Boolean(errors.profissao)}
+                            >
+                              <MenuItem value="Selecione" disabled>
+                                Selecione
+                              </MenuItem>
+                              
+                              {this.state.occupations.length > 0 && this.state.occupations.map((e, key) => (
+                                <MenuItem value={e.id}>{e.nome}</MenuItem>
+                              ))}
+                            </Select>
+                      </Grid>   
+                }
+                 { this.state.occupationsFalse == false &&
                   
-                  {this.state.occupations.length > 0 && this.state.occupations.map((e, key) => (
-                    <MenuItem value={e.id}>{e.nome}</MenuItem>
-                  ))}
-                </Select>
-                </Grid>   
+                  <DialogAlert title="Ops!" message="Erro ao obter a lista de profissões. Tente novamente mais tarde!" />
+                }
                 { this.state.entitiesFalse == true &&
                       
                         <Grid item xs={12} sm={6}>
@@ -581,8 +598,40 @@ class About extends Component {
                 }
                 { this.state.entitiesFalse == false &&
                   
-                  <DialogAlert message="Não encontramos nenhuma entidade para a sua profissão" />
+                  <DialogAlert title="Ops!" message="Erro ao obter a lista de entidades. Tente novamente mais tarde!" />
                 }
+                { this.state.entitiesFalse == true &&
+                  <Grid item xs={12} sm={6}>
+                    <InputLabel shrink id="gender">
+                      Operadora
+                    </InputLabel>
+                    <Select
+                      name="operadora"
+                      fullWidth
+                      displayEmpty
+                      labelId="operadora"
+                      id="operadora"
+                      value={
+                        this.props.values.operadora
+                          ? this.props.values.operadora
+                          : "Não informado"
+                      }
+                      onChange={handleChange("operadora")}
+                      onBlur={this.handleChange}
+                      helperText={touched.operadora? errors.operadora : ""}
+                      error={touched.operadora && Boolean(errors.ent)}
+                    >
+                      <MenuItem value="Selecione" disabled>
+                        Selecione
+                      </MenuItem>
+                      
+                      {this.state.operadora && this.state.operadora.length > 0 && this.state.operadora.map((e, key) => (
+                        <MenuItem value={e.id}>{e.nome}</MenuItem>
+                      ))}
+                    </Select>
+                  </Grid>
+                }
+                
                 
                 </>
               }
@@ -591,9 +640,6 @@ class About extends Component {
            
               </Grid>
               <br/>
-              <div className="actions">
-                  <DialogDependents titleName="Adicionar Pessoas" className="bnt-next"/>
-                </div>
               { this.state.entitiesFalse == true &&
               <>
                   <div class="vidas">
@@ -704,30 +750,26 @@ const Form = withFormik({
       .min(8, "O CEP deve ter no mínimo 8 dígitos"),
     //complemento: Yup.string().required("Complemento é obrigatório"),
     profissao: Yup.string().required("Profissão é obrigatório"),
-    numero: Yup.string().required("Obrigatório"),
-    escolaridade: Yup.string().required("Selecione a escolaridade"),
-    nasc_dia: Yup.string().required("Selecione o dia"),
-    nasc_mes: Yup.string().required("Selecione o mês"),
-    nasc_ano: Yup.string().required("Selecione o ano"),
-    genero: Yup.string().required("Selecione o gênero"),
-    moradia: Yup.string().required("Selecione a moradia"),
+    entidade: Yup.string().required("Profissão é obrigatório"),
+   
   }),
 
   handleSubmit: async (values, { props, setStatus, setValues, setSubmitting }) => {
-
+    console.log(values)
+    localStorage.setItem("@bidu2/user", [JSON.stringify(values)]);
     
-    setTimeout(() => {
-      //submit to the server
-      //alert(JSON.stringify(values, null, 2));
-      props.adicionaUser(values);
-      // props.adicionarLead();
+    // setTimeout(() => {
+    //   //submit to the server
+    //   //alert(JSON.stringify(values, null, 2));
+    //   // props.adicionaUser(values);
+    //   // props.adicionarLead();
 
-      localStorage.setItem("@bidu2/user", [JSON.stringify(values)]);
+     
 
       setStatus(true);
-      window.fbq("track", "Lead");
-      setSubmitting(false);
-    }, 1000);
+    //   // window.fbq("track", "Lead");
+    //   setSubmitting(false);
+    // }, 1000);
     setSubmitting(false);
   },
 })(About);

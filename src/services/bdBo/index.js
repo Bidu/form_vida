@@ -20,9 +20,9 @@ const headers = {
 };
 
 const apiQualicorp= {
-  async operadoras(uf, cidade) {
+  async operadoras(uf, cidade, entidade) {
     let statusOperadoras = [];
-    const url = `${server}/qvenda/operadoras/:entidade?${uf}&${cidade}&api-key=${apiKeyOperadoras}`
+    const url = `${server}/qvenda/operadoras/${entidade}?${uf}&${cidade}&api-key=${apiKeyOperadoras}`
       .get(url)
       .then(function (res) {
         
