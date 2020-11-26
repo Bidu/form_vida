@@ -752,19 +752,8 @@ const Form = withFormik({
       .min(8, "O CEP deve ter no mínimo 8 dígitos"),
     //complemento: Yup.string().required("Complemento é obrigatório"),
     profissao: Yup.string().required("Profissão é obrigatório"),
-<<<<<<< HEAD
-    entidade: Yup.string().required("Entidade é obrigatório"),
-    numero: Yup.string().required("Obrigatório"),
-    escolaridade: Yup.string().required("Selecione a escolaridade"),
-    nasc_dia: Yup.string().required("Selecione o dia"),
-    nasc_mes: Yup.string().required("Selecione o mês"),
-    nasc_ano: Yup.string().required("Selecione o ano"),
-    genero: Yup.string().required("Selecione o gênero"),
-    moradia: Yup.string().required("Selecione a moradia"),
-=======
     entidade: Yup.string().required("Profissão é obrigatório"),
    
->>>>>>> 1ffe413f6afb774f95ef0d3945a2addea8490cd5
   }),
 
   handleSubmit: async (values, { props, setStatus, setValues, setSubmitting }) => {
