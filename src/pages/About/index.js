@@ -31,6 +31,7 @@ import { adicionarLeadCotacao } from "../../store/actions/addLeadBd";
 import { apiQualicorp } from "../../services/bdBo";
 import axios from "axios";
 import DialogDependents from '../../components/DialogDependents'
+import DialogAlert from '../../components/DialogAlert'
 import {
   textMaskPhone,
   textMaskNumber,
@@ -108,45 +109,123 @@ class About extends Component {
 
   handleCEP = (e) => {
     const cep = e.target.value;
-    this.setState({
-      cep,
-    });
-    //if (this.state.cep.length === 8) {
-    setTimeout(() => {
-      this.getAddress();
-    }, 500);
-    //}
+    if(cep.length == 9)
+    {
+      this.setState({
+        cep,
+      });
+      //if (this.state.cep.length === 8) {
+      setTimeout(() => {
+        this.getAddress();
+      }, 500);
+      //}
+    }
+    else{
+      this.setState({
+        usuario: {
+          ...this.state.usuario,
+          rua:"",
+          cidade:"",
+          bairro:"",
+          estado:"",
+          cep:"",
+          uf:""
+        },
+        loading: false,
+      });
+          this.props.values.rua = "";
+          delete this.props.values.profissao 
+    }
+   
   };
   getAddress = async (e) => {
     this.setState({ loading: true });
     let content = await apiQualicorp.endereco(this.state.cep.replace("-", "")) 
-    console.log("OLA",content.data)   
-    let occupations = await apiQualicorp.publicoAlvo(content.data.estado, content.data.cidade)
-    this.setState({occupations:occupations.data})
-    let entities = await apiQualicorp.emtidades(content.data.estado, content.data.cidade, content.data.publicoAlvo)
-    this.setState({entities:entities.data})
-    this.setState({
-      usuario: {
-        ...this.state.usuario,
-        rua: content.data.logradouro,
-        cidade: content.data.cidade,
-        bairro: content.data.bairro,
-        estado: content.data.estado,
-        cep: content.data.cep,
-        uf: content.data.estado
-      },
-      loading: false,
-    });
-        this.props.values.rua = content.data.logradouro;
-        this.props.values.cidade = content.data.cidade;
-        this.props.values.bairro = content.data.bairro;
-        this.props.values.estado = content.data.estado;
-        this.props.values.cep = content.data.cep;
-        this.props.values.uf = content.data.estado;
+    console.log(content)
+    if(content && content.data)    
+    {
+      this.getOccupations(content.data)
+     
+      this.setState({
+        usuario: {
+          ...this.state.usuario,
+          rua: content.data.logradouro,
+          cidade: content.data.cidade,
+          bairro: content.data.bairro,
+          estado: content.data.estado,
+          cep: content.data.cep,
+          uf: content.data.estado
+        },
+        loading: false,
+      });
+          this.props.values.rua = content.data.logradouro;
+          this.props.values.cidade = content.data.cidade;
+          this.props.values.bairro = content.data.bairro;
+          this.props.values.estado = content.data.estado;
+          this.props.values.cep = content.data.cep;
+          this.props.values.uf = content.data.estado;
+    }
+    else{
+      this.setState({
+        usuario: {
+          ...this.state.usuario,
+          cep: undefined,
+        },
+        loading: false,
+      });
+    }
+
+   
     
   };
 
+  getOccupations = async (address) =>{
+  
+    let occupations = await apiQualicorp.publicoAlvo(address.estado, address.cidade)
+    if(occupations && occupations.data)
+    {
+      this.setState({occupations:occupations.data})   
+    }
+   
+
+  }
+
+  getEntities = async (uf, cidade, profissao) =>{
+
+
+    this.setState({
+      loading: true,
+      entities: [],
+      entitiesFalse: true
+    })
+
+
+     let entities = await apiQualicorp.entidades(uf, cidade, profissao)
+
+
+     if(entities && entities.data && entities.data.length > 0)
+        {
+          this.setState({
+            entities: entities.data,
+            loading: false,
+          })
+        }
+      else{
+        this.setState({
+          entities: [],
+          loading: false,
+          entitiesFalse: false
+        })
+      }
+  }
+
   handleChange = (event) => {
+    console.log(event)
+    if(event.target.name == 'profissao')
+    {
+      this.props.values.profissao =  event.target.value
+      this.getEntities(this.props.values.profissao, this.props.values.uf, this.props.values.cidade, )
+    }
     this.setState({
       usuario: {
         ...this.state.usuario,
@@ -403,7 +482,7 @@ class About extends Component {
                   <MenuItem value="FEMININO">Feminino</MenuItem>
                 </Select>
               </Grid>            */}
-              <Grid item xs={8} sm={6}>
+              <Grid item xs={12} sm={6}>
                 <TextField
                   value={this.props.values.cep ? this.props.values.cep : ""}
                   id="cep"
@@ -412,7 +491,8 @@ class About extends Component {
                   fullWidth
                   name="cep"
                   onChange={handleChange}
-                  onBlur={(e) => this.handleCEP(e)}
+                  onKeyUp={(e) => this.handleCEP(e)}
+                  // onBlur={(e) => this.handleCEP(e)}
                   helperText={touched.cep ? errors.cep : ""}
                   error={touched.cep && Boolean(errors.cep)}
                   InputLabelProps={{
@@ -426,7 +506,20 @@ class About extends Component {
                   <p class="zip-error">CEP não encontrado</p>
                 )}
               </Grid>
-              <Grid item xs={6} sm={6}>
+              {this.state.usuario.rua && 
+              <>
+                <Grid item xs={12} sm={6}>
+                  <TextField
+                  value= {`${this.state.usuario.rua}, ${this.state.usuario.bairro} - ${this.state.usuario.cidade}/${this.state.usuario.uf} `}
+                  id=""
+                  label="Endereço"
+                  fullWidth
+                  name=""
+                  disabled
+                />
+                 
+                </Grid>
+                <Grid item xs={12} sm={6}>
                 <InputLabel shrink id="gender">
                   Profissão
                 </InputLabel>
@@ -441,8 +534,7 @@ class About extends Component {
                       ? this.props.values.profissao
                       : "Não informado"
                   }
-                  onChange={handleChange("profissao")}
-                  onBlur={this.handleChange}
+                  onChange={this.handleChange}
                   helperText={touched.profissao ? errors.profissao : ""}
                   error={touched.profissao && Boolean(errors.profissao)}
                 >
@@ -455,55 +547,76 @@ class About extends Component {
                   ))}
                 </Select>
                 </Grid>   
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <InputLabel shrink id="gender">
-                  Entidades
-                </InputLabel>
-                <Select
-                  name="entidade"
-                  fullWidth
-                  displayEmpty
-                  labelId="entidade"
-                  id="entidade"
-                  value={
-                    this.props.values.profissao
-                      ? this.props.values.profissao
-                      : "Não informado"
-                  }
-                  onChange={handleChange("entidade")}
-                  onBlur={this.handleChange}
-                  helperText={touched.entidade? errors.entidade : ""}
-                  error={touched.entidade && Boolean(errors.ent)}
-                >
-                  <MenuItem value="Selecione" disabled>
-                    Selecione
-                  </MenuItem>
+                { this.state.entitiesFalse == true &&
+                      
+                        <Grid item xs={12} sm={6}>
+                        <InputLabel shrink id="gender">
+                          Entidades
+                        </InputLabel>
+                        <Select
+                          name="entidade"
+                          fullWidth
+                          displayEmpty
+                          labelId="entidade"
+                          id="entidade"
+                          value={
+                            this.props.values.entidade
+                              ? this.props.values.entidade
+                              : "Não informado"
+                          }
+                          onChange={handleChange("entidade")}
+                          onBlur={this.handleChange}
+                          helperText={touched.entidade? errors.entidade : ""}
+                          error={touched.entidade && Boolean(errors.ent)}
+                        >
+                          <MenuItem value="Selecione" disabled>
+                            Selecione
+                          </MenuItem>
+                          
+                          {this.state.entities.length > 0 && this.state.entities.map((e, key) => (
+                            <MenuItem value={e.id}>{e.nome}</MenuItem>
+                          ))}
+                        </Select>
+                        </Grid>
+                }
+                { this.state.entitiesFalse == false &&
                   
-                  {this.state.entities.length > 0 && this.state.entities.map((e, key) => (
-                    <MenuItem value={e.id}>{e.nome}</MenuItem>
-                  ))}
-                </Select>
-                </Grid> <br/>
-                <div class="vidas">
-                  <Title  text="Quantidade de" bold="vidas" /> 
+                  <DialogAlert message="Não encontramos nenhuma entidade para a sua profissão" />
+                }
+                
+                </>
+              }
+              
+                {loading && <Loading />}
+           
+              </Grid>
+              <br/>
+              <div className="actions">
+                  <DialogDependents titleName="Adicionar Pessoas" className="bnt-next"/>
                 </div>
-                <div class="texto-vidas">
-                  <p>Para quantas pessoas deseja contratar, entre depentes ou funcionários</p>
+              { this.state.entitiesFalse == true &&
+              <>
+                  <div class="vidas">
+                    <Title  text="Quantidade de" bold="vidas" /> 
+                  </div>
+                  <div class="texto-vidas">
+                    <p>Para quantas pessoas deseja contratar, entre depentes ou funcionários</p>
+                  </div>
+                <div className="actions">
+                  <DialogDependents titleName="Adicionar Pessoas" className="bnt-next"/>
                 </div>
-               <div className="actions">
-                 <DialogDependents titleName="Adicionar Pessoas" className="bnt-next"/>
-               </div>
 
-            <div className="actions">
-              <Button
-                type="submit"
-                className="btn-next"
-                disabled={isSubmitting}
-              >
-                Ver planos
-              </Button>
-            </div>
+                <div className="actions">
+                  <Button
+                    type="submit"
+                    className="btn-next"
+                    disabled={isSubmitting}
+                  >
+                    Ver planos
+                  </Button>
+                </div>
+              </>
+          }
           </form>
         </Wrapper>
       </>

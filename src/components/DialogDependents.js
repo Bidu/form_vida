@@ -8,7 +8,7 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import InputLabel from '@material-ui/core/InputLabel';
 import {makeStyles} from '@material-ui/core/styles';
-
+import DataGridTable from './DataGridTable'
 const useStyles = makeStyles({
     btn:{
         background: '#00FEFD',
@@ -24,6 +24,13 @@ const useStyles = makeStyles({
 
 export default function DialogDependents(props) {
   const [open, setOpen] = React.useState(false);
+  const [form, setForm] = React.useState({
+    nome: "",
+    nascimento: ""
+  })
+  
+  const [dependents, setDependents] = React.useState([])
+  
 
   const classes = useStyles()
   const handleClickOpen = () => {
@@ -33,6 +40,53 @@ export default function DialogDependents(props) {
   const handleClose = () => {
     setOpen(false);
   };
+
+  const addDependent = () => {
+    // setDependents.push(form)
+    setOpen(false);
+  }
+  const calcIdade = (ano_aniversario, mes_aniversario, dia_aniversario)  => {
+        var d = new Date,
+        ano_atual = d.getFullYear(),
+        mes_atual = d.getMonth() + 1,
+        dia_atual = d.getDate(),
+
+        ano_aniversario = +ano_aniversario,
+        mes_aniversario = +mes_aniversario,
+        dia_aniversario = +dia_aniversario,
+
+        quantos_anos = ano_atual - ano_aniversario;
+
+    if (mes_atual < mes_aniversario || mes_atual == mes_aniversario && dia_atual < dia_aniversario) {
+        quantos_anos--;
+    }
+
+    return quantos_anos < 0 ? 0 : quantos_anos;
+}
+
+  const addDependents = () => {
+
+    let dtNascimento = new Date(form.nascimento)
+    console.log("dt", dtNascimento)
+    let id = dependents.length + 1
+    setDependents([...dependents, {
+      id: id,
+      nome: form.nome,
+      nascimento: form.nascimento,
+      idade: calcIdade(dtNascimento.getFullYear(), dtNascimento.getMonth() + 1, dtNascimento.getDate())
+    }])
+  }
+  console.log("a", dependents)
+
+  const handleInputChange = e => {
+    console.log("teste")
+    const {name, value} = e.target
+    setForm({...form, [name]: value})
+
+    console.log(form)
+}
+
+  
 
   return (
     <div>
@@ -46,8 +100,11 @@ export default function DialogDependents(props) {
           <TextField
             autoFocus
             margin="dense"
-            id="name"
+            name="nome"
+            id="nome"
             type="text"
+            value="Vinicius"
+            onBlur={handleInputChange}
             fullWidth
           />
           </DialogContent>
@@ -55,17 +112,30 @@ export default function DialogDependents(props) {
           <InputLabel>Data de nascimento *</InputLabel>
            <TextField
             margin="dense"
-            id="name"
+            id="nascimento"
+            name="nascimento"
             type="date"
             fullWidth
+            onBlur={handleInputChange}
           />
+          <br/>
+          {/* 1
+          { form }  */}
+          <br/>
+          { dependents.length > 0 &&
+            <DataGridTable rows={dependents}/>
+          }
+         
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} color="primary">
             Cancelar
           </Button>
-          <Button onClick={handleClose} color="primary">
+          <Button onClick={addDependent} color="primary">
             Adicionar
+          </Button>
+          <Button onClick={addDependents} color="primary">
+            Adicionar e Adicionar outro
           </Button>
         </DialogActions>
       </Dialog>

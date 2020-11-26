@@ -1,7 +1,7 @@
 import axios from "axios";
 
 //DEV
-const server = "https://apiceluladigitalhm.qualicorp.com.bR";
+const server = "https://apiceluladigitalhm.qualicorp.com.br";
 const apiKeyOperadoras= "1b2f206d-26e9-4fcc-8be6-1c1ed19f00bc";
 const apiKeyRedeReferenciadas= "2bb30205-520c-4721-9290-b2dc862b32bf";
 const apiKeyFatoresModeradores="2e1b29c8-6153-45dd-af7a-a0eb111c37ab";
@@ -65,7 +65,7 @@ const apiQualicorp= {
 
   async entidades(publicoAlvo, uf, cidade) {
     let statusEntidades = [];
-    const url = `${server}/qvenda/entidades/?${publicoAlvo}&${uf}&${cidade}}&api-key=${apiKeyEntidades}`;
+    const url = `${server}/qvenda/entidades/?publicoAlvo=${publicoAlvo}&uf=${uf}&cidade=${cidade}}&api-key=${apiKeyEntidades}`;
     await axios
       .get(url)
       .then(function (res) {
