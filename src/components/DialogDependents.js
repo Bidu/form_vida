@@ -75,6 +75,13 @@ export default function DialogDependents(props) {
       nascimento: form.nascimento,
       idade: calcIdade(dtNascimento.getFullYear(), dtNascimento.getMonth() + 1, dtNascimento.getDate())
     }])
+
+
+    setForm({
+      nome: "",
+      nascimento: ""
+    })
+    document.querySelector("#nome").focus()
   }
   console.log("a", dependents)
 
@@ -103,7 +110,8 @@ export default function DialogDependents(props) {
             name="nome"
             id="nome"
             type="text"
-            value="Vinicius"
+            value={form.nome}
+            onChange={handleInputChange}
             onBlur={handleInputChange}
             fullWidth
           />
@@ -113,9 +121,11 @@ export default function DialogDependents(props) {
            <TextField
             margin="dense"
             id="nascimento"
+            value={form.nascimento}
             name="nascimento"
             type="date"
             fullWidth
+            onChange={handleInputChange}
             onBlur={handleInputChange}
           />
           <br/>
