@@ -657,6 +657,7 @@ const Form = withFormik({
     nasc_ano,
     genero,
     moradia,
+    entidade,
   }) => {
     return {
       cpf: cpf || "",
@@ -674,6 +675,7 @@ const Form = withFormik({
       nasc_ano: nasc_ano || "",
       genero: genero || "",
       moradia: moradia || "",
+      entidade: entidade || "",
     };
   },
 
@@ -704,6 +706,7 @@ const Form = withFormik({
       .min(8, "O CEP deve ter no mínimo 8 dígitos"),
     //complemento: Yup.string().required("Complemento é obrigatório"),
     profissao: Yup.string().required("Profissão é obrigatório"),
+    entidade: Yup.string().required("Entidade é obrigatório"),
     numero: Yup.string().required("Obrigatório"),
     escolaridade: Yup.string().required("Selecione a escolaridade"),
     nasc_dia: Yup.string().required("Selecione o dia"),
