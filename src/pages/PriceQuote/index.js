@@ -209,6 +209,10 @@ export class PriceQuote extends Component {
                ))} 
                
             </Grid>
+            { this.state.cotacoes == false &&
+                  
+                  <DialogAlert title="Ops!" message="Infelizmente aind não encontramos um plano de saúde pra você😞!" />
+                }
           </div>
           <div className="more-options">
             <p>
