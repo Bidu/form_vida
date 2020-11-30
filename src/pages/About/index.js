@@ -505,7 +505,6 @@ class About extends Component {
                   error={touched.date_birth && Boolean(errors.date_birth)}
                 />
               </Grid>
-              {console.log(this.props.values.date_birth, "date_birth")}
               {this.state.usuario.rua && (
                 <>
                   <Grid item xs={12} sm={6}>
