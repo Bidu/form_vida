@@ -20,7 +20,7 @@ export default function DatePickers() {
         id="birth"
         label="Nascimento"
         type="date"
-        defaultValue="2017-05-24"
+        defaultValue="1992-03-06"
         className={classes.textField}
         style={{marginLeft: "0px"}}
         InputLabelProps={{
