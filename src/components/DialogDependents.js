@@ -4,7 +4,6 @@ import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import InputLabel from '@material-ui/core/InputLabel';
 import {makeStyles} from '@material-ui/core/styles';
@@ -16,9 +15,6 @@ const useStyles = makeStyles({
         marginTop: "15px",
         borderRadius: "60px",       
     },
-    dialogo:{
-      width: "100%"
-    }
 
 })
 
@@ -100,8 +96,8 @@ export default function DialogDependents(props) {
       <Button variant="outlined" color="primary" className={classes.btn} onClick={handleClickOpen}>
         {props.titleName}
       </Button>
-      <Dialog open={open} onClose={handleClose} className={classes.dialogo} aria-labelledby="form-dialog-title">
-        <DialogTitle id="form-dialog-title">Preencha as informações abaixo</DialogTitle>
+      <Dialog open={open} onClose={handleClose} aria-labelledby="max-width-dialog-title">
+        <DialogTitle id="max-width-dialog-title">Preencha as informações abaixo</DialogTitle>
         <DialogContent>
         <InputLabel>Nome *</InputLabel>
           <TextField
@@ -113,7 +109,8 @@ export default function DialogDependents(props) {
             value={form.nome}
             onChange={handleInputChange}
             onBlur={handleInputChange}
-            fullWidth
+            fullWidth={true}
+            maxWidth="lg"
           />
           </DialogContent>
           <DialogContent>
@@ -124,7 +121,8 @@ export default function DialogDependents(props) {
             value={form.nascimento}
             name="nascimento"
             type="date"
-            fullWidth
+            fullWidth={true}
+            maxWidth="lg"
             onChange={handleInputChange}
             onBlur={handleInputChange}
           />

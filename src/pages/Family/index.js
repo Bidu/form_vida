@@ -201,7 +201,32 @@ class About extends Component {
             Para preparar a melhor opção de seguro para você, precisamos te
             conhecer um pouco melhor...
           </p>
-
+          <FormGroup row>
+                <Grid container spacing={2}>
+                  <Grid item xs={12} sm={6}>
+                    <div className="buttons pb05">
+                      <button
+                        className={`btn-outline ${
+                          this.props.values.possui_seguro === 1 ? "active" : ""
+                        }`}
+                        type="button"
+                        onClick={this.handleChangeInsurance()}
+                      >
+                        CPF
+                      </button>{" "}
+                      <button
+                        className={`btn-outline ${
+                          this.props.values.possui_seguro === 2 ? "active" : ""
+                        }`}
+                        type="button"
+                        onClick={this.handleChangeInsuranceFalse()}
+                      >
+                        CNPJ
+                      </button>
+                    </div>
+                  </Grid>
+                </Grid>
+              </FormGroup>
           <form onSubmit={handleSubmit}>
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6}>
@@ -224,6 +249,29 @@ class About extends Component {
                   }}
                   InputProps={{
                     inputComponent: textMaskCpf,
+                  }}
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  value={
+                    this.props.values.cnpj ? this.props.values.cnpj : usuario.cpf
+                  }
+                  id="cnpj"
+                  name="cnpj"
+                  label="CNPJ"
+                  placeholder="00.000.000/0000-00"
+                  fullWidth
+                  margin="20px"
+                  onChange={handleChange}
+                  onBlur={this.handleChange}
+                  helperText={touched.cnpj ? errors.cnpj : ""}
+                  error={touched.cnpj && Boolean(errors.cnpj)}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  InputProps={{
+                    inputComponent: textMaskCNPJ,
                   }}
                 />
               </Grid>
@@ -369,7 +417,7 @@ class About extends Component {
                   {anos.map(this.renderYear)}
                 </Select>
               </Grid>
-              <Grid item xs={12} sm={6}>
+              {/* <Grid item xs={12} sm={6}>
                 <InputLabel shrink id="gender">
                   Gênero
                 </InputLabel>
@@ -393,7 +441,7 @@ class About extends Component {
                   <MenuItem value="MASCULINO">Masculino</MenuItem>
                   <MenuItem value="FEMININO">Feminino</MenuItem>
                 </Select>
-              </Grid>
+              </Grid> */}
               
               {/* <Grid item xs={12} sm={6}>
                 <InputLabel shrink id="formation">

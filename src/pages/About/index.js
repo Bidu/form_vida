@@ -31,6 +31,7 @@ import { adicionarLeadCotacao } from "../../store/actions/addLeadBd";
 import { apiQualicorp } from "../../services/bdBo";
 import axios from "axios";
 import DialogDependents from '../../components/DialogDependents'
+import Birthday from '../../components/Birthday'
 import DialogAlert from '../../components/DialogAlert'
 import {
   textMaskPhone,
@@ -703,6 +704,7 @@ const Form = withFormik({
     nasc_ano,
     genero,
     moradia,
+    entidade,
   }) => {
     return {
       cpf: cpf || "",
@@ -720,6 +722,7 @@ const Form = withFormik({
       nasc_ano: nasc_ano || "",
       genero: genero || "",
       moradia: moradia || "",
+      entidade: entidade || "",
     };
   },
 
