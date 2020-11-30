@@ -31,6 +31,7 @@ import { adicionarLeadCotacao } from "../../store/actions/addLeadBd";
 import { apiQualicorp } from "../../services/bdBo";
 import axios from "axios";
 import DialogDependents from '../../components/DialogDependents'
+import Birthday from '../../components/Birthday'
 import DialogAlert from '../../components/DialogAlert'
 import {
   textMaskPhone,
