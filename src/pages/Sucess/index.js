@@ -426,28 +426,16 @@ export class Success extends Component {
                     <br />
                     Leia atentamente
                   </p>
-                  <p>
-                    Lorem ipsum dolor sit amet, consectetur Protocolo de
-                    Atendimento da Bidu adipiscing elit. Maecenas nec mi vitae
-                    SUL422289619 sapien tincidunt condimentum quis ut nunc.
-                    Suspendisse pulvinar, massa vel tincidunt gravida, lacus
-                    metus imperdiet dolor, sed auctor lacus felis in urna. Sua
-                    compra foi aliquam finalizada com sucesso! Mauris liquam
-                    mauris eget dictum. Nullam at erat sed diam luctus Fique
-                    atento id ao sit seus será fermentum amet e-mails, arcu. In
-                    você sodales notificado sobre as sit próximas etapas. velit
-                    in mi ultrices, amet rutrum urna aliquam. Pellentesque mi
-                    metus, congue id magna eu, porttitor vestibulum metus.
-                    Aenean efficitur semper est, vel ornare lacus imperdiet
-                    vitae. Pellentesque tincidunt justo at ante cursus, ut
-                    suscipit risus egestas. Sed in metus sit amet augue
-                    malesuada malesuada rhoncus eget libero. Vestibulum dui
-                    tellus, sollicitudin eu scelerisque at, fermentum Avalia
-                  </p>
+                  
                 </div>
               </div>
             </div>
           )}
+            <div className="actions mt0">
+              <Link className="btn-back" to="/">
+                <KeyboardBackspaceIcon /> Voltar
+              </Link>
+            </div>
         </Wrapper>
         <StepCompleted bold="Pagamento" />
         <StepCompleted bold="Cotação" />
