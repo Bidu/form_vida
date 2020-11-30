@@ -2,6 +2,7 @@ import React from "react";
 import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
 //import { Home } from "../pages/Home";
 import About from "../pages/About";
+import Family from "../pages/Family";
 import PME from "../pages/PME";
 import { PriceQuote } from "../pages/PriceQuote";
 
@@ -17,7 +18,9 @@ const Routes = () => (
       </Route>
       <Route exact path="/sobrevoce" component={About} forceRefresh={true} />
       <Route exact path="/cotacao" component={PriceQuote} />   
-      <Route exact path="/sobreaempresa" component={PME} />    
+      <Route exact path="/sobreaempresa" component={PME} />
+      <Route exact path="/sobresuafamilia" component={Family} />    
+    
     </Switch>
   </BrowserRouter>
 );
