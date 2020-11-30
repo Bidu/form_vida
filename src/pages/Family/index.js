@@ -15,6 +15,7 @@ import KeyboardBackspaceIcon from "@material-ui/icons/KeyboardBackspace";
 import Radio from "@material-ui/core/Radio";
 import RadioGroup from "@material-ui/core/RadioGroup";
 import FormControl from "@material-ui/core/FormControl";
+import FormGroup from "@material-ui/core/FormGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Switch from "@material-ui/core/Switch";
 import { Link, Redirect } from "react-router-dom";
@@ -29,6 +30,7 @@ import {
   textMaskPhone,
   textMaskNumber,
   textMaskCpf,
+  textMaskCNPJ,
   textMaskCEP,
   onlyNumbers,
   CheckCPF,
@@ -40,7 +42,7 @@ import { checkValidateRadios } from "../../helpers";
 import Loading from "../../components/loading";
 import { CadastrarCotacaoBd } from "../../services/bd/CadastrarCotacao";
 
-import { createBrowserHistory } from 'history';
+import { createBrowserHistory } from "history";
 class About extends Component {
   constructor(props) {
     super(props);
@@ -51,6 +53,8 @@ class About extends Component {
       //redirect: false,
       cep: "",
       occupations: [],
+      possui_cnpj: 1,
+      possui_cpf: 0,
       usuario: {
         cpf: "",
         nome: "",
@@ -78,16 +82,8 @@ class About extends Component {
     this.handleCEP = this.handleCEP.bind(this);
   }
 
-
   async componentDidMount() {
-
-    
     this.props.values.profissao = "Selecione";
-    
-
-
-
-
 
     const storage = JSON.parse(localStorage.getItem("@bidu2/user"));
 
@@ -111,10 +107,13 @@ class About extends Component {
   };
   getAddress = async (e) => {
     this.setState({ loading: true });
-    let content = await apiQualicorp.endereco(this.state.cep.replace("-", "")) 
-    console.log("OLA",content.data)   
-    let occupations = await apiQualicorp.publicoAlvo(content.data.estado, content.data.cidade)
-    this.setState({occupations:occupations.data})
+    let content = await apiQualicorp.endereco(this.state.cep.replace("-", ""));
+    console.log("OLA", content.data);
+    let occupations = await apiQualicorp.publicoAlvo(
+      content.data.estado,
+      content.data.cidade
+    );
+    this.setState({ occupations: occupations.data });
     this.setState({
       usuario: {
         ...this.state.usuario,
@@ -123,17 +122,16 @@ class About extends Component {
         bairro: content.data.bairro,
         estado: content.data.estado,
         cep: content.data.cep,
-        uf: content.data.estado
+        uf: content.data.estado,
       },
       loading: false,
     });
-        this.props.values.rua = content.data.logradouro;
-        this.props.values.cidade = content.data.cidade;
-        this.props.values.bairro = content.data.bairro;
-        this.props.values.estado = content.data.estado;
-        this.props.values.cep = content.data.cep;
-        this.props.values.uf = content.data.estado;
-    
+    this.props.values.rua = content.data.logradouro;
+    this.props.values.cidade = content.data.cidade;
+    this.props.values.bairro = content.data.bairro;
+    this.props.values.estado = content.data.estado;
+    this.props.values.cep = content.data.cep;
+    this.props.values.uf = content.data.estado;
   };
 
   handleChange = (event) => {
@@ -150,7 +148,17 @@ class About extends Component {
       [name]: event.target.checked,
     });
   };
+  handleChangeCnpj = (value) => {
+    // event.preventDefault();
+    this.setState({ possui_cnpj: value });
+    console.log(value);
+    this.props.setValues({
+      ...this.props.values,
+      possui_cnpj: value,
+    });
 
+    console.log(this.props);
+  };
   renderDay(dia) {
     return <MenuItem value={dia}>{dia}</MenuItem>;
   }
@@ -196,499 +204,487 @@ class About extends Component {
       <>
         <Wrapper>
           <Steps step1={true} step2={true} />
-          <Title text="Sobre" bold="você" />
-          <p>
+          <Title text="Você possui" bold="CNPJ?" />
+          {/* <p>
             Para preparar a melhor opção de seguro para você, precisamos te
             conhecer um pouco melhor...
-          </p>
-          <FormGroup row>
-                <Grid container spacing={2}>
-                  <Grid item xs={12} sm={6}>
-                    <div className="buttons pb05">
-                      <button
-                        className={`btn-outline ${
-                          this.props.values.possui_seguro === 1 ? "active" : ""
-                        }`}
-                        type="button"
-                        onClick={this.handleChangeInsurance()}
-                      >
-                        CPF
-                      </button>{" "}
-                      <button
-                        className={`btn-outline ${
-                          this.props.values.possui_seguro === 2 ? "active" : ""
-                        }`}
-                        type="button"
-                        onClick={this.handleChangeInsuranceFalse()}
-                      >
-                        CNPJ
-                      </button>
-                    </div>
-                  </Grid>
-                </Grid>
-              </FormGroup>
+          </p> */}
           <form onSubmit={handleSubmit}>
-            <Grid container spacing={2}>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  value={
-                    this.props.values.cpf ? this.props.values.cpf : usuario.cpf
-                  }
-                  id="cpf"
-                  name="cpf"
-                  label="CPF"
-                  placeholder="000.000.000-00"
-                  fullWidth
-                  margin="20px"
-                  onChange={handleChange}
-                  onBlur={this.handleChange}
-                  helperText={touched.cpf ? errors.cpf : ""}
-                  error={touched.cpf && Boolean(errors.cpf)}
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                  InputProps={{
-                    inputComponent: textMaskCpf,
-                  }}
-                />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  value={
-                    this.props.values.cnpj ? this.props.values.cnpj : usuario.cpf
-                  }
-                  id="cnpj"
-                  name="cnpj"
-                  label="CNPJ"
-                  placeholder="00.000.000/0000-00"
-                  fullWidth
-                  margin="20px"
-                  onChange={handleChange}
-                  onBlur={this.handleChange}
-                  helperText={touched.cnpj ? errors.cnpj : ""}
-                  error={touched.cnpj && Boolean(errors.cnpj)}
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                  InputProps={{
-                    inputComponent: textMaskCNPJ,
-                  }}
-                />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  value={this.props.values.nome ? this.props.values.nome : ""}
-                  type="text"
-                  id="name"
-                  name="nome"
-                  label="Nome"
-                  placeholder="João da Silva"
-                  fullWidth
-                  onChange={handleChange}
-                  onBlur={this.handleChange}
-                  helperText={touched.nome ? errors.nome : ""}
-                  error={touched.nome && Boolean(errors.nome)}
-                  InputProps={{
-                    inputComponent: onlyLetters,
-                  }}
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                />
-              </Grid>
-
-              {}
-
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  value={this.props.values.email ? this.props.values.email : ""}
-                  id="email"
-                  name="email"
-                  label="Email"
-                  placeholder="joao@email.com"
-                  fullWidth
-                  onChange={handleChange}
-                  onBlur={this.handleChange}
-                  helperText={touched.email ? errors.email : ""}
-                  error={touched.email && Boolean(errors.email)}
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  value={
-                    this.props.values.telefone ? this.props.values.telefone : ""
-                  }
-                  id="phone"
-                  name="telefone"
-                  label="Celular"
-                  placeholder="(00) 00000-0000"
-                  fullWidth
-                  onChange={handleChange}
-                  onBlur={this.handleChange}
-                  helperText={touched.telefone ? errors.telefone : ""}
-                  error={touched.telefone && Boolean(errors.telefone)}
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                  InputProps={{
-                    inputComponent: textMaskPhone,
-                  }}
-                />
-              </Grid>
-              <Grid item xs={12} sm={12} className="pb0">
-                <InputLabel shrink id="birth">
-                  Nascimento
-                </InputLabel>
-              </Grid>
-              <Grid item xs={4} className="pt0">
-                <Select
-                  name="nasc_dia"
-                  fullWidth
-                  displayEmpty
-                  labelId="birth"
-                  id="day"
-                  value={
-                    this.props.values.nasc_dia ? this.props.values.nasc_dia : ""
-                  }
-                  onChange={handleChange("nasc_dia")}
-                  onBlur={this.handleChange}
-                  helperText={touched.nasc_dia ? errors.nasc_dia : ""}
-                  error={touched.nasc_dia && Boolean(errors.nasc_dia)}
-                >
-                  <MenuItem value="" disabled>
-                    Dia
-                  </MenuItem>
-                  {dias.map(this.renderDay)}
-                </Select>
-              </Grid>
-              <Grid item xs={4} className="pt0">
-                <Select
-                  name="nasc_mes"
-                  fullWidth
-                  displayEmpty
-                  labelId="birth"
-                  id="month"
-                  value={
-                    this.props.values.nasc_mes ? this.props.values.nasc_mes : ""
-                  }
-                  onChange={handleChange("nasc_mes")}
-                  onBlur={this.handleChange}
-                  helperText={touched.nasc_mes ? errors.nasc_mes : ""}
-                  error={touched.nasc_mes && Boolean(errors.nasc_mes)}
-                >
-                  <MenuItem value="" disabled>
-                    Mês
-                  </MenuItem>
-                  <MenuItem value="01">Janeiro</MenuItem>
-                  <MenuItem value="02">Fevereiro</MenuItem>
-                  <MenuItem value="03">Março</MenuItem>
-                  <MenuItem value="04">Abril</MenuItem>
-                  <MenuItem value="05">Maio</MenuItem>
-                  <MenuItem value="06">Junho</MenuItem>
-                  <MenuItem value="07">Julho</MenuItem>
-                  <MenuItem value="08">Agosto</MenuItem>
-                  <MenuItem value="09">Setembro</MenuItem>
-                  <MenuItem value="10">Outubro</MenuItem>
-                  <MenuItem value="11">Novembro</MenuItem>
-                  <MenuItem value="12">Dezembro</MenuItem>
-                </Select>
-              </Grid>
-              <Grid item xs={4} className="pt0">
-                <Select
-                  name="nasc_ano"
-                  fullWidth
-                  displayEmpty
-                  labelId="birth"
-                  id="year"
-                  value={
-                    this.props.values.nasc_ano ? this.props.values.nasc_ano : ""
-                  }
-                  onChange={handleChange("nasc_ano")}
-                  onBlur={this.handleChange}
-                  helperText={touched.nasc_ano ? errors.nasc_ano : ""}
-                  error={touched.nasc_ano && Boolean(errors.nasc_ano)}
-                >
-                  <MenuItem value="" disabled>
-                    Ano
-                  </MenuItem>
-                  {anos.map(this.renderYear)}
-                </Select>
-              </Grid>
-              {/* <Grid item xs={12} sm={6}>
-                <InputLabel shrink id="gender">
-                  Gênero
-                </InputLabel>
-                <Select
-                  name="genero"
-                  fullWidth
-                  displayEmpty
-                  labelId="gender"
-                  id="gender"
-                  value={
-                    this.props.values.genero ? this.props.values.genero : ""
-                  }
-                  onChange={handleChange("genero")}
-                  onBlur={this.handleChange}
-                  helperText={touched.genero ? errors.genero : ""}
-                  error={touched.genero && Boolean(errors.genero)}
-                >
-                  <MenuItem value="" disabled>
-                    Selecione
-                  </MenuItem>
-                  <MenuItem value="MASCULINO">Masculino</MenuItem>
-                  <MenuItem value="FEMININO">Feminino</MenuItem>
-                </Select>
-              </Grid> */}
-              
-              {/* <Grid item xs={12} sm={6}>
-                <InputLabel shrink id="formation">
-                  Escolaridade
-                </InputLabel>
-                <Select
-                  name="escolaridade"
-                  fullWidth
-                  displayEmpty
-                  labelId="escolaridade"
-                  id="escolaridade"
-                  value={
-                    this.props.values.escolaridade
-                      ? this.props.values.escolaridade
-                      : ""
-                  }
-                  onChange={handleChange("escolaridade")}
-                  onBlur={this.handleChange}
-                  helperText={touched.escolaridade ? errors.escolaridade : ""}
-                  error={touched.escolaridade && Boolean(errors.escolaridade)}
-                >
-                  <MenuItem className="txt-dark_gray" value="" disabled>
-                    Selecione
-                  </MenuItem>
-                  <MenuItem value="EDUCACAO_PRIMARIA">
-                    Ensino Fundamental
-                  </MenuItem>
-                  <MenuItem value="ENSINO_MEDIO">Ensino Médio</MenuItem>
-                  <MenuItem value="ENSINO_MEDIO_TECNICO">
-                    Ensino Técnico
-                  </MenuItem>
-                  <MenuItem value="ENSINO_SUPERIOR">Ensino Superior</MenuItem>
-                  <MenuItem value="ENSINO_SUPERIOR_TECNOLOGO">
-                    Ensino Superior Tecnólogo
-                  </MenuItem>
-                  <MenuItem value="POS_GRADUACAO">Pós-graduação</MenuItem>
-                  <MenuItem value="MESTRADO">Mestrado</MenuItem>
-                  <MenuItem value=">DOUTORADO">Doutorado</MenuItem>
-                  <MenuItem value="POS_DOUTORADO">Pós Doutorado</MenuItem>
-                </Select>
-              </Grid> */}
-              <Grid item xs={8} sm={6}>
-                <TextField
-                  value={this.props.values.cep ? this.props.values.cep : ""}
-                  id="cep"
-                  label="CEP"
-                  placeholder="00000-000"
-                  fullWidth
-                  name="cep"
-                  onChange={handleChange}
-                  onBlur={(e) => this.handleCEP(e)}
-                  helperText={touched.cep ? errors.cep : ""}
-                  error={touched.cep && Boolean(errors.cep)}
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                  InputProps={{
-                    inputComponent: textMaskCEP,
-                  }}
-                />
-                {this.state.usuario.cep === undefined && (
-                  <p class="zip-error">CEP não encontrado</p>
-                )}
-              </Grid>
-              {/* <Grid item xs={4} sm={6}>
-                <TextField
-                  value={
-                    this.props.values.numero ? this.props.values.numero : ""
-                  }
-                  id="numero"
-                  name="numero"
-                  label="Número"
-                  placeholder="Digite aqui"
-                  fullWidth
-                  onChange={handleChange}
-                  onBlur={this.handleChange}
-                  helperText={touched.numero ? errors.numero : ""}
-                  error={touched.numero && Boolean(errors.numero)}
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                  InputProps={{
-                    inputComponent: textMaskNumber,
-                  }}
-                />
-              </Grid> */}
-              {/* {loading && <Loading />}
-              {this.state.usuario.rua && (
+            <FormGroup row>
+              <Grid container spacing={2}>
                 <Grid item xs={12} sm={6}>
-                  <div className="results">
-                    {this.state.usuario.rua}, {this.state.usuario.bairro} -{" "}
-                    {this.state.usuario.cidade}
+                  <div className="buttons pb05">
+                    <button
+                      className={`btn-outline ${
+                        this.state.possui_cnpj == 1 ? "active" : ""
+                      }`}
+                      value={1}
+                      type="button"
+                      onClick={(e) => this.handleChangeCnpj(e.target.value)}
+                    >
+                      Sim
+                    </button>{" "}
+                    <button
+                      className={`btn-outline ${
+                        this.state.possui_cnpj == 0 ? "active" : ""
+                      }`}
+                      value={0}
+                      type="button"
+                      onClick={(e) => this.handleChangeCnpj(e.target.value)}
+                    >
+                      Não
+                    </button>
                   </div>
                 </Grid>
-              )}
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  value={
-                    this.props.values.complemento
-                      ? this.props.values.complemento
-                      : ""
-                  }
-                  id="complemento"
-                  name="complemento"
-                  label="Complemento"
-                  placeholder="Digite aqui"
-                  fullWidth
-                  onChange={handleChange}
-                  onBlur={this.handleChange}
-                  helperText={touched.complemento ? errors.complemento : ""}
-                  error={touched.complemento && Boolean(errors.complemento)}
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                />
-              </Grid> */}
-              <Grid item xs={12} sm={6}>
-                <InputLabel shrink id="gender">
-                  Profissão
-                </InputLabel>
-                <Select
-                  name="profissao"
-                  fullWidth
-                  displayEmpty
-                  labelId="profissao"
-                  id="profissao"
-                  value={
-                    this.props.values.profissao
-                      ? this.props.values.profissao
-                      : "Não informado"
-                  }
-                  onChange={handleChange("profissao")}
-                  onBlur={this.handleChange}
-                  helperText={touched.profissao ? errors.profissao : ""}
-                  error={touched.profissao && Boolean(errors.profissao)}
-                >
-                  <MenuItem value="Selecione" disabled>
-                    Selecione
-                  </MenuItem>
-                  
-                  {this.state.occupations.length > 0 && this.state.occupations.map((e, key) => (
-                    <MenuItem value={e.id}>{e.nome}</MenuItem>
-                  ))}
-                </Select>
-                </Grid>   
               </Grid>
-              {/* <Grid item xs={12} sm={6}>
-                <InputLabel shrink id="gender">
-                  Profissão
-                </InputLabel>
-                <Select
-                  name="entidades"
-                  fullWidth
-                  displayEmpty
-                  labelId="entidades"
-                  id="entidades"
-                  value={
-                    this.props.values.entidades
-                      ? this.props.values.entidades
-                      : "Não informado"
-                  }
-                  onChange={handleChange("entidades")}
-                  onBlur={this.handleChange}
-                  helperText={touched.entidades ? errors.entidades : ""}
-                  error={touched.profissao && Boolean(errors.profissao)}
-                >
-                  <MenuItem value="Selecione" disabled>
-                    Selecione
-                  </MenuItem>
-                  
-                  {this.state.occupations.length > 0 && this.state.occupations.map((e, key) => (
-                    <MenuItem value={e.id}>{e.nome}</MenuItem>
-                  ))}
-                </Select>
-                </Grid>    */}
-            
-              {/* <Grid item xs={12}>
-                <FormControl component="fieldset">
-                  <RadioGroup
+            </FormGroup>
+            {this.state.possui_cnpj == 1 && (
+              <div className="buttons-search">
+                <Grid item xs={12} sm={6}>
+                  <TextField
                     value={
-                      this.props.values.moradia ? this.props.values.moradia : ""
+                      this.props.values.possui_cnpj
+                        ? this.props.values.possui_cnpj
+                        : ""
                     }
-                    aria-label="moradia"
-                    name="moradia"
-                    className={checkValidateRadios("moradia", this.props)}
-                    onChange={handleChange("moradia")}
-                    onBlur={this.handleChange}
-                    helperText={touched.moradia ? errors.moradia : ""}
-                    error={touched.moradia && Boolean(errors.moradia)}
-                  >
-                    <Grid item xs={12} sm container>
-                      <Grid item xs={12} sm={3}>
-                        <FormControlLabel
-                          value="CASA"
-                          control={<Radio color="primary" />}
-                          label="Casa"
-                        />
-                      </Grid>
-                      <Grid item xs={12} sm={3}>
-                        <FormControlLabel
-                          value="APARTAMENTO"
-                          control={<Radio color="primary" />}
-                          label="Apartamento"
-                        />
-                      </Grid>
-                      <Grid item xs={12} sm={3}>
-                        <FormControlLabel
-                          value="CONDOMINIO"
-                          control={<Radio color="primary" />}
-                          label="Condomínio fechado"
-                        />
-                      </Grid>
-                      <Grid item xs={12} sm={3}>
-                        <FormControlLabel
-                          value="OUTROS"
-                          control={<Radio color="primary" />}
-                          label="Outros"
-                        />
-                      </Grid>
-                    </Grid>
-                  </RadioGroup>
-                </FormControl> */}
-              {/* </Grid>
-              {this.props.isValid ||
-                (this.props.submitCount > 0 && (
-                  <Grid item xs={12} sm={12}>
-                    <div className="warning-validation warning-left">
-                      <strong>Atenção!</strong>- Preenchimento obrigatório dos
-                      campos destacados.
-                    </div>
+                    label="CNPJ"
+                    inputProps={{ "aria-label": "possui_cnpj" }}
+                    fullWidth
+                    id="possui_cnpj"
+                    name="possui_cnpj"
+                    placeholder="Digite aqui"
+                    onChange={handleChange}
+                    // onBlur={(e) =>
+                    //   e.target.value.length == 7
+                    //     ? this.getApiGeneralli(e.target.value)
+                    //     : ""
+                    // }
+                    // onKeyPress={(e) =>
+                    //   e.target.value.length == 7
+                    //     ? this.getApiGeneralli(e.target.value)
+                    //     : ""
+                    // }
+                    helperText={touched.possui_cnpj ? errors.possui_cnpj : ""}
+                    error={touched.possui_cnpj && Boolean(errors.possui_cnpj)}
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
+                    InputProps={{
+                      inputComponent: textMaskCNPJ,
+                    }}
+                  />
+                </Grid>
+                <>
+                <Grid container spacing={2}>
+                  <Grid item xs={12} sm={6}>
+                    <InputLabel shrink id="ano_fabricacao">
+                      Nome
+                    </InputLabel>
+                    <TextField
+                      // value={
+                      //   this.state.automovel.ano_fabricacao
+                      //     ? this.state.automovel.ano_fabricacao
+                      //     : "000"
+                      // }
+                      fullWidth
+                      displayEmpty
+                      labelId="ano_fabricacao"
+                      id="ano_fabricacao"
+                      name="ano_fabricacao"
+                      placeholder="Benedito"
+                      // onBlur={handleChange("ano_fabricacao")}
+                      // onChange={this.handleAnoFabricacao("ano_fabricacao")}
+                      helperText={
+                        touched.ano_fabricacao ? errors.ano_fabricacao : ""
+                      }
+                      error={
+                        touched.ano_fabricacao && Boolean(errors.ano_fabricacao)
+                      }
+                    ></TextField>
                   </Grid>
-                ))}
-                {localStorage.getItem("bdbo/errorAbout") && (
-                  <Grid item xs={12} sm={12}>
-                    <div className="warning-validation warning-left">
-                      <strong>OPS!</strong>- DADOS DIVERGENTES. NOME OU DATA DE NASCIMENTO INCORRETOS.
-                    </div>
+                  <Grid item xs={12} sm={6}>
+                    <InputLabel shrink id="ano_fabricacao">
+                      Email
+                    </InputLabel>
+                    <TextField
+                      // value={
+                      //   this.state.automovel.ano_fabricacao
+                      //     ? this.state.automovel.ano_fabricacao
+                      //     : "000"
+                      // }
+                      fullWidth
+                      displayEmpty
+                      labelId="ano_fabricacao"
+                      id="ano_fabricacao"
+                      name="ano_fabricacao"
+                      placeholder="email@email.com"
+                      // onBlur={handleChange("ano_fabricacao")}
+                      // onChange={this.handleAnoFabricacao("ano_fabricacao")}
+                      helperText={
+                        touched.ano_fabricacao ? errors.ano_fabricacao : ""
+                      }
+                      error={
+                        touched.ano_fabricacao && Boolean(errors.ano_fabricacao)
+                      }
+                    ></TextField>
                   </Grid>
-                )}
-              */}
+                  <Grid item xs={12} sm={6}>
+                    <InputLabel shrink id="ano_fabricacao">
+                      Celular
+                    </InputLabel>
+                    <TextField
+                      // value={
+                      //   this.state.automovel.ano_fabricacao
+                      //     ? this.state.automovel.ano_fabricacao
+                      //     : "000"
+                      // }
+                      fullWidth
+                      displayEmpty
+                      labelId="ano_fabricacao"
+                      id="ano_fabricacao"
+                      name="ano_fabricacao"
+                      placeholder="(11) 99999-9999"
+                      // onBlur={handleChange("ano_fabricacao")}
+                      // onChange={this.handleAnoFabricacao("ano_fabricacao")}
+                      helperText={
+                        touched.ano_fabricacao ? errors.ano_fabricacao : ""
+                      }
+                      error={
+                        touched.ano_fabricacao && Boolean(errors.ano_fabricacao)
+                      }
+                    ></TextField>
+                  </Grid>
+
+                  <Grid item xs={12} sm={6}>
+                    <InputLabel shrink id="ano_modelo">
+                      CEP
+                    </InputLabel>
+
+                    <TextField
+                      // value={
+                      //   this.state.automovel.ano_modelo
+                      //     ? this.state.automovel.ano_modelo
+                      //     : "000"
+                      // }
+                      fullWidth
+                      displayEmpty
+                      labelId="ano_modelo"
+                      id="ano_modelo"
+                      name="ano_modelo"
+                      placeholder="00000-000"
+                      // onBlur={handleChange("ano_modelo")}
+                      // onChange={this.handleChangeFields("ano_modelo")}
+                      helperText={touched.ano_modelo ? errors.ano_modelo : ""}
+                      error={touched.ano_modelo && Boolean(errors.ano_modelo)}
+                    >
+                      <MenuItem value="000">Selecione</MenuItem>
+                    </TextField>
+                  </Grid>
+
+                  <Grid item xs={12} sm={6}>
+                    <InputLabel shrink id="nascimento">
+                      Nascimento
+                    </InputLabel>
+                    <TextField
+                      // value={
+                      //   this.state.automovel.id_marca
+                      //     ? this.state.automovel.id_marca
+                      //     : this.props.values.id_marca
+                      // }
+                      fullWidth
+                      displayEmpty
+                      labelId="nascimento"
+                      id="nascimento"
+                      name="id_nascimento"
+                      // onBlur={handleChange("id_marca")}
+                      // onChange={this.handleChangeMarcas("id_marca")}
+                      helperText={
+                        touched.id_nascimento ? errors.id_nascimento : ""
+                      }
+                      error={
+                        touched.id_nascimento && Boolean(errors.id_nascimento)
+                      }
+                      placeholder="00/00/0000"
+                    >
+                      <MenuItem value="000">Selecione</MenuItem>
+                    </TextField>
+                  </Grid>
+
+                  <Grid item xs={12} sm={6}>
+                    <InputLabel shrink id="modelo">
+                      Profissão
+                    </InputLabel>
+                    <TextField
+                      // value={
+                      //   this.state.automovel.id_modelo
+                      //     ? this.state.automovel.id_modelo
+                      //     : "000"
+                      // }
+                      fullWidth
+                      displayEmpty
+                      labelId="modelo_select"
+                      id="modelo_select"
+                      placeholder="Atendente"
+                      // onChange={this.handleSelectModelo("modelo_select")}
+                      // onBlur={handleChange("modelo_select")}
+                      helperText={
+                        touched.modelo_select ? errors.modelo_select : ""
+                      }
+                      error={
+                        touched.modelo_select && Boolean(errors.modelo_select)
+                      }
+                    >
+                      <MenuItem value="000">Selecione</MenuItem>
+                      {/* {modelos &&
+                  modelos.map((m) => (
+                    <MenuItem key={m.id} value={m.id}>
+                      {m.name}
+                    </MenuItem>
+                  ))} */}
+                    </TextField>
+                  </Grid>
+                  {this.props.isValid ||
+                    (this.props.submitCount > 0 && (
+                      <Grid item xs={12} sm={12}>
+                        <div className="warning-validation warning-left">
+                          <strong>Atenção!</strong>- Preenchimento obrigatório
+                          dos campos destacados.
+                          <br />
+                        </div>
+                      </Grid>
+                    ))}
+                </Grid>
+                </>                
+              </div>
+            )}{" "}
+            {this.state.possui_cnpj == 0 ? (
+              <>
+                <div className="buttons-search">
+                  <Grid item xs={12} sm={6}>
+                    <TextField
+                      value={
+                        this.props.values.possui_cpf
+                          ? this.props.values.possui_cpf
+                          : ""
+                      }
+                      label="CPF"
+                      inputProps={{ "aria-label": "possui_cpf" }}
+                      fullWidth
+                      id="possui_cpf"
+                      name="possui_cpf"
+                      placeholder="Digite aqui"
+                      onChange={handleChange}
+                      // onBlur={(e) =>
+                      //   e.target.value.length == 7
+                      //     ? this.getApiGeneralli(e.target.value)
+                      //     : ""
+                      // }
+                      // onKeyPress={(e) =>
+                      //   e.target.value.length == 7
+                      //     ? this.getApiGeneralli(e.target.value)
+                      //     : ""
+                      // }
+                      helperText={touched.possui_cpf ? errors.possui_cpf : ""}
+                      error={touched.possui_cpf && Boolean(errors.possui_cpf)}
+                      InputLabelProps={{
+                        shrink: true,
+                      }}
+                      InputProps={{
+                        inputComponent: textMaskCpf,
+                      }}
+                    />
+                  </Grid>
+                </div>
+                <Grid container spacing={2}>
+                  <Grid item xs={12} sm={6}>
+                    <InputLabel shrink id="ano_fabricacao">
+                      Nome
+                    </InputLabel>
+                    <TextField
+                      // value={
+                      //   this.state.automovel.ano_fabricacao
+                      //     ? this.state.automovel.ano_fabricacao
+                      //     : "000"
+                      // }
+                      fullWidth
+                      displayEmpty
+                      labelId="ano_fabricacao"
+                      id="ano_fabricacao"
+                      name="ano_fabricacao"
+                      placeholder="Benedito"
+                      // onBlur={handleChange("ano_fabricacao")}
+                      // onChange={this.handleAnoFabricacao("ano_fabricacao")}
+                      helperText={
+                        touched.ano_fabricacao ? errors.ano_fabricacao : ""
+                      }
+                      error={
+                        touched.ano_fabricacao && Boolean(errors.ano_fabricacao)
+                      }
+                    ></TextField>
+                  </Grid>
+                  <Grid item xs={12} sm={6}>
+                    <InputLabel shrink id="ano_fabricacao">
+                      Email
+                    </InputLabel>
+                    <TextField
+                      // value={
+                      //   this.state.automovel.ano_fabricacao
+                      //     ? this.state.automovel.ano_fabricacao
+                      //     : "000"
+                      // }
+                      fullWidth
+                      displayEmpty
+                      labelId="ano_fabricacao"
+                      id="ano_fabricacao"
+                      name="ano_fabricacao"
+                      placeholder="email@email.com"
+                      // onBlur={handleChange("ano_fabricacao")}
+                      // onChange={this.handleAnoFabricacao("ano_fabricacao")}
+                      helperText={
+                        touched.ano_fabricacao ? errors.ano_fabricacao : ""
+                      }
+                      error={
+                        touched.ano_fabricacao && Boolean(errors.ano_fabricacao)
+                      }
+                    ></TextField>
+                  </Grid>
+                  <Grid item xs={12} sm={6}>
+                    <InputLabel shrink id="ano_fabricacao">
+                      Celular
+                    </InputLabel>
+                    <TextField
+                      // value={
+                      //   this.state.automovel.ano_fabricacao
+                      //     ? this.state.automovel.ano_fabricacao
+                      //     : "000"
+                      // }
+                      fullWidth
+                      displayEmpty
+                      labelId="ano_fabricacao"
+                      id="ano_fabricacao"
+                      name="ano_fabricacao"
+                      placeholder="(11) 99999-9999"
+                      // onBlur={handleChange("ano_fabricacao")}
+                      // onChange={this.handleAnoFabricacao("ano_fabricacao")}
+                      helperText={
+                        touched.ano_fabricacao ? errors.ano_fabricacao : ""
+                      }
+                      error={
+                        touched.ano_fabricacao && Boolean(errors.ano_fabricacao)
+                      }
+                    ></TextField>
+                  </Grid>
+
+                  <Grid item xs={12} sm={6}>
+                    <InputLabel shrink id="ano_modelo">
+                      CEP
+                    </InputLabel>
+
+                    <TextField
+                      // value={
+                      //   this.state.automovel.ano_modelo
+                      //     ? this.state.automovel.ano_modelo
+                      //     : "000"
+                      // }
+                      fullWidth
+                      displayEmpty
+                      labelId="ano_modelo"
+                      id="ano_modelo"
+                      name="ano_modelo"
+                      placeholder="00000-000"
+                      // onBlur={handleChange("ano_modelo")}
+                      // onChange={this.handleChangeFields("ano_modelo")}
+                      helperText={touched.ano_modelo ? errors.ano_modelo : ""}
+                      error={touched.ano_modelo && Boolean(errors.ano_modelo)}
+                    >
+                      <MenuItem value="000">Selecione</MenuItem>
+                    </TextField>
+                  </Grid>
+
+                  <Grid item xs={12} sm={6}>
+                    <InputLabel shrink id="nascimento">
+                      Nascimento
+                    </InputLabel>
+                    <TextField
+                      // value={
+                      //   this.state.automovel.id_marca
+                      //     ? this.state.automovel.id_marca
+                      //     : this.props.values.id_marca
+                      // }
+                      fullWidth
+                      displayEmpty
+                      labelId="nascimento"
+                      id="nascimento"
+                      name="id_nascimento"
+                      // onBlur={handleChange("id_marca")}
+                      // onChange={this.handleChangeMarcas("id_marca")}
+                      helperText={
+                        touched.id_nascimento ? errors.id_nascimento : ""
+                      }
+                      error={
+                        touched.id_nascimento && Boolean(errors.id_nascimento)
+                      }
+                      placeholder="00/00/0000"
+                    >
+                      <MenuItem value="000">Selecione</MenuItem>
+                    </TextField>
+                  </Grid>
+
+                  <Grid item xs={12} sm={6}>
+                    <InputLabel shrink id="modelo">
+                      Profissão
+                    </InputLabel>
+                    <TextField
+                      // value={
+                      //   this.state.automovel.id_modelo
+                      //     ? this.state.automovel.id_modelo
+                      //     : "000"
+                      // }
+                      fullWidth
+                      displayEmpty
+                      labelId="modelo_select"
+                      id="modelo_select"
+                      placeholder="Atendente"
+                      // onChange={this.handleSelectModelo("modelo_select")}
+                      // onBlur={handleChange("modelo_select")}
+                      helperText={
+                        touched.modelo_select ? errors.modelo_select : ""
+                      }
+                      error={
+                        touched.modelo_select && Boolean(errors.modelo_select)
+                      }
+                    >
+                      <MenuItem value="000">Selecione</MenuItem>
+                      {/* {modelos &&
+                  modelos.map((m) => (
+                    <MenuItem key={m.id} value={m.id}>
+                      {m.name}
+                    </MenuItem>
+                  ))} */}
+                    </TextField>
+                  </Grid>
+                  {this.props.isValid ||
+                    (this.props.submitCount > 0 && (
+                      <Grid item xs={12} sm={12}>
+                        <div className="warning-validation warning-left">
+                          <strong>Atenção!</strong>- Preenchimento obrigatório
+                          dos campos destacados.
+                          <br />
+                        </div>
+                      </Grid>
+                    ))}
+                </Grid>
+              </>
+            ) : (
+              delete this.props.values.possui_cnpj
+            )}
             <div className="actions">
               <Button
                 type="submit"
                 className="btn-next"
                 disabled={isSubmitting}
               >
-                Ver planos
+                QUERO UMA COTAÇÃO
               </Button>
               {/*<Link className="btn-back" to="/">
                 <KeyboardBackspaceIcon /> Voltar
@@ -714,8 +710,6 @@ const mapDispatchToProps = (dispatch) => {
     //addLead: (send) => dispatch(postBo('auto/segurado', send))
   };
 };
-
-
 
 const Form = withFormik({
   mapPropsToValues: ({
@@ -790,9 +784,10 @@ const Form = withFormik({
     moradia: Yup.string().required("Selecione a moradia"),
   }),
 
-  handleSubmit: async (values, { props, setStatus, setValues, setSubmitting }) => {
-
-    
+  handleSubmit: async (
+    values,
+    { props, setStatus, setValues, setSubmitting }
+  ) => {
     setTimeout(() => {
       //submit to the server
       //alert(JSON.stringify(values, null, 2));

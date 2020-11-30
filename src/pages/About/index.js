@@ -19,20 +19,20 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Switch from "@material-ui/core/Switch";
 import { Link, Redirect } from "react-router-dom";
 import Button from "@material-ui/core/Button";
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import DialogTitle from "@material-ui/core/DialogTitle";
 import { withFormik } from "formik";
 import * as Yup from "yup";
 import * as API from "../../services/bd/CadastrarCotacao";
 import { adicionarLeadCotacao } from "../../store/actions/addLeadBd";
 import { apiQualicorp } from "../../services/bdBo";
 import axios from "axios";
-import DialogDependents from '../../components/DialogDependents'
-import Birthday from '../../components/Birthday'
-import DialogAlert from '../../components/DialogAlert'
+import DialogDependents from "../../components/DialogDependents";
+import Birthday from "../../components/Birthday";
+import DialogAlert from "../../components/DialogAlert";
 import {
   textMaskPhone,
   textMaskNumber,
@@ -48,7 +48,7 @@ import { checkValidateRadios } from "../../helpers";
 import Loading from "../../components/loading";
 import { CadastrarCotacaoBd } from "../../services/bd/CadastrarCotacao";
 
-import { createBrowserHistory } from 'history';
+import { createBrowserHistory } from "history";
 import { entities } from "../../helpers/entities";
 class About extends Component {
   constructor(props) {
@@ -75,6 +75,7 @@ class About extends Component {
         estado: "",
         uf: "",
         complemento: "",
+        date_birth: "",
         nasc_dia: "",
         nasc_mes: "",
         nasc_ano: "",
@@ -88,16 +89,8 @@ class About extends Component {
     this.handleCEP = this.handleCEP.bind(this);
   }
 
-
   async componentDidMount() {
-
-    
     this.props.values.profissao = "Selecione";
-    
-
-
-
-
 
     const storage = JSON.parse(localStorage.getItem("@bidu2/user"));
 
@@ -110,8 +103,7 @@ class About extends Component {
 
   handleCEP = (e) => {
     const cep = e.target.value;
-    if(cep.length == 9)
-    {
+    if (cep.length == 9) {
       this.setState({
         cep,
       });
@@ -120,33 +112,30 @@ class About extends Component {
         this.getAddress();
       }, 500);
       //}
-    }
-    else{
+    } else {
       this.setState({
         usuario: {
           ...this.state.usuario,
-          rua:"",
-          cidade:"",
-          bairro:"",
-          estado:"",
-          cep:"",
-          uf:""
+          rua: "",
+          cidade: "",
+          bairro: "",
+          estado: "",
+          cep: "",
+          uf: "",
         },
         loading: false,
       });
-          this.props.values.rua = "";
-          delete this.props.values.profissao 
+      this.props.values.rua = "";
+      delete this.props.values.profissao;
     }
-   
   };
   getAddress = async (e) => {
     this.setState({ loading: true });
-    let content = await apiQualicorp.endereco(this.state.cep.replace("-", "")) 
-    console.log(content)
-    if(content && content.data)    
-    {
-      await this.getOccupations(content.data)
-     
+    let content = await apiQualicorp.endereco(this.state.cep.replace("-", ""));
+    console.log(content);
+    if (content && content.data) {
+      await this.getOccupations(content.data);
+
       this.setState({
         usuario: {
           ...this.state.usuario,
@@ -155,18 +144,17 @@ class About extends Component {
           bairro: content.data.bairro,
           estado: content.data.estado,
           cep: content.data.cep,
-          uf: content.data.estado
+          uf: content.data.estado,
         },
         loading: false,
       });
-          this.props.values.rua = content.data.logradouro;
-          this.props.values.cidade = content.data.cidade;
-          this.props.values.bairro = content.data.bairro;
-          this.props.values.estado = content.data.estado;
-          this.props.values.cep = content.data.cep;
-          this.props.values.uf = content.data.estado;
-    }
-    else{
+      this.props.values.rua = content.data.logradouro;
+      this.props.values.cidade = content.data.cidade;
+      this.props.values.bairro = content.data.bairro;
+      this.props.values.estado = content.data.estado;
+      this.props.values.cep = content.data.cep;
+      this.props.values.uf = content.data.estado;
+    } else {
       this.setState({
         usuario: {
           ...this.state.usuario,
@@ -175,68 +163,60 @@ class About extends Component {
         loading: false,
       });
     }
-
-   
-    
   };
 
-  getOccupations = async (address) =>{
-  
+  getOccupations = async (address) => {
     this.setState({
       loading: true,
       occupations: [],
-      occupationsFalse: true
-    })
-    let occupations = await apiQualicorp.publicoAlvo(address.estado, address.cidade)
-    if(occupations && occupations.data && occupations.data.length > 0)
-    {
-      this.setState({occupations:occupations.data})   
-    }
-    else{
+      occupationsFalse: true,
+    });
+    let occupations = await apiQualicorp.publicoAlvo(
+      address.estado,
+      address.cidade
+    );
+    if (occupations && occupations.data && occupations.data.length > 0) {
+      this.setState({ occupations: occupations.data });
+    } else {
       this.setState({
         occupations: [],
-        occupationsFalse: false
-      })
+        occupationsFalse: false,
+      });
     }
-   
+  };
 
-  }
-
-  getEntities = async (uf, cidade, profissao) =>{
-
-
+  getEntities = async (uf, cidade, profissao) => {
     this.setState({
       loading: true,
       entities: [],
-      entitiesFalse: true
-    })
+      entitiesFalse: true,
+    });
 
+    let entities = await apiQualicorp.entidades(uf, cidade, profissao);
 
-     let entities = await apiQualicorp.entidades(uf, cidade, profissao)
-
-
-     if(entities && entities.data && entities.data.length > 0)
-        {
-          this.setState({
-            entities: entities.data,
-            loading: false,
-          })
-        }
-      else{
-        this.setState({
-          entities: [],
-          loading: false,
-          entitiesFalse: false
-        })
-      }
-  }
+    if (entities && entities.data && entities.data.length > 0) {
+      this.setState({
+        entities: entities.data,
+        loading: false,
+      });
+    } else {
+      this.setState({
+        entities: [],
+        loading: false,
+        entitiesFalse: false,
+      });
+    }
+  };
 
   handleChange = (event) => {
-    console.log(event)
-    if(event.target.name == 'profissao')
-    {
-      this.props.values.profissao =  event.target.value
-      this.getEntities(this.props.values.profissao, this.props.values.uf, this.props.values.cidade, )
+    console.log(event);
+    if (event.target.name == "profissao") {
+      this.props.values.profissao = event.target.value;
+      this.getEntities(
+        this.props.values.profissao,
+        this.props.values.uf,
+        this.props.values.cidade
+      );
     }
     this.setState({
       usuario: {
@@ -298,9 +278,7 @@ class About extends Component {
         <Wrapper>
           <Steps step1={true} step2={true} />
           <Title text="Plano de" bold="Saúde" />
-          <p>
-
-          </p>
+          <p></p>
 
           <form onSubmit={handleSubmit}>
             <Grid container spacing={2}>
@@ -390,12 +368,12 @@ class About extends Component {
                   }}
                 />
               </Grid>
-              <Grid item xs={12} sm={12} className="pb0">
+              {/* <Grid item xs={12} sm={12} className="pb0">
                 <InputLabel shrink id="birth">
                   Nascimento
                 </InputLabel>
-              </Grid>
-              <Grid item xs={4} className="pt0">
+              </Grid> */}
+              {/* <Grid item xs={4} className="pt0">
                 <Select
                   name="nasc_dia"
                   fullWidth
@@ -468,7 +446,7 @@ class About extends Component {
                   </MenuItem>
                   {anos.map(this.renderYear)}
                 </Select>
-              </Grid>
+              </Grid> */}
               {/* <Grid item xs={12} sm={6}>
                 <InputLabel shrink id="gender">
                   Gênero
@@ -518,139 +496,157 @@ class About extends Component {
                   <p class="zip-error">CEP não encontrado</p>
                 )}
               </Grid>
-              {this.state.usuario.rua && 
-              <>
-                <Grid item xs={12} sm={6}>
-                  <TextField
-                  value= {`${this.state.usuario.rua}, ${this.state.usuario.bairro} - ${this.state.usuario.cidade}/${this.state.usuario.uf} `}
-                  id=""
-                  label="Endereço"
-                  fullWidth
-                  name=""
-                  disabled
+              <Grid item xs={12} sm={12}>
+                <Birthday 
+                  value={this.props.values.date_birth ? this.props.values.date_birth : ""}
+                  onChange={handleChange("date_birth")}
+                  onBlur={this.handleChange}
+                  helperText={touched.date_birth ? errors.date_birth : ""}
+                  error={touched.date_birth && Boolean(errors.date_birth)}
                 />
-                 
-                </Grid>
-                {this.state.occupations.length > 0 &&
-                      <Grid item xs={12} sm={6}>
-                            <InputLabel shrink id="gender">
-                              Profissão
-                            </InputLabel>
-                            <Select
-                              name="profissao"
-                              fullWidth
-                              displayEmpty
-                              labelId="profissao"
-                              id="profissao"
-                              value={
-                                this.props.values.profissao
-                                  ? this.props.values.profissao
-                                  : "Não informado"
-                              }
-                              onChange={this.handleChange}
-                              helperText={touched.profissao ? errors.profissao : ""}
-                              error={touched.profissao && Boolean(errors.profissao)}
-                            >
-                              <MenuItem value="Selecione" disabled>
-                                Selecione
-                              </MenuItem>
-                              
-                              {this.state.occupations.length > 0 && this.state.occupations.map((e, key) => (
-                                <MenuItem value={e.id}>{e.nome}</MenuItem>
-                              ))}
-                            </Select>
-                      </Grid>   
-                }
-                 { this.state.occupationsFalse == false &&
-                  
-                  <DialogAlert title="Ops!" message="Erro ao obter a lista de profissões. Tente novamente mais tarde!" />
-                }
-                { this.state.entitiesFalse == true &&
-                      
-                        <Grid item xs={12} sm={6}>
-                        <InputLabel shrink id="gender">
-                          Entidades
-                        </InputLabel>
-                        <Select
-                          name="entidade"
-                          fullWidth
-                          displayEmpty
-                          labelId="entidade"
-                          id="entidade"
-                          value={
-                            this.props.values.entidade
-                              ? this.props.values.entidade
-                              : "Não informado"
-                          }
-                          onChange={handleChange("entidade")}
-                          onBlur={this.handleChange}
-                          helperText={touched.entidade? errors.entidade : ""}
-                          error={touched.entidade && Boolean(errors.ent)}
-                        >
-                          <MenuItem value="Selecione" disabled>
-                            Selecione
-                          </MenuItem>
-                          
-                          {this.state.entities.length > 0 && this.state.entities.map((e, key) => (
+              </Grid>
+              {this.state.usuario.rua && (
+                <>
+                  <Grid item xs={12} sm={6}>
+                    <TextField
+                      value={`${this.state.usuario.rua}, ${this.state.usuario.bairro} - ${this.state.usuario.cidade}/${this.state.usuario.uf} `}
+                      id=""
+                      label="Endereço"
+                      fullWidth
+                      name=""
+                      disabled
+                    />
+                  </Grid>
+                  {this.state.occupations.length > 0 && (
+                    <Grid item xs={12} sm={6}>
+                      <InputLabel shrink id="gender">
+                        Profissão
+                      </InputLabel>
+                      <Select
+                        name="profissao"
+                        fullWidth
+                        displayEmpty
+                        labelId="profissao"
+                        id="profissao"
+                        value={
+                          this.props.values.profissao
+                            ? this.props.values.profissao
+                            : "Não informado"
+                        }
+                        onChange={this.handleChange}
+                        helperText={touched.profissao ? errors.profissao : ""}
+                        error={touched.profissao && Boolean(errors.profissao)}
+                      >
+                        <MenuItem value="Selecione" disabled>
+                          Selecione
+                        </MenuItem>
+
+                        {this.state.occupations.length > 0 &&
+                          this.state.occupations.map((e, key) => (
                             <MenuItem value={e.id}>{e.nome}</MenuItem>
                           ))}
-                        </Select>
-                        </Grid>
-                }
-                { this.state.entitiesFalse == false &&
-                  
-                  <DialogAlert title="Ops!" message="Erro ao obter a lista de entidades. Tente novamente mais tarde!" />
-                }
-                { this.state.entitiesFalse == true &&
-                  <Grid item xs={12} sm={6}>
-                    <InputLabel shrink id="gender">
-                      Operadora
-                    </InputLabel>
-                    <Select
-                      name="operadora"
-                      fullWidth
-                      displayEmpty
-                      labelId="operadora"
-                      id="operadora"
-                      value={
-                        this.props.values.operadora
-                          ? this.props.values.operadora
-                          : "Não informado"
-                      }
-                      onChange={handleChange("operadora")}
-                      onBlur={this.handleChange}
-                      helperText={touched.operadora? errors.operadora : ""}
-                      error={touched.operadora && Boolean(errors.ent)}
-                    >
-                      <MenuItem value="Selecione" disabled>
-                        Selecione
-                      </MenuItem>
-                      
-                      {this.state.operadora && this.state.operadora.length > 0 && this.state.operadora.map((e, key) => (
-                        <MenuItem value={e.id}>{e.nome}</MenuItem>
-                      ))}
-                    </Select>
-                  </Grid>
-                }
-                
-                
+                      </Select>
+                    </Grid>
+                  )}
+                  {this.state.occupationsFalse == false && (
+                    <DialogAlert
+                      title="Ops!"
+                      message="Erro ao obter a lista de profissões. Tente novamente mais tarde!"
+                    />
+                  )}
+                  {this.state.entitiesFalse == true && (
+                    <Grid item xs={12} sm={6}>
+                      <InputLabel shrink id="gender">
+                        Entidades
+                      </InputLabel>
+                      <Select
+                        name="entidade"
+                        fullWidth
+                        displayEmpty
+                        labelId="entidade"
+                        id="entidade"
+                        value={
+                          this.props.values.entidade
+                            ? this.props.values.entidade
+                            : "Não informado"
+                        }
+                        onChange={handleChange("entidade")}
+                        onBlur={this.handleChange}
+                        helperText={touched.entidade ? errors.entidade : ""}
+                        error={touched.entidade && Boolean(errors.ent)}
+                      >
+                        <MenuItem value="Selecione" disabled>
+                          Selecione
+                        </MenuItem>
+
+                        {this.state.entities.length > 0 &&
+                          this.state.entities.map((e, key) => (
+                            <MenuItem value={e.id}>{e.nome}</MenuItem>
+                          ))}
+                      </Select>
+                    </Grid>
+                  )}
+                  {this.state.entitiesFalse == false && (
+                    <DialogAlert
+                      title="Ops!"
+                      message="Erro ao obter a lista de entidades. Tente novamente mais tarde!"
+                    />
+                  )}
+                  {this.state.entitiesFalse == true && (
+                    <Grid item xs={12} sm={6}>
+                      <InputLabel shrink id="gender">
+                        Operadora
+                      </InputLabel>
+                      <Select
+                        name="operadora"
+                        fullWidth
+                        displayEmpty
+                        labelId="operadora"
+                        id="operadora"
+                        value={
+                          this.props.values.operadora
+                            ? this.props.values.operadora
+                            : "Não informado"
+                        }
+                        onChange={handleChange("operadora")}
+                        onBlur={this.handleChange}
+                        helperText={touched.operadora ? errors.operadora : ""}
+                        error={touched.operadora && Boolean(errors.ent)}
+                      >
+                        <MenuItem value="Selecione" disabled>
+                          Selecione
+                        </MenuItem>
+
+                        {this.state.operadora &&
+                          this.state.operadora.length > 0 &&
+                          this.state.operadora.map((e, key) => (
+                            <MenuItem value={e.id}>{e.nome}</MenuItem>
+                          ))}
+                      </Select>
+                    </Grid>
+                  )}
                 </>
-              }
-              
-                {loading && <Loading />}
-           
-              </Grid>
-              <br/>
-              { this.state.entitiesFalse == true &&
+              )}
+
+              {loading && <Loading />}
+            </Grid>
+            <br />
+            {this.state.entitiesFalse == true && (
               <>
-                  <div class="vidas">
-                    <Title  text="Quantidade de" bold="vidas" /> 
-                  </div>
-                  <div class="texto-vidas">
-                    <p>Para quantas pessoas deseja contratar, entre depentes ou funcionários</p>
-                  </div>
+                <div class="vidas">
+                  <Title text="Quantidade de" bold="vidas" />
+                </div>
+                <div class="texto-vidas">
+                  <p>
+                    Para quantas pessoas deseja contratar, entre depentes ou
+                    funcionários
+                  </p>
+                </div>
                 <div className="actions">
-                  <DialogDependents titleName="Adicionar Pessoas" className="bnt-next"/>
+                  <DialogDependents
+                    titleName="Adicionar Pessoas"
+                    className="bnt-next"
+                  />
                 </div>
 
                 <div className="actions">
@@ -663,7 +659,7 @@ class About extends Component {
                   </Button>
                 </div>
               </>
-          }
+            )}
           </form>
         </Wrapper>
       </>
@@ -684,8 +680,6 @@ const mapDispatchToProps = (dispatch) => {
     //addLead: (send) => dispatch(postBo('auto/segurado', send))
   };
 };
-
-
 
 const Form = withFormik({
   mapPropsToValues: ({
@@ -754,22 +748,22 @@ const Form = withFormik({
     //complemento: Yup.string().required("Complemento é obrigatório"),
     profissao: Yup.string().required("Profissão é obrigatório"),
     entidade: Yup.string().required("Profissão é obrigatório"),
-   
   }),
 
-  handleSubmit: async (values, { props, setStatus, setValues, setSubmitting }) => {
-    console.log(values)
+  handleSubmit: async (
+    values,
+    { props, setStatus, setValues, setSubmitting }
+  ) => {
+    console.log(values);
     localStorage.setItem("@bidu2/user", [JSON.stringify(values)]);
-    
+
     // setTimeout(() => {
     //   //submit to the server
     //   //alert(JSON.stringify(values, null, 2));
     //   // props.adicionaUser(values);
     //   // props.adicionarLead();
 
-     
-
-      setStatus(true);
+    setStatus(true);
     //   // window.fbq("track", "Lead");
     //   setSubmitting(false);
     // }, 1000);

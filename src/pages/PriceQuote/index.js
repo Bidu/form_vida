@@ -18,6 +18,7 @@ import { GTM } from "../../helpers";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import Loading from "../../components/loading";
+import DialogAlert from '../../components/DialogAlert'
 import { apiQualicorp } from "../../services/bdBo";
 
 
