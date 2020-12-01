@@ -19,33 +19,39 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Switch from "@material-ui/core/Switch";
 import { Link, Redirect } from "react-router-dom";
 import Button from "@material-ui/core/Button";
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import DialogTitle from "@material-ui/core/DialogTitle";
 import { withFormik } from "formik";
 import * as Yup from "yup";
 import * as API from "../../services/bd/CadastrarCotacao";
 import { adicionarLeadCotacao } from "../../store/actions/addLeadBd";
 import { apiQualicorp } from "../../services/bdBo";
 import axios from "axios";
-import DialogDependents from '../../components/DialogDependents'
-
+import DialogDependents from "../../components/DialogDependents";
+import Birthday from "../../components/Birthday";
+import DialogAlert from "../../components/DialogAlert";
 import {
   textMaskPhone,
   textMaskNumber,
-  textMaskNumberOfLifes,
   textMaskCpf,
   textMaskCEP,
   onlyNumbers,
   CheckCPF,
-  CheckCNPJ,
   onlyLetters,
   nameField,
-  textMaskCNPJ,
+  CheckCNPJ,
+  textMaskCnpj
 } from "../../helpers/user";
 
 import { checkValidateRadios } from "../../helpers";
 import Loading from "../../components/loading";
 import { CadastrarCotacaoBd } from "../../services/bd/CadastrarCotacao";
 
-import { createBrowserHistory } from 'history';
+import { createBrowserHistory } from "history";
+import { entities } from "../../helpers/entities";
 class About extends Component {
   constructor(props) {
     super(props);
@@ -56,6 +62,7 @@ class About extends Component {
       //redirect: false,
       cep: "",
       occupations: [],
+      entities: [],
       usuario: {
         cpf: "",
         nome: "",
@@ -70,6 +77,7 @@ class About extends Component {
         estado: "",
         uf: "",
         complemento: "",
+        date_birth: "",
         nasc_dia: "",
         nasc_mes: "",
         nasc_ano: "",
@@ -78,23 +86,23 @@ class About extends Component {
         escolaridade: "",
         moradia: false,
       },
+      dependents: [],
       storage: JSON.parse(localStorage.getItem("@bidu2/user")),
     };
     this.handleCEP = this.handleCEP.bind(this);
   }
 
-
   async componentDidMount() {
-
-    
     this.props.values.profissao = "Selecione";
-    
-
-
-
-
 
     const storage = JSON.parse(localStorage.getItem("@bidu2/user"));
+    delete storage.cep 
+    delete storage.entidade 
+    delete storage.operadora 
+    delete storage.profissao
+    delete storage.dependents
+
+    localStorage.setItem("@bidu2/user", JSON.stringify(storage))
 
     if (storage.length !== 0) {
       this.setState(storage);
@@ -105,43 +113,158 @@ class About extends Component {
 
   handleCEP = (e) => {
     const cep = e.target.value;
-    this.setState({
-      cep,
-    });
-    //if (this.state.cep.length === 8) {
-    setTimeout(() => {
-      this.getAddress();
-    }, 500);
-    //}
+    if (cep.length == 9) {
+      this.setState({
+        cep,
+      });
+      //if (this.state.cep.length === 8) {
+      setTimeout(() => {
+        this.getAddress();
+      }, 500);
+      //}
+    } else {
+      this.setState({
+        usuario: {
+          ...this.state.usuario,
+          rua: "",
+          cidade: "",
+          bairro: "",
+          estado: "",
+          cep: "",
+          uf: "",
+        },
+        loading: false,
+      });
+      this.props.values.rua = "";
+      delete this.props.values.profissao;
+    }
   };
   getAddress = async (e) => {
     this.setState({ loading: true });
-    let content = await apiQualicorp.endereco(this.state.cep.replace("-", "")) 
-    console.log("OLA",content.data)   
-    let occupations = await apiQualicorp.publicoAlvo(content.data.estado, content.data.cidade)
-    this.setState({occupations:occupations.data})
-    this.setState({
-      usuario: {
-        ...this.state.usuario,
-        rua: content.data.logradouro,
-        cidade: content.data.cidade,
-        bairro: content.data.bairro,
-        estado: content.data.estado,
-        cep: content.data.cep,
-        uf: content.data.estado
-      },
-      loading: false,
-    });
-        this.props.values.rua = content.data.logradouro;
-        this.props.values.cidade = content.data.cidade;
-        this.props.values.bairro = content.data.bairro;
-        this.props.values.estado = content.data.estado;
-        this.props.values.cep = content.data.cep;
-        this.props.values.uf = content.data.estado;
-    
+    let content = await apiQualicorp.endereco(this.state.cep.replace("-", ""));
+    console.log(content);
+    if (content && content.data) {
+      await this.getOccupations(content.data);
+
+      this.setState({
+        usuario: {
+          ...this.state.usuario,
+          rua: content.data.logradouro,
+          cidade: content.data.cidade,
+          bairro: content.data.bairro,
+          estado: content.data.estado,
+          cep: content.data.cep,
+          uf: content.data.estado,
+        },
+        loading: false,
+      });
+      this.props.values.rua = content.data.logradouro;
+      this.props.values.cidade = content.data.cidade;
+      this.props.values.bairro = content.data.bairro;
+      this.props.values.estado = content.data.estado;
+      this.props.values.cep = content.data.cep;
+      this.props.values.uf = content.data.estado;
+    } else {
+      this.setState({
+        usuario: {
+          ...this.state.usuario,
+          cep: undefined,
+        },
+        loading: false,
+      });
+    }
   };
 
+  getOccupations = async (address) => {
+    this.setState({
+      loading: true,
+      occupations: [],
+      occupationsFalse: true,
+    });
+    let occupations = await apiQualicorp.publicoAlvo(
+      address.estado,
+      address.cidade
+    );
+    if (occupations && occupations.data && occupations.data.length > 0) {
+      this.setState({ occupations: occupations.data });
+    } else {
+      this.setState({
+        occupations: [],
+        occupationsFalse: false,
+      });
+    }
+  };
+
+  getEntities = async (uf, cidade, profissao) => {
+    this.setState({
+      loading: true,
+      entities: [],
+      entitiesFalse: true,
+    });
+
+    let entities = await apiQualicorp.entidades(uf, cidade, profissao);
+
+    if (entities && entities.data && entities.data.length > 0) {
+      this.setState({
+        entities: entities.data,
+        loading: false,
+      });
+    } else {
+      this.setState({
+        entities: [],
+        loading: false,
+        entitiesFalse: false,
+      });
+    }
+  };
+  getOperator = async (entitie, uf, cidade) => {
+    this.setState({
+      loading: true,
+      operadoras: [],
+      operadorasFalse: true,
+    });
+
+    let operadoras = await apiQualicorp.operadoras(uf, cidade, entitie);
+    
+    console.log("Operador", operadoras)
+
+    if (operadoras && operadoras.data && operadoras.data.length > 0) {
+      this.setState({
+        operadoras: operadoras.data,
+        loading: false,
+      });
+    } else {
+      this.setState({
+        operadoras: [],
+        loading: false,
+        operadorasFalse: false,
+      });
+    }
+  }
+
+
+
   handleChange = (event) => {
+    if (event.target.name == "profissao") {
+      this.props.values.profissao = event.target.value;
+      this.getEntities(
+        this.props.values.profissao,
+        this.props.values.uf,
+        this.props.values.cidade
+      );
+    }
+    if (event.target.name == "entidade") {
+      this.props.values.entidade = event.target.value;
+      this.getOperator(
+        this.props.values.entidade,
+        this.props.values.uf,
+        this.props.values.cidade
+      );
+    }
+    if (event.target.name == "operadora") {
+      this.props.values.operadora = event.target.value;
+    }
+
     this.setState({
       usuario: {
         ...this.state.usuario,
@@ -170,6 +293,16 @@ class About extends Component {
     this.setState({ redirect: true });
   };
 
+
+  setDependents = (dependents) => {
+    this.setState({dependents})
+    this.props.values.dependents = dependents;
+
+    console.log(this.state.dependents)
+  }
+
+
+
   render() {
     const { loading, redirect, usuario, storage } = this.state;
     let dias = [];
@@ -194,7 +327,7 @@ class About extends Component {
     } = this.props;
 
     if (this.props.status) {
-      return <Redirect to="/contratar" />;
+      return <Redirect to="/cotacao" />;
     }
 
     return (
@@ -202,35 +335,10 @@ class About extends Component {
         <Wrapper>
           <Steps step1={true} step2={true} />
           <Title text="Plano de" bold="Saúde" />
-          <p>
- 
-          </p>
+          <p></p>
 
           <form onSubmit={handleSubmit}>
             <Grid container spacing={2}>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  value={
-                    this.props.values.cnpj ? this.props.values.cnpj : usuario.cpf
-                  }
-                  id="cnpj"
-                  name="cnpj"
-                  label="CNPJ"
-                  placeholder="00.000.000/0000-00"
-                  fullWidth
-                  margin="20px"
-                  onChange={handleChange}
-                  onBlur={this.handleChange}
-                  helperText={touched.cnpj ? errors.cnpj : ""}
-                  error={touched.cnpj && Boolean(errors.cnpj)}
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                  InputProps={{
-                    inputComponent: textMaskCNPJ,
-                  }}
-                />
-              </Grid>
               <Grid item xs={12} sm={6}>
                 <TextField
                   value={this.props.values.nome ? this.props.values.nome : ""}
@@ -238,7 +346,7 @@ class About extends Component {
                   id="name"
                   name="nome"
                   label="Nome da Empresa"
-                  placeholder="Nome da Empresa"
+                  placeholder="Corporation SA"
                   fullWidth
                   onChange={handleChange}
                   onBlur={this.handleChange}
@@ -254,22 +362,24 @@ class About extends Component {
               </Grid>
               <Grid item xs={12} sm={6}>
                 <TextField
-                  value={this.props.values.nomecontato ? this.props.values.nomecontato : ""}
-                  type="text"
-                  id="contactname"
-                  name="nomecontato"
-                  label="Nome do Contato"
-                  placeholder="João da Silva"
+                  value={
+                    this.props.values.cnpj ? this.props.values.cnpj : usuario.cnpj
+                  }
+                  id="cnpj"
+                  name="cnpj"
+                  label="CNPJ"
+                  placeholder="00.000.000/0000-00"
                   fullWidth
+                  margin="20px"
                   onChange={handleChange}
                   onBlur={this.handleChange}
-                  helperText={touched.nome ? errors.nome : ""}
-                  error={touched.nomecontato && Boolean(errors.nomecontato)}
-                  InputProps={{
-                    inputComponent: onlyLetters,
-                  }}
+                  helperText={touched.cnpj ? errors.cnpj : ""}
+                  error={touched.cnpj && Boolean(errors.cnpj)}
                   InputLabelProps={{
                     shrink: true,
+                  }}
+                  InputProps={{
+                    inputComponent: textMaskCnpj,
                   }}
                 />
               </Grid>
@@ -281,8 +391,8 @@ class About extends Component {
                   value={this.props.values.email ? this.props.values.email : ""}
                   id="email"
                   name="email"
-                  label="Email do contato"
-                  placeholder="joao@email.com"
+                  label="Email"
+                  placeholder="contato@corporation.com"
                   fullWidth
                   onChange={handleChange}
                   onBlur={this.handleChange}
@@ -300,7 +410,7 @@ class About extends Component {
                   }
                   id="phone"
                   name="telefone"
-                  label="Celular do contato"
+                  label="Celular"
                   placeholder="(00) 00000-0000"
                   fullWidth
                   onChange={handleChange}
@@ -315,16 +425,17 @@ class About extends Component {
                   }}
                 />
               </Grid>
-              <Grid item xs={8} sm={6}>
+              <Grid item xs={12} sm={6}>
                 <TextField
                   value={this.props.values.cep ? this.props.values.cep : ""}
                   id="cep"
-                  label="CEP da Empresa"
+                  label="CEP"
                   placeholder="00000-000"
                   fullWidth
                   name="cep"
                   onChange={handleChange}
-                  onBlur={(e) => this.handleCEP(e)}
+                  onKeyUp={(e) => this.handleCEP(e)}
+                  // onBlur={(e) => this.handleCEP(e)}
                   helperText={touched.cep ? errors.cep : ""}
                   error={touched.cep && Boolean(errors.cep)}
                   InputLabelProps={{
@@ -338,173 +449,163 @@ class About extends Component {
                   <p class="zip-error">CEP não encontrado</p>
                 )}
               </Grid>
-              {/* <Grid item xs={4} sm={6}>
-                <TextField
-                  value={
-                    this.props.values.numero ? this.props.values.numero : ""
-                  }
-                  id="numero"
-                  name="numero"
-                  label="Número"
-                  placeholder="Digite aqui"
-                  fullWidth
-                  onChange={handleChange}
-                  onBlur={this.handleChange}
-                  helperText={touched.numero ? errors.numero : ""}
-                  error={touched.numero && Boolean(errors.numero)}
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                  InputProps={{
-                    inputComponent: textMaskNumber,
-                  }}
-                />
-              </Grid> */}
-              {loading && <Loading />}
+             
               {this.state.usuario.rua && (
-                <Grid item xs={12} sm={6}>
-                  <div className="results">
-                    {this.state.usuario.rua}, {this.state.usuario.bairro} -{" "}
-                    {this.state.usuario.cidade}
-                  </div>
-                </Grid>
-              )}
-              {/* <Grid item xs={12} sm={6}>
-                <TextField
-                  value={
-                    this.props.values.complemento
-                      ? this.props.values.complemento
-                      : ""
-                  }
-                  id="complemento"
-                  name="complemento"
-                  label="Complemento"
-                  placeholder="Digite aqui"
-                  fullWidth
-                  onChange={handleChange}
-                  onBlur={this.handleChange}
-                  helperText={touched.complemento ? errors.complemento : ""}
-                  error={touched.complemento && Boolean(errors.complemento)}
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                />
-              </Grid> */}
-              {/* <Grid item xs={12} sm={6}>
-                <InputLabel shrink id="gender">
-                  Profissão
-                </InputLabel>
-                <Select
-                  name="profissao"
-                  fullWidth
-                  displayEmpty
-                  labelId="profissao"
-                  id="profissao"
-                  value={
-                    this.props.values.profissao
-                      ? this.props.values.profissao
-                      : "Não informado"
-                  }
-                  onChange={handleChange("profissao")}
-                  onBlur={this.handleChange}
-                  helperText={touched.profissao ? errors.profissao : ""}
-                  error={touched.profissao && Boolean(errors.profissao)}
-                >
-                  <MenuItem value="Selecione" disabled>
-                    Selecione
-                  </MenuItem>
-                  
-                  {this.state.occupations.length > 0 && this.state.occupations.map((e, key) => (
-                    <MenuItem value={e.id}>{e.nome}</MenuItem>
-                  ))}
-                </Select>
-                </Grid>   
-              </Grid> */}
-              </Grid>
-              {/* <Grid item xs={12}>
-                <FormControl component="fieldset">
-                  <RadioGroup
-                    value={
-                      this.props.values.moradia ? this.props.values.moradia : ""
-                    }
-                    aria-label="moradia"
-                    name="moradia"
-                    className={checkValidateRadios("moradia", this.props)}
-                    onChange={handleChange("moradia")}
-                    onBlur={this.handleChange}
-                    helperText={touched.moradia ? errors.moradia : ""}
-                    error={touched.moradia && Boolean(errors.moradia)}
-                  >
-                    <Grid item xs={12} sm container>
-                      <Grid item xs={12} sm={3}>
-                        <FormControlLabel
-                          value="CASA"
-                          control={<Radio color="primary" />}
-                          label="Casa"
-                        />
-                      </Grid>
-                      <Grid item xs={12} sm={3}>
-                        <FormControlLabel
-                          value="APARTAMENTO"
-                          control={<Radio color="primary" />}
-                          label="Apartamento"
-                        />
-                      </Grid>
-                      <Grid item xs={12} sm={3}>
-                        <FormControlLabel
-                          value="CONDOMINIO"
-                          control={<Radio color="primary" />}
-                          label="Condomínio fechado"
-                        />
-                      </Grid>
-                      <Grid item xs={12} sm={3}>
-                        <FormControlLabel
-                          value="OUTROS"
-                          control={<Radio color="primary" />}
-                          label="Outros"
-                        />
-                      </Grid>
-                    </Grid>
-                  </RadioGroup>
-                </FormControl> */}
+                <>
+                  <Grid item xs={12} sm={6}>
+                    <TextField
+                      value={`${this.state.usuario.rua}, ${this.state.usuario.bairro} - ${this.state.usuario.cidade}/${this.state.usuario.uf} `}
+                      id=""
+                      label="Endereço"
+                      fullWidth
+                      name=""
+                      disabled
+                    />
+                  </Grid>
+                  {this.state.occupations.length > 0 && (
+                    <Grid item xs={12} sm={6}>
+                      <InputLabel shrink id="gender">
+                        Profissão
+                      </InputLabel>
+                      <Select
+                        name="profissao"
+                        fullWidth
+                        displayEmpty
+                        labelId="profissao"
+                        id="profissao"
+                        value={
+                          this.props.values.profissao
+                            ? this.props.values.profissao
+                            : "Não informado"
+                        }
+                        onChange={this.handleChange}
+                        helperText={touched.profissao ? errors.profissao : ""}
+                        error={touched.profissao && Boolean(errors.profissao)}
+                      >
+                        <MenuItem value="Selecione" disabled>
+                          Selecione
+                        </MenuItem>
 
-              {this.props.isValid ||
-                (this.props.submitCount > 0 && (
-                  <Grid item xs={12} sm={12}>
-                    <div className="warning-validation warning-left">
-                      <strong>Atenção!</strong>- Preenchimento obrigatório dos
-                      campos destacados.
-                    </div>
-                  </Grid>
-                ))}
-                {localStorage.getItem("bdbo/errorAbout") && (
-                  <Grid item xs={12} sm={12}>
-                    <div className="warning-validation warning-left">
-                      <strong>OPS!</strong>- DADOS DIVERGENTES. NOME OU DATA DE NASCIMENTO INCORRETOS.
-                    </div>
-                  </Grid>
-                )}
-               <div class="vidas">
-                  <Title  text="Quantidade de" bold="vidas" /> 
+                        {this.state.occupations.length > 0 &&
+                          this.state.occupations.map((e, key) => (
+                            <MenuItem value={e.id}>{e.nome}</MenuItem>
+                          ))}
+                      </Select>
+                    </Grid>
+                  )}
+                  {this.state.occupationsFalse == false && (
+                    <DialogAlert
+                      title="Ops!"
+                      message="Erro ao obter a lista de profissões. Tente novamente mais tarde!"
+                    />
+                  )}
+                  {this.state.entitiesFalse == true && (
+                    <Grid item xs={12} sm={6}>
+                      <InputLabel shrink id="gender">
+                        Entidades
+                      </InputLabel>
+                      <Select
+                        name="entidade"
+                        fullWidth
+                        displayEmpty
+                        labelId="entidade"
+                        id="entidade"
+                        value={
+                          this.props.values.entidade
+                            ? this.props.values.entidade
+                            : "Não informado"
+                        }
+                        onChange={this.handleChange}
+                        // onBlur={this.handleChange}
+                        helperText={touched.entidade ? errors.entidade : ""}
+                        error={touched.entidade && Boolean(errors.ent)}
+                      >
+                        <MenuItem value="Selecione" disabled>
+                          Selecione
+                        </MenuItem>
+
+                        {this.state.entities.length > 0 &&
+                          this.state.entities.map((e, key) => (
+                            <MenuItem value={e.id}>{e.nome}</MenuItem>
+                          ))}
+                      </Select>
+                    </Grid>
+                  )}
+                  {this.state.entitiesFalse == false && (
+                    <DialogAlert
+                      title="Ops!"
+                      message="Erro ao obter a lista de entidades. Tente novamente mais tarde!"
+                    />
+                  )}
+                  {this.state.operadorasFalse == true && (
+                    <Grid item xs={12} sm={6}>
+                      <InputLabel shrink id="gender">
+                        Operadora
+                      </InputLabel>
+                      <Select
+                        name="operadora"
+                        fullWidth
+                        displayEmpty
+                        labelId="operadora"
+                        id="operadora"
+                        value={
+                          this.props.values.operadora
+                            ? this.props.values.operadora
+                            : "Não informado"
+                        }
+                        onChange={this.handleChange}
+                        // onBlur={this.handleChange}
+                        helperText={touched.operadora ? errors.operadora : ""}
+                        error={touched.operadora && Boolean(errors.ent)}
+                      >
+                        <MenuItem value="Selecione" disabled>
+                          Selecione
+                        </MenuItem>
+                        
+                        {this.state.operadoras &&
+                          this.state.operadoras.length > 0 &&
+                          this.state.operadoras.map((e, key) => (
+                            <MenuItem value={e.nome}>{e.nome}</MenuItem>
+                          ))}
+                      </Select>
+                    </Grid>
+                  )}
+                </>
+              )}
+
+              {loading && <Loading />}
+            </Grid>
+            <br />
+            {this.props.values.operadora && (
+              <>
+                <div class="vidas">
+                  <Title text="Quantidade de" bold="vidas" />
                 </div>
                 <div class="texto-vidas">
-                  <p>Para quantas pessoas deseja contratar, entre depentes ou funcionários</p>
+                  <p>
+                    Para quantas pessoas deseja contratar, entre depentes ou
+                    funcionários
+                  </p>
                 </div>
-               <div className="actions">
-                 <DialogDependents titleName="Adicionar Pessoas" className="bnt-next"/>
-               </div>
-            <div className="actions">
-              <Button
-                type="submit"
-                className="btn-next"
-                disabled={isSubmitting}
-              >
-                Simular
-              </Button>
-              {/*<Link className="btn-back" to="/">
-                <KeyboardBackspaceIcon /> Voltar
-              </Link>)*/}
-            </div>
+                <div className="actions">
+                  <DialogDependents
+                    titleName="Adicionar Pessoas"
+                    className="bnt-next"
+                    setDependents={this.setDependents}
+                  />
+                </div>
+
+                <div className="actions">
+                  <Button
+                    type="submit"
+                    className="btn-next"
+                    disabled={isSubmitting}
+                  >
+                    Quero uma cotação
+                  </Button>
+                </div>
+              </>
+            )}
           </form>
         </Wrapper>
       </>
@@ -526,39 +627,52 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-
-
 const Form = withFormik({
   mapPropsToValues: ({
-    cnpj,
-    nome_empresa,
-    nome_contato,
+    cpf,
+    nome,
+    politicamente_exp,
     email,
     telefone,
     cep,
     complemento,
+    profissao,
     numero,
-
+    escolaridade,
+    nasc_dia,
+    nasc_mes,
+    nasc_ano,
+    genero,
+    moradia,
+    entidade,
   }) => {
     return {
-      cnpj: cnpj|| "",
-      nome_empresa: nome_empresa|| "",
-      nome_contato: nome_contato|| "",
+      cpf: cpf || "",
+      nome: nome || "",
+      politicamente_exp: politicamente_exp || "",
       email: email || "",
       telefone: telefone || "",
       cep: cep || "",
       complemento: complemento || "",
+      profissao: profissao || "",
       numero: numero || "",
+      escolaridade: escolaridade || "",
+      nasc_dia: nasc_dia || "",
+      nasc_mes: nasc_mes || "",
+      nasc_ano: nasc_ano || "",
+      genero: genero || "",
+      moradia: moradia || "",
+      entidade: entidade || "",
     };
   },
 
   validationSchema: Yup.object().shape({
-    cnpj: Yup.string()
-      .min(14, "CNPJ precisa ter no mínimo 14 caracteres")
+    cpf: Yup.string()
+      .min(11, "CPF precisa ter no mínimo 11 caracteres")
       //.matches(true, "Not a valid expiration date. Example: MM/YY")
       //.required("CPF é obrigatorio.")
-      .test("cnpj", "Informe um CNPJ válido", (value) => {
-        return CheckCNPJ(value);
+      .test("cpf", "Informe um CPF válido", (value) => {
+        return CheckCPF(value);
       }),
 
     nome: Yup.string()
@@ -579,30 +693,26 @@ const Form = withFormik({
       .min(8, "O CEP deve ter no mínimo 8 dígitos"),
     //complemento: Yup.string().required("Complemento é obrigatório"),
     profissao: Yup.string().required("Profissão é obrigatório"),
-    numero: Yup.string().required("Obrigatório"),
-    escolaridade: Yup.string().required("Selecione a escolaridade"),
-    nasc_dia: Yup.string().required("Selecione o dia"),
-    nasc_mes: Yup.string().required("Selecione o mês"),
-    nasc_ano: Yup.string().required("Selecione o ano"),
-    genero: Yup.string().required("Selecione o gênero"),
-    moradia: Yup.string().required("Selecione a moradia"),
+    entidade: Yup.string().required("Profissão é obrigatório"),
   }),
 
-  handleSubmit: async (values, { props, setStatus, setValues, setSubmitting }) => {
+  handleSubmit: async (
+    values,
+    { props, setStatus, setValues, setSubmitting }
+  ) => {
+    console.log(values);
+    localStorage.setItem("@bidu2/user", [JSON.stringify(values)]);
 
-    
-    setTimeout(() => {
-      //submit to the server
-      //alert(JSON.stringify(values, null, 2));
-      props.adicionaUser(values);
-      // props.adicionarLead();
+    // setTimeout(() => {
+    //   //submit to the server
+    //   //alert(JSON.stringify(values, null, 2));
+    //   // props.adicionaUser(values);
+    //   // props.adicionarLead();
 
-      localStorage.setItem("@bidu2/user", [JSON.stringify(values)]);
-
-      setStatus(true);
-      window.fbq("track", "Lead");
-      setSubmitting(false);
-    }, 1000);
+    setStatus(true);
+    //   // window.fbq("track", "Lead");
+    //   setSubmitting(false);
+    // }, 1000);
     setSubmitting(false);
   },
 })(About);

@@ -4,19 +4,15 @@ import Title from "../../components/Title";
 import { Steps } from "../../components/steps";
 import { ListPriceQuotation } from "../../components/ListPriceQuotation";
 import { ListPriceQuotationCustom } from "../../components/ListPriceQuotationCustom";
-import { ListPriceQuotationPPU } from "../../components/ListPriceQuotationPPU";
 import Radio from "@material-ui/core/Radio";
 import RadioGroup from "@material-ui/core/RadioGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import FormControl from "@material-ui/core/FormControl";
 import Grid from "@material-ui/core/Grid";
 import KeyboardBackspaceIcon from "@material-ui/icons/KeyboardBackspace";
-import { StepCompleted } from "../../components/StepCompleted";
 import CachedIcon from "@material-ui/icons/Cached";
 import IconButton from "@material-ui/core/IconButton";
-import { GTM } from "../../helpers";
 import { Link } from "react-router-dom";
-import axios from "axios";
 import Loading from "../../components/loading";
 import { apiQualicorp } from "../../services/bdBo";
 import DialogAlert from '../../components/DialogAlert'
@@ -166,6 +162,7 @@ export class PriceQuote extends Component {
     }, 30000);
   };
   
+  
   render() {
     //this.Ordenacao();
     const { loading, cotacoes, customQuote, customQuoteCheck } = this.state;
@@ -181,7 +178,7 @@ export class PriceQuote extends Component {
           </div>
           <div className="filter">
             <div>
-              <FormControl component="fieldset" className="price-quote">
+              {/* <FormControl component="fieldset" className="price-quote">
                 <RadioGroup aria-label="filtro" name="filter" value={this.state.value} onChange={this.handleChange} row>
                   <FormControlLabel value="0" control={<Radio color="primary" />}
                     label="Maior valor"
@@ -192,7 +189,7 @@ export class PriceQuote extends Component {
                     onChange={(e) => { this.sortBy(e.target.value) }}
                   />
                 </RadioGroup>
-              </FormControl>
+              </FormControl> */}
             </div>
           </div>
         <br />

@@ -406,6 +406,38 @@ export const textMaskCpf = (props) => {
     />
   );
 };
+export const textMaskCnpj = (props) => {
+  const { inputRef, ...other } = props;
+  return (
+    <MaskedInput
+      {...other}
+      ref={inputRef}
+      mask={[
+        /\d/,
+        /\d/,
+        ".",
+        /\d/,
+        /\d/,
+        /\d/,
+        ".",
+        /\d/,
+        /\d/,
+        /\d/,
+        "/",
+        /\d/,
+        /\d/,
+        /\d/,
+        /\d/,
+        "-",
+        /\d/,
+        /\d/,
+      ]}
+      placeholderChar={"\u2000"}
+      guide={false}
+      keepCharPositions={false}
+    />
+  );
+};
 export const textMaskNumber= (props) => {
   const { inputRef, ...other } = props;
   return (

@@ -1,0 +1,23 @@
+.subtitle  h1{
+    font-size: 30px !important;
+}
+.subtitleText h1{
+        font-size: 18px !important;
+        width: 80% !important;
+        margin-right: auto;
+        margin-left: auto;
+        text-align: center !important;
+        font-weight: 900 !important;
+}
+.grid{
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 5px;
+}
+.btn-next{
+    width: 30% !important;
+    height: 60px !important;
+    font-weight: bold !important;
+    font-size: 15px !important;
+}

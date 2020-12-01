@@ -173,7 +173,7 @@ const apiQualicorp= {
         MIDIA_VEICULO: null,
         MIDIA_FORMATO: null,
         MIDIA_CAMPANHA: null,
-        MIDIAs_CONTEUDO: null,
+        MIDIA_CONTEUDO: null,
         UF: cotation.user.uf,
         MUNICIPIO: cotation.user.cidade,
         PROFISSAO: cotation.user.profissao,
@@ -205,7 +205,7 @@ const apiQualicorp= {
     await axios
       .put(url, lead)
       .then(function (res) {
-        console.log(res);
+        return res
       })
       .catch(function (error) {
         console.log(error);
