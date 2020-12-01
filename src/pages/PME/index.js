@@ -282,10 +282,6 @@ class About extends Component {
   renderDay(dia) {
     return <MenuItem value={dia}>{dia}</MenuItem>;
   }
-  renderLifes(lifes) {
-    return <MenuItem value={lifes}>{lifes}</MenuItem>;
-  }
-
   renderYear(ano) {
     return <MenuItem value={ano}>{ano}</MenuItem>;
   }
@@ -591,33 +587,97 @@ class About extends Component {
                     funcionários
                   </p>
                 </div>
-                <Grid item xs={12} sm={12} className="pb0">
-                <InputLabel style="font-weight: bold" shrink id="vidas">
-                  0-19
+
+              <Grid item xs={12} sm={2} className="pb0">
+                <InputLabel shrink id="lifes">
+                  0 a 18 anos
                 </InputLabel>
               </Grid>
-              <Grid item xs={3} className="pt0">
+              <Grid item xs={2} className="pt0">
                 <Select
-                  name="qtd_vidas"
+                  name="qtd_life"
                   fullWidth
                   displayEmpty
-                  labelId="vidas_pme"
-                  id="num_vidas"
+                  labelId="lifes"
+                  id="num_lifes"
                   value={
-                    this.props.values.qtd_vidas ? this.props.values.qtd_vidas : ""
+                    this.props.values.qtd_life ? this.props.values.qtd_life : ""
                   }
-                  onChange={handleChange("qtd_vidas")}
+                  onChange={handleChange("qtd_life")}
                   onBlur={this.handleChange}
-                  helperText={touched.qtd_vidas ? errors.qtd_vidas : ""}
-                  error={touched.qtd_vidas && Boolean(errors.qtd_vidas)}
+                  helperText={touched.qtd_life ? errors.qtd_life : ""}
+                  error={touched.qtd_life && Boolean(errors.qtd_life)}
                 >
                   <MenuItem value="" disabled>
                     Selecione
                   </MenuItem>
-                  {dias.map(this.renderLifes)}
+                  <MenuItem value="1">1</MenuItem>
+                  <MenuItem value="2">2</MenuItem>
+                  <MenuItem value="3">3</MenuItem>
+                  <MenuItem value="4">4</MenuItem>
+                  <MenuItem value="5">5</MenuItem>
                 </Select>
               </Grid>
-
+              <Grid item xs={4} sm={2} className="pb0">
+                <InputLabel shrink id="lifes">
+                  19 a 23 anos
+                </InputLabel>
+              </Grid>
+              <Grid item xs={4} sm={2}  className="pt0">
+                <Select
+                  name="qtd_life"
+                  fullWidth
+                  displayEmpty
+                  labelId="lifes"
+                  id="num_lifes"
+                  value={
+                    this.props.values.qtd_life ? this.props.values.qtd_life : ""
+                  }
+                  onChange={handleChange("qtd_life")}
+                  onBlur={this.handleChange}
+                  helperText={touched.qtd_life ? errors.qtd_life : ""}
+                  error={touched.qtd_life && Boolean(errors.qtd_life)}
+                >
+                  <MenuItem value="" disabled>
+                    Selecione
+                  </MenuItem>
+                  <MenuItem value="1">1</MenuItem>
+                  <MenuItem value="2">2</MenuItem>
+                  <MenuItem value="3">3</MenuItem>
+                  <MenuItem value="4">4</MenuItem>
+                  <MenuItem value="5">5</MenuItem>
+                </Select>
+              </Grid>
+              <Grid item xs={12} sm={2} className="pb0">
+                <InputLabel shrink id="lifes">
+                  24 a 28 anos
+                </InputLabel>
+              </Grid>
+              <Grid item xs={2} className="pt0">
+                <Select
+                  name="qtd_life"
+                  fullWidth
+                  displayEmpty
+                  labelId="lifes"
+                  id="num_lifes"
+                  value={
+                    this.props.values.qtd_life ? this.props.values.qtd_life : ""
+                  }
+                  onChange={handleChange("qtd_life")}
+                  onBlur={this.handleChange}
+                  helperText={touched.qtd_life ? errors.qtd_life : ""}
+                  error={touched.qtd_life && Boolean(errors.qtd_life)}
+                >
+                  <MenuItem value="" disabled>
+                    Selecione
+                  </MenuItem>
+                  <MenuItem value="1">1</MenuItem>
+                  <MenuItem value="2">2</MenuItem>
+                  <MenuItem value="3">3</MenuItem>
+                  <MenuItem value="4">4</MenuItem>
+                  <MenuItem value="5">5</MenuItem>
+                </Select>
+              </Grid>
                 <div className="actions">
                   <Button
                     type="submit"
