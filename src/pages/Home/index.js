@@ -33,7 +33,7 @@ export default  () =>{
             <Grid container spacing={3} className="grid">
                 <>
                     <Grid item xs={12}>
-                    <Title text="Que tipo de plano você procura?"  myClass="subtitle"/>
+                    <Title text="Que tipo de plano você procura?"  myClass="subtitleHome"/>
                     </Grid>
                     <Grid item xs={12}>
                         <Button variant="outlined" className="buttonHome" onClick={() => setVoce(true)}>
