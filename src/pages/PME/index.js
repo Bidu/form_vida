@@ -33,6 +33,7 @@ import axios from "axios";
 import DialogDependents from "../../components/DialogDependents";
 import Birthday from "../../components/Birthday";
 import DialogAlert from "../../components/DialogAlert";
+import "./PME.css"
 import {
   textMaskPhone,
   textMaskNumber,
@@ -576,7 +577,7 @@ class About extends Component {
               {loading && <Loading />}
             </Grid>
             <br />
-            {this.props.values.operadora && (
+           
               <>
                 <div class="vidas">
                   <Title text="Quantidade de" bold="vidas" />
@@ -587,7 +588,7 @@ class About extends Component {
                     funcionários
                   </p>
                 </div>
-            <Grid container spacing={2}>
+            <Grid container spacing={3}>
               <Grid item xs={2} className="pb0">
                 <>
                 <InputLabel shrink id="lifes_one">
@@ -899,7 +900,7 @@ class About extends Component {
                   </Button>
                 </div>
               </>
-            )}
+            
           </form>
         </Wrapper>
       </>
