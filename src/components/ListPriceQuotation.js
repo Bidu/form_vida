@@ -16,6 +16,7 @@ import ErrorQuote from "./ErrorQuote";
 import ListPriceQuotationServices from "./ListPriceQuotationServices";
 import { apiQualicorp } from "../services/bdBo";
 
+
 const marks_fipe = {
   85: {
     style: {
@@ -209,6 +210,7 @@ export class ListPriceQuotation extends Component {
       cotacao: this.props.quote,
       loading: false,
       customQuote: this.props.quote,
+      sucessoAddLead: false
     };
     this.escExitLightbox = this.escExitLightbox.bind(this);
   }
@@ -416,14 +418,16 @@ export class ListPriceQuotation extends Component {
   };
 
 
-  setPlanSelect = (plan) =>{
+  setPlanSelect = async (plan) =>{
       localStorage.setItem("@bidu2/saude/plan", JSON.stringify(plan))
       let cotationSelect = {
         plan: plan,
         user: JSON.parse(localStorage.getItem("@bidu2/user"))
       }
 
-      apiQualicorp.addLead(cotationSelect)
+     let res = await  apiQualicorp.addLead(cotationSelect)
+     if(res.status == 200)
+      this.setState({sucessoAddLead: true})
 
   }
 
@@ -473,8 +477,11 @@ export class ListPriceQuotation extends Component {
     } else {
       return (
         <>
-          
+            {this.state.sucessoAddLead &&
+                <Redirect to="/sucesso" />
+             }
                 <Grid key={cotacao.id} item xs={12} sm={6}>
+                  
                   <div className="list-price-quotation">
                     <div className="logo-container">
                       <figure className="seguradoras">

@@ -14,9 +14,7 @@ export default  () =>{
         localStorage.setItem("@bidu2/saude/plan", JSON.stringify([]))
     }, [])
     
-    const [voce, setVoce] = useState(false)
-    const [familia, setFamilia] = useState(false)
-    const [empresa, setEmpresa] = useState(false)
+    const [redirect, setRedirect] = useState(false)
 
 
 
@@ -24,6 +22,9 @@ export default  () =>{
     return (
        
         <Wrapper>
+          {redirect &&
+                <Redirect to="/" />
+             }
           <Title text="Plano de" bold="Saúde" className="title"/>
              <Steps step1={true} step2={true} step3={true} step4={true} step5={true} />
             <Grid container spacing={1} className="grid">
@@ -35,7 +36,7 @@ export default  () =>{
                      
                     </Grid>
                     <div className="actions">
-                    <Button  className="btn-next"  >
+                    <Button  className="btn-next" onClick={()=> setRedirect(true)} >
                       Simular outro plano
                     </Button>
                 </div>

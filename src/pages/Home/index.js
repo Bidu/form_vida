@@ -63,10 +63,10 @@ export default  () =>{
                                 <Title  bold="Você possui CNPJ?"  myClass="subtitleFamilyCnpj"/>
                             </Grid>
                             <Grid item xs={12}>
-                                <Button variant="outlined" className="buttonFamily" onClick={() => setVoce(true)}>
+                                <Button variant="outlined" className="buttonFamily" onClick={() => setEmpresa(true)}>
                                     Sim
                                 </Button>
-                                <Button variant="outlined" className="buttonFamily"  onClick={() => setEmpresa(true)}>
+                                <Button variant="outlined" className="buttonFamily"  onClick={() => setVoce(true)}>
                                     Não
                                 </Button>
                             </Grid>

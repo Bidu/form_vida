@@ -123,6 +123,7 @@ const apiQualicorp= {
   },
   async listarPlanos(plano) {
     let planos = [];
+
     const url = `${server}/qvenda/planos/lista?api-key=${apiKeyPlanos}`;
     await axios
       .post(url, plano)
@@ -134,9 +135,10 @@ const apiQualicorp= {
       });
     return planos;
   },
+  
   async addLead(cotation) {
 
-    let planos = [];
+    let resposta = [];
     const url = `https://qualitech.qualicorp.com.br/api-focus-lead/adicionar-lead?api-key=${apiKeyAddLead}`;
     let date = new Date()
     let day  = (date.getDay() < 10 ? `0${date.getDay()}` : date.getDay()) 
@@ -205,12 +207,12 @@ const apiQualicorp= {
     await axios
       .put(url, lead)
       .then(function (res) {
-        return res
+        resposta = res
       })
       .catch(function (error) {
         console.log(error);
       });
-    return planos;
+    return resposta;
   },
   
   
