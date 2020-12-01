@@ -282,6 +282,10 @@ class About extends Component {
   renderDay(dia) {
     return <MenuItem value={dia}>{dia}</MenuItem>;
   }
+  renderLifes(lifes) {
+    return <MenuItem value={lifes}>{lifes}</MenuItem>;
+  }
+
   renderYear(ano) {
     return <MenuItem value={ano}>{ano}</MenuItem>;
   }
@@ -587,13 +591,32 @@ class About extends Component {
                     funcionários
                   </p>
                 </div>
-                <div className="actions">
-                  <DialogDependents
-                    titleName="Adicionar Pessoas"
-                    className="bnt-next"
-                    setDependents={this.setDependents}
-                  />
-                </div>
+                <Grid item xs={12} sm={12} className="pb0">
+                <InputLabel style="font-weight: bold" shrink id="vidas">
+                  0-19
+                </InputLabel>
+              </Grid>
+              <Grid item xs={3} className="pt0">
+                <Select
+                  name="qtd_vidas"
+                  fullWidth
+                  displayEmpty
+                  labelId="vidas_pme"
+                  id="num_vidas"
+                  value={
+                    this.props.values.qtd_vidas ? this.props.values.qtd_vidas : ""
+                  }
+                  onChange={handleChange("qtd_vidas")}
+                  onBlur={this.handleChange}
+                  helperText={touched.qtd_vidas ? errors.qtd_vidas : ""}
+                  error={touched.qtd_vidas && Boolean(errors.qtd_vidas)}
+                >
+                  <MenuItem value="" disabled>
+                    Selecione
+                  </MenuItem>
+                  {dias.map(this.renderLifes)}
+                </Select>
+              </Grid>
 
                 <div className="actions">
                   <Button
