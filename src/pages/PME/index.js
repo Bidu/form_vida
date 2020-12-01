@@ -33,6 +33,7 @@ import axios from "axios";
 import DialogDependents from "../../components/DialogDependents";
 import Birthday from "../../components/Birthday";
 import DialogAlert from "../../components/DialogAlert";
+import "./PME.css"
 import {
   textMaskPhone,
   textMaskNumber,
@@ -576,7 +577,7 @@ class About extends Component {
               {loading && <Loading />}
             </Grid>
             <br />
-            {this.props.values.operadora && (
+           
               <>
                 <div class="vidas">
                   <Title text="Quantidade de" bold="vidas" />
@@ -587,14 +588,308 @@ class About extends Component {
                     funcionários
                   </p>
                 </div>
-                <div className="actions">
-                  <DialogDependents
-                    titleName="Adicionar Pessoas"
-                    className="bnt-next"
-                    setDependents={this.setDependents}
-                  />
-                </div>
-
+            <Grid container spacing={3}>
+              <Grid item xs={2} className="pb0">
+                <>
+                <InputLabel shrink id="lifes_one">
+                  0 a 18 anos
+                </InputLabel>
+                <Select
+                  name="qtd_life_one"
+                  fullWidth
+                  displayEmpty
+                  labelId="lifes_one"
+                  id="num_lifes_one"
+                  value={
+                    this.props.values.qtd_life_one ? this.props.values.qtd_life_one : ""
+                  }
+                  onChange={handleChange("qtd_life_one")}
+                  onBlur={this.handleChange}
+                  helperText={touched.qtd_life_one ? errors.qtd_life_one : ""}
+                  error={touched.qtd_life_one && Boolean(errors.qtd_life_one)}
+                >
+                      <MenuItem value="" disabled>
+                        Selecione
+                      </MenuItem>
+                      <MenuItem value="1">1</MenuItem>
+                      <MenuItem value="2">2</MenuItem>
+                      <MenuItem value="3">3</MenuItem>
+                      <MenuItem value="4">4</MenuItem>
+                      <MenuItem value="5">5</MenuItem>
+                    </Select>
+                </>
+              </Grid>
+              <Grid item xs={2} className="pb0">
+                <>
+                <InputLabel shrink id="lifes_two">
+                  19 a 24 anos
+                </InputLabel>
+                <Select
+                  name="qtd_life_two"
+                  fullWidth
+                  displayEmpty
+                  labelId="lifes_two"
+                  id="num_lifes_two"
+                  value={
+                    this.props.values.qtd_life_two ? this.props.values.qtd_life_two : ""
+                  }
+                  onChange={handleChange("qtd_life_two")}
+                  onBlur={this.handleChange}
+                  helperText={touched.qtd_life_two ? errors.qtd_life_two : ""}
+                  error={touched.qtd_life_two && Boolean(errors.qtd_life_two)}
+                >
+                      <MenuItem value="" disabled>
+                        Selecione
+                      </MenuItem>
+                      <MenuItem value="1">1</MenuItem>
+                      <MenuItem value="2">2</MenuItem>
+                      <MenuItem value="3">3</MenuItem>
+                      <MenuItem value="4">4</MenuItem>
+                      <MenuItem value="5">5</MenuItem>
+                    </Select>
+                </>
+              </Grid>
+              <Grid item xs={2} className="pb0">
+                <>
+                <InputLabel shrink id="lifes_four">
+                  25 a 29 anos
+                </InputLabel>
+                <Select
+                  name="qtd_life_four"
+                  fullWidth
+                  displayEmpty
+                  labelId="lifes_four"
+                  id="num_lifes_four"
+                  value={
+                    this.props.values.qtd_life_four ? this.props.values.qtd_life_four : ""
+                  }
+                  onChange={handleChange("qtd_life_four")}
+                  onBlur={this.handleChange}
+                  helperText={touched.qtd_life_four ? errors.qtd_life_four : ""}
+                  error={touched.qtd_life_four && Boolean(errors.qtd_life_four)}
+                >
+                      <MenuItem value="" disabled>
+                        Selecione
+                      </MenuItem>
+                      <MenuItem value="1">1</MenuItem>
+                      <MenuItem value="2">2</MenuItem>
+                      <MenuItem value="3">3</MenuItem>
+                      <MenuItem value="4">4</MenuItem>
+                      <MenuItem value="5">5</MenuItem>
+                    </Select>
+                </>
+              </Grid>
+              <Grid item xs={2} className="pb0">
+                <>
+                <InputLabel shrink id="lifes_five">
+                  30 a 34 anos
+                </InputLabel>
+                <Select
+                  name="qtd_life_five"
+                  fullWidth
+                  displayEmpty
+                  labelId="lifes_five"
+                  id="num_lifes_five"
+                  value={
+                    this.props.values.qtd_life_five ? this.props.values.qtd_life_five : ""
+                  }
+                  onChange={handleChange("qtd_life_five")}
+                  onBlur={this.handleChange}
+                  helperText={touched.qtd_life_five ? errors.qtd_life_five : ""}
+                  error={touched.qtd_life_five && Boolean(errors.qtd_life_five)}
+                >
+                      <MenuItem value="" disabled>
+                        Selecione
+                      </MenuItem>
+                      <MenuItem value="1">1</MenuItem>
+                      <MenuItem value="2">2</MenuItem>
+                      <MenuItem value="3">3</MenuItem>
+                      <MenuItem value="4">4</MenuItem>
+                      <MenuItem value="5">5</MenuItem>
+                    </Select>
+                </>
+              </Grid>
+              <Grid item xs={2} className="pb0">
+                <>
+                <InputLabel shrink id="lifes_six">
+                  34 a 38 anos
+                </InputLabel>
+                <Select
+                  name="qtd_life_six"
+                  fullWidth
+                  displayEmpty
+                  labelId="lifes_six"
+                  id="num_lifes_six"
+                  value={
+                    this.props.values.qtd_life_six ? this.props.values.qtd_life_six : ""
+                  }
+                  onChange={handleChange("qtd_life_six")}
+                  onBlur={this.handleChange}
+                  helperText={touched.qtd_life_six ? errors.qtd_life_six : ""}
+                  error={touched.qtd_life_six && Boolean(errors.qtd_life_six)}
+                >
+                      <MenuItem value="" disabled>
+                        Selecione
+                      </MenuItem>
+                      <MenuItem value="1">1</MenuItem>
+                      <MenuItem value="2">2</MenuItem>
+                      <MenuItem value="3">3</MenuItem>
+                      <MenuItem value="4">4</MenuItem>
+                      <MenuItem value="5">5</MenuItem>
+                    </Select>
+                </>
+              </Grid>
+              <Grid item xs={2} className="pb0">
+                <>
+                <InputLabel shrink id="lifes_seven">
+                  39 a 43 anos
+                </InputLabel>
+                <Select
+                  name="qtd_life_seven"
+                  fullWidth
+                  displayEmpty
+                  labelId="lifes_seven"
+                  id="num_lifes_seven"
+                  value={
+                    this.props.values.qtd_life_seven ? this.props.values.qtd_life_seven : ""
+                  }
+                  onChange={handleChange("qtd_life_seven")}
+                  onBlur={this.handleChange}
+                  helperText={touched.qtd_life_seven ? errors.qtd_life_seven : ""}
+                  error={touched.qtd_life_seven && Boolean(errors.qtd_life_seven)}
+                >
+                      <MenuItem value="" disabled>
+                        Selecione
+                      </MenuItem>
+                      <MenuItem value="1">1</MenuItem>
+                      <MenuItem value="2">2</MenuItem>
+                      <MenuItem value="3">3</MenuItem>
+                      <MenuItem value="4">4</MenuItem>
+                      <MenuItem value="5">5</MenuItem>
+                    </Select>
+                </>
+              </Grid>
+              <Grid item xs={2} className="pb0">
+                <>
+                <InputLabel shrink id="lifes_eight">
+                  44 a 48 anos
+                </InputLabel>
+                <Select
+                  name="qtd_life_eight"
+                  fullWidth
+                  displayEmpty
+                  labelId="lifes_eight"
+                  id="num_lifes_eight"
+                  value={
+                    this.props.values.qtd_life_eight ? this.props.values.qtd_life_eight : ""
+                  }
+                  onChange={handleChange("qtd_life_eight")}
+                  onBlur={this.handleChange}
+                  helperText={touched.qtd_life_eight ? errors.qtd_life_eight : ""}
+                  error={touched.qtd_life_eight && Boolean(errors.qtd_life_eight)}
+                >
+                      <MenuItem value="" disabled>
+                        Selecione
+                      </MenuItem>
+                      <MenuItem value="1">1</MenuItem>
+                      <MenuItem value="2">2</MenuItem>
+                      <MenuItem value="3">3</MenuItem>
+                      <MenuItem value="4">4</MenuItem>
+                      <MenuItem value="5">5</MenuItem>
+                    </Select>
+                </>
+              </Grid>
+              <Grid item xs={2} className="pb0">
+                <>
+                <InputLabel shrink id="lifes_nine">
+                  49 a 53 anos
+                </InputLabel>
+                <Select
+                  name="qtd_life_nine"
+                  fullWidth
+                  displayEmpty
+                  labelId="lifes_nine"
+                  id="num_lifes_nine"
+                  value={
+                    this.props.values.qtd_life_nine ? this.props.values.qtd_life_nine : ""
+                  }
+                  onChange={handleChange("qtd_life_nine")}
+                  onBlur={this.handleChange}
+                  helperText={touched.qtd_life_nine ? errors.qtd_life_nine : ""}
+                  error={touched.qtd_life_nine && Boolean(errors.qtd_life_nine)}
+                >
+                      <MenuItem value="" disabled>
+                        Selecione
+                      </MenuItem>
+                      <MenuItem value="1">1</MenuItem>
+                      <MenuItem value="2">2</MenuItem>
+                      <MenuItem value="3">3</MenuItem>
+                      <MenuItem value="4">4</MenuItem>
+                      <MenuItem value="5">5</MenuItem>
+                    </Select>
+                </>
+              </Grid>
+              <Grid item xs={2} className="pb0">
+                <>
+                <InputLabel shrink id="lifes_ten">
+                  54 a 58 anos
+                </InputLabel>
+                <Select
+                  name="qtd_life_ten"
+                  fullWidth
+                  displayEmpty
+                  labelId="lifes_ten"
+                  id="num_lifes_ten"
+                  value={
+                    this.props.values.qtd_life_ten ? this.props.values.qtd_life_ten : ""
+                  }
+                  onChange={handleChange("qtd_life_ten")}
+                  onBlur={this.handleChange}
+                  helperText={touched.qtd_life_ten ? errors.qtd_life_ten : ""}
+                  error={touched.qtd_life_ten && Boolean(errors.qtd_life_ten)}
+                >
+                      <MenuItem value="" disabled>
+                        Selecione
+                      </MenuItem>
+                      <MenuItem value="1">1</MenuItem>
+                      <MenuItem value="2">2</MenuItem>
+                      <MenuItem value="3">3</MenuItem>
+                      <MenuItem value="4">4</MenuItem>
+                      <MenuItem value="5">5</MenuItem>
+                    </Select>
+                </>
+              </Grid>
+            <Grid item xs={2} className="pb0">
+                <>
+                <InputLabel shrink id="lifes_el">
+                  59 anos ou mais
+                </InputLabel>
+                <Select
+                  name="qtd_life_el"
+                  fullWidth
+                  displayEmpty
+                  labelId="lifes_el"
+                  id="num_lifes_el"
+                  value={
+                    this.props.values.qtd_life_el ? this.props.values.qtd_life_el : ""
+                  }
+                  onChange={handleChange("qtd_life_el")}
+                  onBlur={this.handleChange}
+                  helperText={touched.qtd_life_el ? errors.qtd_life_el : ""}
+                  error={touched.qtd_life_el && Boolean(errors.qtd_life_el)}
+                >
+                      <MenuItem value="" disabled>
+                        Selecione
+                      </MenuItem>
+                      <MenuItem value="1">1</MenuItem>
+                      <MenuItem value="2">2</MenuItem>
+                      <MenuItem value="3">3</MenuItem>
+                      <MenuItem value="4">4</MenuItem>
+                      <MenuItem value="5">5</MenuItem>
+                    </Select>
+                </>
+              </Grid>
+            </Grid>
                 <div className="actions">
                   <Button
                     type="submit"
@@ -605,7 +900,7 @@ class About extends Component {
                   </Button>
                 </div>
               </>
-            )}
+            
           </form>
         </Wrapper>
       </>
