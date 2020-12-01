@@ -4,6 +4,7 @@ import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
 import About from "../pages/About";
 import Family from "../pages/Family";
 import PME from "../pages/PME";
+import Home from "../pages/Home";
 import { PriceQuote } from "../pages/PriceQuote";
 
 
@@ -14,12 +15,12 @@ const Routes = () => (
     <Switch>
       {/*<Route exact path="/" component={Home} />*/}
       <Route exact path="/" >
-         <Redirect to="/sobrevoce" />
+         <Redirect to="/inicio" />
       </Route>
-      <Route exact path="/sobrevoce" component={About} forceRefresh={true} />
+      <Route exact path="/sobre-voce" component={About} forceRefresh={true} />
       <Route exact path="/cotacao" component={PriceQuote} />   
-      <Route exact path="/sobreaempresa" component={PME} />
-      <Route exact path="/sobresuafamilia" component={Family} />    
+      <Route exact path="/sobre-a-empresa" component={PME} />
+      <Route exact path="/inicio" component={Home} />
     
     </Switch>
   </BrowserRouter>

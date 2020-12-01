@@ -1,0 +1,67 @@
+.page-title{
+    width: 100%;
+    text-align: center;
+}
+.subtitle h1{
+    font-size: 18px !important;
+    
+}
+.subtitle h1 span {
+    font-weight: 400 !important;
+}
+.subtitleFamily h1{
+    font-size: 25px !important;
+}
+
+.subtitleFamilyCnpj h1{
+    font-size: 18px !important;
+}
+.grid{
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 50px;
+}
+.gridFamily
+{
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 0px;
+}
+.buttonHome {
+    width: 30%;
+    height: 50px;
+    border-color: #00f1e7 !important;
+    border-radius: 24px !important;
+    font-weight: 500 !important;
+}
+
+.buttonHome:hover {
+    background-image: linear-gradient(to right, #00f1e7, #a0fffc, #fff );
+    width: 30%;
+    height: 50px;
+    border-color: #00f1e7 !important;
+    border-radius: 24px !important;
+    font-weight: 600 !important;
+}
+.buttonFamily{
+    border-color: #00f1e7 !important;
+    border-radius: 24px !important;
+    font-weight: 500 !important;
+    margin: 0 10px 0 10px !important;
+}
+
+.buttonFamily:hover {
+    background-image: linear-gradient(to right, #00f1e7, #a0fffc, #fff );
+    border-color: #00f1e7 !important;
+    border-radius: 24px !important;
+    font-weight: 600 !important;
+}
+
+@media only screen and (max-width: 500px){
+    .buttonHome {
+        width: 80%;
+        
+    }
+}

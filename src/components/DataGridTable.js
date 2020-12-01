@@ -10,7 +10,7 @@ const [deletedRows, setDeletedRows] =  React.useState([]);
 
 const columns = [
   { field: 'id', headerName: 'ID', width: 50 },
-  { field: 'nome', headerName: 'Nome', width: 150 },
+  { field: 'nome', headerName: 'Nome', width: 500 },
   {
     field: 'idade',
     headerName: 'idade',
@@ -27,6 +27,7 @@ const columns = [
     React.useEffect(() => {
       setRows(props.rows)
     }, [props])
+    
     const handleRowSelection = (e) => {
       setDeletedRows([...deletedRows, ...rows.filter((r) => r.id === e.data.id)]);
     };

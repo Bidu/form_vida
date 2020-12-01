@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import SearchIcon from "@material-ui/icons/Search";
+import HomeIcon from '@material-ui/icons/Home';
 import IconButton from "@material-ui/core/IconButton";
 import MenuOpenIcon from "@material-ui/icons/MenuOpen";
 import Grid from "@material-ui/core/Grid";
@@ -16,8 +17,8 @@ export class Header extends Component {
         <header className="header">
           <Grid container spacing={0}>
             <Grid item xs={4}>
-              <IconButton aria-label="search" color="dark">
-                <SearchIcon />
+              <IconButton aria-label="search" color="dark" onClick={()=> window.location.href="/"}>
+                <HomeIcon />
               </IconButton>
             </Grid>
             <Grid item xs={4} className="logo-bidu">

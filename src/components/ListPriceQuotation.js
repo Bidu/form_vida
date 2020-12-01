@@ -14,6 +14,7 @@ import "rc-slider/assets/index.css";
 import Dictionary from "../helpers/Dictionary/Quote";
 import ErrorQuote from "./ErrorQuote";
 import ListPriceQuotationServices from "./ListPriceQuotationServices";
+import { apiQualicorp } from "../services/bdBo";
 
 const marks_fipe = {
   85: {
@@ -414,6 +415,19 @@ export class ListPriceQuotation extends Component {
     this.lightboxBehaviorClose();
   };
 
+
+  setPlanSelect = (plan) =>{
+      localStorage.setItem("@bidu2/saude/plan", JSON.stringify(plan))
+      let cotationSelect = {
+        plan: plan,
+        user: JSON.parse(localStorage.getItem("@bidu2/user"))
+      }
+
+      apiQualicorp.addLead(cotationSelect)
+
+  }
+
+
   render() {
     let { cotacao, customQuote } = this.state;
     cotacao = this.props.quote;
@@ -471,19 +485,19 @@ export class ListPriceQuotation extends Component {
                       </figure>
                     </div>
 
-                    <div class="warning-quote">
+                    {/* <div class="warning-quote">
                       {
-                        `${cotacao.plano}`
+                        `${cotacao.nomeAmigavel}`
                         
                       }
-                    </div>
+                    </div> */}
                     <Grid item spacing={0} className="table-header" container>
                       <Grid item xs={6}>
                         <>
                           <span className="top-label">Valor total</span>
                           <span className="valor-total">
                             {ConvertCurrency(
-                              cotacao.precos.total
+                              cotacao.valorTotal
                             )}
                           </span>
                         </>
@@ -496,26 +510,23 @@ export class ListPriceQuotation extends Component {
                       <Grid item xs={3}>
                         <Grid className="txt-left bottom-idProtocolo">
                           <p >
-                            {cotacao.id}
+                            {cotacao.idProdutoFatura}
                           </p>
                         </Grid>
                       </Grid>
-
+                              <br/>
                       <Grid
                         item
                         xs={6}
                         className="txt-center relative itens-center px05"
+                        // style={{top: '-20px'}}
                       >
                         <div
                           className="btn-comprar"
-                          // onClick={(e) =>
-                          //   cotacao.resultadoCotacao.mensagens.length
-                          //     ? this.BtnLightboxAgreeOpen(cotacao.id)
-                          //     : this.BtnRedirectCheckout(cotacao.id)
-                          // }
+                          onClick={ () =>  {if(window.confirm('Confirma?')) this.setPlanSelect(cotacao)} }
                           
                         >
-                          Contratar
+                          ME CONTATE
                         </div>
                       </Grid>
 
@@ -549,31 +560,33 @@ export class ListPriceQuotation extends Component {
                 </div>
                 <div className="entry">
                   <p className="subtitle bold">
-                  Detalhes e assistências do seguro - {cotacao.id}
+                  Detalhes e assistências do seguro - {cotacao.idProdutoFatura}
                    <br/>
                   </p>
                   
                   <p>
-                    <span className="bold">Plano:</span>  {cotacao.plano} <br/>
+                    <span className="bold">Plano:</span>  {cotacao.nomePlano} <br/>
                     <span className="bold"> Coparticipativo:</span> {cotacao.coparticipacao == true ? "SIM" : "NÃO"}<br/>
                     <span className="bold"> Abrangência:</span> {cotacao.abrangencia}<br/>
-                    <span className="bold"> Acomodação:</span> {cotacao.tipo_acomodacao}
+                    <span className="bold"> Acomodação:</span> {cotacao.acomodacao}<br/>
+                    <span className="bold"> Segmentação:</span> {cotacao.segmentacao}<br />
+                    <span className="bold"> Código ANS:</span> {cotacao.codigoans}<br />
                    </p>
                    <p>
                     <span className="bold">Total Rede  Referência:</span>
                   </p>
                       <p>
-                        <span className="bold">Hospital:</span> {cotacao.total_rede_referencia.Hospital}<br/>
+                        {/* <span className="bold">Hospital:</span> {cotacao.total_rede_referencia.Hospital}<br/>
                         <span className="bold">Laboratório:</span> {cotacao.total_rede_referencia.Laboratório}<br/>
                         <span className="bold">Maternidade:</span> {cotacao.total_rede_referencia.Maternidade}<br/>
-                        <span className="bold">Pronto Socorro:</span> {cotacao.total_rede_referencia.["Pronto Socorro"]}<br/>             
+                        <span className="bold">Pronto Socorro:</span> {cotacao.total_rede_referencia.["Pronto Socorro"]}<br/>              */}
                       </p>
                    
 
                   <p>
                     <span className="bold">Rede Referência: </span>
                   </p>
-                  {cotacao.rede_referencia
+                  {/* {cotacao.rede_referencia
                     .map((q, index) => (
                       <p key={index}>
                         <span className="">{q.Prestador}</span><br/>
@@ -581,7 +594,7 @@ export class ListPriceQuotation extends Component {
                     <span className="">{q.Bairro}/{q.Cidade}-{q.Estado}</span>
                         <br />                      
                       </p>
-                    ))}
+                    ))} */}
                   {/* <p>
                     <span className="bold">Valor da franquia</span> <br />
                     {cotacao.resultadoCotacao.franquias &&
@@ -623,6 +636,13 @@ export class ListPriceQuotation extends Component {
                       {cotacao.resultadoCotacao.idProtocolo}
                     </p>
                   )} */}
+                   <p>
+                    <span className="bold">Informações complementares: </span><br/>
+                    <span>Planos de saúde coletivo são comercializados de acordo com a regra da ANS;</span><br/>
+                    <span>A comercialização respeita a área de abrangência dos produtos de acorodo com a regra das operadoras;</span><br/>
+                    <span>A disponibilidade pode variar de acordo com a região;</span><br/>
+                    <span>As informações são de responsabilidade da operadora;</span>
+                  </p>
                 </div>
               </div>
             </div>

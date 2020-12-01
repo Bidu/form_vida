@@ -84,6 +84,7 @@ class About extends Component {
         escolaridade: "",
         moradia: false,
       },
+      dependents: [],
       storage: JSON.parse(localStorage.getItem("@bidu2/user")),
     };
     this.handleCEP = this.handleCEP.bind(this);
@@ -93,6 +94,13 @@ class About extends Component {
     this.props.values.profissao = "Selecione";
 
     const storage = JSON.parse(localStorage.getItem("@bidu2/user"));
+    delete storage.cep 
+    delete storage.entidade 
+    delete storage.operadora 
+    delete storage.profissao
+    delete storage.dependents
+
+    localStorage.setItem("@bidu2/user", JSON.stringify(storage))
 
     if (storage.length !== 0) {
       this.setState(storage);
@@ -207,9 +215,34 @@ class About extends Component {
       });
     }
   };
+  getOperator = async (entitie, uf, cidade) => {
+    this.setState({
+      loading: true,
+      operadoras: [],
+      operadorasFalse: true,
+    });
+
+    let operadoras = await apiQualicorp.operadoras(uf, cidade, entitie);
+    
+    console.log("Operador", operadoras)
+
+    if (operadoras && operadoras.data && operadoras.data.length > 0) {
+      this.setState({
+        operadoras: operadoras.data,
+        loading: false,
+      });
+    } else {
+      this.setState({
+        operadoras: [],
+        loading: false,
+        operadorasFalse: false,
+      });
+    }
+  }
+
+
 
   handleChange = (event) => {
-    console.log(event);
     if (event.target.name == "profissao") {
       this.props.values.profissao = event.target.value;
       this.getEntities(
@@ -218,6 +251,18 @@ class About extends Component {
         this.props.values.cidade
       );
     }
+    if (event.target.name == "entidade") {
+      this.props.values.entidade = event.target.value;
+      this.getOperator(
+        this.props.values.entidade,
+        this.props.values.uf,
+        this.props.values.cidade
+      );
+    }
+    if (event.target.name == "operadora") {
+      this.props.values.operadora = event.target.value;
+    }
+
     this.setState({
       usuario: {
         ...this.state.usuario,
@@ -245,6 +290,16 @@ class About extends Component {
     this.props.adicionaUser(usuario);
     this.setState({ redirect: true });
   };
+
+
+  setDependents = (dependents) => {
+    this.setState({dependents})
+    this.props.values.dependents = dependents;
+
+    console.log(this.state.dependents)
+  }
+
+
 
   render() {
     const { loading, redirect, usuario, storage } = this.state;
@@ -368,110 +423,17 @@ class About extends Component {
                   }}
                 />
               </Grid>
-              {/* <Grid item xs={12} sm={12} className="pb0">
-                <InputLabel shrink id="birth">
-                  Nascimento
-                </InputLabel>
-              </Grid> */}
-              {/* <Grid item xs={4} className="pt0">
-                <Select
-                  name="nasc_dia"
-                  fullWidth
-                  displayEmpty
-                  labelId="birth"
-                  id="day"
-                  value={
-                    this.props.values.nasc_dia ? this.props.values.nasc_dia : ""
-                  }
-                  onChange={handleChange("nasc_dia")}
+               <Grid item xs={12} sm={6}>
+                <InputLabel>Data de nascimento</InputLabel>
+                <TextField
+                  type="date"
+                  value={this.props.values.date_birth ? this.props.values.date_birth : ""}
+                  onChange={handleChange("date_birth")}
                   onBlur={this.handleChange}
-                  helperText={touched.nasc_dia ? errors.nasc_dia : ""}
-                  error={touched.nasc_dia && Boolean(errors.nasc_dia)}
-                >
-                  <MenuItem value="" disabled>
-                    Dia
-                  </MenuItem>
-                  {dias.map(this.renderDay)}
-                </Select>
+                  helperText={touched.date_birth ? errors.date_birth : ""}
+                  error={touched.date_birth && Boolean(errors.date_birth)}
+                />
               </Grid>
-              <Grid item xs={4} className="pt0">
-                <Select
-                  name="nasc_mes"
-                  fullWidth
-                  displayEmpty
-                  labelId="birth"
-                  id="month"
-                  value={
-                    this.props.values.nasc_mes ? this.props.values.nasc_mes : ""
-                  }
-                  onChange={handleChange("nasc_mes")}
-                  onBlur={this.handleChange}
-                  helperText={touched.nasc_mes ? errors.nasc_mes : ""}
-                  error={touched.nasc_mes && Boolean(errors.nasc_mes)}
-                >
-                  <MenuItem value="" disabled>
-                    Mês
-                  </MenuItem>
-                  <MenuItem value="01">Janeiro</MenuItem>
-                  <MenuItem value="02">Fevereiro</MenuItem>
-                  <MenuItem value="03">Março</MenuItem>
-                  <MenuItem value="04">Abril</MenuItem>
-                  <MenuItem value="05">Maio</MenuItem>
-                  <MenuItem value="06">Junho</MenuItem>
-                  <MenuItem value="07">Julho</MenuItem>
-                  <MenuItem value="08">Agosto</MenuItem>
-                  <MenuItem value="09">Setembro</MenuItem>
-                  <MenuItem value="10">Outubro</MenuItem>
-                  <MenuItem value="11">Novembro</MenuItem>
-                  <MenuItem value="12">Dezembro</MenuItem>
-                </Select>
-              </Grid>
-              <Grid item xs={4} className="pt0">
-                <Select
-                  name="nasc_ano"
-                  fullWidth
-                  displayEmpty
-                  labelId="birth"
-                  id="year"
-                  value={
-                    this.props.values.nasc_ano ? this.props.values.nasc_ano : ""
-                  }
-                  onChange={handleChange("nasc_ano")}
-                  onBlur={this.handleChange}
-                  helperText={touched.nasc_ano ? errors.nasc_ano : ""}
-                  error={touched.nasc_ano && Boolean(errors.nasc_ano)}
-                >
-                  <MenuItem value="" disabled>
-                    Ano
-                  </MenuItem>
-                  {anos.map(this.renderYear)}
-                </Select>
-              </Grid> */}
-              {/* <Grid item xs={12} sm={6}>
-                <InputLabel shrink id="gender">
-                  Gênero
-                </InputLabel>
-                <Select
-                  name="genero"
-                  fullWidth
-                  displayEmpty
-                  labelId="gender"
-                  id="gender"
-                  value={
-                    this.props.values.genero ? this.props.values.genero : ""
-                  }
-                  onChange={handleChange("genero")}
-                  onBlur={this.handleChange}
-                  helperText={touched.genero ? errors.genero : ""}
-                  error={touched.genero && Boolean(errors.genero)}
-                >
-                  <MenuItem value="" disabled>
-                    Selecione
-                  </MenuItem>
-                  <MenuItem value="MASCULINO">Masculino</MenuItem>
-                  <MenuItem value="FEMININO">Feminino</MenuItem>
-                </Select>
-              </Grid>            */}
               <Grid item xs={12} sm={6}>
                 <TextField
                   value={this.props.values.cep ? this.props.values.cep : ""}
@@ -496,15 +458,7 @@ class About extends Component {
                   <p class="zip-error">CEP não encontrado</p>
                 )}
               </Grid>
-              <Grid item xs={12} sm={12}>
-                <Birthday 
-                  value={this.props.values.date_birth ? this.props.values.date_birth : ""}
-                  onChange={handleChange("date_birth")}
-                  onBlur={this.handleChange}
-                  helperText={touched.date_birth ? errors.date_birth : ""}
-                  error={touched.date_birth && Boolean(errors.date_birth)}
-                />
-              </Grid>
+             
               {this.state.usuario.rua && (
                 <>
                   <Grid item xs={12} sm={6}>
@@ -570,8 +524,8 @@ class About extends Component {
                             ? this.props.values.entidade
                             : "Não informado"
                         }
-                        onChange={handleChange("entidade")}
-                        onBlur={this.handleChange}
+                        onChange={this.handleChange}
+                        // onBlur={this.handleChange}
                         helperText={touched.entidade ? errors.entidade : ""}
                         error={touched.entidade && Boolean(errors.ent)}
                       >
@@ -592,7 +546,7 @@ class About extends Component {
                       message="Erro ao obter a lista de entidades. Tente novamente mais tarde!"
                     />
                   )}
-                  {this.state.entitiesFalse == true && (
+                  {this.state.operadorasFalse == true && (
                     <Grid item xs={12} sm={6}>
                       <InputLabel shrink id="gender">
                         Operadora
@@ -608,19 +562,19 @@ class About extends Component {
                             ? this.props.values.operadora
                             : "Não informado"
                         }
-                        onChange={handleChange("operadora")}
-                        onBlur={this.handleChange}
+                        onChange={this.handleChange}
+                        // onBlur={this.handleChange}
                         helperText={touched.operadora ? errors.operadora : ""}
                         error={touched.operadora && Boolean(errors.ent)}
                       >
                         <MenuItem value="Selecione" disabled>
                           Selecione
                         </MenuItem>
-
-                        {this.state.operadora &&
-                          this.state.operadora.length > 0 &&
-                          this.state.operadora.map((e, key) => (
-                            <MenuItem value={e.id}>{e.nome}</MenuItem>
+                        
+                        {this.state.operadoras &&
+                          this.state.operadoras.length > 0 &&
+                          this.state.operadoras.map((e, key) => (
+                            <MenuItem value={e.nome}>{e.nome}</MenuItem>
                           ))}
                       </Select>
                     </Grid>
@@ -631,7 +585,7 @@ class About extends Component {
               {loading && <Loading />}
             </Grid>
             <br />
-            {this.state.entitiesFalse == true && (
+            {this.props.values.operadora && (
               <>
                 <div class="vidas">
                   <Title text="Quantidade de" bold="vidas" />
@@ -646,6 +600,7 @@ class About extends Component {
                   <DialogDependents
                     titleName="Adicionar Pessoas"
                     className="bnt-next"
+                    setDependents={this.setDependents}
                   />
                 </div>
 
@@ -655,7 +610,7 @@ class About extends Component {
                     className="btn-next"
                     disabled={isSubmitting}
                   >
-                    Ver planos
+                    Quero uma cotação
                   </Button>
                 </div>
               </>

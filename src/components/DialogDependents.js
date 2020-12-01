@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
@@ -29,6 +29,15 @@ export default function DialogDependents(props) {
   
 
   const classes = useStyles()
+
+  useEffect(() => {
+    
+      props.setDependents(dependents)
+    
+  
+  }, [dependents])
+
+
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -60,12 +69,11 @@ export default function DialogDependents(props) {
     return quantos_anos < 0 ? 0 : quantos_anos;
 }
 
-  const addDependents = () => {
+  const addDependents = async () => {
 
     let dtNascimento = new Date(form.nascimento)
-    console.log("dt", dtNascimento)
     let id = dependents.length + 1
-    setDependents([...dependents, {
+    await setDependents([...dependents, {
       id: id,
       nome: form.nome,
       nascimento: form.nascimento,
@@ -78,15 +86,14 @@ export default function DialogDependents(props) {
       nascimento: ""
     })
     document.querySelector("#nome").focus()
+  
+  
   }
-  console.log("a", dependents)
+  
 
   const handleInputChange = e => {
-    console.log("teste")
     const {name, value} = e.target
     setForm({...form, [name]: value})
-
-    console.log(form)
 }
 
   
@@ -96,7 +103,7 @@ export default function DialogDependents(props) {
       <Button variant="outlined" color="primary" className={classes.btn} onClick={handleClickOpen}>
         {props.titleName}
       </Button>
-      <Dialog open={open} onClose={handleClose} aria-labelledby="max-width-dialog-title">
+      <Dialog open={open} onClose={handleClose} aria-labelledby="max-width-dialog-title" fullWidth={true} maxWidth={'md'} style={{borderRadius: "20px"}}>
         <DialogTitle id="max-width-dialog-title">Preencha as informações abaixo</DialogTitle>
         <DialogContent>
         <InputLabel>Nome *</InputLabel>
@@ -133,6 +140,7 @@ export default function DialogDependents(props) {
           { dependents.length > 0 &&
             <DataGridTable rows={dependents}/>
           }
+         
          
         </DialogContent>
         <DialogActions>

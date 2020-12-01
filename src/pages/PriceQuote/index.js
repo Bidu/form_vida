@@ -18,8 +18,8 @@ import { GTM } from "../../helpers";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import Loading from "../../components/loading";
-import DialogAlert from '../../components/DialogAlert'
 import { apiQualicorp } from "../../services/bdBo";
+import DialogAlert from '../../components/DialogAlert'
 
 
 import { createBrowserHistory } from 'history';
@@ -50,25 +50,45 @@ export class PriceQuote extends Component {
 
 
     let user = JSON.parse(localStorage.getItem("@bidu2/user"))
-    let entidade = await apiQualicorp.entidades(user.profissao, user.uf, user.cidade)
-    console.log("Entidade", entidade)
-    if(entidade.length > 0)
-    {
-      let getPlan = {
-        "entidade": entidade[0].NomeFantasia,
-        "uf": user.uf,
-        "cidade": user.cidade ,
-        "datanascimento": [`${user.nasc_ano}-${user.nasc_mes}-${user.nasc_dia}` ]
-      }
-     
-     let plans =  await apiQualicorp.listarPlanos(getPlan)
-     if(plans[0].planos.length > 0)
-     {
-       this.setState({cotacoes: plans})
-     }
-  
-    }
+      if(user)
+      { 
+        let beneficiarios = [
+          {
+            "chave": user.nome,
+            "dataNascimento": user.date_birth
+          }
+        ] 
+
+        if(user.dependents)
+        {
+          user.dependents.map((item)=>{
+            beneficiarios.push({
+              "chave": item.nome,
+              "dataNascimento": item.nascimento
+            })
+          })
+        }
     
+        let getPlan = {
+          
+          "uf": user.uf,
+          "cidade": user.cidade ,
+          "entidade": user.entidade,
+          "operadora": user.operadora,
+          "datanascimento": [ ],
+          "beneficiarios": beneficiarios
+        }
+       
+       let plans =  await apiQualicorp.listarPlanos(getPlan)
+
+       
+       if(plans[0].data.length > 0)
+       {
+         this.setState({cotacoes: plans})
+       }
+    
+
+      } 
 
   }
 
@@ -175,7 +195,7 @@ export class PriceQuote extends Component {
               </FormControl>
             </div>
           </div>
-
+        <br />
           {cotacoes.length == 0 && !this.state.loading && (
             <div className="loading-cotacoes">
               <IconButton onClick={this.ReloadCotacoes}>
@@ -203,7 +223,7 @@ export class PriceQuote extends Component {
         <div>{this.getValores(JSON.stringify(cotacoes[index]))}</div>
         ))*/}
             
-               {cotacoes.length > 0 && cotacoes[0].planos.map((c, index) => (
+               {cotacoes.length > 0 && cotacoes[0].data.map((c, index) => (
                  <>
                      <ListPriceQuotation key={index} quote={c} getQuote={this.getCustomQuote} />
                  </>
