@@ -33,6 +33,7 @@ import axios from "axios";
 import DialogDependents from "../../components/DialogDependents";
 import Birthday from "../../components/Birthday";
 import DialogAlert from "../../components/DialogAlert";
+
 import "./PME.css"
 import {
   textMaskPhone,
@@ -89,18 +90,19 @@ class About extends Component {
       },
       dependents: [],
       faixaEtaria: [
-        '0 a 18 anos',
-        '19 a 23 anos',
-        '24 a 28 anos',
-        '29 a 33 anos',
-        '34 a 38 anos',
-        '39 a 43 anos',
-        '44 a 48 anos',
-        '49 a 53 anos',
-        '54 a 58 anos',
-        '59 anos ou +',
+       {id:1, desc: '0 a 18 anos'},
+       {id: 2, desc: '19 a 23 anos'},
+       {id: 3, desc: '24 a 28 anos'},
+       {id: 4, desc: '29 a 33 anos'},
+       {id: 5, desc: '34 a 38 anos'},
+       {id: 6, desc:  '39 a 43 anos'},
+       {id: 7, desc: '44 a 48 anos'},
+       {id: 8, desc: '49 a 53 anos'},
+       {id: 9, desc: '54 a 58 anos'},
+       {id: 10, desc:'59 anos ou +'}
       ],
-      pessoasPorFaixa: Array.from(new Array(5), (x, i) => i+1),
+      pessoasPorFaixa: Array.from(new Array(10), (x, i) => i+1),
+      pessoasAddFaixaEtaria: [],
       storage: JSON.parse(localStorage.getItem("@bidu2/user")),
     };
     this.handleCEP = this.handleCEP.bind(this);
@@ -126,6 +128,56 @@ class About extends Component {
   }
 
 
+  handleFaixaEtaria = async (pessoasAddFaixaEtaria, event) =>{
+  
+   let now = new Date()
+   //ANO VALIDO PARA A FAIXA ETARIA ESCOLHIDA
+   let year = (now.getFullYear() - (parseInt(pessoasAddFaixaEtaria.desc.substr(0,2)) + 2))
+   let date_birth = `${year}-${now.getMonth() + 1}-${now.getDate()}`
+  
+    
+
+   if( (this.state.pessoasAddFaixaEtaria.filter((e) => e.id == pessoasAddFaixaEtaria.id)).length > 0)
+   {
+      let deleteItem = this.state.pessoasAddFaixaEtaria.filter((e) => e.id != pessoasAddFaixaEtaria.id)
+        
+        await this.setState({pessoasAddFaixaEtaria: [...deleteItem , {
+                                                                      id: pessoasAddFaixaEtaria.id,
+                                                                      desc: pessoasAddFaixaEtaria.desc,
+                                                                      qtde: event.target.value,
+                                                                      date_birth: date_birth
+                                                                    }] })
+        
+   } else{
+
+     await    this.setState({ pessoasAddFaixaEtaria:
+         [...this.state.pessoasAddFaixaEtaria,
+         {
+           id: pessoasAddFaixaEtaria.id,
+           desc: pessoasAddFaixaEtaria.desc,
+           qtde: event.target.value,
+           date_birth: date_birth
+         }
+         ]
+       })
+   }
+
+
+        
+
+      setTimeout(() => {
+        this.props.values.beneficiarios = []
+        this.state.pessoasAddFaixaEtaria.map((val) => {
+          for (let index = 0; index < val.qtde; index++) {
+              this.props.values.beneficiarios = [...this.props.values.beneficiarios, {
+                chave: "FUNCIONARIO",
+                dataNascimento: val.date_birth
+              }]
+          }})
+      }, 1000);
+    
+  }
+  
 
 
   handleCEP = (e) => {
@@ -305,8 +357,9 @@ class About extends Component {
 
   handleSubmitBkp = (e) => {
     e.preventDefault();
-    const { usuario } = this.state;
-    this.props.adicionaUser(usuario);
+    console.log("CHEGUEI AQUI")
+    // const { usuario } = this.state;
+    // this.props.adicionaUser(usuario);
     this.setState({ redirect: true });
   };
 
@@ -344,7 +397,7 @@ class About extends Component {
     } = this.props;
 
     if (this.props.status) {
-      return <Redirect to="/cotacao" />;
+      return <Redirect to="/sucesso" />;
     }
 
     return (
@@ -360,7 +413,7 @@ class About extends Component {
                 <TextField
                   value={this.props.values.nome ? this.props.values.nome : ""}
                   type="text"
-                  id="name"
+                  id="nome"
                   name="nome"
                   label="Nome da Empresa"
                   placeholder="Corporation SA"
@@ -593,9 +646,7 @@ class About extends Component {
               {loading && <Loading />}
             </Grid>
             <br />
-           {
-             this.state.operadorasFalse == true &&
-           
+            {this.state.operadorasFalse == true && this.state.operadoras.length > 0 && (
               <>
                 <div class="vidas">
                   <Title text="Quantidade de" bold="vidas" />
@@ -617,35 +668,33 @@ class About extends Component {
 
                                   <Grid item xs={'2,5'}  key={key}>
                                   <>
-                                  <InputLabel shrink id="lifes_one">
-                                        {e}
+                                  <InputLabel shrink id={e.id}>
+                                        {e.desc}
                                   </InputLabel>
-                                  <Select
-                                    name={e}
+                                  <TextField
+                                    name={e.id}
                                     fullWidth
-                                    displayEmpty
-                                    labelId={e}
-                                    id={e}
+                                    labelId={e.id}
+                                    id={e.id}
+                                    type="number"
                                     value={
-                                      this.props.values.e ? this.props.values.e : ""
+                                      (this.state.pessoasAddFaixaEtaria.filter((val) => val.id == e.id)).length > 0 ? this.state.pessoasAddFaixaEtaria.filter((val) => val.id == e.id)[0].qtde : ""
                                     }
-                                    onChange={handleChange(e)}
+                                    onChange={ (event) => this.handleFaixaEtaria(e, event)}
                                     onBlur={this.handleChange}
-                                  >
-                                        <MenuItem value="" disabled>
-                                          Selecione
-                                        </MenuItem>
-                                       {  this.state.pessoasPorFaixa.map((f, key)=>(
-                                          <MenuItem value={f} key={key}>{f}</MenuItem>
-                                        ))}
-                                      </Select>
+                                    className="select-faixa-etaria"
+                                  />
+                                     
                                   </>
                                   </Grid>
                     ))}
                       </Grid>
                     </div>
                   
-                    <div className="actions">
+                  
+                  </>
+                )} 
+                <div className="actions">
                       <Button
                         type="submit"
                         className="btn-next"
@@ -654,8 +703,6 @@ class About extends Component {
                         Quero uma cotação
                       </Button>
                     </div>
-                  </>
-              }
           </form>
         </Wrapper>
       </>
@@ -679,50 +726,34 @@ const mapDispatchToProps = (dispatch) => {
 
 const Form = withFormik({
   mapPropsToValues: ({
-    cpf,
+    cnpj,
     nome,
-    politicamente_exp,
     email,
     telefone,
     cep,
-    complemento,
     profissao,
-    numero,
-    escolaridade,
-    nasc_dia,
-    nasc_mes,
-    nasc_ano,
-    genero,
-    moradia,
     entidade,
+    operadora
   }) => {
     return {
-      cpf: cpf || "",
+      cnpj: cnpj || "",
       nome: nome || "",
-      politicamente_exp: politicamente_exp || "",
       email: email || "",
       telefone: telefone || "",
       cep: cep || "",
-      complemento: complemento || "",
-      profissao: profissao || "",
-      numero: numero || "",
-      escolaridade: escolaridade || "",
-      nasc_dia: nasc_dia || "",
-      nasc_mes: nasc_mes || "",
-      nasc_ano: nasc_ano || "",
-      genero: genero || "",
-      moradia: moradia || "",
       entidade: entidade || "",
+      profissao: profissao || "",
+      operadora: operadora || "",
     };
   },
-
   validationSchema: Yup.object().shape({
-    cpf: Yup.string()
-      .min(11, "CPF precisa ter no mínimo 11 caracteres")
-      //.matches(true, "Not a valid expiration date. Example: MM/YY")
-      //.required("CPF é obrigatorio.")
-      .test("cpf", "Informe um CPF válido", (value) => {
-        return CheckCPF(value);
+    cnpj: Yup.string()
+      .min(14, "CNPJ precisa ter no mínimo 14 caracteres")
+      .test("cnpj", "Informe um CNPJ válido", (value) => {
+        if(value == undefined)
+          return false
+        else
+          return CheckCNPJ(value);
       }),
 
     nome: Yup.string()
@@ -744,25 +775,32 @@ const Form = withFormik({
     //complemento: Yup.string().required("Complemento é obrigatório"),
     profissao: Yup.string().required("Profissão é obrigatório"),
     entidade: Yup.string().required("Profissão é obrigatório"),
+    operadora: Yup.string().required("Profissão é obrigatório"),
+
   }),
+
 
   handleSubmit: async (
     values,
     { props, setStatus, setValues, setSubmitting }
   ) => {
     console.log(values);
+
+    values.date_birth = '1900-01-01'
     localStorage.setItem("@bidu2/user", [JSON.stringify(values)]);
+    let cotationSelect = {
+      user: values,
+      plan: values
+    }
+    let res = await  apiQualicorp.addLead(cotationSelect)
+        
+    setInterval(() => {
+      if(res.status == 200)
+          setStatus(true);  
+    }, 3000);
+    
+    
 
-    // setTimeout(() => {
-    //   //submit to the server
-    //   //alert(JSON.stringify(values, null, 2));
-    //   // props.adicionaUser(values);
-    //   // props.adicionarLead();
-
-    setStatus(true);
-    //   // window.fbq("track", "Lead");
-    //   setSubmitting(false);
-    // }, 1000);
     setSubmitting(false);
   },
 })(About);

@@ -11,7 +11,21 @@
   margin-left: 17% !important;
   margin-right: auto !important;
 }
-
+.select-faixa-etaria{
+  width: 100px !important;
+}
+@media only screen and (max-width: 800px){
+  .MuiContainer-root {
+    padding-right: 0 !important;
+  }
+  .grid-faixa-etaria{
+    margin-left: 10% !important;
+    margin-right: auto !important;
+  }
+  .select-faixa-etaria{
+    width: 100px !important;
+  }
+}
 @media only screen and (max-width: 500px){
   .actions .btn-next{
     width: 60% !important;

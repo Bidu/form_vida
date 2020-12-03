@@ -71,7 +71,6 @@ export class PriceQuote extends Component {
           "cidade": user.cidade ,
           "entidade": user.entidade,
           "operadora": user.operadora,
-          "datanascimento": [ ],
           "beneficiarios": beneficiarios
         }
        

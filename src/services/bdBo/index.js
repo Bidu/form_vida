@@ -148,13 +148,13 @@ const apiQualicorp= {
     let seconds = (date.getSeconds() < 10 ? `0${date.getSeconds()}` : date.getSeconds())
     let dateHour = `${date.getFullYear()}-${month}-${day} ${hour}:${minutes}:${seconds}`
     let beneficiarios = []
-   await (cotation.plan.beneficiarios).filter((val)=>{ 
+   await ((cotation.plan.beneficiarios)).filter((val)=>{ 
                                           return (val.chave != cotation.user.nome && 
                                                   val.dataNascimento != cotation.user.date_birth
                                                 ) 
                                           }).map((val) => beneficiarios.push({
                                             DATA_NASC: val.dataNascimento,
-                                            VALOR_PLANO: val.valorContratual  
+                                            VALOR_PLANO: "0"
                                           }))
     
 
@@ -181,13 +181,13 @@ const apiQualicorp= {
         PROFISSAO: cotation.user.profissao,
         ENTIDADE: cotation.user.entidade,
         OPERADORA: cotation.user.operadora,
-        TIPO_ACOMODACAO: cotation.plan.acomodacao,
-        REEMBOLSO: cotation.plan.reembolso,
+        TIPO_ACOMODACAO: ( cotation.plan.acomodacao ? cotation.plan.acomodacao : ""),
+        REEMBOLSO: ( cotation.plan.reembolso ?  cotation.plan.reembolso : "" ),
         DATA_NASCIMENTO: cotation.user.date_birth,
-        NUMERO_VIDAS: cotation.plan.beneficiarios.length,
+        NUMERO_VIDAS: (cotation.plan.beneficiarios.length ? cotation.plan.beneficiarios.length : cotation.user.beneficiarios.length),
         DEPENDENTES: beneficiarios,
-        PLANO: cotation.plan.nomePlano,
-        VALOR_PLANO_SIMULADO: cotation.plan.valorTotal,
+        PLANO: ( cotation.plan.nomePlano ? cotation.plan.nomePlano : ""),
+        VALOR_PLANO_SIMULADO: ( cotation.plan.valorTotal ? cotation.plan.valorTotal : ""),
         LEAD_CLICK_TO_CALL: true,
         HORA_CLICK_TO_CALL: null,
         LEAD_CHAT: false,
@@ -203,6 +203,7 @@ const apiQualicorp= {
       }]
     }
 
+    console.log('lead', lead)
 
     await axios
       .put(url, lead)
