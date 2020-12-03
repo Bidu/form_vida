@@ -586,7 +586,7 @@ class About extends Component {
               {loading && <Loading />}
             </Grid>
             <br />
-            {/* {this.props.values.operadora && ( */}
+            {this.props.values.operadora && (
               <>
                 <div class="vidas">
                   <Title text="Quantidade de" bold="vidas" />
@@ -615,7 +615,7 @@ class About extends Component {
                   </Button>
                 </div>
               </>
-            // )}
+            )}
           </form>
           <div className="actions mt0">
             <Link className="btn-back" to="/">
