@@ -492,13 +492,13 @@ export class ListPriceQuotation extends Component {
                       </figure>
                     </div>
 
-                    {/* <div class="warning-quote">
-                      {
+                    <div class="warning-quote">
+                      {/* {
                         `${cotacao.nomeAmigavel}`
                         
-                      }
-                    </div> */}
-                    <Grid item spacing={0} className="table-header" container>
+                      } */}
+                    </div>
+                    <Grid item spacing={1} className="table-header" container>
                       <Grid item xs={6}>
                         <>
                           <span className="top-label">Valor total</span>
@@ -509,6 +509,17 @@ export class ListPriceQuotation extends Component {
                           </span>
                         </>
                       </Grid>
+                      <Grid item xs={12} className="nome-amigavel-cotation">
+                        <>
+                          <span >
+                          {
+                            `${cotacao.nomeAmigavel}`
+                            
+                          }
+                          </span>
+                        </>
+                      </Grid>
+                    
                       
                     </Grid>
 

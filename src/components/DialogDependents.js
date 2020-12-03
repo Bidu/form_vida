@@ -15,6 +15,12 @@ const useStyles = makeStyles({
         marginTop: "15px",
         borderRadius: "60px",       
     },
+    btnClose:{
+      background: '#CCC',
+      color: '#001447',
+      marginTop: "15px",
+      borderRadius: "60px",       
+  },
 
 })
 
@@ -70,31 +76,44 @@ export default function DialogDependents(props) {
 }
 
   const addDependents = async () => {
+    console.log(form)
+    if(
+      form.nome != "" &&
+      form.nome != undefined &&
+      form.nascimento != "" &&
+      form.nascimento != undefined
+       ){
+          let dtNascimento = new Date(form.nascimento)
+          let id = dependents.length + 1
+          await setDependents([...dependents, {
+            id: id,
+            nome: form.nome,
+            nascimento: form.nascimento,
+            idade: calcIdade(dtNascimento.getFullYear(), dtNascimento.getMonth() + 1, dtNascimento.getDate())
+          }])
 
-    let dtNascimento = new Date(form.nascimento)
-    let id = dependents.length + 1
-    await setDependents([...dependents, {
-      id: id,
-      nome: form.nome,
-      nascimento: form.nascimento,
-      idade: calcIdade(dtNascimento.getFullYear(), dtNascimento.getMonth() + 1, dtNascimento.getDate())
-    }])
 
-
-    setForm({
-      nome: "",
-      nascimento: ""
-    })
-    document.querySelector("#nome").focus()
-  
-  
+          setForm({
+            nome: "",
+            nascimento: ""
+          })
+          document.querySelector("#nome").focus()
+        
+        }
+        else{
+          alert("Nome e data de nascimento são obrigatorias")
+        }
   }
   
 
   const handleInputChange = e => {
     const {name, value} = e.target
-    setForm({...form, [name]: value})
+      setForm({...form, [name]: value})
 }
+
+  const purgeDependents = (obj) =>{
+    console.log("delete", obj)
+  }
 
   
 
@@ -138,20 +157,17 @@ export default function DialogDependents(props) {
           { form }  */}
           <br/>
           { dependents.length > 0 &&
-            <DataGridTable rows={dependents}/>
+            <DataGridTable rows={dependents} purgeFather={(e) => purgeDependents(e)}/>
           }
          
          
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose} color="primary">
-            Cancelar
+          <Button onClick={handleClose}  color="primary" className={classes.btnClose}>
+            Fechar
           </Button>
-          <Button onClick={addDependent} color="primary">
-            Adicionar
-          </Button>
-          <Button onClick={addDependents} color="primary">
-            Adicionar e Adicionar outro
+          <Button onClick={addDependents} variant="outlined" color="primary" className={classes.btn}>
+            Adicionar +
           </Button>
         </DialogActions>
       </Dialog>

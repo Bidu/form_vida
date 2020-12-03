@@ -788,6 +788,13 @@ p.validate-radio-button.bold {
       font-size: 1rem;
       font-weight: bold;
      }
+     .nome-amigavel-cotation {
+      font-size: 0.7rem;
+      font-weight: bold;
+    
+      text-align: center;
+      margin-left: auto ;
+     }
     .list-price-quotation .table-header .valor-parcela {
       font-size: 1rem;
       font-weight: bold;

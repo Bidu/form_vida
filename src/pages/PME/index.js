@@ -417,6 +417,7 @@ class About extends Component {
                   name="nome"
                   label="Nome da Empresa"
                   placeholder="Corporation SA"
+                  autoFocus={true}
                   fullWidth
                   onChange={handleChange}
                   onBlur={this.handleChange}
@@ -680,6 +681,7 @@ class About extends Component {
                                     value={
                                       (this.state.pessoasAddFaixaEtaria.filter((val) => val.id == e.id)).length > 0 ? this.state.pessoasAddFaixaEtaria.filter((val) => val.id == e.id)[0].qtde : ""
                                     }
+                                    InputProps={{ inputProps: { min: 0 } }}
                                     onChange={ (event) => this.handleFaixaEtaria(e, event)}
                                     onBlur={this.handleChange}
                                     className="select-faixa-etaria"
@@ -787,9 +789,9 @@ const Form = withFormik({
 
   handleSubmit: async (
     values,
-    { props, setStatus, setValues, setSubmitting }
+    { props, setStatus, setValues, setSubmitting, setLoading }
   ) => {
-    console.log(values);
+    setLoading(true)
 
     values.date_birth = '1900-01-01'
     localStorage.setItem("@bidu2/user", [JSON.stringify(values)]);
