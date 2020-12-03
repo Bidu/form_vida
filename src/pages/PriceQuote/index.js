@@ -240,7 +240,7 @@ export class PriceQuote extends Component {
             </p>
           </div>
           <div className="actions mt0">
-            <Link className="btn-back" to="/sobrevoce">
+            <Link className="btn-back" to="/sobre-voce">
               <KeyboardBackspaceIcon /> Voltar
       </Link>
           </div>

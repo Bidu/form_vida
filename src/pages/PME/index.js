@@ -692,8 +692,6 @@ class About extends Component {
                     </div>
                   
                   
-                  </>
-                )} 
                 <div className="actions">
                       <Button
                         type="submit"
@@ -703,7 +701,14 @@ class About extends Component {
                         Quero uma cotação
                       </Button>
                     </div>
+                  </>
+                )} 
           </form>
+          <div className="actions mt0">
+            <Link className="btn-back" to="/">
+              <KeyboardBackspaceIcon /> Voltar
+            </Link>
+          </div>
         </Wrapper>
       </>
     );

@@ -616,6 +616,11 @@ class About extends Component {
               </>
             )}
           </form>
+          <div className="actions mt0">
+            <Link className="btn-back" to="/">
+              <KeyboardBackspaceIcon /> Voltar
+            </Link>
+          </div>
         </Wrapper>
       </>
     );
