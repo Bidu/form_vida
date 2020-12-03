@@ -42,6 +42,35 @@ export class PriceQuote extends Component {
     });
   };
 
+  getEntities = async (uf, cidade, profissao) => {
+    this.setState({
+      loading: true,
+      entities: [],
+      entitiesFalse: true,
+    });
+
+    let entities = await apiQualicorp.entidades(uf, cidade, profissao);
+   
+    if (entities && entities.data && entities.data.length > 0) {
+        return entities.data
+    } 
+  };
+  
+  getOperator = async (entitie, uf, cidade) => {
+    this.setState({
+      loading: true,
+      operadoras: [],
+      operadorasFalse: true,
+    });
+
+    let operadoras = await apiQualicorp.operadoras(uf, cidade, entitie);
+    
+    if (operadoras && operadoras.data && operadoras.data.length > 0) {
+         return operadoras.data
+    }
+  }
+
+
   getCotacoes = async () => {
 
 

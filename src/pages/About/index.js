@@ -91,15 +91,15 @@ class About extends Component {
   }
 
   async componentDidMount() {
-    this.props.values.profissao = "Selecione";
-
+    
+    
     const storage = JSON.parse(localStorage.getItem("@bidu2/user"));
     delete storage.cep 
     delete storage.entidade 
     delete storage.operadora 
     delete storage.profissao
     delete storage.dependents
-
+    this.props.values.operadoras = []
     localStorage.setItem("@bidu2/user", JSON.stringify(storage))
 
     if (storage.length !== 0) {
@@ -193,16 +193,23 @@ class About extends Component {
     }
   };
 
-  getEntities = async (uf, cidade, profissao) => {
+  getEntities = async (profissao, uf, cidade) => {
     this.setState({
       loading: true,
       entities: [],
       entitiesFalse: true,
     });
-
-    let entities = await apiQualicorp.entidades(uf, cidade, profissao);
-
+    this.props.values.operadoras = []
+    console.log("uf", uf)
+    console.log("cidade", cidade)
+    let entities = await apiQualicorp.entidades(profissao, uf, cidade);
+  
     if (entities && entities.data && entities.data.length > 0) {
+      this.props.values.entities = entities.data
+      
+      entities.data.map((v) => {
+        this.getOperator(v.id, uf, cidade)
+      })
       this.setState({
         entities: entities.data,
         loading: false,
@@ -223,10 +230,15 @@ class About extends Component {
     });
 
     let operadoras = await apiQualicorp.operadoras(uf, cidade, entitie);
-    
-    console.log("Operador", operadoras)
 
     if (operadoras && operadoras.data && operadoras.data.length > 0) {
+
+      let resOperadoras = [operadoras.data.map((v) => {return { id: v.id,
+                                                            name: v.nome,
+                                                            entite: entitie}
+                                                          })]                                                     
+      this.props.values.operadoras = [...this.props.values.operadoras, resOperadoras[0]]
+      
       this.setState({
         operadoras: operadoras.data,
         loading: false,
@@ -427,6 +439,8 @@ class About extends Component {
                <Grid item xs={12} sm={6}>
                 <InputLabel>Data de nascimento</InputLabel>
                 <TextField
+                  name="date_birth"
+                  id="date_birth"
                   type="date"
                   value={this.props.values.date_birth ? this.props.values.date_birth : ""}
                   onChange={handleChange("date_birth")}
@@ -491,7 +505,11 @@ class About extends Component {
                         onChange={this.handleChange}
                         helperText={touched.profissao ? errors.profissao : ""}
                         error={touched.profissao && Boolean(errors.profissao)}
+                        InputLabelProps={{
+                          shrink: true,
+                        }}
                       >
+                 
                         <MenuItem value="Selecione" disabled>
                           Selecione
                         </MenuItem>
@@ -509,7 +527,7 @@ class About extends Component {
                       message="Erro ao obter a lista de profissões. Tente novamente mais tarde!"
                     />
                   )}
-                  {this.state.entitiesFalse == true && (
+                  {/* {this.state.entitiesFalse == true && (
                     <Grid item xs={12} sm={6}>
                       <InputLabel shrink id="gender">
                         Entidades
@@ -540,14 +558,14 @@ class About extends Component {
                           ))}
                       </Select>
                     </Grid>
-                  )}
+                  )} */}
                   {this.state.entitiesFalse == false && (
                     <DialogAlert
                       title="Ops!"
                       message="Erro ao obter a lista de entidades. Tente novamente mais tarde!"
                     />
                   )}
-                  {this.state.operadorasFalse == true && (
+                  {/* {this.state.operadorasFalse == true && (
                     <Grid item xs={12} sm={6}>
                       <InputLabel shrink id="gender">
                         Operadora
@@ -579,14 +597,14 @@ class About extends Component {
                           ))}
                       </Select>
                     </Grid>
-                  )}
+                  )} */}
                 </>
               )}
 
               {loading && <Loading />}
             </Grid>
             <br />
-            {this.props.values.operadora && (
+            { this.state.occupations.length > 0 && this.props.values.profissao.length > 0 && this.state.entitiesFalse != false && (
               <>
                 <div class="vidas">
                   <Title text="Quantidade de" bold="vidas" />
@@ -646,38 +664,21 @@ const Form = withFormik({
   mapPropsToValues: ({
     cpf,
     nome,
-    politicamente_exp,
     email,
     telefone,
     cep,
-    complemento,
     profissao,
-    numero,
-    escolaridade,
-    nasc_dia,
-    nasc_mes,
-    nasc_ano,
-    genero,
-    moradia,
-    entidade,
+    date_birth
+  
   }) => {
     return {
       cpf: cpf || "",
       nome: nome || "",
-      politicamente_exp: politicamente_exp || "",
       email: email || "",
       telefone: telefone || "",
       cep: cep || "",
-      complemento: complemento || "",
       profissao: profissao || "",
-      numero: numero || "",
-      escolaridade: escolaridade || "",
-      nasc_dia: nasc_dia || "",
-      nasc_mes: nasc_mes || "",
-      nasc_ano: nasc_ano || "",
-      genero: genero || "",
-      moradia: moradia || "",
-      entidade: entidade || "",
+      date_birth: date_birth || ""
     };
   },
 
@@ -708,7 +709,7 @@ const Form = withFormik({
       .min(8, "O CEP deve ter no mínimo 8 dígitos"),
     //complemento: Yup.string().required("Complemento é obrigatório"),
     profissao: Yup.string().required("Profissão é obrigatório"),
-    entidade: Yup.string().required("Profissão é obrigatório"),
+    date_birth: Yup.string().required("Data de nascimento é obrigatório"),
   }),
 
   handleSubmit: async (
