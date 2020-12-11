@@ -604,7 +604,7 @@ class About extends Component {
               {loading && <Loading />}
             </Grid>
             <br />
-            { this.state.occupations.length > 0 && this.props.values.profissao.length > 0 && this.state.entitiesFalse != false && (
+            { this.state.occupations && this.state.occupations.length > 0 && this.props.values.profissao && this.props.values.profissao.length > 0 && this.state.entitiesFalse != false && (
               <>
                 <div class="vidas">
                   <Title text="Quantidade de" bold="vidas" />

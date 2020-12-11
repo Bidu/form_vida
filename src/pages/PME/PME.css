@@ -2,14 +2,25 @@
   padding: 0 0 20px 0 !important;
 }
 .texto-vidas-aviso{
-  margin: -20px 0 20px 0 !important;
   font-size: 14px ;
   font-style: italic;
 }
-.grid-faixa-etaria{
-  width: 100% !important;
-  margin-left: 17% !important;
+.grid-faixa-etarias{
+  width: 40% !important;
+  margin-left: auto !important;
   margin-right: auto !important;
+
+  
+
+}
+
+#qtdevidas::-webkit-outer-spin-button,
+#qtdevidas::-webkit-inner-spin-button {
+  display: none;
+}
+#qtdevidas{
+  font-size: 50px !important;
+   text-align: center;
 }
 .select-faixa-etaria{
   width: 100px !important;
@@ -19,7 +30,7 @@
     padding-right: 0 !important;
   }
   .grid-faixa-etaria{
-    margin-left: 10% !important;
+    margin-left: auto !important;
     margin-right: auto !important;
   }
   .select-faixa-etaria{

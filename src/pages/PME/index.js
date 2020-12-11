@@ -104,6 +104,7 @@ class About extends Component {
       pessoasPorFaixa: Array.from(new Array(10), (x, i) => i+1),
       pessoasAddFaixaEtaria: [],
       storage: JSON.parse(localStorage.getItem("@bidu2/user")),
+      qtdeVidas: 2
     };
     this.handleCEP = this.handleCEP.bind(this);
   }
@@ -647,51 +648,75 @@ class About extends Component {
               {loading && <Loading />}
             </Grid>
             <br />
-            {this.state.operadorasFalse == true && this.state.operadoras.length > 0 && (
+            {/* {this.state.operadorasFalse == true && this.state.operadoras.length > 0 && ( */}
               <>
                 <div class="vidas">
                   <Title text="Quantidade de" bold="vidas" />
                 </div>
                 <div class="texto-vidas">
                   <p>
-                    Para quantas pessoas deseja contratar, entre depentes ou
-                    funcionários:
+                   Adicionar dependentes abaixo
                   </p>
                 </div>
-                <div class="texto-vidas texto-vidas-aviso">
-                  <p>
-                    Mínimo de 2 pessoas para planos PME*
-                  </p>
-                </div>
-                <div className="grid-faixa-etaria">
-                  <Grid container xs={10} spacing={3} >
-                    {this.state.faixaEtaria.map((e, key)=>(
-
-                                  <Grid item xs={'2,5'}  key={key}>
-                                  <>
-                                  <InputLabel shrink id={e.id}>
-                                        {e.desc}
-                                  </InputLabel>
+                <div >
+                  {
+                    <Grid container xs={12}>
+                                  <Grid item xs={3} className="grid-faixa-etarias"  >
+                                  
                                   <TextField
-                                    name={e.id}
+                                    name="qtdevidas"
                                     fullWidth
-                                    labelId={e.id}
-                                    id={e.id}
+                                    labelId="qtdevidas"
+                                    id="qtdevidas"
                                     type="number"
                                     value={
-                                      (this.state.pessoasAddFaixaEtaria.filter((val) => val.id == e.id)).length > 0 ? this.state.pessoasAddFaixaEtaria.filter((val) => val.id == e.id)[0].qtde : ""
+                                      this.state.qtdeVidas
                                     }
-                                    InputProps={{ inputProps: { min: 0 } }}
-                                    onChange={ (event) => this.handleFaixaEtaria(e, event)}
+                                    InputProps={{ inputProps: { min: 2 } }}
+                                    onChange={ (event) => this.setState({qtdeVidas: event.target.value})}
                                     onBlur={this.handleChange}
-                                    className="select-faixa-etaria"
+                                    
                                   />
-                                     
-                                  </>
                                   </Grid>
-                    ))}
                       </Grid>
+                  
+                  /* O JSX ABAIXO FUNCIONA
+                  NA PRIMEIRA VERSÃO PARA VIDAS POR FAIXA ETARIA, CASO TENHA CURIOSIDADE, 
+                  BASTA DESCOMENTAR O CODIGO ABAIXO*/
+
+                  /* <Grid container xs={10} spacing={3} >
+                  {this.state.faixaEtaria.map((e, key)=>(
+                    
+                    <Grid item xs={'2,5'}  key={key}>
+                    <>
+                    <InputLabel shrink id={e.id}>
+                    {e.desc}
+                    </InputLabel>
+                    <TextField
+                    name={e.id}
+                    fullWidth
+                    labelId={e.id}
+                    id={e.id}
+                    type="number"
+                    value={
+                      (this.state.pessoasAddFaixaEtaria.filter((val) => val.id == e.id)).length > 0 ? this.state.pessoasAddFaixaEtaria.filter((val) => val.id == e.id)[0].qtde : ""
+                    }
+                    InputProps={{ inputProps: { min: 0 } }}
+                    onChange={ (event) => this.handleFaixaEtaria(e, event)}
+                    onBlur={this.handleChange}
+                    className="select-faixa-etaria"
+                    />
+                    
+                    </>
+                    </Grid>
+                    ))}
+                  </Grid> */}
                     </div>
+                  <div class="texto-vidas texto-vidas-aviso">
+                    <p>
+                      Mínimo de 2 pessoas para planos PME*
+                    </p>
+                  </div>
                   
                   
                 <div className="actions">
@@ -704,7 +729,7 @@ class About extends Component {
                       </Button>
                     </div>
                   </>
-                )} 
+                {/* )}  */}
           </form>
           <div className="actions mt0">
             <Link className="btn-back" to="/">

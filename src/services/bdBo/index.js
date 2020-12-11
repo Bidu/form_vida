@@ -71,7 +71,7 @@ const apiQualicorp= {
 
   async entidades(publicoAlvo, uf, cidade) {
     let statusEntidades = [];
-    const url = `${server}/qvenda/entidades/?publicoAlvo=${publicoAlvo}&uf=${uf}&cidade=${cidade}}&api-key=${apiKeyEntidades}`;
+    const url = `${server}/qvenda/entidades/?publicoAlvo=${publicoAlvo}&uf=${uf}&cidade=${cidade}&api-key=${apiKeyEntidades}`;
     await axios
       .get(url)
       .then(function (res) {
@@ -128,7 +128,7 @@ const apiQualicorp= {
     await axios
       .post(url, plano)
       .then(function (res) {
-        planos.push(res.data);
+        planos = res.data;
       })
       .catch(function (error) {
         console.log(error);
