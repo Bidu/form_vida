@@ -1,4 +1,5 @@
-data = 
+
+const bruf = 
 [
     {
         "sigla": "AC",
@@ -5733,3 +5734,5 @@ data =
         ]
     }
 ]
+
+export { bruf };

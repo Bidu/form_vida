@@ -15,24 +15,13 @@ import KeyboardBackspaceIcon from "@material-ui/icons/KeyboardBackspace";
 import Radio from "@material-ui/core/Radio";
 import RadioGroup from "@material-ui/core/RadioGroup";
 import FormControl from "@material-ui/core/FormControl";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Switch from "@material-ui/core/Switch";
 import { Link, Redirect } from "react-router-dom";
 import Button from "@material-ui/core/Button";
-import Dialog from "@material-ui/core/Dialog";
-import DialogActions from "@material-ui/core/DialogActions";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogContentText from "@material-ui/core/DialogContentText";
-import DialogTitle from "@material-ui/core/DialogTitle";
 import { withFormik } from "formik";
 import * as Yup from "yup";
-import * as API from "../../services/bd/CadastrarCotacao";
-import { adicionarLeadCotacao } from "../../store/actions/addLeadBd";
+import Autocomplete from '@material-ui/lab/Autocomplete';
 import { apiQualicorp } from "../../services/bdBo";
-import axios from "axios";
-import DialogDependents from "../../components/DialogDependents";
-import Birthday from "../../components/Birthday";
-import DialogAlert from "../../components/DialogAlert";
+import {bruf} from "../../services/bruf";
 
 import "./PME.css"
 import {
@@ -104,12 +93,19 @@ class About extends Component {
       pessoasPorFaixa: Array.from(new Array(10), (x, i) => i+1),
       pessoasAddFaixaEtaria: [],
       storage: JSON.parse(localStorage.getItem("@bidu2/user")),
-      qtdeVidas: 2
+      qtdeVidas: 2,
+      cidadesDisabled : true,
+      estado: bruf,
+      cidades : []
     };
     this.handleCEP = this.handleCEP.bind(this);
   }
 
   async componentDidMount() {
+
+    this.setState({estado: bruf})
+    this.props.values.qtdeVidas = 2
+    console.log(this.state.estado, "estado")
     this.props.values.profissao = "Selecione";
 
     const storage = JSON.parse(localStorage.getItem("@bidu2/user"));
@@ -372,6 +368,46 @@ class About extends Component {
     console.log(this.state.dependents)
   }
 
+  // loadUf = () => {
+  //   //A VAR DATA VEM DO ARQUIVO BRUF.JSON, IMPORTADA NO INDEX.HTML
+  //   let selectObj = document.getElementById('uf')
+  //   //REMOVE ALL OPTIONS
+  //   selectObj.options.length = 1
+
+  //   for (var i = 0; i < data.length; i++) {
+  //       let opt = document.createElement("option");
+  //       opt.value = data[i].sigla
+  //       opt.text = data[i].nome
+  //       selectObj.add(opt, null)
+
+  //       // more statements
+  //   }
+
+
+
+// }
+/*carrega todas as cidades referente ao estado escolhido...
+obs: função chamada, após a escolha da UF
+*/
+// loadCity = (uf) => {
+//     //A VAR DATA VEM DO ARQUIVO BRUF.JSON, IMPORTADA NO INDEX.HTML
+
+//     let selectObj = document.getElementById('city')
+//     //REMOVE ALL OPTIONS
+//     selectObj.options.length = 1
+//     for (var i = 0; i < data.length; i++) {
+//         if (data[i].sigla == uf.value) {
+//             for (var j = 0; j < data[i].cidades.length; j++) {
+//                 let opt = document.createElement("option");
+//                 opt.value = data[i].cidades[j]
+//                 opt.text = data[i].cidades[j]
+//                 selectObj.add(opt, null)
+//             }
+//         }
+
+//         // more statements
+//     }
+// }
 
 
   render() {
@@ -456,7 +492,67 @@ class About extends Component {
                 />
               </Grid>
 
-              {}
+              
+
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  value={this.props.values.nomecontato ? this.props.values.nomecontato : ""}
+                  id="nomecontato"
+                  name="nomecontato"
+                  label="Nome para contato"
+                  placeholder="O nome do contato"
+                  fullWidth
+                  onChange={handleChange}
+                  onBlur={this.handleChange}
+                  helperText={touched.nomecontato ? errors.nomecontato : ""}
+                  error={touched.nomecontato && Boolean(errors.nomecontato)}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                />
+              </Grid>
+              <Grid item xs={12} sm={3}>
+              <FormControl component="fieldset"> 
+               <InputLabel shrink id="estado">
+                Estado
+              </InputLabel>
+              <Autocomplete
+               
+                id="estado"
+                name="estado"
+                clearOnEscape
+                options={bruf}
+                getOptionLabel={(option) => option.nome}
+                renderInput={(params) => <TextField {...params} style={{marginTop:0}} label="Estado" margin="normal" />}
+                onChange={(event, newValue) => {
+                  
+                  if(newValue && newValue.cidades){
+                    this.props.values.estado = newValue.sigla
+                    this.setState({cidades: newValue.cidades})
+                  }
+                }}
+              />
+              </FormControl>
+              </Grid>
+              <Grid item xs={12} sm={3}>
+                  <FormControl component="fieldset" className="price-quote"> 
+                  <InputLabel shrink id="cidade">
+                    Cidade
+                  </InputLabel>
+                  <Autocomplete
+                      
+                      id="cidade"
+                      name="cidade"
+                      clearOnEscape
+                      options={this.state.cidades}
+                      getOptionLabel={(option) => option}
+                      renderInput={(params) => <TextField {...params} style={{marginTop:0}} label="Cidade" margin="normal" />}
+                      onChange={(event, newValue) => {
+                          this.props.values.cidade = newValue
+                      }}
+                    />
+                  </FormControl>
+              </Grid>
 
               <Grid item xs={12} sm={6}>
                 <TextField
@@ -497,153 +593,7 @@ class About extends Component {
                   }}
                 />
               </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  value={this.props.values.cep ? this.props.values.cep : ""}
-                  id="cep"
-                  label="CEP"
-                  placeholder="00000-000"
-                  fullWidth
-                  name="cep"
-                  onChange={handleChange}
-                  onKeyUp={(e) => this.handleCEP(e)}
-                  // onBlur={(e) => this.handleCEP(e)}
-                  helperText={touched.cep ? errors.cep : ""}
-                  error={touched.cep && Boolean(errors.cep)}
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                  InputProps={{
-                    inputComponent: textMaskCEP,
-                  }}
-                />
-                {this.state.usuario.cep === undefined && (
-                  <p class="zip-error">CEP não encontrado</p>
-                )}
-              </Grid>
              
-              {this.state.usuario.rua && (
-                <>
-                  <Grid item xs={12} sm={6}>
-                    <TextField
-                      value={`${this.state.usuario.rua}, ${this.state.usuario.bairro} - ${this.state.usuario.cidade}/${this.state.usuario.uf} `}
-                      id=""
-                      label="Endereço"
-                      fullWidth
-                      name=""
-                      disabled
-                    />
-                  </Grid>
-                  {this.state.occupations.length > 0 && (
-                    <Grid item xs={12} sm={6}>
-                      <InputLabel shrink id="gender">
-                        Profissão
-                      </InputLabel>
-                      <Select
-                        name="profissao"
-                        fullWidth
-                        displayEmpty
-                        labelId="profissao"
-                        id="profissao"
-                        value={
-                          this.props.values.profissao
-                            ? this.props.values.profissao
-                            : "Não informado"
-                        }
-                        onChange={this.handleChange}
-                        helperText={touched.profissao ? errors.profissao : ""}
-                        error={touched.profissao && Boolean(errors.profissao)}
-                      >
-                        <MenuItem value="Selecione" disabled>
-                          Selecione
-                        </MenuItem>
-
-                        {this.state.occupations.length > 0 &&
-                          this.state.occupations.map((e, key) => (
-                            <MenuItem value={e.id}>{e.nome}</MenuItem>
-                          ))}
-                      </Select>
-                    </Grid>
-                  )}
-                  {this.state.occupationsFalse == false && (
-                    <DialogAlert
-                      title="Ops!"
-                      message="Erro ao obter a lista de profissões. Tente novamente mais tarde!"
-                    />
-                  )}
-                  {this.state.entitiesFalse == true && (
-                    <Grid item xs={12} sm={6}>
-                      <InputLabel shrink id="gender">
-                        Entidades
-                      </InputLabel>
-                      <Select
-                        name="entidade"
-                        fullWidth
-                        displayEmpty
-                        labelId="entidade"
-                        id="entidade"
-                        value={
-                          this.props.values.entidade
-                            ? this.props.values.entidade
-                            : "Não informado"
-                        }
-                        onChange={this.handleChange}
-                        // onBlur={this.handleChange}
-                        helperText={touched.entidade ? errors.entidade : ""}
-                        error={touched.entidade && Boolean(errors.ent)}
-                      >
-                        <MenuItem value="Selecione" disabled>
-                          Selecione
-                        </MenuItem>
-
-                        {this.state.entities.length > 0 &&
-                          this.state.entities.map((e, key) => (
-                            <MenuItem value={e.id}>{e.nome}</MenuItem>
-                          ))}
-                      </Select>
-                    </Grid>
-                  )}
-                  {this.state.entitiesFalse == false && (
-                    <DialogAlert
-                      title="Ops!"
-                      message="Erro ao obter a lista de entidades. Tente novamente mais tarde!"
-                    />
-                  )}
-                  {this.state.operadorasFalse == true && (
-                    <Grid item xs={12} sm={6}>
-                      <InputLabel shrink id="gender">
-                        Operadora
-                      </InputLabel>
-                      <Select
-                        name="operadora"
-                        fullWidth
-                        displayEmpty
-                        labelId="operadora"
-                        id="operadora"
-                        value={
-                          this.props.values.operadora
-                            ? this.props.values.operadora
-                            : "Não informado"
-                        }
-                        onChange={this.handleChange}
-                        // onBlur={this.handleChange}
-                        helperText={touched.operadora ? errors.operadora : ""}
-                        error={touched.operadora && Boolean(errors.ent)}
-                      >
-                        <MenuItem value="Selecione" disabled>
-                          Selecione
-                        </MenuItem>
-                        
-                        {this.state.operadoras &&
-                          this.state.operadoras.length > 0 &&
-                          this.state.operadoras.map((e, key) => (
-                            <MenuItem value={e.nome}>{e.nome}</MenuItem>
-                          ))}
-                      </Select>
-                    </Grid>
-                  )}
-                </>
-              )}
 
               {loading && <Loading />}
             </Grid>
@@ -670,10 +620,13 @@ class About extends Component {
                                     id="qtdevidas"
                                     type="number"
                                     value={
-                                      this.state.qtdeVidas
+                                      ( this.props.values.qtdeVidas ?  this.props.values.qtdeVidas : this.state.qtdeVidas)
                                     }
                                     InputProps={{ inputProps: { min: 2 } }}
-                                    onChange={ (event) => this.setState({qtdeVidas: event.target.value})}
+                                    onChange={ (event) => { 
+                                      this.props.values.qtdeVidas = event.target.value
+                                      this.setState({qtdeVidas: event.target.value})
+                                    }}
                                     onBlur={this.handleChange}
                                     
                                   />
@@ -762,20 +715,13 @@ const Form = withFormik({
     nome,
     email,
     telefone,
-    cep,
-    profissao,
-    entidade,
-    operadora
+
   }) => {
     return {
       cnpj: cnpj || "",
       nome: nome || "",
       email: email || "",
       telefone: telefone || "",
-      cep: cep || "",
-      entidade: entidade || "",
-      profissao: profissao || "",
-      operadora: operadora || "",
     };
   },
   validationSchema: Yup.object().shape({
@@ -801,13 +747,7 @@ const Form = withFormik({
       .min(15, "O telefone deve ter no mínimo 11 dígitos")
       .required("Telefone é obrigatório"),
 
-    cep: Yup.string()
-      .required("Cep é obrigatório")
-      .min(8, "O CEP deve ter no mínimo 8 dígitos"),
-    //complemento: Yup.string().required("Complemento é obrigatório"),
-    profissao: Yup.string().required("Profissão é obrigatório"),
-    entidade: Yup.string().required("Profissão é obrigatório"),
-    operadora: Yup.string().required("Profissão é obrigatório"),
+
 
   }),
 
@@ -816,20 +756,23 @@ const Form = withFormik({
     values,
     { props, setStatus, setValues, setSubmitting, setLoading }
   ) => {
-    setLoading(true)
+    // setLoading(true)
 
     values.date_birth = '1900-01-01'
     localStorage.setItem("@bidu2/user", [JSON.stringify(values)]);
-    let cotationSelect = {
-      user: values,
-      plan: values
-    }
-    let res = await  apiQualicorp.addLead(cotationSelect)
+
+
+    console.log(values)
+    // let cotationSelect = {
+    //   user: values,
+    //   plan: values
+    // }
+    // let res = await  apiQualicorp.addLead(cotationSelect)
         
-    setInterval(() => {
-      if(res.status == 200)
-          setStatus(true);  
-    }, 3000);
+    // setInterval(() => {
+    //   if(res.status == 200)
+    //       setStatus(true);  
+    // }, 3000);
     
     
 
