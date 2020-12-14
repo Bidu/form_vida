@@ -184,7 +184,7 @@ class About extends Component {
       cidade,
     );
     if (occupations && occupations.data && occupations.data.length > 0) {
-      this.setState({ occupations: occupations.data });
+      this.setState({ occupations: occupations.data, loading:false });
     } else {
       this.setState({
         occupations: [],
@@ -558,10 +558,10 @@ class About extends Component {
                           Selecione
                         </MenuItem>
 
-                        {/* {this.state.occupations.length > 0 &&
+                         {this.state.occupations.length > 0 &&
                           this.state.occupations.map((e, key) => (
                             <MenuItem value={e.id}>{e.nome}</MenuItem>
-                          ))} */}
+                          ))} 
                       </Select>
                     </Grid>
                   {/* )} */}
