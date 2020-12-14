@@ -257,9 +257,10 @@ class About extends Component {
   handleChange = (event) => {
     if (event.target.name == "profissao") {
       this.props.values.profissao = event.target.value;
+      console.log("Estou aqui")
       this.getEntities(
         this.props.values.profissao,
-        this.props.values.uf,
+        this.props.values.estado,
         this.props.values.cidade
       );
     }

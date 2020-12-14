@@ -102,7 +102,7 @@ export class PriceQuote extends Component {
           await Promise.all( entidade.map( async (operadora) => {
             let getPlan = {
           
-              "uf": user.uf,
+              "uf": user.estado,
               "cidade": user.cidade ,
               "entidade": operadora.entite,
               "operadora": operadora.name,
