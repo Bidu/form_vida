@@ -33,6 +33,8 @@ import axios from "axios";
 import DialogDependents from "../../components/DialogDependents";
 import Birthday from "../../components/Birthday";
 import DialogAlert from "../../components/DialogAlert";
+import Autocomplete from '@material-ui/lab/Autocomplete';
+import {bruf} from "../../services/bruf";
 import {
   textMaskPhone,
   textMaskNumber,
@@ -124,11 +126,9 @@ class About extends Component {
       this.setState({
         usuario: {
           ...this.state.usuario,
-          rua: "",
-          cidade: "",
-          bairro: "",
+          cidade: "",          
           estado: "",
-          cep: "",
+
           uf: "",
         },
         loading: false,
@@ -173,18 +173,18 @@ class About extends Component {
     }
   };
 
-  getOccupations = async (address) => {
+  getOccupations = async (estado, cidade) => {
     this.setState({
       loading: true,
       occupations: [],
       occupationsFalse: true,
     });
     let occupations = await apiQualicorp.publicoAlvo(
-      address.estado,
-      address.cidade
+      estado,
+      cidade,
     );
     if (occupations && occupations.data && occupations.data.length > 0) {
-      this.setState({ occupations: occupations.data });
+      this.setState({ occupations: occupations.data, loading:false });
     } else {
       this.setState({
         occupations: [],
@@ -436,6 +436,7 @@ class About extends Component {
                   }}
                 />
               </Grid>
+              
                <Grid item xs={12} sm={6}>
                 <InputLabel>Data de nascimento</InputLabel>
                 <TextField
@@ -449,7 +450,50 @@ class About extends Component {
                   error={touched.date_birth && Boolean(errors.date_birth)}
                 />
               </Grid>
-              <Grid item xs={12} sm={6}>
+              <Grid item xs={12} sm={3}>
+              <FormControl component="fieldset"> 
+               <InputLabel shrink id="estado">
+                Estado
+              </InputLabel>
+              <Autocomplete
+               
+                id="estado"
+                name="estado"
+                clearOnEscape
+                options={bruf}
+                getOptionLabel={(option) => option.nome}
+                renderInput={(params) => <TextField {...params} style={{marginTop:0}} label="Estado" margin="normal" />}
+                onChange={(event, newValue) => {
+                  
+                  if(newValue && newValue.cidades){
+                    this.props.values.estado = newValue.sigla
+                    this.setState({cidades: newValue.cidades})
+                  }
+                }}
+              />
+              </FormControl>
+              </Grid>
+              <Grid item xs={12} sm={3}>
+                  <FormControl component="fieldset" className="price-quote"> 
+                  <InputLabel shrink id="cidade">
+                    Cidade
+                  </InputLabel>
+                  <Autocomplete
+                      
+                      id="cidade"
+                      name="cidade"
+                      clearOnEscape
+                      options={this.state.cidades}
+                      getOptionLabel={(option) => option}
+                      renderInput={(params) => <TextField {...params} style={{marginTop:0}} label="Cidade" margin="normal" />}
+                      onChange={(event, newValue) => {
+                          this.props.values.cidade = newValue
+                          this.getOccupations(this.props.values.estado, this.props.values.cidade)
+                      }}
+                    />
+                  </FormControl>
+              </Grid>
+              {/* <Grid item xs={12} sm={6}>
                 <TextField
                   value={this.props.values.cep ? this.props.values.cep : ""}
                   id="cep"
@@ -475,8 +519,8 @@ class About extends Component {
               </Grid>
              
               {this.state.usuario.rua && (
-                <>
-                  <Grid item xs={12} sm={6}>
+                <> */}
+                  {/* <Grid item xs={12} sm={6}>
                     <TextField
                       value={`${this.state.usuario.rua}, ${this.state.usuario.bairro} - ${this.state.usuario.cidade}/${this.state.usuario.uf} `}
                       id=""
@@ -485,8 +529,8 @@ class About extends Component {
                       name=""
                       disabled
                     />
-                  </Grid>
-                  {this.state.occupations.length > 0 && (
+                  </Grid> */}
+                  {/* {this.state.occupations.length > 0 && ( */}
                     <Grid item xs={12} sm={6}>
                       <InputLabel shrink id="gender">
                         Profissão
@@ -514,19 +558,19 @@ class About extends Component {
                           Selecione
                         </MenuItem>
 
-                        {this.state.occupations.length > 0 &&
+                         {this.state.occupations.length > 0 &&
                           this.state.occupations.map((e, key) => (
                             <MenuItem value={e.id}>{e.nome}</MenuItem>
-                          ))}
+                          ))} 
                       </Select>
                     </Grid>
-                  )}
-                  {this.state.occupationsFalse == false && (
+                  {/* )} */}
+                  {/* {this.state.occupationsFalse == false && (
                     <DialogAlert
                       title="Ops!"
                       message="Erro ao obter a lista de profissões. Tente novamente mais tarde!"
                     />
-                  )}
+                  )} */}
                   {/* {this.state.entitiesFalse == true && (
                     <Grid item xs={12} sm={6}>
                       <InputLabel shrink id="gender">
@@ -559,12 +603,12 @@ class About extends Component {
                       </Select>
                     </Grid>
                   )} */}
-                  {this.state.entitiesFalse == false && (
+                  {/* {this.state.entitiesFalse == false && (
                     <DialogAlert
                       title="Ops!"
                       message="Erro ao obter a lista de entidades. Tente novamente mais tarde!"
                     />
-                  )}
+                  )} */}
                   {/* {this.state.operadorasFalse == true && (
                     <Grid item xs={12} sm={6}>
                       <InputLabel shrink id="gender">
@@ -598,14 +642,14 @@ class About extends Component {
                       </Select>
                     </Grid>
                   )} */}
-                </>
-              )}
+                {/* </> */}
+              {/* )} */}
 
               {loading && <Loading />}
             </Grid>
             <br />
-            { this.state.occupations && this.state.occupations.length > 0 && this.props.values.profissao && this.props.values.profissao.length > 0 && this.state.entitiesFalse != false && (
-              <>
+            {/* { this.state.occupations && this.state.occupations.length > 0 && this.props.values.profissao && this.props.values.profissao.length > 0 && this.state.entitiesFalse != false && (
+              <> */}
                 <div class="vidas">
                   <Title text="Quantidade de" bold="vidas" />
                 </div>
@@ -632,8 +676,8 @@ class About extends Component {
                     Quero uma cotação
                   </Button>
                 </div>
-              </>
-            )}
+              {/* </>
+            )} */}
           </form>
           <div className="actions mt0">
             <Link className="btn-back" to="/">
@@ -704,9 +748,11 @@ const Form = withFormik({
       .min(15, "O telefone deve ter no mínimo 11 dígitos")
       .required("Telefone é obrigatório"),
 
-    cep: Yup.string()
-      .required("Cep é obrigatório")
-      .min(8, "O CEP deve ter no mínimo 8 dígitos"),
+    estado: Yup.string()
+      .required("Estado é obrigatório"),
+    cidade: Yup.string()
+    .required("Cidade é obrigatório"),
+    
     //complemento: Yup.string().required("Complemento é obrigatório"),
     profissao: Yup.string().required("Profissão é obrigatório"),
     date_birth: Yup.string().required("Data de nascimento é obrigatório"),

@@ -21,6 +21,13 @@ const useStyles = makeStyles({
       marginTop: "15px",
       borderRadius: "60px",       
   },
+  btnAdd: {
+    borderRadius: "50%",
+    background: "#00FEFD",
+    color: '#001447',
+    
+  }
+
 
 })
 
@@ -167,7 +174,7 @@ export default function DialogDependents(props) {
             Fechar
           </Button>
           <Button onClick={addDependents} variant="outlined" color="primary" className={classes.btn}>
-            Adicionar +
+           Adicionar +
           </Button>
         </DialogActions>
       </Dialog>
