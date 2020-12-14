@@ -1,44 +1,43 @@
 .texto-vidas {
   padding: 0 0 20px 0 !important;
 }
-.texto-vidas-aviso{
-  font-size: 14px ;
+.texto-vidas-aviso {
+  font-size: 14px;
   font-style: italic;
 }
-.grid-faixa-etarias{
+.grid-faixa-etarias {
   width: 40% !important;
-  margin-left: auto !important;
-  margin-right: auto !important;
-
-  
-
+  margin: 0px 0 0 100px;
+  font-size: 60px;
+  justify-content: center;
+  background: #00fefd;
 }
 
 #qtdevidas::-webkit-outer-spin-button,
 #qtdevidas::-webkit-inner-spin-button {
   display: none;
 }
-#qtdevidas{
+#qtdevidas {
   font-size: 50px !important;
-   text-align: center;
+  text-align: center;
 }
-.select-faixa-etaria{
+.select-faixa-etaria {
   width: 100px !important;
 }
-@media only screen and (max-width: 800px){
+@media only screen and (max-width: 800px) {
   .MuiContainer-root {
     padding-right: 0 !important;
   }
-  .grid-faixa-etaria{
+  .grid-faixa-etaria {
     margin-left: auto !important;
     margin-right: auto !important;
   }
-  .select-faixa-etaria{
+  .select-faixa-etaria {
     width: 100px !important;
   }
 }
-@media only screen and (max-width: 500px){
-  .actions .btn-next{
+@media only screen and (max-width: 500px) {
+  .actions .btn-next {
     width: 60% !important;
   }
 }

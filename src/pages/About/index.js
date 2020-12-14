@@ -33,6 +33,7 @@ import axios from "axios";
 import DialogDependents from "../../components/DialogDependents";
 import Birthday from "../../components/Birthday";
 import DialogAlert from "../../components/DialogAlert";
+import { bdQuali } from "../../services/bdQuali"
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import {bruf} from "../../services/bruf";
 import {
