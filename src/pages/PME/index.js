@@ -611,8 +611,11 @@ obs: função chamada, após a escolha da UF
                 <div >
                   {
                     <Grid container xs={12}>
+                        <>
                                   <Grid item xs={3} className="grid-faixa-etarias"  >
-                                  
+                                    <Button style={{fontSize: '60px'}}>-</Button>
+                                  </Grid>
+                                  <Grid item xs={3} className="grid-faixa-etarias"  >
                                   <TextField
                                     name="qtdevidas"
                                     fullWidth
@@ -631,6 +634,10 @@ obs: função chamada, após a escolha da UF
                                     
                                   />
                                   </Grid>
+                                  <Grid item xs={3} className="grid-faixa-etarias"  >
+                                    <Button style={{fontSize: '60px'}}>+</Button>
+                                  </Grid>
+                          </>
                       </Grid>
                   
                   /* O JSX ABAIXO FUNCIONA
