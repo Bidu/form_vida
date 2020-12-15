@@ -690,7 +690,23 @@ class About extends Component {
     );
   }
 }
+// const sendBdQuali = async (x,y) => {
 
+// };
+// const endereco = {
+//   cidade: user.cidade,
+//   estado: user.estado,
+// };
+// let client = {
+//   nome: user.nome,
+//   documento: user.documento,
+//   tipoPessoa: "fisica",
+//   email: user.email,
+//   telefone: null,
+//   dataNascimento: new Date(
+//     condutorPrincipal.nasc_ano, condutorPrincipal.nasc_mes -1, condutorPrincipal.nasc_dia
+//   ).getTime(),
+// }
 function mapStateToProps(state) {
   return {
     user: state.user.infos,

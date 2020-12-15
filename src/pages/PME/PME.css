@@ -7,10 +7,8 @@
 }
 .grid-faixa-etarias {
   width: 40% !important;
-  margin: 0px 0 0 100px;
-  font-size: 60px;
-  justify-content: center;
-  background: #00fefd;
+  margin-left: auto !important;
+  margin-right: auto !important;
 }
 
 #qtdevidas::-webkit-outer-spin-button,
@@ -40,4 +38,9 @@
   .actions .btn-next {
     width: 60% !important;
   }
+}
+
+.add-botao {
+  margin: 0px 0 0 100px;
+  font-size: 40px;
 }

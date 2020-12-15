@@ -613,7 +613,9 @@ obs: função chamada, após a escolha da UF
                     <Grid container xs={12}>
                         <>
                                   <Grid item xs={3} className="grid-faixa-etarias"  >
-                                    <Button style={{fontSize: '60px'}}>-</Button>
+                                    <div class="less-botao">
+                                    <Button style={{fontSize: '60px', marginTop:"-24px", marginBottom: "6px", marginLeft: "103px"  }}>-</Button>
+                                    </div>
                                   </Grid>
                                   <Grid item xs={3} className="grid-faixa-etarias"  >
                                   <TextField
@@ -629,13 +631,33 @@ obs: função chamada, após a escolha da UF
                                     onChange={ (event) => { 
                                       this.props.values.qtdeVidas = event.target.value
                                       this.setState({qtdeVidas: event.target.value})
+                                      
+                                      let numero = 2;
+
+                                        function less() {
+                                          numero--;
+                                          setValue(numero);
+                                        }
+
+                                        function more() {
+                                          numero++;
+                                          setValue(numero);
+                                        }
+
+                                        function setValue(value) {
+                                          document.getElementById('num').value = value;
+                                        }
+
+                                        setValue(numero);
                                     }}
                                     onBlur={this.handleChange}
                                     
                                   />
                                   </Grid>
                                   <Grid item xs={3} className="grid-faixa-etarias" >
-                                    <Button style={{fontSize: '60px'}}>+</Button>
+                                    <div class="add-botao">
+                                    <Button style={{fontSize: '45px', marginLeft: "-75px", marginTop:"-2px"}}>+</Button>
+                                    </div>
                                   </Grid>
                           </>
                       </Grid>
