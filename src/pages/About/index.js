@@ -537,34 +537,20 @@ class About extends Component {
                       <InputLabel shrink id="gender">
                         Profissão
                       </InputLabel>
-                      <Select
-                        name="profissao"
-                        fullWidth
-                        displayEmpty
-                        labelId="profissao"
-                        id="profissao"
-                        value={
-                          this.props.values.profissao
-                            ? this.props.values.profissao
-                            : "Não informado"
-                        }
-                        onChange={this.handleChange}
-                        helperText={touched.profissao ? errors.profissao : ""}
-                        error={touched.profissao && Boolean(errors.profissao)}
-                        InputLabelProps={{
-                          shrink: true,
-                        }}
-                      >
-                 
-                        <MenuItem value="Selecione" disabled>
-                          Selecione
-                        </MenuItem>
+                      <Autocomplete
+                      
+                      id="profissao"
+                      name="profisao"
+                      clearOnEscape
+                      options={this.state.occupations}
+                      getOptionLabel={(option) => option.nome}
+                      renderInput={(params) => <TextField {...params} style={{marginTop:0}} label="Profissão" margin="normal" />}
+                      onChange={(event, newValue) => {
+                          this.props.values.occupations = newValue.id
+                          this.handleChange(newValue)
+                      }}
 
-                         {this.state.occupations.length > 0 &&
-                          this.state.occupations.map((e, key) => (
-                            <MenuItem value={e.id}>{e.nome}</MenuItem>
-                          ))} 
-                      </Select>
+                    />
                     </Grid>
                   {/* )} */}
                   {/* {this.state.occupationsFalse == false && (
