@@ -138,7 +138,7 @@ const apiQualicorp= {
   },
   
   async addLead(cotation) {
-
+    
     let resposta = [];
     const url = `https://qualitech.qualicorp.com.br/api-focus-lead/adicionar-lead?api-key=${apiKeyAddLead}`;
     let date = new Date()
@@ -149,7 +149,8 @@ const apiQualicorp= {
     let seconds = (date.getSeconds() < 10 ? `0${date.getSeconds()}` : date.getSeconds())
     let dateHour = `${date.getFullYear()}-${month}-${day} ${hour}:${minutes}:${seconds}`
     let beneficiarios = []
-   await ((cotation.plan.beneficiarios)).filter((val)=>{ 
+    if(cotation.plan.beneficiarios){
+    await ((cotation.plan.beneficiarios)).filter((val)=>{ 
                                           return (val.chave != cotation.user.nome && 
                                                   val.dataNascimento != cotation.user.date_birth
                                                 ) 
@@ -157,8 +158,8 @@ const apiQualicorp= {
                                             DATA_NASC: val.dataNascimento,
                                             VALOR_PLANO: "0"
                                           }))
-    
-
+    }
+   
     let lead = {
       leads:[{
         ID_LEAD: newHash(`${new Date()}${(cotation.user.cpf ? cotation.user.cpf.replace(/[^0-9]/g,'') : cotation.user.cnpj.replace(/[^0-9]/g,'') )}`),
@@ -167,25 +168,25 @@ const apiQualicorp= {
         ORIGEM_INTEGRACAO: "Bidu/Thinkseg",
         DH_CAPTURA_LEAD_ORIGEM: dateHour,
         NOME: "teste",
-        CPF: (cotation.user.cpf ? cotation.user.cpf.replace(/[^0-9]/g,''): null),
+        CPF: (cotation.user.cpf ? cotation.user.cpf.replace(/[^0-9]/g,''): ""),
         NOME_EMPRESA:"teste",
-        CNPJ:(cotation.user.cnpj ? cotation.user.cnpj.replace(/[^0-9]/g,''): null),
+        CNPJ:(cotation.user.cnpj ? cotation.user.cnpj.replace(/[^0-9]/g,''): ""),
         EMAIL: "teste@teste.com",
         TELEFONE_PRINCIPAL:cotation.user.telefone.replace(/[^0-9]/g,''),
-        TELEFONE_SECUNDARIO: null,
-        MIDIA_VEICULO: null,
-        MIDIA_FORMATO: null,
+        TELEFONE_SECUNDARIO: "",
+        MIDIA_VEICULO: "",
+        MIDIA_FORMATO: "",
         MIDIA_CAMPANHA: null,
         MIDIA_CONTEUDO: null,
         UF: cotation.user.uf,
         MUNICIPIO: cotation.user.cidade,
-        PROFISSAO: cotation.user.profissao,
-        ENTIDADE: cotation.user.entidade,
-        OPERADORA: cotation.user.operadora,
+        PROFISSAO: (cotation.user.profissao ? cotation.user.profissao : ""),
+        ENTIDADE: (cotation.user.entidade ? cotation.user.entidade: ""),
+        OPERADORA: (cotation.user.operadora ? cotation.user.operadora : ""),
         TIPO_ACOMODACAO: ( cotation.plan.acomodacao ? cotation.plan.acomodacao : ""),
         REEMBOLSO: ( cotation.plan.reembolso ?  cotation.plan.reembolso : "" ),
-        DATA_NASCIMENTO: cotation.user.date_birth,
-        NUMERO_VIDAS: (cotation.plan.beneficiarios.length ? cotation.plan.beneficiarios.length : cotation.user.beneficiarios.length),
+        DATA_NASCIMENTO: (cotation.user.date_birth ? cotation.user.date_birth : ""),
+        NUMERO_VIDAS: (cotation.plan.beneficiarios && cotation.plan.beneficiarios.length > 0 ? cotation.plan.beneficiarios.length : cotation.user.qtdeVidas),
         DEPENDENTES: beneficiarios,
         PLANO: ( cotation.plan.nomePlano ? cotation.plan.nomePlano : ""),
         VALOR_PLANO_SIMULADO: ( cotation.plan.valorTotal ? cotation.plan.valorTotal : ""),
@@ -203,7 +204,7 @@ const apiQualicorp= {
         HORA_MOBILE: null
       }]
     }
-
+    console.log(cotation)
     console.log('lead', lead)
 
     await axios

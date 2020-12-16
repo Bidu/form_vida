@@ -757,21 +757,21 @@ const Form = withFormik({
   ) => {
     // setLoading(true)
 
-    values.date_birth = '1900-01-01'
+    values.uf = values.estado
     localStorage.setItem("@bidu2/user", [JSON.stringify(values)]);
 
-
-    console.log(values)
-    // let cotationSelect = {
-    //   user: values,
-    //   plan: values
-    // }
-    // let res = await  apiQualicorp.addLead(cotationSelect)
-        
-    // setInterval(() => {
-    //   if(res.status == 200)
-    //       setStatus(true);  
-    // }, 3000);
+    console.log(values, "VALUE")
+    let cotationSelect = {
+      user: values,
+      plan: values
+    }
+    
+    let res = await  apiQualicorp.addLead(cotationSelect)
+    
+    
+      if(res.status == 200)
+          setStatus(true);  
+    
     
     
 
