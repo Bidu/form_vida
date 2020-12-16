@@ -21,6 +21,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import { createBrowserHistory } from 'history';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import InputLabel from '@material-ui/core/InputLabel';
+import Drawer from '../../components/Drawer'
 import './priceQuote.css'
 
 export class PriceQuote extends Component {
@@ -29,10 +30,12 @@ export class PriceQuote extends Component {
     this.state = {
       lightbox: false,
       loading: false,
-      cotacoes: [],
+      cotationAll: [],
+      cotationFilter: [],
       customQuote: [],
       customQuoteCheck: false,
-      filter: false
+      filter: false,
+      redeReferenciadaHospital: []
     };
     this.getCustomQuote = this.getCustomQuote.bind(this);
 
@@ -68,6 +71,10 @@ export class PriceQuote extends Component {
     }
   }
 
+  filter = (orderValuePlan, hospital) => {
+    
+    this.sortBy(orderValuePlan, hospital)
+  }
 
   getCotacoes = async () => {
     this.setState({
@@ -79,7 +86,7 @@ export class PriceQuote extends Component {
       if(user)
       { 
        
-       let cotacoes = []
+       let cotationAll = []
         let beneficiarios = [
           {
             "chave": user.nome,
@@ -115,13 +122,14 @@ export class PriceQuote extends Component {
             if(plans.data.length > 0)
             {
               plans.data.map((item) => {
-                cotacoes.push(item)
+                cotationAll.push(item)
               })
             }
           }))
         }))
-      
-        this.setState({cotacoes})
+        
+        this.setState({cotationAll, cotationFilter: cotationAll})
+        await this.getRedeReferenciada(cotationAll)
       } 
       // this.sortBy(1)
       this.setState({
@@ -130,29 +138,95 @@ export class PriceQuote extends Component {
   }
 
 
-  sortBy = (order) =>{
+
+  getRedeReferenciada = async (cotations) => {
+   
+    let redeReferenciadaHospital = []
+    let redeReferenciadaLaboratorio = []
+
+    await Promise.all( cotations.map( async (e) => {
+        let res = await apiQualicorp.redeReferenciadas(e.idProdutoFatura, "hospital")
+        if(res.status == 200 && res.data && res.data.length > 0)
+        {
+          res.data.map((vRedeReferenciada) =>{
+            let index = redeReferenciadaHospital.findIndex(val => val.id == vRedeReferenciada.id);
+            if(index < 0){
+                          redeReferenciadaHospital.push( 
+                                                      {
+                                                        id: vRedeReferenciada.id,
+                                                        prestador: vRedeReferenciada.prestador,
+                                                        tipoPrestador: vRedeReferenciada.tipoPrestador,
+                                                        top: vRedeReferenciada.top,
+                                                        bairro: vRedeReferenciada.bairro,
+                                                        cep: vRedeReferenciada.cep,
+                                                        cidade: vRedeReferenciada.cidade,
+                                                        endereco: vRedeReferenciada.endereco,
+                                                        estado: vRedeReferenciada.estado,
+                                                        ddd: vRedeReferenciada.ddd,
+                                                        telefone: vRedeReferenciada.telefone,
+                                                        tipoAtendimento: [{
+                                                                            tipos: vRedeReferenciada.tipoAtendimento,
+                                                                            idProdutoFatura: e.idProdutoFatura
+                                                                          }],
+                                                        idProdutoFatura:[e.idProdutoFatura]
+                                                      }
+                                                    )
+                            }
+            else{
+              redeReferenciadaHospital[index].idProdutoFatura.push(e.idProdutoFatura)
+              redeReferenciadaHospital[index].tipoAtendimento.push({                                        
+                                                                    tipos: vRedeReferenciada.tipoAtendimento,
+                                                                    idProdutoFatura: e.idProdutoFatura
+                                                                   })
+            }
+            
+          })
+          // res.data = [...res.data, {idProdutoFatura: e.idProdutoFatura}]
+          // redeReferenciadaHospital = [...redeReferenciadaHospital, res.data]
+        }
+    }))
+
+
+  this.setState({redeReferenciadaHospital})
+
+  }
+
+
+
+  sortBy = (order, hospital) =>{
+    console.log(hospital)
     this.setState({
       loading: true
     });
 
-    let cotacoes = this.state.cotacoes
+
+    let cotationFilter = this.state.cotationAll
 
     let planosOrder = []
 
-    cotacoes.map((item) => {
-        planosOrder.push(item)
+    hospital.map((hosp) => {
+      hosp.idProdutoFatura.map((prod)=>{
+        cotationFilter.map((item) => {
+            if(prod == item.idProdutoFatura)
+                {
+                    let index = planosOrder.findIndex(val => val.idProdutoFatura == item.idProdutoFatura);
+                    if( index < 0 )
+                       planosOrder.push(item)
+                }
+          })
+        })
     })
 
     this.setState({filter: order})
     switch (order) {
 
-      case 0:
+      case "0":
         
         planosOrder = planosOrder.sort((a, b) => {
           return b.valorTotal - a.valorTotal
         })
         break;
-      case 1:
+      case "1":
         planosOrder = planosOrder.sort((a, b) => {
           return a.valorTotal - b.valorTotal
         })
@@ -162,9 +236,9 @@ export class PriceQuote extends Component {
       }
 
  
-    cotacoes = planosOrder
-
-    this.setState({cotacoes, loading: false})
+    cotationFilter = planosOrder
+    console.log(cotationFilter)
+    this.setState({cotationFilter, loading: false})
 
   }
 
@@ -196,73 +270,54 @@ export class PriceQuote extends Component {
   
   render() {
     //this.Ordenacao();
-    const { loading, cotacoes, customQuote, customQuoteCheck } = this.state;
+    const { loading,  customQuote, customQuoteCheck } = this.state;
     return (
       <>
-        <Wrapper>
+        <Wrapper >
       
           <div className="price-quote">
             <Steps step1={true} step2={true} step3={true} step4={true} step5={true} />
-            
-            {/* <Title bold="Cotação" idquote={localStorage.getItem("@bidu2/idcotacao")} /> */}
             {<Title bold="Cotação" />} 
           </div>
           <div className="filter">
             <div>
-               <FormControl component="fieldset" className="price-quote"> 
-               <InputLabel shrink id="demo-simple-select-placeholder-label-label">
-                Filtros
-              </InputLabel>
-                <Select
-                    labelId="demo-simple-select-helper-label"
-                    id="demo-simple-select-helper"
-                    value={this.state.filter}
-                    onChange={(e) => { this.sortBy(e.target.value) }}
-                  >                   
-                    <MenuItem value={1}>Menor Preço</MenuItem>
-                    <MenuItem value={0}>Maior Preço</MenuItem>
-                  </Select>
+               <FormControl component="fieldset" className="price-quote">
+              
+               <Grid container spacing={2}>
+               {this.state.redeReferenciadaHospital.length > 0 &&
+                  <Drawer pushHospital = {this.state.redeReferenciadaHospital} filterOrder={(orderValue, hospital) => this.filter(orderValue, hospital)} />
+               }
+               
                   <FormHelperText></FormHelperText>
+                  </Grid>
               </FormControl>
             </div>
           </div>
         <br />
         {loading &&
                 <Loading />}
-          {cotacoes.length == 0 && !this.state.loading && (
+          {this.state.cotationFilter.length == 0 && !this.state.loading && (
             <div className="loading-cotacoes">
               <IconButton onClick={this.ReloadCotacoes}>
                 <CachedIcon style={{ fontSize: 60, color: "#000000" }} />
                 <span>
                   Não retornou nenhuma cotação? <br />
-          Atualize a página.
-        </span>
+                  Atualize a página.
+             </span>
               </IconButton>
             </div>
           )}
 
           <div className="quotations">
             <Grid container spacing={2}>
-              {customQuoteCheck ? (
-                <ListPriceQuotationCustom quote={JSON.stringify([customQuote])} />
-              ) : (
-                  ""
-                )}
-
-              
-
-              {/*cotacoes.map((c, index) => (
-        <div>{this.getValores(JSON.stringify(cotacoes[index]))}</div>
-        ))*/}
-            
-               {cotacoes && cotacoes.length > 0 && cotacoes.map((c, index) => (
+               { this.state.cotationFilter &&  this.state.cotationFilter.length > 0 &&  this.state.cotationFilter.map((c, index) => (
                         <>
-                          <ListPriceQuotation key={index} quote={c} getQuote={this.getCustomQuote} />
+                          <ListPriceQuotation key={index} quote={c} redeReferenciada={"precisamos colocar o array da rede referenciada!"} getQuote={this.getCustomQuote} />
                        </>
                ))} 
                
             </Grid>
-            { this.state.cotacoes == false &&
+            { this.state.cotationFilter == false &&
                   
                   <DialogAlert title="Ops!" message="Infelizmente ainda não encontramos um plano de saúde pra você😞!" />
                 }

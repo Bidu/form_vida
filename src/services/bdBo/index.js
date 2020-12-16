@@ -40,19 +40,20 @@ const apiQualicorp= {
     return oper;
   },
 
-  async redeReferenciadas(idProdutoFatura, tipo, prestador) {
-    let statusRede = [];
-    const url = `${server}/qvenda/rede-referenciadas/${idProdutoFatura}/${tipo}/${prestador}?api-key=${apiKeyRedeReferenciadas}`;
+  async redeReferenciadas(idProdutoFatura, tipo ) {
+    //TIPO = hospital ou laboratorio
+    let resRedeReferenciada = [];
+    const url = `${server}/qvenda/rede-referenciadas/${idProdutoFatura}/${tipo}?api-key=${apiKeyRedeReferenciadas}`;
     await axios
       .get(url)
       .then(function (res) {
         
-        statusRede = res.data;
+        resRedeReferenciada = res.data;
       })
       .catch(function (error) {
         console.log(error);
       });
-    return statusRede;
+    return resRedeReferenciada;
   },
 
   async fatoresModeradores(idProdutoFatura) {

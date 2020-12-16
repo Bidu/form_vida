@@ -1,0 +1,28 @@
+.MuiDrawer-paperAnchorLeft {
+    width: 20%;
+}
+.text-autocomplete-filter-hospital{
+    margin-left: 3% !important;
+}
+
+.makeStyles-list-4 {
+    width: 90% !important;
+}
+.button-submit-drawer{
+    margin-top: 110% !important;
+    width: 110% !important;
+    
+}
+
+@media only screen and (max-width: 1200px){
+    .MuiDrawer-paperAnchorLeft {
+        width: 40%;
+    }
+    
+}
+@media only screen and (max-width: 500px){
+    .MuiDrawer-paperAnchorLeft {
+        width: 60%;
+    }
+    
+}

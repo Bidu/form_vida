@@ -471,6 +471,10 @@ class About extends Component {
                     this.props.values.estado = newValue.sigla
                     this.setState({cidades: newValue.cidades})
                   }
+                  else{
+                    this.setState({cidades: [], occupations: []})
+                    this.props.values.cidade = ""
+                  }
                 }}
               />
               </FormControl>
@@ -489,9 +493,15 @@ class About extends Component {
                       getOptionLabel={(option) => option}
                       renderInput={(params) => <TextField {...params} style={{marginTop:0}} label="Cidade" margin="normal" />}
                       onChange={(event, newValue) => {
+                        if(newValue){
                           this.props.values.cidade = newValue
                           this.getOccupations(this.props.values.estado, this.props.values.cidade)
-                      }}
+                        }else{
+                          this.setState({ occupations: []})
+                          this.props.values.profissao = ""
+                        }
+                      }
+                    }
                     />
                   </FormControl>
               </Grid>
@@ -534,23 +544,34 @@ class About extends Component {
                   </Grid> */}
                   {/* {this.state.occupations.length > 0 && ( */}
                     <Grid item xs={12} sm={6}>
-                      <InputLabel shrink id="gender">
+                      <FormControl component="fieldset" className="price-quote"> 
+                      <InputLabel shrink id="profissao">
                         Profissão
                       </InputLabel>
                       <Autocomplete
                       
                       id="profissao"
-                      name="profisao"
+                      name="profissao"
                       clearOnEscape
                       options={this.state.occupations}
                       getOptionLabel={(option) => option.nome}
                       renderInput={(params) => <TextField {...params} style={{marginTop:0}} label="Profissão" margin="normal" />}
                       onChange={(event, newValue) => {
-                          this.props.values.occupations = newValue.id
-                          this.handleChange(newValue)
+                        if(newValue)
+                        {
+                          
+                          this.props.values.profissao = newValue.id
+                          this.getEntities(
+                            this.props.values.profissao,
+                            this.props.values.estado,
+                            this.props.values.cidade
+                          );
+                          
+                        }
                       }}
 
                     />
+                    </FormControl>
                     </Grid>
                   {/* )} */}
                   {/* {this.state.occupationsFalse == false && (
@@ -714,7 +735,6 @@ const Form = withFormik({
     nome,
     email,
     telefone,
-    cep,
     profissao,
     date_birth
   
@@ -724,7 +744,6 @@ const Form = withFormik({
       nome: nome || "",
       email: email || "",
       telefone: telefone || "",
-      cep: cep || "",
       profissao: profissao || "",
       date_birth: date_birth || ""
     };
@@ -756,8 +775,6 @@ const Form = withFormik({
       .required("Estado é obrigatório"),
     cidade: Yup.string()
     .required("Cidade é obrigatório"),
-    
-    //complemento: Yup.string().required("Complemento é obrigatório"),
     profissao: Yup.string().required("Profissão é obrigatório"),
     date_birth: Yup.string().required("Data de nascimento é obrigatório"),
   }),
@@ -768,17 +785,7 @@ const Form = withFormik({
   ) => {
     console.log(values);
     localStorage.setItem("@bidu2/user", [JSON.stringify(values)]);
-
-    // setTimeout(() => {
-    //   //submit to the server
-    //   //alert(JSON.stringify(values, null, 2));
-    //   // props.adicionaUser(values);
-    //   // props.adicionarLead();
-
     setStatus(true);
-    //   // window.fbq("track", "Lead");
-    //   setSubmitting(false);
-    // }, 1000);
     setSubmitting(false);
   },
 })(About);
