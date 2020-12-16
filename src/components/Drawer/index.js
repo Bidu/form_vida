@@ -69,7 +69,7 @@ export default function SwipeableTemporaryDrawer(props) {
 
 
   const [hospital, setHospital] = React.useState([])
-  const [orderValuePlan, setOrderValuePlan] = React.useState([])
+  const [orderValuePlan, setOrderValuePlan] = React.useState("")
   const fixedOptions = [];
   const [value, setValue] = React.useState([]);
   const toggleDrawer = (anchor, open) => (event) => {
@@ -89,7 +89,19 @@ export default function SwipeableTemporaryDrawer(props) {
   const open = Boolean(anchorEl);
 
   const filterOrder = () => {
+    if(orderValuePlan != "" && value.length == 0)
+      {
+        props.filterOrder(orderValuePlan, null)
+      }
+      else if(orderValuePlan == "" && value.length > 0) {
+        props.filterOrder(null, value)
+      }
+      else if(orderValuePlan != "" && value.length > 0){
         props.filterOrder(orderValuePlan, value)
+      }
+      else{
+        alert("É preciso selecionar para filtrar")
+      }
   }
   const handleChange = (event) => {
     setOrderValuePlan(event.target.value);

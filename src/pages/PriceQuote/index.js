@@ -71,9 +71,10 @@ export class PriceQuote extends Component {
     }
   }
 
-  filter = (orderValuePlan, hospital) => {
+  filter = (orderValuePlan = null , hospital = null) => {
     
-    this.sortBy(orderValuePlan, hospital)
+      this.sortBy(orderValuePlan, hospital)
+
   }
 
   getCotacoes = async () => {
@@ -194,7 +195,7 @@ export class PriceQuote extends Component {
 
 
   sortBy = (order, hospital) =>{
-    console.log(hospital)
+    
     this.setState({
       loading: true
     });
@@ -204,18 +205,26 @@ export class PriceQuote extends Component {
 
     let planosOrder = []
 
-    hospital.map((hosp) => {
-      hosp.idProdutoFatura.map((prod)=>{
-        cotationFilter.map((item) => {
-            if(prod == item.idProdutoFatura)
-                {
-                    let index = planosOrder.findIndex(val => val.idProdutoFatura == item.idProdutoFatura);
-                    if( index < 0 )
-                       planosOrder.push(item)
-                }
+    if(hospital != null)
+    {
+        hospital.map((hosp) => {
+        hosp.idProdutoFatura.map((prod)=>{
+          cotationFilter.map((item) => {
+              if(prod == item.idProdutoFatura)
+                  {
+                      let index = planosOrder.findIndex(val => val.idProdutoFatura == item.idProdutoFatura);
+                      if( index < 0 )
+                        planosOrder.push(item)
+                  }
+            })
           })
-        })
-    })
+      })
+    }
+    else{
+      cotationFilter.map((item) => {
+        planosOrder.push(item)
+      })
+    }
 
     this.setState({filter: order})
     switch (order) {
