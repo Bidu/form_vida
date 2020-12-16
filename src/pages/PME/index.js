@@ -594,8 +594,8 @@ class About extends Component {
                 <div >
                   {
                     <Grid container xs={12}>
-                      <>
-                        <Grid item xs={3} className="grid-faixa-etarias">
+                      <div className="qtd-vidas-container">
+                        <Grid item xs={3} className="">
                           <div className="less-botao">
                             <Button
                               onClick={ () =>  this.setIncrementOrDecrement("-")}>
@@ -603,25 +603,25 @@ class About extends Component {
                             </Button>
                           </div>
                         </Grid>
-                        <Grid item xs={3} className="grid-faixa-etarias">
-                        <TextField
-                          name="qtdevidas"
-                          fullWidth
-                          labelId="qtdevidas"
-                          id="qtdevidas"
-                          type="number"
-                          value={
-                            ( this.props.values.qtdeVidas ?  this.props.values.qtdeVidas : this.state.qtdeVidas)
-                          }
-                          InputProps={{ inputProps: { min: 2, max: 3000 } }}
-                          onChange={ (event) => { 
-                            this.props.values.qtdeVidas = event.target.value
-                            this.setState({qtdeVidas: event.target.value})
+                        <Grid item xs={3} className="">
+                          <TextField
+                            name="qtdevidas"
+                            fullWidth
+                            labelId="qtdevidas"
+                            id="qtdevidas"
+                            type="number"
+                            value={
+                              ( this.props.values.qtdeVidas ?  this.props.values.qtdeVidas : this.state.qtdeVidas)
+                            }
+                            InputProps={{ inputProps: { min: 2, max: 3000 } }}
+                            onChange={ (event) => { 
+                              this.props.values.qtdeVidas = event.target.value
+                              this.setState({qtdeVidas: event.target.value})
+                              
+                            }}
+                            onBlur={this.handleChange}
                             
-                          }}
-                          onBlur={this.handleChange}
-                          
-                        />
+                          />
                         </Grid>
                         <Grid item xs={3}>
                           <div class="less-botao-mais">
@@ -630,7 +630,7 @@ class About extends Component {
                               <p className="button_text_mais"> + </p></Button>
                           </div>
                         </Grid>
-                      </> 
+                      </div> 
                     </Grid>
                   
                   /* O JSX ABAIXO FUNCIONA
@@ -667,7 +667,7 @@ class About extends Component {
                     </div>
                     <div className="texto-vidas texto-vidas-aviso">
                       <p>
-                        Mínimo de 2 pessoas para planos PME*
+                      &nbsp;&nbsp;Mínimo de 2 pessoas para planos PME*
                       </p>
                     </div>
                   
