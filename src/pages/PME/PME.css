@@ -44,3 +44,38 @@
   margin: 0px 0 0 100px;
   font-size: 40px;
 }
+
+.less-botao {
+  margin-top: 20px;
+  /* margin-bottom: 6px; */
+  /* margin-left: 124px; */
+  background-color: #00fefd;
+  border-radius: 25px;
+  height: 50px;
+  width: 50px;
+  align-items: center;
+  justify-content: center;
+  margin-left: 92%;
+}
+.button_text_menos {
+  font-size: 60px;
+  align-items: center;
+  margin-top: -39px;
+  margin-left: -11px;
+  margin-right: 2px;
+}
+.less-botao-mais {
+  margin-top: 20px;
+  /* margin-bottom: 6px; */
+  background-color: #00fefd;
+  border-radius: 25px;
+  height: 50px;
+  width: 50px;
+  align-items: center;
+  justify-content: center;
+}
+.button_text_mais {
+  font-size: 45px;
+  margin-top: -21px;
+  margin-left: -13px;
+}

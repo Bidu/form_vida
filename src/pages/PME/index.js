@@ -583,10 +583,10 @@ class About extends Component {
             <br />
             {/* {this.state.operadorasFalse == true && this.state.operadoras.length > 0 && ( */}
               <>
-                <div class="vidas">
+                <div className="vidas">
                   <Title text="Quantidade de" bold="vidas" />
                 </div>
-                <div class="texto-vidas">
+                <div className="texto-vidas">
                   <p>
                    Adicionar dependentes abaixo
                   </p>
@@ -594,41 +594,44 @@ class About extends Component {
                 <div >
                   {
                     <Grid container xs={12}>
-                        <>
-                                  <Grid item xs={3} className="grid-faixa-etarias"  >
-                                    <div class="less-botao">
-                                    <Button style={{fontSize: '60px', marginTop:"-24px", marginBottom: "6px", marginLeft: "103px"  }}
-                                            onClick={ () =>  this.setIncrementOrDecrement("-")} >-</Button>
-                                    </div>
-                                  </Grid>
-                                  <Grid item xs={3} className="grid-faixa-etarias"  >
-                                  <TextField
-                                    name="qtdevidas"
-                                    fullWidth
-                                    labelId="qtdevidas"
-                                    id="qtdevidas"
-                                    type="number"
-                                    value={
-                                      ( this.props.values.qtdeVidas ?  this.props.values.qtdeVidas : this.state.qtdeVidas)
-                                    }
-                                    InputProps={{ inputProps: { min: 2, max: 3000 } }}
-                                    onChange={ (event) => { 
-                                      this.props.values.qtdeVidas = event.target.value
-                                      this.setState({qtdeVidas: event.target.value})
-                                      
-                                    }}
-                                    onBlur={this.handleChange}
-                                    
-                                  />
-                                  </Grid>
-                                  <Grid item xs={3} className="grid-faixa-etarias" >
-                                    <div class="add-botao">
-                                    <Button style={{fontSize: '45px', marginLeft: "-75px", marginTop:"-2px"}}
-                                     onClick={ () =>  this.setIncrementOrDecrement("+")}>+</Button>
-                                    </div>
-                                  </Grid>
-                          </>
-                      </Grid>
+                      <>
+                        <Grid item xs={3} className="grid-faixa-etarias">
+                          <div className="less-botao">
+                            <Button
+                              onClick={ () =>  this.setIncrementOrDecrement("-")}>
+                              <p className="button_text_menos"> - </p>
+                            </Button>
+                          </div>
+                        </Grid>
+                        <Grid item xs={3} className="grid-faixa-etarias">
+                        <TextField
+                          name="qtdevidas"
+                          fullWidth
+                          labelId="qtdevidas"
+                          id="qtdevidas"
+                          type="number"
+                          value={
+                            ( this.props.values.qtdeVidas ?  this.props.values.qtdeVidas : this.state.qtdeVidas)
+                          }
+                          InputProps={{ inputProps: { min: 2, max: 3000 } }}
+                          onChange={ (event) => { 
+                            this.props.values.qtdeVidas = event.target.value
+                            this.setState({qtdeVidas: event.target.value})
+                            
+                          }}
+                          onBlur={this.handleChange}
+                          
+                        />
+                        </Grid>
+                        <Grid item xs={3}>
+                          <div class="less-botao-mais">
+                          <Button
+                            onClick={ () =>  this.setIncrementOrDecrement("+")}>
+                              <p className="button_text_mais"> + </p></Button>
+                          </div>
+                        </Grid>
+                      </> 
+                    </Grid>
                   
                   /* O JSX ABAIXO FUNCIONA
                   NA PRIMEIRA VERSÃO PARA VIDAS POR FAIXA ETARIA, CASO TENHA CURIOSIDADE, 
@@ -662,14 +665,13 @@ class About extends Component {
                     ))}
                   </Grid> */}
                     </div>
-                  <div class="texto-vidas texto-vidas-aviso">
-                    <p>
-                      Mínimo de 2 pessoas para planos PME*
-                    </p>
-                  </div>
+                    <div className="texto-vidas texto-vidas-aviso">
+                      <p>
+                        Mínimo de 2 pessoas para planos PME*
+                      </p>
+                    </div>
                   
-                  
-                <div className="actions">
+                    <div className="actions">
                       <Button
                         type="submit"
                         className="btn-next"
@@ -677,7 +679,7 @@ class About extends Component {
                       >
                         Quero uma cotação
                       </Button>
-                    </div>
+                    </div>  
                   </>
                 {/* )}  */}
           </form>
