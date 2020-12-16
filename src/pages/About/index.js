@@ -445,6 +445,7 @@ class About extends Component {
                   name="date_birth"
                   id="date_birth"
                   type="date"
+                  inputProps={{max: "9999-12-12"}}
                   value={this.props.values.date_birth ? this.props.values.date_birth : ""}
                   onChange={handleChange("date_birth")}
                   onBlur={this.handleChange}

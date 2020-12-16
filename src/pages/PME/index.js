@@ -595,7 +595,7 @@ class About extends Component {
                   {
                     <Grid container xs={12}>
                       <div className="qtd-vidas-container">
-                        <Grid item xs={3} className="">
+                        <Grid item xs={3} className="btn-container">
                           <div className="less-botao">
                             <Button
                               onClick={ () =>  this.setIncrementOrDecrement("-")}>
@@ -603,7 +603,7 @@ class About extends Component {
                             </Button>
                           </div>
                         </Grid>
-                        <Grid item xs={3} className="">
+                        <Grid item xs={3} >
                           <TextField
                             name="qtdevidas"
                             fullWidth
@@ -623,7 +623,7 @@ class About extends Component {
                             
                           />
                         </Grid>
-                        <Grid item xs={3}>
+                        <Grid item xs={3}className="btn-container">
                           <div class="less-botao-mais">
                           <Button
                             onClick={ () =>  this.setIncrementOrDecrement("+")}>
