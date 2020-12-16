@@ -145,7 +145,7 @@ export class PriceQuote extends Component {
     let redeReferenciadaHospital = []
     let redeReferenciadaLaboratorio = []
 
-    await Promise.all( cotations.map( async (e) => {
+    let res = await Promise.all( cotations.map( async (e) => {
         let res = await apiQualicorp.redeReferenciadas(e.idProdutoFatura, "hospital")
         if(res.status == 200 && res.data && res.data.length > 0)
         {
@@ -187,8 +187,8 @@ export class PriceQuote extends Component {
         }
     }))
 
-
-  this.setState({redeReferenciadaHospital})
+  if(res)
+    this.setState({redeReferenciadaHospital})
 
   }
 

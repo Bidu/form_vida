@@ -56,8 +56,14 @@ export default function SwipeableTemporaryDrawer(props) {
     bottom: false,
     right: false,
   });
+  
+  const [hospital, setHospital] = React.useState([])
+  const [orderValuePlan, setOrderValuePlan] = React.useState("")
+  const fixedOptions = [];
+  const [value, setValue] = React.useState([]);
   const [anchorEl, setAnchorEl] = React.useState(null);
 
+  
   const handlePopoverOpen = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -66,20 +72,16 @@ export default function SwipeableTemporaryDrawer(props) {
   };
 
  
-
-
-  const [hospital, setHospital] = React.useState([])
-  const [orderValuePlan, setOrderValuePlan] = React.useState("")
-  const fixedOptions = [];
-  const [value, setValue] = React.useState([]);
   const toggleDrawer = (anchor, open) => (event) => {
+    
     if (event && event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
       return;
     }
-
+    console.log(anchor)
+    console.log(open)
     setState({ ...state, [anchor]: open });
   };
-
+  
   useEffect((e)=>{
     if(props.pushHospital)
         setHospital(props.pushHospital)
@@ -89,7 +91,10 @@ export default function SwipeableTemporaryDrawer(props) {
   const open = Boolean(anchorEl);
 
   const filterOrder = () => {
-    if(orderValuePlan != "" && value.length == 0)
+      
+      toggleDrawer("left", false);
+      
+      if(orderValuePlan != "" && value.length == 0)
       {
         props.filterOrder(orderValuePlan, null)
       }
@@ -102,6 +107,7 @@ export default function SwipeableTemporaryDrawer(props) {
       else{
         alert("É preciso selecionar para filtrar")
       }
+      
   }
   const handleChange = (event) => {
     setOrderValuePlan(event.target.value);
@@ -113,8 +119,6 @@ export default function SwipeableTemporaryDrawer(props) {
         [classes.fullList]: anchor === 'top' || anchor === 'bottom',
       })}
       role="presentation"
-      onClick={toggleDrawer(anchor, true)}
-      onKeyDown={toggleDrawer(anchor, true)}
     >
       
       <List>
@@ -176,8 +180,11 @@ export default function SwipeableTemporaryDrawer(props) {
       <List className="button-submit-drawer">
         
            <ListItem>
-             <FormControl component="fieldset">
-              <Button variant="contained" color="primary" disableElevation onClick={() => filterOrder() } startIcon={<FilterListOutlinedIcon />}>
+             <FormControl component="fieldset" onClick={( orderValuePlan != ""  || value.length > 0) && toggleDrawer("left", false) }>
+              <Button variant="contained" color="primary" disableElevation 
+                                          onClick={filterOrder} 
+                                          startIcon={<FilterListOutlinedIcon />}
+                                          >
                   Aplicar Filtro
               </Button>
             </FormControl>

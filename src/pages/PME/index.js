@@ -368,47 +368,30 @@ class About extends Component {
     console.log(this.state.dependents)
   }
 
-  // loadUf = () => {
-  //   //A VAR DATA VEM DO ARQUIVO BRUF.JSON, IMPORTADA NO INDEX.HTML
-  //   let selectObj = document.getElementById('uf')
-  //   //REMOVE ALL OPTIONS
-  //   selectObj.options.length = 1
+  setIncrementOrDecrement = (operator) =>{
+      switch (operator) {
+        case "+":
+          let numPos = parseInt(this.props.values.qtdeVidas)
+          if(numPos < 3000){
+            numPos += 1
+            this.props.values.qtdeVidas = numPos
+            this.setState({qtdeVidas : numPos})
+          }
+          break;
+        case "-":
+          let numNeg = parseInt(this.props.values.qtdeVidas)
+          if(numNeg >  2){
+           numNeg -= 1
+           this.props.values.qtdeVidas = numNeg
+          this.setState({qtdeVidas : numNeg})
+          }
+          break;
+    
+        default:
+          break;
+      }
 
-  //   for (var i = 0; i < data.length; i++) {
-  //       let opt = document.createElement("option");
-  //       opt.value = data[i].sigla
-  //       opt.text = data[i].nome
-  //       selectObj.add(opt, null)
-
-  //       // more statements
-  //   }
-
-
-
-// }
-/*carrega todas as cidades referente ao estado escolhido...
-obs: função chamada, após a escolha da UF
-*/
-// loadCity = (uf) => {
-//     //A VAR DATA VEM DO ARQUIVO BRUF.JSON, IMPORTADA NO INDEX.HTML
-
-//     let selectObj = document.getElementById('city')
-//     //REMOVE ALL OPTIONS
-//     selectObj.options.length = 1
-//     for (var i = 0; i < data.length; i++) {
-//         if (data[i].sigla == uf.value) {
-//             for (var j = 0; j < data[i].cidades.length; j++) {
-//                 let opt = document.createElement("option");
-//                 opt.value = data[i].cidades[j]
-//                 opt.text = data[i].cidades[j]
-//                 selectObj.add(opt, null)
-//             }
-//         }
-
-//         // more statements
-//     }
-// }
-
+  }
 
   render() {
     const { loading, redirect, usuario, storage } = this.state;
@@ -614,7 +597,8 @@ obs: função chamada, após a escolha da UF
                         <>
                                   <Grid item xs={3} className="grid-faixa-etarias"  >
                                     <div class="less-botao">
-                                    <Button style={{fontSize: '60px', marginTop:"-24px", marginBottom: "6px", marginLeft: "103px"  }}>-</Button>
+                                    <Button style={{fontSize: '60px', marginTop:"-24px", marginBottom: "6px", marginLeft: "103px"  }}
+                                            onClick={ () =>  this.setIncrementOrDecrement("-")} >-</Button>
                                     </div>
                                   </Grid>
                                   <Grid item xs={3} className="grid-faixa-etarias"  >
@@ -627,28 +611,11 @@ obs: função chamada, após a escolha da UF
                                     value={
                                       ( this.props.values.qtdeVidas ?  this.props.values.qtdeVidas : this.state.qtdeVidas)
                                     }
-                                    InputProps={{ inputProps: { min: 2 } }}
+                                    InputProps={{ inputProps: { min: 2, max: 3000 } }}
                                     onChange={ (event) => { 
                                       this.props.values.qtdeVidas = event.target.value
                                       this.setState({qtdeVidas: event.target.value})
                                       
-                                      let numero = 2;
-
-                                        function less() {
-                                          numero--;
-                                          setValue(numero);
-                                        }
-
-                                        function more() {
-                                          numero++;
-                                          setValue(numero);
-                                        }
-
-                                        function setValue(value) {
-                                          document.getElementById('num').value = value;
-                                        }
-
-                                        setValue(numero);
                                     }}
                                     onBlur={this.handleChange}
                                     
@@ -656,7 +623,8 @@ obs: função chamada, após a escolha da UF
                                   </Grid>
                                   <Grid item xs={3} className="grid-faixa-etarias" >
                                     <div class="add-botao">
-                                    <Button style={{fontSize: '45px', marginLeft: "-75px", marginTop:"-2px"}}>+</Button>
+                                    <Button style={{fontSize: '45px', marginLeft: "-75px", marginTop:"-2px"}}
+                                     onClick={ () =>  this.setIncrementOrDecrement("+")}>+</Button>
                                     </div>
                                   </Grid>
                           </>
