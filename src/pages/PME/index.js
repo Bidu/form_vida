@@ -668,8 +668,9 @@ class About extends Component {
                     </div>
                     <div className="texto-vidas texto-vidas-aviso">
                       <p>
-                      &nbsp;&nbsp;Mínimo de 2 pessoas para planos PME*
+                      Mínimo de 2 pessoas para planos PME*
                       </p>
+                      <p>Li e concordo com os <a href="#">Termos de uso</a> e <a href="#">Politicade Privacidade Global da Qualicop</a></p>
                     </div>
                   
                     <div className="actions">
