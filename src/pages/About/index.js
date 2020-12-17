@@ -667,8 +667,7 @@ class About extends Component {
                 </div>
                 <div class="texto-vidas">
                   <p>
-                    Para quantas pessoas deseja contratar, entre depentes ou
-                    funcionários
+                  Adicionar dependentes abaixo
                   </p>
                 </div>
                 <div className="actions">
