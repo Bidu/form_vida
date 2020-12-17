@@ -466,11 +466,13 @@ class About extends Component {
                 options={bruf}
                 getOptionLabel={(option) => option.nome}
                 renderInput={(params) => <TextField {...params} style={{marginTop:0}} label="Estado" margin="normal" />}
-                onChange={(event, newValue) => {
+      
+                onChange={(event, newValue,) => {
                   
                   if(newValue && newValue.cidades){
                     this.props.values.estado = newValue.sigla
                     this.setState({cidades: newValue.cidades})
+                    console.log(newValue.cidades, "ESTADO")
                   }
                   else{
                     this.setState({cidades: [], occupations: []})
@@ -737,7 +739,9 @@ const Form = withFormik({
     email,
     telefone,
     profissao,
-    date_birth
+    date_birth,
+    cidade,
+    estado
   
   }) => {
     return {
@@ -746,7 +750,9 @@ const Form = withFormik({
       email: email || "",
       telefone: telefone || "",
       profissao: profissao || "",
-      date_birth: date_birth || ""
+      date_birth: date_birth || "",
+      cidade: cidade || "",
+      estado: estado || ""
     };
   },
 
@@ -772,10 +778,8 @@ const Form = withFormik({
       .min(15, "O telefone deve ter no mínimo 11 dígitos")
       .required("Telefone é obrigatório"),
 
-    estado: Yup.string()
-      .required("Estado é obrigatório"),
-    cidade: Yup.string()
-    .required("Cidade é obrigatório"),
+      cidade: Yup.string()
+      .required("Cidade é obrigatório"),
     profissao: Yup.string().required("Profissão é obrigatório"),
     date_birth: Yup.string().required("Data de nascimento é obrigatório"),
   }),

@@ -714,6 +714,8 @@ const Form = withFormik({
     nome,
     email,
     telefone,
+    cidade,
+    estado,
 
   }) => {
     return {
@@ -721,6 +723,8 @@ const Form = withFormik({
       nome: nome || "",
       email: email || "",
       telefone: telefone || "",
+      cidade: cidade || "",
+      estado: estado || "",
     };
   },
   validationSchema: Yup.object().shape({
@@ -745,9 +749,10 @@ const Form = withFormik({
     telefone: Yup.string()
       .min(15, "O telefone deve ter no mínimo 11 dígitos")
       .required("Telefone é obrigatório"),
-
-
-
+    cidade: Yup.string()
+      .required("Cidade é obrigatório"),
+    estado: Yup.string()
+      .required("Estado é obrigatório"),
   }),
 
 
