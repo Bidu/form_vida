@@ -154,6 +154,7 @@ export default function DialogDependents(props) {
             value={form.nascimento}
             name="nascimento"
             type="date"
+            inputProps={{max: "9999-12-12"}}
             fullWidth={true}
             maxWidth="lg"
             onChange={handleInputChange}
