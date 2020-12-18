@@ -682,10 +682,12 @@ class About extends Component {
                     className="bnt-next"
                     setDependents={this.setDependents}
                   />
-                  <div className="texto-vidas texto-vidas-aviso">
-                  <p>Li e concordo com os <a href="#">Termos de uso</a> e <a href="#">Politicade Privacidade Global da Qualicop</a></p>
                   </div>
-                </div>
+                  <div className="texto-vidas texto-vidas-aviso">
+                    <p>Li e concordo com os <bold/> <a href="#">Termos de uso</a> e <a href="#">Politicade Privacidade Global da Qualicop</a></p>
+                  </div>
+                  
+                
 
                 <div className="actions">
                   <Button
