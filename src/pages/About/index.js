@@ -467,6 +467,8 @@ class About extends Component {
                 options={bruf}
                 getOptionLabel={(option) => option.nome}
                 renderInput={(params) => <TextField {...params} style={{marginTop:0}} label="Estado" margin="normal" />}
+                helperText={touched.estado? errors.estado : ""}
+                error={touched.estado && Boolean(errors.estado)}
       
                 onChange={(event, newValue,) => {
                   
@@ -496,6 +498,8 @@ class About extends Component {
                       options={this.state.cidades}
                       getOptionLabel={(option) => option}
                       renderInput={(params) => <TextField {...params} style={{marginTop:0}} label="Cidade" margin="normal" />}
+                      helperText={touched.cidade? errors.cidade : ""}
+                      error={touched.cidade && Boolean(errors.cidade)}
                       onChange={(event, newValue) => {
                         if(newValue){
                           this.props.values.cidade = newValue
@@ -781,7 +785,8 @@ const Form = withFormik({
     telefone: Yup.string()
       .min(15, "O telefone deve ter no mínimo 11 dígitos")
       .required("Telefone é obrigatório"),
-
+      estado: Yup.string()
+      .required("Estado é obrigatório"),
       cidade: Yup.string()
       .required("Cidade é obrigatório"),
     profissao: Yup.string().required("Profissão é obrigatório"),
