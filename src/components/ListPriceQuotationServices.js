@@ -74,6 +74,24 @@ export default ({ cotacao }) => {
                 )              
               }
             </td>
+            <td>
+              {cotacao.abrangencia == "Nacional" ? 
+                (                
+                  <CheckCircleIcon color="primary" />
+                ) : (
+                  <CancelIcon color="secondary" />
+                )              
+              }
+            </td>
+            <td>
+              {cotacao.acomodacao == "Coletiva" ? 
+                (                
+                  <CheckCircleIcon color="primary" />
+                ) : (
+                  <CancelIcon color="secondary" />
+                )              
+              }
+            </td>
           </tr>
         </tbody>
       </table>
