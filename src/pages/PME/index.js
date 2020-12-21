@@ -105,7 +105,6 @@ class About extends Component {
 
     this.setState({estado: bruf})
     this.props.values.qtdeVidas = 2
-    console.log(this.state.estado, "estado")
     this.props.values.profissao = "Selecione";
 
     const storage = JSON.parse(localStorage.getItem("@bidu2/user"));
@@ -208,7 +207,6 @@ class About extends Component {
   getAddress = async (e) => {
     this.setState({ loading: true });
     let content = await apiQualicorp.endereco(this.state.cep.replace("-", ""));
-    console.log(content);
     if (content && content.data) {
       await this.getOccupations(content.data);
 
@@ -292,7 +290,6 @@ class About extends Component {
 
     let operadoras = await apiQualicorp.operadoras(uf, cidade, entitie);
     
-    console.log("Operador", operadoras)
 
     if (operadoras && operadoras.data && operadoras.data.length > 0) {
       this.setState({
@@ -354,7 +351,6 @@ class About extends Component {
 
   handleSubmitBkp = (e) => {
     e.preventDefault();
-    console.log("CHEGUEI AQUI")
     // const { usuario } = this.state;
     // this.props.adicionaUser(usuario);
     this.setState({ redirect: true });
@@ -365,7 +361,6 @@ class About extends Component {
     this.setState({dependents})
     this.props.values.dependents = dependents;
 
-    console.log(this.state.dependents)
   }
 
   setIncrementOrDecrement = (operator) =>{
@@ -760,7 +755,6 @@ const Form = withFormik({
     values.uf = values.estado
     localStorage.setItem("@bidu2/user", [JSON.stringify(values)]);
 
-    console.log(values, "VALUE")
     let cotationSelect = {
       user: values,
       plan: values

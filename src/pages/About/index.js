@@ -89,6 +89,8 @@ class About extends Component {
       },
       dependents: [],
       storage: JSON.parse(localStorage.getItem("@bidu2/user")),
+      estados: [],
+      cidades: []
     };
     this.handleCEP = this.handleCEP.bind(this);
   }
@@ -141,7 +143,6 @@ class About extends Component {
   getAddress = async (e) => {
     this.setState({ loading: true });
     let content = await apiQualicorp.endereco(this.state.cep.replace("-", ""));
-    console.log(content);
     if (content && content.data) {
       await this.getOccupations(content.data);
 
@@ -201,8 +202,6 @@ class About extends Component {
       entitiesFalse: true,
     });
     this.props.values.operadoras = []
-    console.log("uf", uf)
-    console.log("cidade", cidade)
     let entities = await apiQualicorp.entidades(profissao, uf, cidade);
   
     if (entities && entities.data && entities.data.length > 0) {
@@ -258,7 +257,6 @@ class About extends Component {
   handleChange = (event) => {
     if (event.target.name == "profissao") {
       this.props.values.profissao = event.target.value;
-      console.log("Estou aqui")
       this.getEntities(
         this.props.values.profissao,
         this.props.values.estado,
@@ -310,7 +308,6 @@ class About extends Component {
     this.setState({dependents})
     this.props.values.dependents = dependents;
 
-    console.log(this.state.dependents)
   }
 
 
@@ -372,6 +369,7 @@ class About extends Component {
                   }}
                   InputProps={{
                     inputComponent: textMaskCpf,
+                    autoComplete: "off",
                   }}
                 />
               </Grid>
@@ -390,6 +388,7 @@ class About extends Component {
                   error={touched.nome && Boolean(errors.nome)}
                   InputProps={{
                     inputComponent: onlyLetters,
+                    autoComplete: "off",
                   }}
                   InputLabelProps={{
                     shrink: true,
@@ -414,6 +413,9 @@ class About extends Component {
                   InputLabelProps={{
                     shrink: true,
                   }}
+                  InputProps={{
+                    autoComplete: "off",
+                  }}
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -435,6 +437,7 @@ class About extends Component {
                   }}
                   InputProps={{
                     inputComponent: textMaskPhone,
+                    autoComplete: "off",
                   }}
                 />
               </Grid>
@@ -466,7 +469,6 @@ class About extends Component {
                 getOptionLabel={(option) => option.nome}
                 renderInput={(params) => <TextField {...params} style={{marginTop:0}} label="Estado" margin="normal" />}
                 onChange={(event, newValue) => {
-                  
                   if(newValue && newValue.cidades){
                     this.props.values.estado = newValue.sigla
                     this.setState({cidades: newValue.cidades})
@@ -475,6 +477,9 @@ class About extends Component {
                     this.setState({cidades: [], occupations: []})
                     this.props.values.cidade = ""
                   }
+                }}
+                InputProps={{
+                  autoComplete: "off",
                 }}
               />
               </FormControl>
@@ -491,6 +496,7 @@ class About extends Component {
                       clearOnEscape
                       options={this.state.cidades}
                       getOptionLabel={(option) => option}
+                      disabled={this.state.cidades.length >  0 ? false : true}
                       renderInput={(params) => <TextField {...params} style={{marginTop:0}} label="Cidade" margin="normal" />}
                       onChange={(event, newValue) => {
                         if(newValue){
@@ -502,6 +508,9 @@ class About extends Component {
                         }
                       }
                     }
+                    InputProps={{
+                      autoComplete: "off",
+                    }}
                     />
                   </FormControl>
               </Grid>
@@ -555,6 +564,7 @@ class About extends Component {
                       clearOnEscape
                       options={this.state.occupations}
                       getOptionLabel={(option) => option.nome}
+                      disabled={this.state.occupations.length >  0 ? false : true}
                       renderInput={(params) => <TextField {...params} style={{marginTop:0}} label="Profissão" margin="normal" />}
                       onChange={(event, newValue) => {
                         if(newValue)
@@ -657,8 +667,12 @@ class About extends Component {
               {loading && <Loading />}
             </Grid>
             <br />
-            {/* { this.state.occupations && this.state.occupations.length > 0 && this.props.values.profissao && this.props.values.profissao.length > 0 && this.state.entitiesFalse != false && (
-              <> */}
+            { 
+            this.props.values.profissao && this.props.values.profissao.length > 0 && 
+            this.props.values.operadoras && this.props.values.operadoras.length > 0 &&
+            this.props.values.entities && this.props.values.entities.length > 0 &&
+             (
+              <>
                 <div class="vidas">
                   <Title text="Quantidade de" bold="vidas" />
                 </div>
@@ -685,8 +699,8 @@ class About extends Component {
                     Quero uma cotação
                   </Button>
                 </div>
-              {/* </>
-            )} */}
+              </>
+            )}
           </form>
           <div className="actions mt0">
             <Link className="btn-back" to="/">
@@ -783,7 +797,6 @@ const Form = withFormik({
     values,
     { props, setStatus, setValues, setSubmitting }
   ) => {
-    console.log(values);
     localStorage.setItem("@bidu2/user", [JSON.stringify(values)]);
     setStatus(true);
     setSubmitting(false);

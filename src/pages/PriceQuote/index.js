@@ -83,8 +83,19 @@ export class PriceQuote extends Component {
     });
 
     let user = JSON.parse(localStorage.getItem("@bidu2/user"))
-
-      if(user)
+      if(
+        user &&
+        user.cidade != "" &&
+        user.cpf != "" &&
+        user.date_birth != "" &&
+        user.email != "" &&
+        user.estado != "" &&
+        user.nome != "" &&
+        user.entities.length > 0 &&
+        user.operadoras.length > 0 &&
+        user.profissao != "" &&
+        user.telefone != "" 
+         )
       { 
        
        let cotationAll = []
@@ -207,18 +218,64 @@ export class PriceQuote extends Component {
 
     if(hospital != null)
     {
-        hospital.map((hosp) => {
-        hosp.idProdutoFatura.map((prod)=>{
-          cotationFilter.map((item) => {
-              if(prod == item.idProdutoFatura)
-                  {
-                      let index = planosOrder.findIndex(val => val.idProdutoFatura == item.idProdutoFatura);
-                      if( index < 0 )
-                        planosOrder.push(item)
-                  }
-            })
-          })
-      })
+      let idProdutoFaturaHospitais = []
+      
+
+      hospital.map((hosp)=>{
+          hosp.idProdutoFatura.map((prod)=>{
+              let index = idProdutoFaturaHospitais.findIndex( val => val.idProdutoFatura == prod)
+              if(index < 0)   
+                {
+                  idProdutoFaturaHospitais.push({
+                  idProdutoFatura: prod,
+                  count: 1
+                })
+              }
+              else{
+                idProdutoFaturaHospitais[index].count += 1
+              }
+          })})
+
+
+          //O MAP ACIMA INSERE EM idProdutoFaturaHospitais QUANTAS VEZES ELE REPETE
+          // NA LINHA ABAIXO EU EXTRAIO APENAS OS PRODUTOS QUE TENHAM EM TODOS OS HOSPITAIS, O PRODUTO QUE E ATENDIDO
+          // POR UM HOSPITAL E NAO POR OUTRO, É ELIMINADO
+          idProdutoFaturaHospitais = idProdutoFaturaHospitais.filter(v => v.count == hospital.length)
+
+          
+          //ABAIXO ELE FILTRA OS PRODUTOS DA COTACAO PARA RENDERIZAR
+          idProdutoFaturaHospitais.map( (prod) => {
+            cotationFilter.map((item) => {
+              if(prod.idProdutoFatura == item.idProdutoFatura)
+              {
+                let index = planosOrder.findIndex(val => val.idProdutoFatura == item.idProdutoFatura);
+                if( index < 0 )
+                planosOrder.push(item)
+              }
+            })})
+            
+            console.log(idProdutoFaturaHospitais.length, "FILTRO EM HOSP")
+            console.log(planosOrder.length, "FILTRO EM COTACAO")
+            console.log(this.state.cotationAll.length, "FILTRO EM COTACAO ALL")
+
+      //CODIGO PARA FILTRO DE HOSPITAIS COM ERRO, POIS SELECIONANDO MAIS DE UM HOSPITAL
+      //ELE NAO TRAS O PLANO QUE TENHA OS DOIS, APENAS O PLANO QUE TENHA AO MENOS UM DOS HOSPITAIS
+      //    hospital.map((hosp) => {
+      //   hosp.idProdutoFatura.map((prod)=>{
+      //     cotationFilter.map((item) => {
+      //         if(prod == item.idProdutoFatura)
+      //             {
+      //                 let index = planosOrder.findIndex(val => val.idProdutoFatura == item.idProdutoFatura);
+      //                 if( index < 0 )
+      //                   planosOrder.push(item)
+      //             }
+      //       })
+      //     })
+      // })
+
+
+
+
     }
     else{
       cotationFilter.map((item) => {
@@ -246,7 +303,6 @@ export class PriceQuote extends Component {
 
  
     cotationFilter = planosOrder
-    console.log(cotationFilter)
     this.setState({cotationFilter, loading: false})
 
   }
@@ -286,7 +342,7 @@ export class PriceQuote extends Component {
       
           <div className="price-quote">
             <Steps step1={true} step2={true} step3={true} step4={true} step5={true} />
-            {<Title bold="Cotação" />} 
+            { !this.state.loading && <Title bold="Cotação" />} 
           </div>
           <div className="filter">
             <div>
@@ -326,24 +382,29 @@ export class PriceQuote extends Component {
                ))} 
                
             </Grid>
-            { this.state.cotationFilter == false &&
+            { this.state.cotationFilter == false  && !this.state.loading &&
                   
                   <DialogAlert title="Ops!" message="Infelizmente ainda não encontramos um plano de saúde pra você😞!" />
                 }
           </div>
+
           <div className="more-options">
+            { !this.state.loading &&
             <p>
               Não encontrou a seguradora que procurava? <br />
               <a href="#" title="" className="primary" onClick={this.OpenChat}>
                 Clique aqui e veja mais opções
-        </a>
+             </a>
             </p>
+            }
           </div>
+          { !this.state.loading &&
           <div className="actions mt0">
             <Link className="btn-back" to="/sobre-voce">
               <KeyboardBackspaceIcon /> Voltar
-      </Link>
+          </Link>
           </div>
+        }
         </Wrapper>
       </>
     );
