@@ -77,8 +77,6 @@ export default function SwipeableTemporaryDrawer(props) {
     if (event && event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
       return;
     }
-    console.log(anchor)
-    console.log(open)
     setState({ ...state, [anchor]: open });
   };
   
