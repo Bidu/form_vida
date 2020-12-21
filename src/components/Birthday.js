@@ -20,6 +20,7 @@ export default function DatePickers() {
         id="birth"
         label="Nascimento"
         type="date"
+        inputProps={{max: "9999-12-12"}}
         defaultValue="1992-03-06"
         className={classes.textField}
         style={{marginLeft: "0px"}}

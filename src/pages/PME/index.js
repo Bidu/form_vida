@@ -588,14 +588,15 @@ class About extends Component {
                 </div>
                 <div className="texto-vidas">
                   <p>
-                   Adicionar dependentes abaixo
+                  Para quantas pessoas deseja contratar, entre depentes ou
+                  funcionários
                   </p>
                 </div>
                 <div >
                   {
                     <Grid container xs={12}>
-                      <>
-                        <Grid item xs={3} className="grid-faixa-etarias">
+                      <div className="qtd-vidas-container">
+                        <Grid item xs={3} className="btn-container">
                           <div className="less-botao">
                             <Button
                               onClick={ () =>  this.setIncrementOrDecrement("-")}>
@@ -603,34 +604,34 @@ class About extends Component {
                             </Button>
                           </div>
                         </Grid>
-                        <Grid item xs={3} className="grid-faixa-etarias">
-                        <TextField
-                          name="qtdevidas"
-                          fullWidth
-                          labelId="qtdevidas"
-                          id="qtdevidas"
-                          type="number"
-                          value={
-                            ( this.props.values.qtdeVidas ?  this.props.values.qtdeVidas : this.state.qtdeVidas)
-                          }
-                          InputProps={{ inputProps: { min: 2, max: 3000 } }}
-                          onChange={ (event) => { 
-                            this.props.values.qtdeVidas = event.target.value
-                            this.setState({qtdeVidas: event.target.value})
+                        <Grid item xs={3} >
+                          <TextField
+                            name="qtdevidas"
+                            fullWidth
+                            labelId="qtdevidas"
+                            id="qtdevidas"
+                            type="number"
+                            value={
+                              ( this.props.values.qtdeVidas ?  this.props.values.qtdeVidas : this.state.qtdeVidas)
+                            }
+                            InputProps={{ inputProps: { min: 2, max: 3000 } }}
+                            onChange={ (event) => { 
+                              this.props.values.qtdeVidas = event.target.value
+                              this.setState({qtdeVidas: event.target.value})
+                              
+                            }}
+                            onBlur={this.handleChange}
                             
-                          }}
-                          onBlur={this.handleChange}
-                          
-                        />
+                          />
                         </Grid>
-                        <Grid item xs={3}>
+                        <Grid item xs={3}className="btn-container">
                           <div class="less-botao-mais">
                           <Button
                             onClick={ () =>  this.setIncrementOrDecrement("+")}>
                               <p className="button_text_mais"> + </p></Button>
                           </div>
                         </Grid>
-                      </> 
+                      </div> 
                     </Grid>
                   
                   /* O JSX ABAIXO FUNCIONA
@@ -667,8 +668,9 @@ class About extends Component {
                     </div>
                     <div className="texto-vidas texto-vidas-aviso">
                       <p>
-                        Mínimo de 2 pessoas para planos PME*
+                      Mínimo de 2 pessoas para planos PME*
                       </p>
+                      <p>Li e concordo com os <a href="#">Termos de uso</a> e <a href="#">Politicade Privacidade Global da Qualicop</a></p>
                     </div>
                   
                     <div className="actions">
@@ -714,6 +716,8 @@ const Form = withFormik({
     nome,
     email,
     telefone,
+    cidade,
+    estado,
 
   }) => {
     return {
@@ -721,6 +725,8 @@ const Form = withFormik({
       nome: nome || "",
       email: email || "",
       telefone: telefone || "",
+      cidade: cidade || "",
+      estado: estado || "",
     };
   },
   validationSchema: Yup.object().shape({
@@ -745,9 +751,10 @@ const Form = withFormik({
     telefone: Yup.string()
       .min(15, "O telefone deve ter no mínimo 11 dígitos")
       .required("Telefone é obrigatório"),
-
-
-
+    cidade: Yup.string()
+      .required("Cidade é obrigatório"),
+    estado: Yup.string()
+      .required("Estado é obrigatório"),
   }),
 
 

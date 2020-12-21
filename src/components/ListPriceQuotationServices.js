@@ -55,7 +55,43 @@ export default ({ cotacao }) => {
           </tr>
 
           <tr>
-            {""}
+          <td>
+              {cotacao.segmentacao == "Ambulatorial + Hospitalar com Obstetrícia"? 
+                (                
+                  <CheckCircleIcon color="primary" />
+                ) : (
+                  <CancelIcon color="secondary" />
+                )              
+              }
+            </td>
+            <td>
+              {cotacao.segmentacao == "Ambulatorial + Hospitalar com Obstetrícia" ||
+              cotacao.segmentacao == "Hospitalar com Obstetrícia" ? 
+                (                
+                  <CheckCircleIcon color="primary" />
+                ) : (
+                  <CancelIcon color="secondary" />
+                )              
+              }
+            </td>
+            <td>
+              {cotacao.abrangencia == "Nacional" ? 
+                (                
+                  <CheckCircleIcon color="primary" />
+                ) : (
+                  <CancelIcon color="secondary" />
+                )              
+              }
+            </td>
+            <td>
+              {cotacao.acomodacao == "Coletiva" ? 
+                (                
+                  <CheckCircleIcon color="primary" />
+                ) : (
+                  <CancelIcon color="secondary" />
+                )              
+              }
+            </td>
           </tr>
         </tbody>
       </table>
