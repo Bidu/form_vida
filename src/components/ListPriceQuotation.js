@@ -492,12 +492,7 @@ export class ListPriceQuotation extends Component {
                       </figure>
                     </div>
 
-                    <div class="warning-quote">
-                      {/* {
-                        `${cotacao.nomeAmigavel}`
-                        
-                      } */}
-                    </div>
+                    
                     <Grid item spacing={1} className="table-header" container>
                       <Grid item xs={6}>
                         <>
@@ -509,13 +504,17 @@ export class ListPriceQuotation extends Component {
                           </span>
                         </>
                       </Grid>
-                      <Grid item xs={12} className="nome-amigavel-cotation">
+                      <Grid item xs={6} style={{padding: 0}}>
                         <>
-                          <span >
-                          {
-                            `${cotacao.nomeAmigavel}`
-                            
-                          }
+                          <span className="top-label nome-plano">
+                            {cotacao.nomeAmigavel}
+                          </span>
+                        </>
+                      </Grid>
+                      <Grid item xs={12}>
+                        <>
+                          <span className="top-label codigo-ans">
+                            (ANS {`${String(cotacao.codigoans).substring(0, 3)}.${String(cotacao.codigoans).substring(3, 6)}/${String(cotacao.codigoans).substring(6, 8)}-${String(cotacao.codigoans).substring(8, 11)}`}) 
                           </span>
                         </>
                       </Grid>
