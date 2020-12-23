@@ -7,13 +7,27 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import InputLabel from '@material-ui/core/InputLabel';
 import {makeStyles} from '@material-ui/core/styles';
-import DataGridTable from './DataGridTable'
+import DeleteIcon from '@material-ui/icons/Delete';
+import IconButton from '@material-ui/core/IconButton';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemAvatar from '@material-ui/core/ListItemAvatar';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
+import ListItemText from '@material-ui/core/ListItemText';
+import Avatar from '@material-ui/core/Avatar';
+import FolderIcon from '@material-ui/icons/Folder';
+import PersonOutlinedIcon from '@material-ui/icons/PersonOutlined';
+import Typography from '@material-ui/core/Typography';
+import './dependents.css'
+
 const useStyles = makeStyles({
     btn:{
         background: '#00FEFD',
         color: '#001447',
         marginTop: "15px",
-        borderRadius: "60px",       
+        borderRadius: "60px",
+
     },
     btnClose:{
       background: '#CCC',
@@ -37,7 +51,9 @@ export default function DialogDependents(props) {
     nome: "",
     nascimento: ""
   })
-  
+  const [dense, setDense] = React.useState(false);
+  const [secondary, setSecondary] = React.useState(false);
+
   const [dependents, setDependents] = React.useState([])
   
 
@@ -45,7 +61,7 @@ export default function DialogDependents(props) {
 
   useEffect(() => {
     
-      props.setDependents(dependents)
+       props.setDependents(dependents)
     
   
   }, [dependents])
@@ -83,7 +99,6 @@ export default function DialogDependents(props) {
 }
 
   const addDependents = async () => {
-    console.log(form)
     if(
       form.nome != "" &&
       form.nome != undefined &&
@@ -91,13 +106,20 @@ export default function DialogDependents(props) {
       form.nascimento != undefined
        ){
           let dtNascimento = new Date(form.nascimento)
+          let now = new Date()
+          now = `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`
           let id = dependents.length + 1
-          await setDependents([...dependents, {
-            id: id,
-            nome: form.nome,
-            nascimento: form.nascimento,
-            idade: calcIdade(dtNascimento.getFullYear(), dtNascimento.getMonth() + 1, dtNascimento.getDate())
-          }])
+          if(form.nascimento > "1920-01-01" && form.nascimento <= now ){
+              await setDependents([...dependents, {
+                id: id,
+                nome: form.nome,
+                nascimento: form.nascimento,
+                idade: calcIdade(dtNascimento.getFullYear(), dtNascimento.getMonth() + 1, dtNascimento.getDate())
+              }])
+            }
+            else{
+              alert("Data inválida")
+            }
 
 
           setForm({
@@ -109,6 +131,7 @@ export default function DialogDependents(props) {
         }
         else{
           alert("Nome e data de nascimento são obrigatorias")
+          document.querySelector("#nome").focus()
         }
   }
   
@@ -119,7 +142,7 @@ export default function DialogDependents(props) {
 }
 
   const purgeDependents = (obj) =>{
-    console.log("delete", obj)
+    setDependents(dependents.filter((e) => e != obj)) 
   }
 
   
@@ -129,7 +152,7 @@ export default function DialogDependents(props) {
       <Button variant="outlined" color="primary" className={classes.btn} onClick={handleClickOpen}>
         {props.titleName}
       </Button>
-      <Dialog open={open} onClose={handleClose} aria-labelledby="max-width-dialog-title" fullWidth={true} maxWidth={'md'} style={{borderRadius: "20px"}}>
+      <Dialog open={open} onClose={handleClose} aria-labelledby="max-width-dialog-title" fullWidth={true} maxWidth={'sm'} style={{borderRadius: "20px"}}>
         <DialogTitle id="max-width-dialog-title">Preencha as informações abaixo</DialogTitle>
         <DialogContent>
         <InputLabel>Nome *</InputLabel>
@@ -154,28 +177,51 @@ export default function DialogDependents(props) {
             value={form.nascimento}
             name="nascimento"
             type="date"
-            inputProps={{max: "9999-12-12"}}
+            inputProps={{max: "9999-12-12", min: "1920-01-01"}}
             fullWidth={true}
             maxWidth="lg"
             onChange={handleInputChange}
             onBlur={handleInputChange}
           />
-          <br/>
-          {/* 1
-          { form }  */}
-          <br/>
+          </DialogContent>
+          <DialogContent className="button-add-dependents">
+          <Button onClick={addDependents} variant="outlined" color="primary" className={classes.btn}>
+           {dependents.length == 0 ? "Adicionar" : "Adicionar outro"}
+          </Button>
+          </DialogContent>
+          <DialogContent>
           { dependents.length > 0 &&
-            <DataGridTable rows={dependents} purgeFather={(e) => purgeDependents(e)}/>
-          }
+          <>
+            <Typography variant="h6" className={classes.title}>
+              Lista de dependentes ({dependents.length}): 
+            </Typography>
+            {dependents.map((e, key) => (
+              <List>
+               
+                <ListItem>
+                  <ListItemAvatar>
+                    <Avatar>
+                      <PersonOutlinedIcon  />
+                    </Avatar>
+                  </ListItemAvatar>
+                  <ListItemText
+                    primary={`${e.nome}, ${e.idade} ${e.idade > 1 ? "anos de idade": "ano de idade"}`}
+                  />
+                  <ListItemSecondaryAction>
+                    <IconButton key={key}  aria-label="delete" onClick={() => purgeDependents(e)}>
+                      <DeleteIcon />
+                    </IconButton>
+                  </ListItemSecondaryAction>
+                </ListItem>
+            </List>
+            ))}
+            </>
+          }</DialogContent>
          
          
-        </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}  color="primary" className={classes.btnClose}>
-            Fechar
-          </Button>
-          <Button onClick={addDependents} variant="outlined" color="primary" className={classes.btn}>
-           Adicionar +
+            {dependents.length > 0 ? "Concluir" : "Fechar"}
           </Button>
         </DialogActions>
       </Dialog>

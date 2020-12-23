@@ -36,6 +36,7 @@ import DialogAlert from "../../components/DialogAlert";
 import { bdQuali } from "../../services/bdQuali"
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import {bruf} from "../../services/bruf";
+import TermosUso from '../../components/TermosUso'
 import {
   textMaskPhone,
   textMaskNumber,
@@ -65,6 +66,7 @@ class About extends Component {
       cep: "",
       occupations: [],
       entities: [],
+      optin: null,
       usuario: {
         cpf: "",
         nome: "",
@@ -100,10 +102,12 @@ class About extends Component {
     
     
     const storage = JSON.parse(localStorage.getItem("@bidu2/user"));
-    delete storage.cep 
+    
+    delete storage.entities 
     delete storage.entidade 
-    delete storage.operadora 
-    delete storage.profissao
+    delete storage.operadoras
+    delete storage.estado
+    delete storage.cidade
     delete storage.dependents
     this.props.values.operadoras = []
     localStorage.setItem("@bidu2/user", JSON.stringify(storage))
@@ -208,9 +212,9 @@ class About extends Component {
     if (entities && entities.data && entities.data.length > 0) {
       this.props.values.entities = entities.data
       
-      entities.data.map((v) => {
-        this.getOperator(v.id, uf, cidade)
-      })
+      // entities.data.map((v) => {
+      //   this.getOperator(v.id, uf, cidade)
+      // })
       this.setState({
         entities: entities.data,
         loading: false,
@@ -268,7 +272,7 @@ class About extends Component {
       this.props.values.entidade = event.target.value;
       this.getOperator(
         this.props.values.entidade,
-        this.props.values.uf,
+        this.props.values.estado,
         this.props.values.cidade
       );
     }
@@ -449,7 +453,7 @@ class About extends Component {
                   name="date_birth"
                   id="date_birth"
                   type="date"
-                  inputProps={{max: "9999-12-12"}}
+                  inputProps={{max: "2030-12-12", min: "1920-12-12"}}
                   value={this.props.values.date_birth ? this.props.values.date_birth : ""}
                   onChange={handleChange("date_birth")}
                   onBlur={this.handleChange}
@@ -469,9 +473,9 @@ class About extends Component {
                 clearOnEscape
                 options={bruf}
                 getOptionLabel={(option) => option.nome}
-                renderInput={(params) => <TextField {...params} style={{marginTop:0}} label="Estado" margin="normal" />}
-                helperText={touched.estado? errors.estado : ""}
-                error={touched.estado && Boolean(errors.estado)}
+                renderInput={(params) => <TextField {...params} style={{marginTop:0}} label="Estado" margin="normal"  helperText={touched.estado ? errors.estado : ""}
+                error={touched.estado && Boolean(errors.estado)}/>}
+         
       
                 onChange={(event, newValue,) => {
                   
@@ -504,9 +508,9 @@ class About extends Component {
                       options={this.state.cidades}
                       getOptionLabel={(option) => option}
                       disabled={this.state.cidades.length >  0 ? false : true}
-                      renderInput={(params) => <TextField {...params} style={{marginTop:0}} label="Cidade" margin="normal" />}
-                      helperText={touched.cidade? errors.cidade : ""}
-                      error={touched.cidade && Boolean(errors.cidade)}
+                      renderInput={(params) => <TextField {...params} style={{marginTop:0}} label="Cidade" margin="normal"  helperText={touched.cidade ? errors.cidade : ""}
+                      error={touched.cidade && Boolean(errors.cidade)}/>}
+
                       onChange={(event, newValue) => {
                         if(newValue){
                           this.props.values.cidade = newValue
@@ -599,7 +603,7 @@ class About extends Component {
                       message="Erro ao obter a lista de profissões. Tente novamente mais tarde!"
                     />
                   )} */}
-                  {/* {this.state.entitiesFalse == true && (
+                  
                     <Grid item xs={12} sm={6}>
                       <InputLabel shrink id="gender">
                         Entidades
@@ -609,6 +613,7 @@ class About extends Component {
                         fullWidth
                         displayEmpty
                         labelId="entidade"
+                        disabled={this.state.entities.length >  0 ? false : true}
                         id="entidade"
                         value={
                           this.props.values.entidade
@@ -630,13 +635,13 @@ class About extends Component {
                           ))}
                       </Select>
                     </Grid>
-                  )} */}
+
                   {/* {this.state.entitiesFalse == false && (
                     <DialogAlert
                       title="Ops!"
                       message="Erro ao obter a lista de entidades. Tente novamente mais tarde!"
                     />
-                  )} */}
+                  )}
                   {/* {this.state.operadorasFalse == true && (
                     <Grid item xs={12} sm={6}>
                       <InputLabel shrink id="gender">
@@ -691,30 +696,32 @@ class About extends Component {
 
                   </p>
                 </div>
-                <div className="actions">
-                  <DialogDependents
-                    titleName="Adicionar Pessoas"
-                    className="bnt-next"
-                    setDependents={this.setDependents}
-                  />
+                  <div className="actions">
+                    <DialogDependents
+                      titleName="Adicionar Pessoas"
+                      className="bnt-next"
+                      setDependents={this.setDependents}
+                    />
                   </div>
-                  <div className="texto-vidas texto-vidas-aviso">
-                    <p>Li e concordo com os <bold/> <a href="#">Termos de uso</a> e <a href="#">Politicade Privacidade Global da Qualicop</a></p>
-                  </div>
+                
                   
                 
 
-                <div className="actions">
+                <div className="actions about-actions">
+                  
+                  <TermosUso optinChange={(props) => this.setState({optin: props})}/>
+                  {this.state.optin == false &&
                   <Button
                     type="submit"
-                    className="btn-next"
-                    disabled={isSubmitting}
+                    className="btn-next about-btn-next"
+                    disabled={this.state.optin == false ? false : true }
                   >
                     Quero uma cotação
                   </Button>
+                  }
                 </div>
               </>
-            )}
+              )}
           </form>
           <div className="actions mt0">
             <Link className="btn-back" to="/">
@@ -807,7 +814,17 @@ const Form = withFormik({
       cidade: Yup.string()
       .required("Cidade é obrigatório"),
     profissao: Yup.string().required("Profissão é obrigatório"),
-    date_birth: Yup.string().required("Data de nascimento é obrigatório"),
+    date_birth: Yup.string()
+        .required("Data de nascimento é obrigatório")
+        .test("date_birth", "Informe uma data menor que a data atual!", (value)=>{
+            let now = new Date()
+            now = `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`
+            if(value >= now)
+              return false
+            else  
+              return true
+        })
+       
   }),
 
   handleSubmit: async (

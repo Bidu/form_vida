@@ -541,7 +541,7 @@ export class ListPriceQuotation extends Component {
                       >
                         <div
                           className="btn-comprar"
-                          onClick={ () =>  {if(window.confirm('Confirma?')) this.setPlanSelect(cotacao)} }
+                          onClick={ () =>  this.setPlanSelect(cotacao) }
                           
                         >
                           ME CONTATE

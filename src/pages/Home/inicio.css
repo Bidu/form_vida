@@ -43,7 +43,7 @@
     height: 50px;
     border-color: #00f1e7 !important;
     border-radius: 24px !important;
-    font-weight: 600 !important;
+    font-weight: 500 !important;
 }
 .buttonFamily{
     border-color: #00f1e7 !important;
@@ -61,7 +61,7 @@
 
 @media only screen and (max-width: 500px){
     .buttonHome {
-        width: 80%;
+        width: 80% !important;
         
     }
 }

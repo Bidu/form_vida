@@ -90,3 +90,7 @@
   align-items: center;
   justify-content: center;
 }
+
+.pme-actions{
+  margin: 0 0 0 0 !important;
+}

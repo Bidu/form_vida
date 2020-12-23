@@ -21,7 +21,7 @@ export class Steps extends Component {
                 color="primary"
                 aria-label="edit"
               >
-                <Link to="/">
+                <Link >
                   <PersonIcon />
                 </Link>
               </Fab>
@@ -34,7 +34,7 @@ export class Steps extends Component {
                 aria-label="edit"
               >
                 {localStorage.getItem("@bidu/condutor") != null || JSON.parse(localStorage.getItem("@bidu2/condutor")).length != 0 ?
-                <Link to={`/cotacao/${localStorage.getItem("@bidu2/idcotacao")}`}>
+                <Link >
                   <DescriptionIcon color="darkGray" />
                 </Link> :
                  <Link>
