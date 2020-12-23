@@ -656,10 +656,10 @@ export class ListPriceQuotation extends Component {
                   )} */}
                    <p>
                     <span className="bold">Informações complementares: </span><br/>
-                    <span>Planos de saúde coletivo são comercializados de acordo com a regra da ANS;</span><br/>
-                    <span>A comercialização respeita a área de abrangência dos produtos de acorodo com a regra das operadoras;</span><br/>
-                    <span>A disponibilidade pode variar de acordo com a região;</span><br/>
-                    <span>As informações são de responsabilidade da operadora;</span>
+                    <span>Planos de saúde por adesão são comercializados de acordo com a regra da ANS.</span><br/>
+                    <span>A comercialização respeita a área de abrangência dos produtos de acordo com a regra das operadoras.</span><br/>
+                    <span>A disponibilidade pode variar de acordo com a região.</span><br/>
+                    <span>As informações são de responsabilidade da operadora.</span>
                   </p>
                 </div>
               </div>

@@ -453,7 +453,6 @@ class About extends Component {
                   name="date_birth"
                   id="date_birth"
                   type="date"
-                  inputProps={{max: "2030-12-12", min: "1920-12-12"}}
                   value={this.props.values.date_birth ? this.props.values.date_birth : ""}
                   onChange={handleChange("date_birth")}
                   onBlur={this.handleChange}
@@ -819,7 +818,7 @@ const Form = withFormik({
         .test("date_birth", "Informe uma data menor que a data atual!", (value)=>{
             let now = new Date()
             now = `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`
-            if(value >= now)
+            if(value >= now && value < "1920-01-01")
               return false
             else  
               return true
