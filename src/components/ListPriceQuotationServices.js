@@ -54,7 +54,7 @@ export default ({ cotacao }) => {
             </td>
           </tr>
 
-          <tr>
+          {/* <tr>
           <td>
               {cotacao.segmentacao == "Ambulatorial + Hospitalar com Obstetrícia"? 
                 (                
@@ -92,7 +92,7 @@ export default ({ cotacao }) => {
                 )              
               }
             </td>
-          </tr>
+          </tr> */}
         </tbody>
       </table>
     </div>

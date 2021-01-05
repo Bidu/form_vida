@@ -511,13 +511,7 @@ export class ListPriceQuotation extends Component {
                           </span>
                         </>
                       </Grid>
-                      <Grid item xs={12}>
-                        <>
-                          <span className="top-label codigo-ans">
-                            (ANS {`${String(cotacao.codigoans).substring(0, 3)}.${String(cotacao.codigoans).substring(3, 6)}/${String(cotacao.codigoans).substring(6, 8)}-${String(cotacao.codigoans).substring(8, 11)}`}) 
-                          </span>
-                        </>
-                      </Grid>
+                     
                     
                       
                     </Grid>
@@ -526,8 +520,8 @@ export class ListPriceQuotation extends Component {
                     <Grid item spacing={0} className="table-footer" container>
                       <Grid item xs={3}>
                         <Grid className="txt-left bottom-idProtocolo">
-                          <p >
-                            {cotacao.idProdutoFatura}
+                          <p className="ans-code">
+                           ANS {`${String(cotacao.codigoans).substring(0, 3)}.${String(cotacao.codigoans).substring(3, 6)}/${String(cotacao.codigoans).substring(6, 8)}-${String(cotacao.codigoans).substring(8, 11)}`}
                           </p>
                         </Grid>
                       </Grid>
@@ -535,7 +529,7 @@ export class ListPriceQuotation extends Component {
                       <Grid
                         item
                         xs={6}
-                        className="txt-center relative itens-center px05"
+                        className="txt-center relative itens-center px05 area-button-contate"
                         // style={{top: '-20px'}}
                       >
                         <div
