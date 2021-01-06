@@ -131,7 +131,7 @@ export class PriceQuote extends Component {
            let plans =  await apiQualicorp.listarPlanos(getPlan)
     
            
-            if(plans.data.length > 0)
+            if(plans && plans.data && plans.data.length > 0)
             {
               plans.data.map((item) => {
                 cotationAll.push(item)
@@ -389,14 +389,14 @@ export class PriceQuote extends Component {
           </div>
 
           <div className="more-options">
-            { !this.state.loading &&
+            {/* { !this.state.loading &&
             <p>
               Não encontrou a seguradora que procurava? <br />
               <a href="#" title="" className="primary" onClick={this.OpenChat}>
                 Clique aqui e veja mais opções
              </a>
             </p>
-            }
+            } */}
           </div>
           { !this.state.loading &&
           <div className="actions mt0">

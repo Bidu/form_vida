@@ -492,12 +492,7 @@ export class ListPriceQuotation extends Component {
                       </figure>
                     </div>
 
-                    <div class="warning-quote">
-                      {/* {
-                        `${cotacao.nomeAmigavel}`
-                        
-                      } */}
-                    </div>
+                    
                     <Grid item spacing={1} className="table-header" container>
                       <Grid item xs={6}>
                         <>
@@ -509,16 +504,14 @@ export class ListPriceQuotation extends Component {
                           </span>
                         </>
                       </Grid>
-                      <Grid item xs={12} className="nome-amigavel-cotation">
+                      <Grid item xs={6} style={{padding: 0}}>
                         <>
-                          <span >
-                          {
-                            `${cotacao.nomeAmigavel}`
-                            
-                          }
+                          <span className="top-label nome-plano">
+                            {cotacao.nomeAmigavel}
                           </span>
                         </>
                       </Grid>
+                     
                     
                       
                     </Grid>
@@ -527,8 +520,8 @@ export class ListPriceQuotation extends Component {
                     <Grid item spacing={0} className="table-footer" container>
                       <Grid item xs={3}>
                         <Grid className="txt-left bottom-idProtocolo">
-                          <p >
-                            {cotacao.idProdutoFatura}
+                          <p className="ans-code">
+                           ANS {`${String(cotacao.codigoans).substring(0, 3)}.${String(cotacao.codigoans).substring(3, 6)}/${String(cotacao.codigoans).substring(6, 8)}-${String(cotacao.codigoans).substring(8, 11)}`}
                           </p>
                         </Grid>
                       </Grid>
@@ -536,12 +529,12 @@ export class ListPriceQuotation extends Component {
                       <Grid
                         item
                         xs={6}
-                        className="txt-center relative itens-center px05"
+                        className="txt-center relative itens-center px05 area-button-contate"
                         // style={{top: '-20px'}}
                       >
                         <div
                           className="btn-comprar"
-                          onClick={ () =>  {if(window.confirm('Confirma?')) this.setPlanSelect(cotacao)} }
+                          onClick={ () =>  this.setPlanSelect(cotacao) }
                           
                         >
                           ME CONTATE
@@ -656,10 +649,10 @@ export class ListPriceQuotation extends Component {
                   )} */}
                    <p>
                     <span className="bold">Informações complementares: </span><br/>
-                    <span>Planos de saúde coletivo são comercializados de acordo com a regra da ANS;</span><br/>
-                    <span>A comercialização respeita a área de abrangência dos produtos de acorodo com a regra das operadoras;</span><br/>
-                    <span>A disponibilidade pode variar de acordo com a região;</span><br/>
-                    <span>As informações são de responsabilidade da operadora;</span>
+                    <span>Planos de saúde por adesão são comercializados de acordo com a regra da ANS.</span><br/>
+                    <span>A comercialização respeita a área de abrangência dos produtos de acordo com a regra das operadoras.</span><br/>
+                    <span>A disponibilidade pode variar de acordo com a região.</span><br/>
+                    <span>As informações são de responsabilidade da operadora.</span>
                   </p>
                 </div>
               </div>

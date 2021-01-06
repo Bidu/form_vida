@@ -106,7 +106,7 @@ h1 {
 @media (min-width: 960px) {
   .MuiContainer-maxWidthMd {
     max-width: 960px; }
-
+ 
   .wrapper-container .content {
     padding: 2.25rem 2.25rem; } }
 .product-card .product .content .logo-container .logo-hdmi {
@@ -721,13 +721,69 @@ p.validate-radio-button.bold {
     justify-content: center;
     margin-top: 0.125rem; }
 
-@media (min-width: 600px) {
+
+
+@media (min-width: 768px) {
   .step-completed {
     padding: 0 24px; } }
+
+@media (max-width: 890px ){
+  .list-price-quotation .logo-container {
+    left: 25% !important;
+    height: 116px !important;
+    width: 116px !important;
+ 
+   }  
+   .MuiGrid-root .txt-left p {
+     font-size: 12px !important;
+   }
+   .list-price-quotation .table-header .valor-total {
+    font-size: 1.3rem !important;
+    font-weight: bold;
+   }
+
+}
+@media (max-width: 850px ){
+  .list-price-quotation .logo-container {
+    left: 25% !important;
+    height: 100px !important;
+    width: 100px !important;
+ 
+   }  
+   .MuiGrid-root .txt-left p {
+    font-size: 11px !important;
+  }
+  
+
+}
+@media (max-width: 760px ){
+  .list-price-quotation .logo-container {
+    left: 25% !important;
+    height: 90px !important;
+    width: 90px !important;
+ 
+   }  
+   .ans-code{
+    font-size: 3px !important;
+  }
+  .list-price-quotation .table-header .valor-total {
+    font-size: 1.1rem !important;
+    font-weight: bold;
+   }
+   .bottom-links {
+     font-size: 8px !important;
+   }
+  
+
+}
+
 @media (min-width: 960px) {
   .step-completed .content {
     max-width: 912px;
-    padding: 20px 2.25rem; } }
+    padding: 20px 2.25rem; } 
+
+  }
+
 /*Rating*/
 .MuiRating-label {
   margin-right: 14px; }
@@ -745,12 +801,18 @@ p.validate-radio-button.bold {
   margin: 60px 0 10px 0;
   position: relative;
   font-size: 1rem; }
+  .ans-code{
+    font-size: 13.41px !important;
+  }
+  .area-button-contate{
+    bottom: 35% !important;
+  }
   .list-price-quotation .logo-container {
     top: -50px;
-    left: 30%;
+    left: 25%;
     margin-left: 35px;
-    height: 100px;
-    width: 100px;
+    height: 126px;
+    width: 126px;
     border-radius: 50%;
     background-color: #fff;
     box-shadow: 3px 4px 23px 4px rgba(0, 58, 55, 0.1);
@@ -785,15 +847,23 @@ p.validate-radio-button.bold {
       display: block;
       font-size: 0.625rem; }
     .list-price-quotation .table-header .valor-total {
-      font-size: 1rem;
+      font-size: 1.5rem;
       font-weight: bold;
      }
-     .nome-amigavel-cotation {
-      font-size: 0.7rem;
-      font-weight: bold;
-    
+     .nome-plano {
+      font-size: 0.8rem !important;
+      word-break: break-word;
       text-align: center;
-      margin-left: auto ;
+      
+      margin-left: 30% ;
+     }
+     .codigo-ans {
+      font-size: 1.0rem !important;
+      word-break: break-word;
+      text-align: center;
+      font-weight: 700;
+      margin-left: 60% ;
+      padding-right: 0 !important;
      }
     .list-price-quotation .table-header .valor-parcela {
       font-size: 1rem;
@@ -839,7 +909,7 @@ p.validate-radio-button.bold {
     height: 37px; }
     .list-price-quotation .table-footer .bottom-links {
       display: flex;
-      font-size: 0.45rem;
+      font-size: 10.41px;
       text-transform: uppercase;
       font-weight: bold;
       text-decoration: underline;

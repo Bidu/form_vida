@@ -22,6 +22,7 @@ import * as Yup from "yup";
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { apiQualicorp } from "../../services/bdBo";
 import {bruf} from "../../services/bruf";
+import TermosUso from '../../components/TermosUso'
 
 import "./PME.css"
 import {
@@ -54,6 +55,7 @@ class About extends Component {
       cep: "",
       occupations: [],
       entities: [],
+      option: null,
       usuario: {
         cpf: "",
         nome: "",
@@ -501,7 +503,8 @@ class About extends Component {
                 clearOnEscape
                 options={bruf}
                 getOptionLabel={(option) => option.nome}
-                renderInput={(params) => <TextField {...params} style={{marginTop:0}} label="Estado" margin="normal" />}
+                renderInput={(params) => <TextField {...params} style={{marginTop:0}} label="Estado" margin="normal"  helperText={touched.estado ? errors.estado : ""}
+                error={touched.estado && Boolean(errors.estado)} />}
                 onChange={(event, newValue) => {
                   
                   if(newValue && newValue.cidades){
@@ -509,6 +512,7 @@ class About extends Component {
                     this.setState({cidades: newValue.cidades})
                   }
                 }}
+               
               />
               </FormControl>
               </Grid>
@@ -524,7 +528,8 @@ class About extends Component {
                       clearOnEscape
                       options={this.state.cidades}
                       getOptionLabel={(option) => option}
-                      renderInput={(params) => <TextField {...params} style={{marginTop:0}} label="Cidade" margin="normal" />}
+                      renderInput={(params) => <TextField {...params} style={{marginTop:0}} label="Cidade" margin="normal"  helperText={touched.cidade ? errors.cidade : ""}
+                      error={touched.cidade && Boolean(errors.cidade)} />}
                       onChange={(event, newValue) => {
                           this.props.values.cidade = newValue
                       }}
@@ -665,18 +670,21 @@ class About extends Component {
                       <p>
                       Mínimo de 2 pessoas para planos PME*
                       </p>
-                      <p>Li e concordo com os <a href="#">Termos de uso</a> e <a href="#">Politicade Privacidade Global da Qualicop</a></p>
                     </div>
                   
-                    <div className="actions">
+                    <div className="actions pme-actions">
+                  
+                      <TermosUso optinChange={(props) => this.setState({optin: props})}/>
+                      {this.state.optin == false &&
                       <Button
                         type="submit"
-                        className="btn-next"
-                        disabled={isSubmitting}
+                        className="btn-next about-btn-next"
+                        disabled={this.state.optin == false ? false : true }
                       >
                         Quero uma cotação
                       </Button>
-                    </div>  
+                      }
+                    </div>
                   </>
                 {/* )}  */}
           </form>
@@ -713,6 +721,7 @@ const Form = withFormik({
     telefone,
     cidade,
     estado,
+    nomecontato
 
   }) => {
     return {
@@ -722,6 +731,7 @@ const Form = withFormik({
       telefone: telefone || "",
       cidade: cidade || "",
       estado: estado || "",
+      nomecontato: nomecontato || ""
     };
   },
   validationSchema: Yup.object().shape({
@@ -750,6 +760,8 @@ const Form = withFormik({
       .required("Cidade é obrigatório"),
     estado: Yup.string()
       .required("Estado é obrigatório"),
+    nomecontato: Yup.string()
+      .required("Nome para contato é obrigatório"),
   }),
 
 

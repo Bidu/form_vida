@@ -129,7 +129,10 @@ const apiQualicorp= {
     await axios
       .post(url, plano)
       .then(function (res) {
-        planos = res.data;
+        if(res.status == 200)
+            planos = res.data;
+        else
+            planos = []
       })
       .catch(function (error) {
         console.log(error);
@@ -225,11 +228,12 @@ const apiQualicorp= {
     await axios
       .post(url, params)
       .then(function (res) {
-        
-        statusPlanosIdPorFatura.push(res.data);
+        console.log(res)
+        if(res.status == 200)
+            statusPlanosIdPorFatura.push(res.data);
       })
       .catch(function (error) {
-        console.log(error);
+        return statusPlanosIdPorFatura;
       });
     return statusPlanosIdPorFatura;
   },
