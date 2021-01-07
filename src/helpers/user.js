@@ -770,6 +770,28 @@ export const textMaskDispositivoSeg = (props) => {
   );
 };
 
+// export const textMaskNumber= (props) => {
+//   const { inputRef, ...other } = props;
+//   return (
+//     <MaskedInput
+//       {...other}
+//       ref={inputRef}
+//       mask={[
+//         /[a-z\A-Z\d]/,
+//         /[a-z\A-Z\d]/,
+//         /[a-z\A-Z\d]/,
+//         /[a-z\A-Z\d]/,
+//         /[a-z\A-Z\d]/,
+//         /[a-z\A-Z\d]/,
+//         /[a-z\A-Z\d]/,      
+//       ]}
+//       placeholderChar={"\u2000"}
+//       guide={false}
+//       keepCharPositions={false}
+//     />
+//   );
+// };
+
 export function CheckCPF(cpf) {
   if (!cpf) {
     const cpft = "00000000000";

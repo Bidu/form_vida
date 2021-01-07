@@ -347,7 +347,7 @@ class About extends Component {
     return (
       <>
         <Wrapper>
-          <Steps step1={true} step2={true} />
+          <Steps step1={true} />
           <Title text="Cotação" bold="Seguro de Vida" />
           <p></p>
 
@@ -712,6 +712,19 @@ class About extends Component {
                   }}
                 />
               </Grid>
+              <Grid item xs={12} sm={6}>
+                <InputLabel>Data de Vigência</InputLabel>
+                <TextField
+                  name="date_validity"
+                  id="date_validity"
+                  type="date"
+                  value={this.props.values.date_validity ? this.props.values.date_validity : ""}
+                  onChange={handleChange("date_validity")}
+                  onBlur={this.handleChange}
+                  helperText={touched.date_validity ? errors.date_validity : ""}
+                  error={touched.date_validity && Boolean(errors.date_validity)}
+                />
+              </Grid>
 
                   {/* {this.state.entitiesFalse == false && (
                     <DialogAlert
@@ -754,10 +767,42 @@ class About extends Component {
                   )} */}
                 {/* </> */}
               {/* )} */}
+              <Grid item xs={12} sm={12}>
+                <Title text="Pratica Esportes" bold="Radicais?" />
+                      <div className="buttons pb05">
+                        <button
+                          className={`btn-outline ${
+                            this.state.possui_placa == 1 ? "active" : ""
+                          }`}
+                          value={1}
+                          type="button"
+                          onClick={(e) =>
+                            this.handleChangePlate(e.target.value)
+                          }
+                        >
+                          Sim
+                        </button>{" "}
+                        <button
+                          className={`btn-outline ${
+                            this.state.possui_placa == 0 ? "active" : ""
+                          }`}
+                          value={0}
+                          type="button"
+                          onClick={(e) =>
+                            this.handleChangePlate(e.target.value)
+                          }
+                        >
+                          Não
+                        </button>
+                      </div>
+                    </Grid>
+ 
 
               {loading && <Loading />}
             </Grid>
             <br />
+                  
+  
             { 
             this.props.values.profissao && this.props.values.profissao.length > 0 && 
             this.props.values.operadoras && this.props.values.operadoras.length > 0 &&
