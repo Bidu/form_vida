@@ -348,7 +348,7 @@ class About extends Component {
       <>
         <Wrapper>
           <Steps step1={true} step2={true} />
-          <Title text="Plano de" bold="Saúde" />
+          <Title text="Cotação" bold="Seguro de Vida" />
           <p></p>
 
           <form onSubmit={handleSubmit}>
@@ -460,7 +460,7 @@ class About extends Component {
                   error={touched.date_birth && Boolean(errors.date_birth)}
                 />
               </Grid>
-              <Grid item xs={12} sm={3}>
+              <Grid item xs={12} sm={6}>
               <FormControl component="fieldset"> 
                <InputLabel shrink id="estado">
                 Estado
@@ -494,7 +494,7 @@ class About extends Component {
               />
               </FormControl>
               </Grid>
-              <Grid item xs={12} sm={3}>
+              {/* <Grid item xs={12} sm={3}>
                   <FormControl component="fieldset" className="price-quote"> 
                   <InputLabel shrink id="cidade">
                     Cidade
@@ -525,7 +525,7 @@ class About extends Component {
                     }}
                     />
                   </FormControl>
-              </Grid>
+              </Grid> */}
               {/* <Grid item xs={12} sm={6}>
                 <TextField
                   value={this.props.values.cep ? this.props.values.cep : ""}
@@ -595,6 +595,7 @@ class About extends Component {
                     />
                     </FormControl>
                     </Grid>
+                  
                   {/* )} */}
                   {/* {this.state.occupationsFalse == false && (
                     <DialogAlert
@@ -603,7 +604,7 @@ class About extends Component {
                     />
                   )} */}
                   
-                    <Grid item xs={12} sm={6}>
+                    {/* <Grid item xs={12} sm={6}>
                       <InputLabel shrink id="gender">
                         Entidades
                       </InputLabel>
@@ -633,7 +634,84 @@ class About extends Component {
                             <MenuItem value={e.id}>{e.nome}</MenuItem>
                           ))}
                       </Select>
-                    </Grid>
+                    </Grid> */}
+                
+                <Grid item xs={12} sm={6}>
+                <InputLabel shrink id="gender">
+                  Gênero
+                </InputLabel>
+                <Select
+                  name="genero"
+                  fullWidth
+                  displayEmpty
+                  labelId="gender"
+                  id="gender"
+                  value={
+                    this.props.values.genero ? this.props.values.genero : ""
+                  }
+                  onChange={handleChange("genero")}
+                  onBlur={this.handleChange}
+                  helperText={touched.genero ? errors.genero : ""}
+                  error={touched.genero && Boolean(errors.genero)}
+                >
+                  <MenuItem value="" disabled>
+                    Selecione
+                  </MenuItem>
+                  <MenuItem value="MASCULINO">Masculino</MenuItem>
+                  <MenuItem value="FEMININO">Feminino</MenuItem>
+                </Select>
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <InputLabel shrink id="income">
+                  Renda Mensal
+                </InputLabel>
+                <Select
+                  name="renda"
+                  fullWidth
+                  displayEmpty
+                  labelId="income"
+                  id="income"
+                  value={
+                    this.props.values.renda ? this.props.values.renda : ""
+                  }
+                  onChange={handleChange("renda")}
+                  onBlur={this.handleChange}
+                  helperText={touched.renda ? errors.renda : ""}
+                  error={touched.renda && Boolean(errors.renda)}
+                >
+                  <MenuItem value="" disabled>
+                    Selecione a faixa salarial
+                  </MenuItem>
+                  <MenuItem value="renda1">R$0,00</MenuItem>
+                  <MenuItem value="renda2">de R$0,01 até R$1.500,00</MenuItem>
+                  <MenuItem value="renda3">de R$1.500,01 até R$ 3.000,00</MenuItem>
+                  <MenuItem value="renda4">de R$3.000,01 até R$ 6.000,00</MenuItem>
+                  <MenuItem value="renda5">de R$6.000,01 até R$ 10.000,00</MenuItem> 
+                  <MenuItem value="renda6">acima de R$ 10.000,00</MenuItem>
+                </Select>
+              </Grid>
+              <Grid item xs={4} sm={6}>
+                <TextField
+                  value={
+                    this.props.values.capital ? this.props.values.capital : ""
+                  }
+                  id="capital"
+                  name="capital"
+                  label="Capital Segurado"
+                  placeholder="Ex: 150.000,00"
+                  fullWidth
+                  onChange={handleChange}
+                  onBlur={this.handleChange}
+                  helperText={touched.capital ? errors.capital : ""}
+                  error={touched.capital && Boolean(errors.capital)}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  InputProps={{
+                    // inputComponent: textMaskNumber,
+                  }}
+                />
+              </Grid>
 
                   {/* {this.state.entitiesFalse == false && (
                     <DialogAlert
