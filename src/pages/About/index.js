@@ -772,7 +772,7 @@ class About extends Component {
                       <div className="buttons pb05">
                         <button
                           className={`btn-outline ${
-                            this.state.possui_placa == 1 ? "active" : ""
+                            this.state.pratica_esportes == 1 ? "active" : ""
                           }`}
                           value={1}
                           type="button"
@@ -784,7 +784,7 @@ class About extends Component {
                         </button>{" "}
                         <button
                           className={`btn-outline ${
-                            this.state.possui_placa == 0 ? "active" : ""
+                            this.state.pratica_esportes == 0 ? "active" : ""
                           }`}
                           value={0}
                           type="button"
