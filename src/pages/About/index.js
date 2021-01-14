@@ -873,6 +873,21 @@ class About extends Component {
                       </MenuItem>
                     ))} */}
                   </Select>
+                  <Grid item xs={12} sm={6}>
+                    <p>Com que frequência?</p>
+                        <FormControlLabel
+                          value="three"
+                          control={<Radio color="primary" />}
+                          label="até 3 vezes no ano"
+                        />
+                <Grid item xs={12} sm={12}>
+                        <FormControlLabel
+                          value="more"
+                          control={<Radio color="primary" />}
+                          label="acima de 3 vezes"
+                        />
+                      </Grid>
+                      </Grid>
                 </Grid>)
               }
             </Grid>
