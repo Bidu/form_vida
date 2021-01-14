@@ -888,7 +888,8 @@ class About extends Component {
                     error={touched.frequency && Boolean(errors.moradia)}
                   >
                     {/* <Grid item xs={12} sm container> */}
-                      <Grid item xs={6} sm={6}>
+                      <Grid item xs={12} sm={6}>
+                        <br />
                         <p>Com que frequência?</p>
                         <FormControlLabel
                           value="frequencia"
@@ -896,7 +897,7 @@ class About extends Component {
                           label="até 3 vezes no ano"
                         />
                       </Grid>
-                      <Grid item xs={6} sm={6}>
+                      <Grid item xs={12} sm={6}>
                         <FormControlLabel
                           value="frequencia2"
                           control={<Radio color="primary" />}
@@ -907,7 +908,7 @@ class About extends Component {
                   </RadioGroup>
                 </FormControl>
               </Grid>
-                </Grid>)
+            </Grid>)
               }
             </Grid>
             <br />
