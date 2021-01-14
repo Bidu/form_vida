@@ -15,7 +15,7 @@ const Routes = () => (
     <Switch>
       {/*<Route exact path="/" component={Home} />*/}
       <Route exact path="/" >
-         <Redirect to="/inicio" />
+         <Redirect to="/sobre-voce" />
       </Route>
       <Route exact path="/sobre-voce" component={About} forceRefresh={true} />
       <Route exact path="/cotacao" component={PriceQuote} />   

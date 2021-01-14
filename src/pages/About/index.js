@@ -35,7 +35,7 @@ import Birthday from "../../components/Birthday";
 import DialogAlert from "../../components/DialogAlert";
 import { bdQuali } from "../../services/bdQuali"
 import Autocomplete from '@material-ui/lab/Autocomplete';
-import {bruf} from "../../services/bruf";
+import { bruf } from "../../services/bruf";
 import TermosUso from '../../components/TermosUso'
 import {
   textMaskPhone,
@@ -59,6 +59,7 @@ class About extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      pratica_esportes: 0,
       loading: false,
       error: false,
       // request: true,
@@ -99,12 +100,17 @@ class About extends Component {
   }
 
   async componentDidMount() {
-    
-    
+
+    this.props.setValues({
+      ...this.props.values,
+      pratica_esportes: 0,
+    });
+
+
     const storage = JSON.parse(localStorage.getItem("@bidu2/user"));
-    
-    delete storage.entities 
-    delete storage.entidade 
+
+    delete storage.entities
+    delete storage.entidade
     delete storage.operadoras
     delete storage.estado
     delete storage.cidade
@@ -134,7 +140,7 @@ class About extends Component {
       this.setState({
         usuario: {
           ...this.state.usuario,
-          cidade: "",          
+          cidade: "",
           estado: "",
 
           uf: "",
@@ -144,6 +150,29 @@ class About extends Component {
       this.props.values.rua = "";
       delete this.props.values.profissao;
     }
+  };
+
+
+  handleChangeInsurance = (value) => (event) => {
+    event.preventDefault();
+    this.setState({ pratica_esportes: value });
+    this.props.setValues({
+      ...this.props.values,
+      insurance: true,
+      pratica_esportes: 1,
+    });
+  };
+
+  handleChangeInsuranceFalse = (value) => (event) => {
+    event.preventDefault();
+    this.setState({ pratica_esportes: value });
+    this.props.setValues({
+      ...this.props.values,
+      pratica_esportes: 2,
+      insurance: false,
+
+    });
+
   };
   getAddress = async (e) => {
     this.setState({ loading: true });
@@ -191,7 +220,7 @@ class About extends Component {
       cidade,
     );
     if (occupations && occupations.data && occupations.data.length > 0) {
-      this.setState({ occupations: occupations.data, loading:false });
+      this.setState({ occupations: occupations.data, loading: false });
     } else {
       this.setState({
         occupations: [],
@@ -208,10 +237,10 @@ class About extends Component {
     });
     this.props.values.operadoras = []
     let entities = await apiQualicorp.entidades(profissao, uf, cidade);
-  
+
     if (entities && entities.data && entities.data.length > 0) {
       this.props.values.entities = entities.data
-      
+
       // entities.data.map((v) => {
       //   this.getOperator(v.id, uf, cidade)
       // })
@@ -238,12 +267,15 @@ class About extends Component {
 
     if (operadoras && operadoras.data && operadoras.data.length > 0) {
 
-      let resOperadoras = [operadoras.data.map((v) => {return { id: v.id,
-                                                            name: v.nome,
-                                                            entite: entitie}
-                                                          })]                                                     
+      let resOperadoras = [operadoras.data.map((v) => {
+        return {
+          id: v.id,
+          name: v.nome,
+          entite: entitie
+        }
+      })]
       this.props.values.operadoras = [...this.props.values.operadoras, resOperadoras[0]]
-      
+
       this.setState({
         operadoras: operadoras.data,
         loading: false,
@@ -310,7 +342,7 @@ class About extends Component {
 
 
   setDependents = (dependents) => {
-    this.setState({dependents})
+    this.setState({ dependents })
     this.props.values.dependents = dependents;
 
   }
@@ -338,6 +370,7 @@ class About extends Component {
       isSubmitting,
       handleChange,
       handleSubmit,
+      pratica_esportes
     } = this.props;
 
     if (this.props.status) {
@@ -401,7 +434,7 @@ class About extends Component {
                 />
               </Grid>
 
-              {}
+              { }
 
               <Grid item xs={12} sm={6}>
                 <TextField
@@ -446,8 +479,8 @@ class About extends Component {
                   }}
                 />
               </Grid>
-              
-               <Grid item xs={12} sm={6}>
+
+              <Grid item xs={12} sm={6}>
                 <InputLabel>Data de nascimento</InputLabel>
                 <TextField
                   name="date_birth"
@@ -461,38 +494,38 @@ class About extends Component {
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
-              <FormControl component="fieldset"> 
-               <InputLabel shrink id="estado">
-                Estado
+                <FormControl component="fieldset">
+                  <InputLabel shrink id="estado">
+                    Estado
               </InputLabel>
-              <Autocomplete
-               
-                id="estado"
-                name="estado"
-                clearOnEscape
-                options={bruf}
-                getOptionLabel={(option) => option.nome}
-                renderInput={(params) => <TextField {...params} style={{marginTop:0}} label="Estado" margin="normal"  helperText={touched.estado ? errors.estado : ""}
-                error={touched.estado && Boolean(errors.estado)}/>}
-         
-      
-                onChange={(event, newValue,) => {
-                  
-                  if(newValue && newValue.cidades){
-                    this.props.values.estado = newValue.sigla
-                    this.setState({cidades: newValue.cidades})
-                    console.log(newValue.cidades, "ESTADO")
-                  }
-                  else{
-                    this.setState({cidades: [], occupations: []})
-                    this.props.values.cidade = ""
-                  }
-                }}
-                InputProps={{
-                  autoComplete: "off",
-                }}
-              />
-              </FormControl>
+                  <Autocomplete
+
+                    id="estado"
+                    name="estado"
+                    clearOnEscape
+                    options={bruf}
+                    getOptionLabel={(option) => option.nome}
+                    renderInput={(params) => <TextField {...params} style={{ marginTop: 0 }} label="Estado" margin="normal" helperText={touched.estado ? errors.estado : ""}
+                      error={touched.estado && Boolean(errors.estado)} />}
+
+
+                    onChange={(event, newValue,) => {
+
+                      if (newValue && newValue.cidades) {
+                        this.props.values.estado = newValue.sigla
+                        this.setState({ cidades: newValue.cidades })
+                        console.log(newValue.cidades, "ESTADO")
+                      }
+                      else {
+                        this.setState({ cidades: [], occupations: [] })
+                        this.props.values.cidade = ""
+                      }
+                    }}
+                    InputProps={{
+                      autoComplete: "off",
+                    }}
+                  />
+                </FormControl>
               </Grid>
               {/* <Grid item xs={12} sm={3}>
                   <FormControl component="fieldset" className="price-quote"> 
@@ -553,7 +586,7 @@ class About extends Component {
              
               {this.state.usuario.rua && (
                 <> */}
-                  {/* <Grid item xs={12} sm={6}>
+              {/* <Grid item xs={12} sm={6}>
                     <TextField
                       value={`${this.state.usuario.rua}, ${this.state.usuario.bairro} - ${this.state.usuario.cidade}/${this.state.usuario.uf} `}
                       id=""
@@ -563,48 +596,47 @@ class About extends Component {
                       disabled
                     />
                   </Grid> */}
-                  {/* {this.state.occupations.length > 0 && ( */}
-                    <Grid item xs={12} sm={6}>
-                      <FormControl component="fieldset" className="price-quote"> 
-                      <InputLabel shrink id="profissao">
-                        Profissão
+              {/* {this.state.occupations.length > 0 && ( */}
+              <Grid item xs={12} sm={6}>
+                <FormControl component="fieldset" className="price-quote">
+                  <InputLabel shrink id="profissao">
+                    Profissão
                       </InputLabel>
-                      <Autocomplete
-                      
-                      id="profissao"
-                      name="profissao"
-                      clearOnEscape
-                      options={this.state.occupations}
-                      getOptionLabel={(option) => option.nome}
-                      disabled={this.state.occupations.length >  0 ? false : true}
-                      renderInput={(params) => <TextField {...params} style={{marginTop:0}} label="Profissão" margin="normal" />}
-                      onChange={(event, newValue) => {
-                        if(newValue)
-                        {
-                          
-                          this.props.values.profissao = newValue.id
-                          this.getEntities(
-                            this.props.values.profissao,
-                            this.props.values.estado,
-                            this.props.values.cidade
-                          );
-                          
-                        }
-                      }}
+                  <Autocomplete
 
-                    />
-                    </FormControl>
-                    </Grid>
-                  
-                  {/* )} */}
-                  {/* {this.state.occupationsFalse == false && (
+                    id="profissao"
+                    name="profissao"
+                    clearOnEscape
+                    options={this.state.occupations}
+                    getOptionLabel={(option) => option.nome}
+                    disabled={this.state.occupations.length > 0 ? false : true}
+                    renderInput={(params) => <TextField {...params} style={{ marginTop: 0 }} label="Profissão" margin="normal" />}
+                    onChange={(event, newValue) => {
+                      if (newValue) {
+
+                        this.props.values.profissao = newValue.id
+                        this.getEntities(
+                          this.props.values.profissao,
+                          this.props.values.estado,
+                          this.props.values.cidade
+                        );
+
+                      }
+                    }}
+
+                  />
+                </FormControl>
+              </Grid>
+
+              {/* )} */}
+              {/* {this.state.occupationsFalse == false && (
                     <DialogAlert
                       title="Ops!"
                       message="Erro ao obter a lista de profissões. Tente novamente mais tarde!"
                     />
                   )} */}
-                  
-                    {/* <Grid item xs={12} sm={6}>
+
+              {/* <Grid item xs={12} sm={6}>
                       <InputLabel shrink id="gender">
                         Entidades
                       </InputLabel>
@@ -635,8 +667,8 @@ class About extends Component {
                           ))}
                       </Select>
                     </Grid> */}
-                
-                <Grid item xs={12} sm={6}>
+
+              <Grid item xs={12} sm={6}>
                 <InputLabel shrink id="gender">
                   Gênero
                 </InputLabel>
@@ -686,7 +718,7 @@ class About extends Component {
                   <MenuItem value="renda2">de R$0,01 até R$1.500,00</MenuItem>
                   <MenuItem value="renda3">de R$1.500,01 até R$ 3.000,00</MenuItem>
                   <MenuItem value="renda4">de R$3.000,01 até R$ 6.000,00</MenuItem>
-                  <MenuItem value="renda5">de R$6.000,01 até R$ 10.000,00</MenuItem> 
+                  <MenuItem value="renda5">de R$6.000,01 até R$ 10.000,00</MenuItem>
                   <MenuItem value="renda6">acima de R$ 10.000,00</MenuItem>
                 </Select>
               </Grid>
@@ -726,7 +758,7 @@ class About extends Component {
                 />
               </Grid>
 
-                  {/* {this.state.entitiesFalse == false && (
+              {/* {this.state.entitiesFalse == false && (
                     <DialogAlert
                       title="Ops!"
                       message="Erro ao obter a lista de entidades. Tente novamente mais tarde!"
@@ -765,59 +797,88 @@ class About extends Component {
                       </Select>
                     </Grid>
                   )} */}
-                {/* </> */}
+              {/* </> */}
               {/* )} */}
               <Grid item xs={12} sm={12}>
                 <Title text="Pratica Esportes" bold="Radicais?" />
-                      <div className="buttons pb05">
-                        <button
-                          className={`btn-outline ${
-                            this.state.possui_placa == 1 ? "active" : ""
-                          }`}
-                          value={1}
-                          type="button"
-                          onClick={(e) =>
-                            this.handleChangePlate(e.target.value)
-                          }
-                        >
-                          Sim
+                <div className="buttons pb05">
+                  <button
+                    className={`btn-outline ${this.props.values.pratica_esportes === 1 ? "active" : ""
+                      }`}
+
+                    type="button"
+                    onClick={
+                      this.handleChangeInsurance()
+                    }
+                  >
+                    Sim
                         </button>{" "}
-                        <button
-                          className={`btn-outline ${
-                            this.state.possui_placa == 0 ? "active" : ""
-                          }`}
-                          value={0}
-                          type="button"
-                          onClick={(e) =>
-                            this.handleChangePlate(e.target.value)
-                          }
-                        >
-                          Não
+                  <button
+                    className={`btn-outline ${this.props.values.pratica_esportes === 0 ? "active" : ""
+                      }`}
+                    type="button"
+                    onClick={
+                      this.handleChangeInsuranceFalse()
+                    }
+                  >
+                    Não
                         </button>
-                      </div>
-                    </Grid>
- 
+                </div>
+              </Grid>
 
               {loading && <Loading />}
+
+              {this.props.values.pratica_esportes === 1 && (
+                <Grid item xs={12} sm={6}>
+                  <InputLabel shrink id="esportes">
+                    Esportes
+                </InputLabel>
+                  <Select
+                    value={{}}
+                    labelId="esportes"
+                    id="esportes"
+                    name="esportes"
+                    fullWidth
+                    displayEmpty
+                    // onChange={handleChange("esportes")}
+                    // onBlur={this.informacaoPagamento}
+                    helperText={touched.esportes ? errors.esportes : ""}
+                    error={touched.esportes && Boolean(errors.esportes)}
+                  >
+                    <MenuItem value="000">Selecione</MenuItem>
+                    {/* {this.state.dados_cotacao.bancos[0] instanceof Array
+                    ? this.state.dados_cotacao.bancos[0].map((banco, index) => (
+                      <MenuItem key={index} value={banco}>
+                        {Dictionary.banks[banco]}
+                      </MenuItem>
+                    ))
+                    : this.state.dados_cotacao.bancos.map((banco, index) => (
+                      <MenuItem key={index} value={banco}>
+                        {Dictionary.banks[banco]}
+                      </MenuItem>
+                    ))} */}
+                  </Select>
+                </Grid>)
+              }
             </Grid>
             <br />
-                  
-  
-            { 
-            this.props.values.profissao && this.props.values.profissao.length > 0 && 
-            this.props.values.operadoras && this.props.values.operadoras.length > 0 &&
-            this.props.values.entities && this.props.values.entities.length > 0 &&
-             (
-              <>
-                <div class="vidas">
-                  <Title text="Quantidade de" bold="vidas" />
-                </div>
-                <div class="texto-vidas">
-                  <p>
-                  Adicionar dependentes abaixo
+
+
+            {
+              this.props.values.profissao && this.props.values.profissao.length > 0 &&
+              this.props.values.operadoras && this.props.values.operadoras.length > 0 &&
+              this.props.values.entities && this.props.values.entities.length > 0 &&
+              (
+                <>
+                  <div class="vidas">
+                    <Title text="Quantidade de" bold="vidas" />
+                  </div>
+                  <div class="texto-vidas">
+                    <p>
+                      Adicionar dependentes abaixo
 
                   </p>
-                </div>
+                  </div>
                   <div className="actions">
                     <DialogDependents
                       titleName="Adicionar Pessoas"
@@ -825,24 +886,24 @@ class About extends Component {
                       setDependents={this.setDependents}
                     />
                   </div>
-                
-                  
-                
 
-                <div className="actions about-actions">
-                  
-                  <TermosUso optinChange={(props) => this.setState({optin: props})}/>
-                  {this.state.optin == false &&
-                  <Button
-                    type="submit"
-                    className="btn-next about-btn-next"
-                    disabled={this.state.optin == false ? false : true }
-                  >
-                    Quero uma cotação
+
+
+
+                  <div className="actions about-actions">
+
+                    <TermosUso optinChange={(props) => this.setState({ optin: props })} />
+                    {this.state.optin == false &&
+                      <Button
+                        type="submit"
+                        className="btn-next about-btn-next"
+                        disabled={this.state.optin == false ? false : true}
+                      >
+                        Quero uma cotação
                   </Button>
-                  }
-                </div>
-              </>
+                    }
+                  </div>
+                </>
               )}
           </form>
           <div className="actions mt0">
@@ -896,7 +957,7 @@ const Form = withFormik({
     date_birth,
     cidade,
     estado
-  
+
   }) => {
     return {
       cpf: cpf || "",
@@ -931,22 +992,22 @@ const Form = withFormik({
     telefone: Yup.string()
       .min(15, "O telefone deve ter no mínimo 11 dígitos")
       .required("Telefone é obrigatório"),
-      estado: Yup.string()
+    estado: Yup.string()
       .required("Estado é obrigatório"),
-      cidade: Yup.string()
+    cidade: Yup.string()
       .required("Cidade é obrigatório"),
     profissao: Yup.string().required("Profissão é obrigatório"),
     date_birth: Yup.string()
-        .required("Data de nascimento é obrigatório")
-        .test("date_birth", "Informe uma data entre ano de 1920 e a data atual!", (value)=>{
-            let now = new Date()
-            now = `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`
-            if(value > now || value < "1920-01-01")
-              return false
-            else  
-              return true
-        })
-       
+      .required("Data de nascimento é obrigatório")
+      .test("date_birth", "Informe uma data entre ano de 1920 e a data atual!", (value) => {
+        let now = new Date()
+        now = `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`
+        if (value > now || value < "1920-01-01")
+          return false
+        else
+          return true
+      })
+
   }),
 
   handleSubmit: async (
