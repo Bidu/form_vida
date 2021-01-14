@@ -914,13 +914,13 @@ class About extends Component {
             <br />
 
 
-            {
+            {/* {
               this.props.values.profissao && this.props.values.profissao.length > 0 &&
               this.props.values.operadoras && this.props.values.operadoras.length > 0 &&
               this.props.values.entities && this.props.values.entities.length > 0 &&
-              (
+              ( */}
                 <>
-                  <div class="vidas">
+                  {/* <div class="vidas">
                     <Title text="Quantidade de" bold="vidas" />
                   </div>
                   <div class="texto-vidas">
@@ -935,26 +935,21 @@ class About extends Component {
                       className="bnt-next"
                       setDependents={this.setDependents}
                     />
-                  </div>
+                  </div> */}
 
 
 
 
-                  <div className="actions about-actions">
-
-                    <TermosUso optinChange={(props) => this.setState({ optin: props })} />
-                    {this.state.optin == false &&
+                    <div className="actions about-actions">
                       <Button
                         type="submit"
                         className="btn-next about-btn-next"
-                        disabled={this.state.optin == false ? false : true}
                       >
                         Quero uma cotação
-                  </Button>
-                    }
-                  </div>
+                  </Button>                 
+                  </div> 
                 </>
-              )}
+    
           </form>
           <div className="actions mt0">
             <Link className="btn-back" to="/">
