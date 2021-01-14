@@ -90,7 +90,8 @@ class About extends Component {
         profissao: "",
         escolaridade: "",
         moradia: false,
-        pratica_esportes: 1
+        pratica_esportes: 1,
+        frequency: false
       },
       dependents: [],
       storage: JSON.parse(localStorage.getItem("@bidu2/user")),
