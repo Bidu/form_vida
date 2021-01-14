@@ -89,6 +89,7 @@ class About extends Component {
         profissao: "",
         escolaridade: "",
         moradia: false,
+        pratica_esportes: 1
       },
       dependents: [],
       storage: JSON.parse(localStorage.getItem("@bidu2/user")),
@@ -287,6 +288,19 @@ class About extends Component {
       },
     });
   };
+
+  handleChangeSports = (value) => {
+    // event.preventDefault();
+    this.setState({ pratica_esportes: value });
+    console.log(value);
+    this.props.setValues({
+      ...this.props.values,
+      pratica_esportes: value,
+    });
+
+    console.log(this.props);
+  };
+
   handleChangeSwitch = (name) => (event) => {
     this.setState({
       ...this.state,
@@ -307,6 +321,7 @@ class About extends Component {
     this.props.adicionaUser(usuario);
     this.setState({ redirect: true });
   };
+
 
 
   setDependents = (dependents) => {
@@ -789,7 +804,7 @@ class About extends Component {
                           value={0}
                           type="button"
                           onClick={(e) =>
-                            this.handleChangePlate(e.target.value)
+                            this.handleChangeSports(e.target.value)
                           }
                         >
                           Não
