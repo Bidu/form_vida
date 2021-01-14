@@ -873,21 +873,40 @@ class About extends Component {
                       </MenuItem>
                     ))} */}
                   </Select>
-                  <Grid item xs={12} sm={6}>
-                    <p>Com que frequência?</p>
+                  <Grid item xs={12}>
+                <FormControl component="fieldset">
+                  <RadioGroup
+                    value={
+                      this.props.values.frequency ? this.props.values.frequency : ""
+                    }
+                    aria-label="frequency"
+                    name="frequency"
+                    className={checkValidateRadios("frequency", this.props)}
+                    onChange={handleChange("frequency")}
+                    onBlur={this.handleChange}
+                    helperText={touched.frequency ? errors.frequency : ""}
+                    error={touched.frequency && Boolean(errors.moradia)}
+                  >
+                    {/* <Grid item xs={12} sm container> */}
+                      <Grid item xs={6} sm={6}>
+                        <p>Com que frequência?</p>
                         <FormControlLabel
-                          value="three"
+                          value="frequencia"
                           control={<Radio color="primary" />}
                           label="até 3 vezes no ano"
                         />
-                <Grid item xs={12} sm={12}>
+                      </Grid>
+                      <Grid item xs={6} sm={6}>
                         <FormControlLabel
-                          value="more"
+                          value="frequencia2"
                           control={<Radio color="primary" />}
                           label="acima de 3 vezes"
                         />
                       </Grid>
-                      </Grid>
+                    {/* </Grid> */}
+                  </RadioGroup>
+                </FormControl>
+              </Grid>
                 </Grid>)
               }
             </Grid>
