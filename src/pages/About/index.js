@@ -964,7 +964,7 @@ class About extends Component {
                     Sim
                         </button>{" "}
                   <button
-                    className={`btn-outline ${this.props.values.include_sports === 0 ? "active" : ""
+                    className={`btn-outline ${this.props.values.include_sports === 2 ? "active" : ""
                       }`}
                     type="button"
                     onClick={
