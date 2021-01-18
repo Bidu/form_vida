@@ -94,8 +94,8 @@ class About extends Component {
         escolaridade: "",
         moradia: false,
         pratica_esportes: 1,
-        frequency: false,
-        include_sports: 1
+        include_sports: 1,
+        frequency: false
       },
       dependents: [],
       storage: JSON.parse(localStorage.getItem("@bidu2/user")),
@@ -111,11 +111,11 @@ class About extends Component {
       ...this.props.values,
       pratica_esportes: 0,
     });
-
     this.props.setValues({
       ...this.props.values,
       include_sports: 0,
     });
+
 
 
     const storage = JSON.parse(localStorage.getItem("@bidu2/user"));
@@ -185,7 +185,6 @@ class About extends Component {
     });
 
   };
-
   handleChangeInclude = (value) => (event) => {
     event.preventDefault();
     this.setState({ include_sports: value });
@@ -360,6 +359,17 @@ class About extends Component {
     this.props.setValues({
       ...this.props.values,
       pratica_esportes: value,
+    });
+
+    console.log(this.props);
+  };
+  handleChangeIncludeSports = (value) => {
+    // event.preventDefault();
+    this.setState({ include_sports: value });
+    console.log(value);
+    this.props.setValues({
+      ...this.props.values,
+      include_sports: value,
     });
 
     console.log(this.props);
@@ -870,7 +880,7 @@ class About extends Component {
                     }
                   >
                     Não
-                        </button>
+                  </button>
                 </div>
               </Grid>
 
@@ -936,42 +946,113 @@ class About extends Component {
                             control={<Radio color="primary" />}
                             label="acima de 3 vezes no ano"
                           />
+                        </Grid>
+                    <br />
+                    <br />
+              <Grid item xs={12} sm={12}>
+                <Title text="Deseja incluir outro" bold="Esporte?" />
+                  <div className="buttons pb05">
+                    <button
+                    className={`btn-outline ${this.props.values.include_sports === 1 ? "active" : ""
+                      }`}
+
+                    type="button"
+                    onClick={
+                      this.handleChangeInclude()
+                    }
+                  >
+                    Sim
+                        </button>{" "}
+                  <button
+                    className={`btn-outline ${this.props.values.include_sports === 0 ? "active" : ""
+                      }`}
+                    type="button"
+                    onClick={
+                      this.handleChangeIncludeFalse()
+                    }
+                  >
+                    Não
+                  </button>
+                </div>
+              </Grid>
+
+              {loading && <Loading />}
+
+              {this.props.values.include_sports === 1 && (
+                <Grid item xs={12} sm={12}>
+                  <InputLabel shrink id="esportes">
+                    Esportes
+                  </InputLabel>
+                  <Select
+                    value={{}}
+                    labelId="esportes"
+                    id="esportes"
+                    name="esportes"
+                    fullWidth
+                    displayEmpty
+                    // onChange={handleChange("esportes")}
+                    // onBlur={this.informacaoPagamento}
+                    helperText={touched.esportes ? errors.esportes : ""}
+                    error={touched.esportes && Boolean(errors.esportes)}
+                  >
+                    <MenuItem value="000">Selecione</MenuItem>
+                    {/* {this.state.dados_cotacao.bancos[0] instanceof Array
+                    ? this.state.dados_cotacao.bancos[0].map((banco, index) => (
+                      <MenuItem key={index} value={banco}>
+                        {Dictionary.banks[banco]}
+                      </MenuItem>
+                    ))
+                    : this.state.dados_cotacao.bancos.map((banco, index) => (
+                      <MenuItem key={index} value={banco}>
+                        {Dictionary.banks[banco]}
+                      </MenuItem>
+                    ))} */}
+                  </Select>
+                <Grid item xs={12} sm={12}>
+                  <FormControl component="fieldset">
+                    <RadioGroup
+                      value={
+                        this.props.values.frequency ? this.props.values.frequency : ""
+                      }
+                      aria-label="frequency"
+                      name="frequency"
+                      className={checkValidateRadios("frequency", this.props)}
+                      onChange={handleChange("frequency")}
+                      onBlur={this.handleChange}
+                      helperText={touched.frequency ? errors.frequency : ""}
+                      error={touched.frequency && Boolean(errors.moradia)}
+                    >
+                      {/* <Grid item xs={12} sm container> */}
+                        <Grid item xs={12} sm={12}>
+                          <br />
+                          <p>Com que frequência?</p>
+                          <FormControlLabel
+                            value="frequencia"
+                            control={<Radio color="primary" />}
+                            label="até 3 vezes no ano"
+                          />
+                        </Grid>
+                        <Grid item xs={12} sm={12}>
+                          <FormControlLabel
+                            value="frequencia2"
+                            control={<Radio color="primary" />}
+                            label="acima de 3 vezes no ano"
+                          />
                           <br />
                           <br />
-                          <p>Deseja incluir outro esporte?</p>
-                          <div className="buttons pb05">
-                            <button
-                              className={`btn-outline ${this.props.values.include_sports === 1 ? "active" : ""
-                                }`}
 
-                              type="button"
-                              onClick={
-                                this.handleChangeInclude()
-                              }
-                            >
-                              Sim
-                                  </button>{" "}
-                            <button
-                              className={`btn-outline ${this.props.values.include_sports === 0 ? "active" : ""
-                                }`}
-                              type="button"
-                              onClick={
-                                this.handleChangeIncludefalse()
-                              }
-                            >
-                              Não
-                          </button>
-                        </div>
-                   </Grid>
-
-                        {loading && <Loading />}
+                        </Grid>
                     {/* </Grid> */}
                   </RadioGroup>
                 </FormControl>
               </Grid>
-            </Grid>)
-              }
-            </Grid>
+            </Grid>)}
+                    {/* </Grid> */}
+                  </RadioGroup>
+                </FormControl>
+              </Grid>
+            </Grid>)}
+          </Grid>
             <br />
 
 
