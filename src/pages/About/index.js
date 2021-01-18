@@ -54,12 +54,15 @@ import Loading from "../../components/loading";
 import { CadastrarCotacaoBd } from "../../services/bd/CadastrarCotacao";
 
 import { createBrowserHistory } from "history";
-import { entities } from "../../helpers/entities";
+// import { entities } from "../../helpers/entities";
 class About extends Component {
   constructor(props) {
     super(props);
     this.state = {
       pratica_esportes: 0,
+      loading: false,
+      error: false,
+      include_sports: 0,
       loading: false,
       error: false,
       // request: true,
@@ -91,7 +94,8 @@ class About extends Component {
         escolaridade: "",
         moradia: false,
         pratica_esportes: 1,
-        frequency: false
+        frequency: false,
+        include_sports: 1
       },
       dependents: [],
       storage: JSON.parse(localStorage.getItem("@bidu2/user")),
@@ -106,6 +110,11 @@ class About extends Component {
     this.props.setValues({
       ...this.props.values,
       pratica_esportes: 0,
+    });
+
+    this.props.setValues({
+      ...this.props.values,
+      include_sports: 0,
     });
 
 
@@ -171,6 +180,28 @@ class About extends Component {
     this.props.setValues({
       ...this.props.values,
       pratica_esportes: 2,
+      insurance: false,
+
+    });
+
+  };
+
+  handleChangeInclude = (value) => (event) => {
+    event.preventDefault();
+    this.setState({ include_sports: value });
+    this.props.setValues({
+      ...this.props.values,
+      insurance: true,
+      include_sports: 1,
+    });
+  };
+
+  handleChangeIncludeFalse = (value) => (event) => {
+    event.preventDefault();
+    this.setState({ include_sports: value });
+    this.props.setValues({
+      ...this.props.values,
+      include_sports: 2,
       insurance: false,
 
     });
@@ -386,7 +417,8 @@ class About extends Component {
       isSubmitting,
       handleChange,
       handleSubmit,
-      pratica_esportes
+      pratica_esportes,
+      include_sports
     } = this.props;
 
     if (this.props.status) {
@@ -848,7 +880,7 @@ class About extends Component {
                 <Grid item xs={12} sm={6}>
                   <InputLabel shrink id="esportes">
                     Esportes
-                </InputLabel>
+                  </InputLabel>
                   <Select
                     value={{}}
                     labelId="esportes"
@@ -874,37 +906,65 @@ class About extends Component {
                       </MenuItem>
                     ))} */}
                   </Select>
-                  <Grid item xs={12}>
-                <FormControl component="fieldset">
-                  <RadioGroup
-                    value={
-                      this.props.values.frequency ? this.props.values.frequency : ""
-                    }
-                    aria-label="frequency"
-                    name="frequency"
-                    className={checkValidateRadios("frequency", this.props)}
-                    onChange={handleChange("frequency")}
-                    onBlur={this.handleChange}
-                    helperText={touched.frequency ? errors.frequency : ""}
-                    error={touched.frequency && Boolean(errors.moradia)}
-                  >
-                    {/* <Grid item xs={12} sm container> */}
-                      <Grid item xs={12} sm={6}>
-                        <br />
-                        <p>Com que frequência?</p>
-                        <FormControlLabel
-                          value="frequencia"
-                          control={<Radio color="primary" />}
-                          label="até 3 vezes no ano"
-                        />
-                      </Grid>
-                      <Grid item xs={12} sm={6}>
-                        <FormControlLabel
-                          value="frequencia2"
-                          control={<Radio color="primary" />}
-                          label="acima de 3 vezes"
-                        />
-                      </Grid>
+                <Grid item xs={12}>
+                  <FormControl component="fieldset">
+                    <RadioGroup
+                      value={
+                        this.props.values.frequency ? this.props.values.frequency : ""
+                      }
+                      aria-label="frequency"
+                      name="frequency"
+                      className={checkValidateRadios("frequency", this.props)}
+                      onChange={handleChange("frequency")}
+                      onBlur={this.handleChange}
+                      helperText={touched.frequency ? errors.frequency : ""}
+                      error={touched.frequency && Boolean(errors.moradia)}
+                    >
+                      {/* <Grid item xs={12} sm container> */}
+                        <Grid item xs={12} sm={12}>
+                          <br />
+                          <p>Com que frequência?</p>
+                          <FormControlLabel
+                            value="frequencia"
+                            control={<Radio color="primary" />}
+                            label="até 3 vezes no ano"
+                          />
+                        </Grid>
+                        <Grid item xs={12} sm={12}>
+                          <FormControlLabel
+                            value="frequencia2"
+                            control={<Radio color="primary" />}
+                            label="acima de 3 vezes no ano"
+                          />
+                          <br />
+                          <br />
+                          <p>Deseja incluir outro esporte?</p>
+                          <div className="buttons pb05">
+                            <button
+                              className={`btn-outline ${this.props.values.include_sports === 1 ? "active" : ""
+                                }`}
+
+                              type="button"
+                              onClick={
+                                this.handleChangeInclude()
+                              }
+                            >
+                              Sim
+                                  </button>{" "}
+                            <button
+                              className={`btn-outline ${this.props.values.include_sports === 0 ? "active" : ""
+                                }`}
+                              type="button"
+                              onClick={
+                                this.handleChangeIncludefalse()
+                              }
+                            >
+                              Não
+                          </button>
+                        </div>
+                   </Grid>
+
+                        {loading && <Loading />}
                     {/* </Grid> */}
                   </RadioGroup>
                 </FormControl>
@@ -1044,8 +1104,8 @@ const Form = withFormik({
       .required("Telefone é obrigatório"),
     estado: Yup.string()
       .required("Estado é obrigatório"),
-    cidade: Yup.string()
-      .required("Cidade é obrigatório"),
+    // cidade: Yup.string()
+    //   .required("Cidade é obrigatório"),
     profissao: Yup.string().required("Profissão é obrigatório"),
     date_birth: Yup.string()
       .required("Data de nascimento é obrigatório")
