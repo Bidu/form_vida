@@ -1002,7 +1002,9 @@ const Form = withFormik({
     profissao,
     date_birth,
     cidade,
-    estado
+    estado,
+    frequency
+
 
   }) => {
     return {
@@ -1013,7 +1015,9 @@ const Form = withFormik({
       profissao: profissao || "",
       date_birth: date_birth || "",
       cidade: cidade || "",
-      estado: estado || ""
+      estado: estado || "",
+      frequency: frequency || ""
+
     };
   },
 
