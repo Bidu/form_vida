@@ -439,7 +439,7 @@ class About extends Component {
     return (
       <>
         <Wrapper>
-          <Steps step1={true} />
+          <Steps step1={true} step2={true} step3={true}  />
           <Title text="Dados do" bold="Beneficiário" />
  
           <form onSubmit={handleSubmit}>
@@ -481,7 +481,7 @@ class About extends Component {
                 </FormGroup>
                 {/* INPUT DO BENEFICARIO*/}
                 <Title text="Dados" bold="Complementares" />
-                <Grid item xs={12} sm={6}>
+                <Grid item xs={12} sm={12}>
                 <InputLabel shrink id="formation">
                   Escolaridade
                 </InputLabel>
@@ -520,10 +520,11 @@ class About extends Component {
                   <MenuItem value=">DOUTORADO">Doutorado</MenuItem>
                   <MenuItem value="POS_DOUTORADO">Pós Doutorado</MenuItem>
                 </Select>
-                
+                <br />
+                <br />
                 <Grid item xs={12} sm={12}>
                 <InputLabel shrink id="estado_civil">
-                  Gênero
+                  Estado Civil
                 </InputLabel>
                 <Select
                   name="marital"
@@ -544,11 +545,14 @@ class About extends Component {
                   </MenuItem>
                   <MenuItem value="SOLTEIRO">Solteira</MenuItem>
                   <MenuItem value="CASADO">Casado</MenuItem>
-                  <MenuItem value="DIVORCIADO">DIVORCIADO</MenuItem>
+                  <MenuItem value="DIVORCIADO">Divorciado</MenuItem>
+                  <MenuItem value="SEPARADO">Separado judicialmente</MenuItem>
                   <MenuItem value="VIUVO">Viúvo</MenuItem>
                 </Select>
               </Grid>
               </Grid>
+              <br />
+              <br />
                 <Grid item xs={12} sm={12}>
                 <FormControlLabel
                   control={
@@ -564,8 +568,6 @@ class About extends Component {
                   label="Me considero uma pessoa politicamente exposta"
                 />
               </Grid>
-
-
                 <TextField
                   value={
                     this.props.values.cpf ? this.props.values.cpf : usuario.cpf
@@ -590,7 +592,7 @@ class About extends Component {
                   }}
                 />
               </Grid>
-              <Grid item xs={6} sm={6}>
+              {/* <Grid item xs={6} sm={6}>
                 <TextField
                   value={this.props.values.nome ? this.props.values.nome : ""}
                   type="text"
@@ -611,11 +613,11 @@ class About extends Component {
                     shrink: true,
                   }}
                 />
-              </Grid>
+              </Grid> */}
 
               { }
 
-              <Grid item xs={12} sm={6}>
+              {/* <Grid item xs={12} sm={6}>
                 <TextField
                   value={this.props.values.email ? this.props.values.email : ""}
                   id="email"
@@ -634,8 +636,8 @@ class About extends Component {
                     autoComplete: "off",
                   }}
                 />
-              </Grid>
-              <Grid item xs={12} sm={6}>
+              </Grid> */}
+              {/* <Grid item xs={12} sm={6}>
                 <TextField
                   value={
                     this.props.values.telefone ? this.props.values.telefone : ""
@@ -657,8 +659,8 @@ class About extends Component {
                     autoComplete: "off",
                   }}
                 />
-              </Grid>
-
+              </Grid> */}
+{/* 
               <Grid item xs={12} sm={6}>
                 <InputLabel>Data de nascimento</InputLabel>
                 <TextField
@@ -702,7 +704,7 @@ class About extends Component {
                     }}
                   />
                 </FormControl>
-              </Grid>
+              </Grid> */}
               {/* <Grid item xs={12} sm={3}>
                   <FormControl component="fieldset" className="price-quote"> 
                   <InputLabel shrink id="cidade">
@@ -773,7 +775,7 @@ class About extends Component {
                     />
                   </Grid> */}
               {/* {this.state.occupations.length > 0 && ( */}
-              <Grid item xs={12} sm={6}>
+              {/* <Grid item xs={12} sm={6}>
                 <FormControl component="fieldset" className="price-quote">
                   <InputLabel shrink id="profissao">
                     Profissão
@@ -802,7 +804,7 @@ class About extends Component {
 
                   />
                 </FormControl>
-              </Grid>
+              </Grid> */}
 
               {/* )} */}
               {/* {this.state.occupationsFalse == false && (
@@ -844,7 +846,7 @@ class About extends Component {
                       </Select>
                     </Grid> */}
 
-              <Grid item xs={12} sm={6}>
+              {/* <Grid item xs={12} sm={6}>
                 <InputLabel shrink id="gender">
                   Gênero
                 </InputLabel>
@@ -932,7 +934,7 @@ class About extends Component {
                   helperText={touched.date_validity ? errors.date_validity : ""}
                   error={touched.date_validity && Boolean(errors.date_validity)}
                 />
-              </Grid>
+              </Grid> */}
 
               {/* {this.state.entitiesFalse == false && (
                     <DialogAlert
