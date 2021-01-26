@@ -20,6 +20,7 @@ const Routes = () => (
       <Route exact path="/sobre-voce" component={About} forceRefresh={true} />
       <Route exact path="/cotacao" component={PriceQuote} />   
       <Route exact path="/sobre-a-empresa" component={PME} />
+      <Route exact path="/questionario" component={Quiz} />
       <Route exact path="/inicio" component={Home} />
       <Route exact path="/sucesso" component={Success} />
     
