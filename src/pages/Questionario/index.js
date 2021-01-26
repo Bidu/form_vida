@@ -635,7 +635,42 @@ class About extends Component {
                   error={touched.date_exp && Boolean(errors.date_exp)}
                 />
               </Grid>
-
+              <br />
+              <Grid item xs={12} sm={12}>
+              <p>É estrangeiro?</p>
+              {loading && <Loading />}
+                <FormGroup row>
+                  <Grid container spacing={2}>
+                    <Grid item xs={12} sm={12}>
+                      <div className="buttons pb05">
+                        <button
+                          className={`btn-outline ${
+                            this.state.include_recipient == 1 ? "active" : ""
+                          }`}
+                          value={1}
+                          type="button"
+                          onClick={(e) =>
+                            this.handleChangePlate(e.target.value)
+                          }
+                        >
+                          Sim
+                        </button>{" "}
+                        <button
+                          className={`btn-outline ${
+                            this.state.include_recipient == 0 ? "active" : ""
+                          }`}
+                          value={0}
+                          type="button"
+                          onClick={(e) =>
+                            this.handleChangePlate(e.target.value)
+                          }
+                        >
+                          Não
+                        </button>
+                      </div>
+                    </Grid>
+                  </Grid>
+                </FormGroup>
   
 
               { }
@@ -645,6 +680,7 @@ class About extends Component {
                 </>
             </Grid>
           </Grid>
+        </Grid>
       </Grid>
         </form>
           <div className="actions mt0">
