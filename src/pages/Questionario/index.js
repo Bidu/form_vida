@@ -439,7 +439,7 @@ class About extends Component {
     return (
       <>
         <Wrapper>
-          <Steps step1={true} step2={true} step3={true}  />
+          <Steps step1={true} step2={true}  />
           <Title text="Dados do" bold="Beneficiário" /> 
           <form onSubmit={handleSubmit}>
             <Grid container spacing={3}>

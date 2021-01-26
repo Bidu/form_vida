@@ -38,7 +38,7 @@ export class Steps extends Component {
                   <DriveEtaIcon />
                 </Link> : 
                 <Link>
-                  <DriveEtaIcon />
+                 <DescriptionIcon />
                 </Link>
                  }
               </Fab>
