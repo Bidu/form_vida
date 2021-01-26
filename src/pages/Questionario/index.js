@@ -481,6 +481,74 @@ class About extends Component {
                 </FormGroup>
                 {/* INPUT DO BENEFICARIO*/}
                 <Title text="Dados" bold="Complementares" />
+                <Grid item xs={12} sm={6}>
+                <InputLabel shrink id="formation">
+                  Escolaridade
+                </InputLabel>
+                <Select
+                  name="escolaridade"
+                  fullWidth
+                  displayEmpty
+                  labelId="escolaridade"
+                  id="escolaridade"
+                  value={
+                    this.props.values.escolaridade
+                      ? this.props.values.escolaridade
+                      : ""
+                  }
+                  onChange={handleChange("escolaridade")}
+                  onBlur={this.handleChange}
+                  helperText={touched.escolaridade ? errors.escolaridade : ""}
+                  error={touched.escolaridade && Boolean(errors.escolaridade)}
+                >
+                  <MenuItem className="txt-dark_gray" value="" disabled>
+                    Selecione
+                  </MenuItem>
+                  <MenuItem value="EDUCACAO_PRIMARIA">
+                    Ensino Fundamental
+                  </MenuItem>
+                  <MenuItem value="ENSINO_MEDIO">Ensino Médio</MenuItem>
+                  <MenuItem value="ENSINO_MEDIO_TECNICO">
+                    Ensino Técnico
+                  </MenuItem>
+                  <MenuItem value="ENSINO_SUPERIOR">Ensino Superior</MenuItem>
+                  <MenuItem value="ENSINO_SUPERIOR_TECNOLOGO">
+                    Ensino Superior Tecnólogo
+                  </MenuItem>
+                  <MenuItem value="POS_GRADUACAO">Pós-graduação</MenuItem>
+                  <MenuItem value="MESTRADO">Mestrado</MenuItem>
+                  <MenuItem value=">DOUTORADO">Doutorado</MenuItem>
+                  <MenuItem value="POS_DOUTORADO">Pós Doutorado</MenuItem>
+                </Select>
+                
+                <Grid item xs={12} sm={12}>
+                <InputLabel shrink id="estado_civil">
+                  Gênero
+                </InputLabel>
+                <Select
+                  name="marital"
+                  fullWidth
+                  displayEmpty
+                  labelId="estado_civil"
+                  id="estado_civil"
+                  value={
+                    this.props.values.marital ? this.props.values.marital : ""
+                  }
+                  onChange={handleChange("marital")}
+                  onBlur={this.handleChange}
+                  helperText={touched.marital ? errors.marital : ""}
+                  error={touched.marital && Boolean(errors.marital)}
+                >
+                  <MenuItem value="" disabled>
+                    Selecione
+                  </MenuItem>
+                  <MenuItem value="SOLTEIRO">Solteira</MenuItem>
+                  <MenuItem value="CASADO">Casado</MenuItem>
+                  <MenuItem value="DIVORCIADO">DIVORCIADO</MenuItem>
+                  <MenuItem value="VIUVO">Viúvo</MenuItem>
+                </Select>
+              </Grid>
+              </Grid>
                 <Grid item xs={12} sm={12}>
                 <FormControlLabel
                   control={
