@@ -4,6 +4,7 @@ import DriveEtaIcon from "@material-ui/icons/DriveEta";
 import DescriptionIcon from "@material-ui/icons/Description";
 import VerifiedUserIcon from "@material-ui/icons/VerifiedUser";
 import CommentIcon from '@material-ui/icons/Comment';
+import PaymentIcon from '@material-ui/icons/Payment';
 import Fab from "@material-ui/core/Fab";
 import Grid from "@material-ui/core/Grid";
 import { Link } from "react-router-dom";
@@ -39,7 +40,7 @@ export class Steps extends Component {
                   <DriveEtaIcon />
                 </Link> : 
                 <Link>
-                 <CommentIcon />
+                 <DescriptionIcon />
                 </Link>
                  }
               </Fab>
@@ -56,7 +57,7 @@ export class Steps extends Component {
                   <DescriptionIcon color="darkGray" />
                 </Link> :
                  <Link>
-                 <DescriptionIcon />
+                 <CommentIcon />
                </Link>
                 }
               </Fab>
@@ -66,6 +67,23 @@ export class Steps extends Component {
                 className={step4 ? "step-active" : "step-inactive"}
                 size="small"
                 color={step4 ? "primary" : "lightGray"}
+                aria-label="edit"
+              >
+                {this.props.transmission_return === "SUCESSO" ?
+                <Link to="/sucesso">
+                  <PaymentIcon color="darkGray" />
+                </Link> :
+                 <Link>
+                 <PaymentIcon/>
+               </Link>
+                }
+              </Fab>
+            </li>
+            <li class="flex-item">
+              <Fab
+                className={step5 ? "step-active" : "step-inactive"}
+                size="small"
+                color={step5 ? "primary" : "lightGray"}
                 aria-label="edit"
               >
                 {this.props.transmission_return === "SUCESSO" ?
