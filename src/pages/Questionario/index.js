@@ -96,7 +96,7 @@ class About extends Component {
         moradia: false,
         pratica_esportes: 1,
         include_sports: 1,
-        frequency: false
+        frequency: false,
       },
       dependents: [],
       storage: JSON.parse(localStorage.getItem("@bidu2/user")),
@@ -567,7 +567,7 @@ class About extends Component {
               </Grid>
               <br />
               <br />              
-              <Grid container spacing={3}>
+              <Grid container spacing={2}>
               <Title text="Documento do" bold="Segurado" /> 
               <br />
               <br />              
@@ -645,7 +645,7 @@ class About extends Component {
                       <div className="buttons pb05">
                         <button
                           className={`btn-outline ${
-                            this.state.include_recipient == 1 ? "active" : ""
+                            this.state.foreign == 1 ? "active" : ""
                           }`}
                           value={1}
                           type="button"
@@ -657,7 +657,7 @@ class About extends Component {
                         </button>{" "}
                         <button
                           className={`btn-outline ${
-                            this.state.include_recipient == 0 ? "active" : ""
+                            this.state.foreign == 0 ? "active" : ""
                           }`}
                           value={0}
                           type="button"
@@ -671,13 +671,47 @@ class About extends Component {
                     </Grid>
                   </Grid>
                 </FormGroup>
-  
-
-              { }
-
-                <>
-
-                </>
+                <Grid item xs={12} sm={12}>
+                  <FormControl component="fieldset">
+                    <RadioGroup
+                      value={
+                        this.props.values.frequency ? this.props.values.frequency : ""
+                      }
+                      aria-label="frequency"
+                      name="frequency"
+                      className={checkValidateRadios("frequency", this.props)}
+                      onChange={handleChange("frequency")}
+                      onBlur={this.handleChange}
+                      helperText={touched.frequency ? errors.frequency : ""}
+                      error={touched.frequency && Boolean(errors.moradia)}
+                    >
+                      {/* <Grid item xs={12} sm container> */}
+                        <Grid item xs={12} sm={12}>
+                          <br />
+                          <p>Envio da Apólice</p>
+                          <FormControlLabel
+                            value="correio"
+                            control={<Radio color="primary" />}
+                            label="Correio (Resumo da apólice, cartão do segurado, boletos impressos)"
+                          />
+                        </Grid>
+                        <Grid item xs={12} sm={12}>
+                          <FormControlLabel
+                            value="email"
+                            control={<Radio color="primary" />}
+                            label="E-mail(Resumo da apólice, cartão do segurado, boletos digitais)"
+                          />
+                  </Grid>
+                  <Grid item xs={12} sm={12}>
+                    <FormControlLabel
+                      value="email_correio"
+                      control={<Radio color="primary" />}
+                      label="Correio + E-mail(Cartão do segurado impresso, e demais documentos digitais)"
+                    />
+                  </Grid>
+                </RadioGroup>
+              </FormControl>
+              </Grid>
             </Grid>
           </Grid>
         </Grid>
@@ -734,9 +768,8 @@ const Form = withFormik({
     date_birth,
     cidade,
     estado,
-    frequency
-
-
+    frequency,
+    
   }) => {
     return {
       cpf: cpf || "",
@@ -747,8 +780,8 @@ const Form = withFormik({
       date_birth: date_birth || "",
       cidade: cidade || "",
       estado: estado || "",
-      frequency: frequency || ""
-
+      frequency: frequency || "",
+    
     };
   },
 
