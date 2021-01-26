@@ -3,6 +3,7 @@ import PersonIcon from "@material-ui/icons/Person";
 import DriveEtaIcon from "@material-ui/icons/DriveEta";
 import DescriptionIcon from "@material-ui/icons/Description";
 import VerifiedUserIcon from "@material-ui/icons/VerifiedUser";
+import CommentIcon from '@material-ui/icons/Comment';
 import Fab from "@material-ui/core/Fab";
 import Grid from "@material-ui/core/Grid";
 import { Link } from "react-router-dom";
@@ -38,7 +39,7 @@ export class Steps extends Component {
                   <DriveEtaIcon />
                 </Link> : 
                 <Link>
-                 <DescriptionIcon />
+                 <CommentIcon />
                 </Link>
                  }
               </Fab>
