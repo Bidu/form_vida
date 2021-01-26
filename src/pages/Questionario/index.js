@@ -443,7 +443,7 @@ class About extends Component {
           <Title text="Dados do" bold="Beneficiário" />
  
           <form onSubmit={handleSubmit}>
-            <Grid container spacing={2}>
+            <Grid container spacing={3}>
               <Grid item xs={12} sm={6}>
               <p>Gostaria de identificar um Beneficiário?</p>
               {loading && <Loading />}
@@ -480,6 +480,23 @@ class About extends Component {
                   </Grid>
                 </FormGroup>
                 {/* INPUT DO BENEFICARIO*/}
+                <Title text="Dados" bold="Complementares" />
+                <Grid item xs={12} sm={12}>
+                <FormControlLabel
+                  control={
+                    <Switch
+                      checked={this.props.values.politicamente_exp}
+                      value={this.props.values.politicamente_exp}
+                      onChange={handleChange("politicamente_exp")}
+                      onBlur={this.handleChangeSwitch("politicamente_exp")}
+                      name="politicamente_exp"
+                      color="primary"
+                    />
+                  }
+                  label="Me considero uma pessoa politicamente exposta"
+                />
+              </Grid>
+
 
                 <TextField
                   value={
@@ -505,7 +522,7 @@ class About extends Component {
                   }}
                 />
               </Grid>
-              <Grid item xs={12} sm={6}>
+              <Grid item xs={6} sm={6}>
                 <TextField
                   value={this.props.values.nome ? this.props.values.nome : ""}
                   type="text"
