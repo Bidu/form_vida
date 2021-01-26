@@ -440,8 +440,7 @@ class About extends Component {
       <>
         <Wrapper>
           <Steps step1={true} step2={true} step3={true}  />
-          <Title text="Dados do" bold="Beneficiário" />
- 
+          <Title text="Dados do" bold="Beneficiário" /> 
           <form onSubmit={handleSubmit}>
             <Grid container spacing={3}>
               <Grid item xs={12} sm={6}>
@@ -568,653 +567,86 @@ class About extends Component {
                   label="Me considero uma pessoa politicamente exposta"
                 />
               </Grid>
+              <Title text="Documento do" bold="Segurado" /> 
+              <br />
+              <br />              
+              <Grid item xs={12} sm={12}>
+                  <InputLabel shrink id="type_doc">
+                    Tipo do Documento
+                  </InputLabel>
+                  <Select
+                    value={{}}
+                    labelId="type_doc"
+                    id="type_doc"
+                    name="document"
+                    fullWidth
+                    displayEmpty
+                    // onChange={handleChange("esportes")}
+                    // onBlur={this.informacaoPagamento}
+                    helperText={touched.document ? errors.document : ""}
+                    error={touched.document && Boolean(errors.document)}
+                  >
+                    <MenuItem value="000">Selecione</MenuItem>
+                    {/* {this.state.dados_cotacao.bancos[0] instanceof Array
+                    ? this.state.dados_cotacao.bancos[0].map((banco, index) => (
+                      <MenuItem key={index} value={banco}>
+                        {Dictionary.banks[banco]}
+                      </MenuItem>
+                    ))
+                    : this.state.dados_cotacao.bancos.map((banco, index) => (
+                      <MenuItem key={index} value={banco}>
+                        {Dictionary.banks[banco]}
+                      </MenuItem>
+                    ))} */}
+                  </Select>
+                </Grid>
+                <br />  
+                <Grid item xs={12} sm={6}>
                 <TextField
                   value={
-                    this.props.values.cpf ? this.props.values.cpf : usuario.cpf
+                    this.props.values.numero ? this.props.values.numero : ""
                   }
-                  id="cpf"
-                  name="cpf"
-                  label="CPF"
-                  placeholder="000.000.000-00"
+                  id="numero"
+                  name="numero"
+                  label="Número"
+                  placeholder="Digite aqui"
                   fullWidth
-                  margin="20px"
-                  autoFocus={true}
                   onChange={handleChange}
                   onBlur={this.handleChange}
-                  helperText={touched.cpf ? errors.cpf : ""}
-                  error={touched.cpf && Boolean(errors.cpf)}
+                  helperText={touched.numero ? errors.numero : ""}
+                  error={touched.numero && Boolean(errors.numero)}
                   InputLabelProps={{
                     shrink: true,
-                  }}
-                  InputProps={{
-                    inputComponent: textMaskCpf,
-                    autoComplete: "off",
                   }}
                 />
               </Grid>
-              {/* <Grid item xs={6} sm={6}>
+              <br />  
+              <Grid item xs={6} sm={6}>
+                <InputLabel>Data de expedição</InputLabel>
                 <TextField
-                  value={this.props.values.nome ? this.props.values.nome : ""}
-                  type="text"
-                  id="name"
-                  name="nome"
-                  label="Nome"
-                  placeholder="João da Silva"
-                  fullWidth
-                  onChange={handleChange}
+                  name="date_exp"
+                  id="date_exp"
+                  type="date"
+                  value={this.props.values.date_exp ? this.props.values.date_exp : ""}
+                  onChange={handleChange("date_exp")}
                   onBlur={this.handleChange}
-                  helperText={touched.nome ? errors.nome : ""}
-                  error={touched.nome && Boolean(errors.nome)}
-                  InputProps={{
-                    inputComponent: onlyLetters,
-                    autoComplete: "off",
-                  }}
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
+                  helperText={touched.date_exp ? errors.date_exp : ""}
+                  error={touched.date_exp && Boolean(errors.date_exp)}
                 />
-              </Grid> */}
+              </Grid>
+
+  
 
               { }
 
-              {/* <Grid item xs={12} sm={6}>
-                <TextField
-                  value={this.props.values.email ? this.props.values.email : ""}
-                  id="email"
-                  name="email"
-                  label="Email"
-                  placeholder="joao@email.com"
-                  fullWidth
-                  onChange={handleChange}
-                  onBlur={this.handleChange}
-                  helperText={touched.email ? errors.email : ""}
-                  error={touched.email && Boolean(errors.email)}
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                  InputProps={{
-                    autoComplete: "off",
-                  }}
-                />
-              </Grid> */}
-              {/* <Grid item xs={12} sm={6}>
-                <TextField
-                  value={
-                    this.props.values.telefone ? this.props.values.telefone : ""
-                  }
-                  id="phone"
-                  name="telefone"
-                  label="Celular"
-                  placeholder="(00) 00000-0000"
-                  fullWidth
-                  onChange={handleChange}
-                  onBlur={this.handleChange}
-                  helperText={touched.telefone ? errors.telefone : ""}
-                  error={touched.telefone && Boolean(errors.telefone)}
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                  InputProps={{
-                    inputComponent: textMaskPhone,
-                    autoComplete: "off",
-                  }}
-                />
-              </Grid> */}
-{/* 
-              <Grid item xs={12} sm={6}>
-                <InputLabel>Data de nascimento</InputLabel>
-                <TextField
-                  name="date_birth"
-                  id="date_birth"
-                  type="date"
-                  value={this.props.values.date_birth ? this.props.values.date_birth : ""}
-                  onChange={handleChange("date_birth")}
-                  onBlur={this.handleChange}
-                  helperText={touched.date_birth ? errors.date_birth : ""}
-                  error={touched.date_birth && Boolean(errors.date_birth)}
-                />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <FormControl component="fieldset">
-                  <InputLabel shrink id="estado">
-                    Estado
-              </InputLabel>
-                  <Autocomplete
-
-                    id="estado"
-                    name="estado"
-                    clearOnEscape
-                    options={bruf}
-                    getOptionLabel={(option) => option.nome}
-                    renderInput={(params) => <TextField {...params} style={{ marginTop: 0 }} label="Estado" margin="normal" helperText={touched.estado ? errors.estado : ""}
-                    error={touched.estado && Boolean(errors.estado)} />}
-                    onChange={(event, newValue,) => {
-                      if (newValue && newValue.cidades) {
-                        this.props.values.estado = newValue.sigla
-                        this.setState({ cidades: newValue.cidades })
-                        console.log(newValue.cidades, "ESTADO")
-                      }
-                      else {
-                        this.setState({ cidades: [], occupations: [] })
-                        this.props.values.cidade = ""
-                      }
-                    }}
-                    InputProps={{
-                      autoComplete: "off",
-                    }}
-                  />
-                </FormControl>
-              </Grid> */}
-              {/* <Grid item xs={12} sm={3}>
-                  <FormControl component="fieldset" className="price-quote"> 
-                  <InputLabel shrink id="cidade">
-                    Cidade
-                  </InputLabel>
-                  <Autocomplete
-                      
-                      id="cidade"
-                      name="cidade"
-                      clearOnEscape
-                      options={this.state.cidades}
-                      getOptionLabel={(option) => option}
-                      disabled={this.state.cidades.length >  0 ? false : true}
-                      renderInput={(params) => <TextField {...params} style={{marginTop:0}} label="Cidade" margin="normal"  helperText={touched.cidade ? errors.cidade : ""}
-                      error={touched.cidade && Boolean(errors.cidade)}/>}
-
-                      onChange={(event, newValue) => {
-                        if(newValue){
-                          this.props.values.cidade = newValue
-                          this.getOccupations(this.props.values.estado, this.props.values.cidade)
-                        }else{
-                          this.setState({ occupations: []})
-                          this.props.values.profissao = ""
-                        }
-                      }
-                    }
-                    InputProps={{
-                      autoComplete: "off",
-                    }}
-                    />
-                  </FormControl>
-              </Grid> */}
-              {/* <Grid item xs={12} sm={6}>
-                <TextField
-                  value={this.props.values.cep ? this.props.values.cep : ""}
-                  id="cep"
-                  label="CEP"
-                  placeholder="00000-000"
-                  fullWidth
-                  name="cep"
-                  onChange={handleChange}
-                  onKeyUp={(e) => this.handleCEP(e)}
-                  // onBlur={(e) => this.handleCEP(e)}
-                  helperText={touched.cep ? errors.cep : ""}
-                  error={touched.cep && Boolean(errors.cep)}
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                  InputProps={{
-                    inputComponent: textMaskCEP,
-                  }}
-                />
-                {this.state.usuario.cep === undefined && (
-                  <p class="zip-error">CEP não encontrado</p>
-                )}
-              </Grid>
-             
-              {this.state.usuario.rua && (
-                <> */}
-              {/* <Grid item xs={12} sm={6}>
-                    <TextField
-                      value={`${this.state.usuario.rua}, ${this.state.usuario.bairro} - ${this.state.usuario.cidade}/${this.state.usuario.uf} `}
-                      id=""
-                      label="Endereço"
-                      fullWidth
-                      name=""
-                      disabled
-                    />
-                  </Grid> */}
-              {/* {this.state.occupations.length > 0 && ( */}
-              {/* <Grid item xs={12} sm={6}>
-                <FormControl component="fieldset" className="price-quote">
-                  <InputLabel shrink id="profissao">
-                    Profissão
-                      </InputLabel>
-                  <Autocomplete
-
-                    id="profissao"
-                    name="profissao"
-                    clearOnEscape
-                    options={this.state.occupations}
-                    getOptionLabel={(option) => option.nome}
-                    disabled={this.state.occupations.length > 0 ? false : true}
-                    renderInput={(params) => <TextField {...params} style={{ marginTop: 0 }} label="Profissão" margin="normal" />}
-                    onChange={(event, newValue) => {
-                      if (newValue) {
-
-                        this.props.values.profissao = newValue.id
-                        this.getEntities(
-                          this.props.values.profissao,
-                          this.props.values.estado,
-                          this.props.values.cidade
-                        );
-
-                      }
-                    }}
-
-                  />
-                </FormControl>
-              </Grid> */}
-
-              {/* )} */}
-              {/* {this.state.occupationsFalse == false && (
-                    <DialogAlert
-                      title="Ops!"
-                      message="Erro ao obter a lista de profissões. Tente novamente mais tarde!"
-                    />
-                  )} */}
-
-              {/* <Grid item xs={12} sm={6}>
-                      <InputLabel shrink id="gender">
-                        Entidades
-                      </InputLabel>
-                      <Select
-                        name="entidade"
-                        fullWidth
-                        displayEmpty
-                        labelId="entidade"
-                        disabled={this.state.entities.length >  0 ? false : true}
-                        id="entidade"
-                        value={
-                          this.props.values.entidade
-                            ? this.props.values.entidade
-                            : "Não informado"
-                        }
-                        onChange={this.handleChange}
-                        // onBlur={this.handleChange}
-                        helperText={touched.entidade ? errors.entidade : ""}
-                        error={touched.entidade && Boolean(errors.ent)}
-                      >
-                        <MenuItem value="Selecione" disabled>
-                          Selecione
-                        </MenuItem>
-
-                        {this.state.entities.length > 0 &&
-                          this.state.entities.map((e, key) => (
-                            <MenuItem value={e.id}>{e.nome}</MenuItem>
-                          ))}
-                      </Select>
-                    </Grid> */}
-
-              {/* <Grid item xs={12} sm={6}>
-                <InputLabel shrink id="gender">
-                  Gênero
-                </InputLabel>
-                <Select
-                  name="genero"
-                  fullWidth
-                  displayEmpty
-                  labelId="gender"
-                  id="gender"
-                  value={
-                    this.props.values.genero ? this.props.values.genero : ""
-                  }
-                  onChange={handleChange("genero")}
-                  onBlur={this.handleChange}
-                  helperText={touched.genero ? errors.genero : ""}
-                  error={touched.genero && Boolean(errors.genero)}
-                >
-                  <MenuItem value="" disabled>
-                    Selecione
-                  </MenuItem>
-                  <MenuItem value="MASCULINO">Masculino</MenuItem>
-                  <MenuItem value="FEMININO">Feminino</MenuItem>
-                </Select>
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <InputLabel shrink id="income">
-                  Renda Mensal
-                </InputLabel>
-                <Select
-                  name="renda"
-                  fullWidth
-                  displayEmpty
-                  labelId="income"
-                  id="income"
-                  value={
-                    this.props.values.renda ? this.props.values.renda : ""
-                  }
-                  onChange={handleChange("renda")}
-                  onBlur={this.handleChange}
-                  helperText={touched.renda ? errors.renda : ""}
-                  error={touched.renda && Boolean(errors.renda)}
-                >
-                  <MenuItem value="" disabled>
-                    Selecione a faixa salarial
-                  </MenuItem>
-                  <MenuItem value="renda1">R$0,00</MenuItem>
-                  <MenuItem value="renda2">de R$0,01 até R$1.500,00</MenuItem>
-                  <MenuItem value="renda3">de R$1.500,01 até R$ 3.000,00</MenuItem>
-                  <MenuItem value="renda4">de R$3.000,01 até R$ 6.000,00</MenuItem>
-                  <MenuItem value="renda5">de R$6.000,01 até R$ 10.000,00</MenuItem>
-                  <MenuItem value="renda6">acima de R$ 10.000,00</MenuItem>
-                </Select>
-              </Grid>
-              <Grid item xs={4} sm={6}>
-                <TextField
-                  value={
-                    this.props.values.capital ? this.props.values.capital : ""
-                  }
-                  id="capital"
-                  name="capital"
-                  label="Capital Segurado"
-                  placeholder="Ex: 150.000,00"
-                  fullWidth
-                  onChange={handleChange}
-                  onBlur={this.handleChange}
-                  helperText={touched.capital ? errors.capital : ""}
-                  error={touched.capital && Boolean(errors.capital)}
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                  InputProps={{
-                    // inputComponent: textMaskNumber,
-                  }}
-                />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <InputLabel>Data de Vigência</InputLabel>
-                <TextField
-                  name="date_validity"
-                  id="date_validity"
-                  type="date"
-                  value={this.props.values.date_validity ? this.props.values.date_validity : ""}
-                  onChange={handleChange("date_validity")}
-                  onBlur={this.handleChange}
-                  helperText={touched.date_validity ? errors.date_validity : ""}
-                  error={touched.date_validity && Boolean(errors.date_validity)}
-                />
-              </Grid> */}
-
-              {/* {this.state.entitiesFalse == false && (
-                    <DialogAlert
-                      title="Ops!"
-                      message="Erro ao obter a lista de entidades. Tente novamente mais tarde!"
-                    />
-                  )}
-                  {/* {this.state.operadorasFalse == true && (
-                    <Grid item xs={12} sm={6}>
-                      <InputLabel shrink id="gender">
-                        Operadora
-                      </InputLabel>
-                      <Select
-                        name="operadora"
-                        fullWidth
-                        displayEmpty
-                        labelId="operadora"
-                        id="operadora"
-                        value={
-                          this.props.values.operadora
-                            ? this.props.values.operadora
-                            : "Não informado"
-                        }
-                        onChange={this.handleChange}
-                        // onBlur={this.handleChange}
-                        helperText={touched.operadora ? errors.operadora : ""}
-                        error={touched.operadora && Boolean(errors.ent)}
-                      >
-                        <MenuItem value="Selecione" disabled>
-                          Selecione
-                        </MenuItem>
-                        
-                        {this.state.operadoras &&
-                          this.state.operadoras.length > 0 &&
-                          this.state.operadoras.map((e, key) => (
-                            <MenuItem value={e.nome}>{e.nome}</MenuItem>
-                          ))}
-                      </Select>
-                    </Grid>
-                  )} */}
-              {/* </> */}
-              {/* )} */}
-              <Grid item xs={12} sm={12}>
-                <Title text="Pratica Esportes" bold="Radicais?" />
-                <div className="buttons pb05">
-                  <button
-                    className={`btn-outline ${this.props.values.pratica_esportes === 1 ? "active" : ""
-                      }`}
-
-                    type="button"
-                    onClick={
-                      this.handleChangeInsurance()
-                    }
-                  >
-                    Sim
-                        </button>{" "}
-                  <button
-                    className={`btn-outline ${this.props.values.pratica_esportes === 0 ? "active" : ""
-                      }`}
-                    type="button"
-                    onClick={
-                      this.handleChangeInsuranceFalse()
-                    }
-                  >
-                    Não
-                  </button>
-                </div>
-              </Grid>
-
-              {loading && <Loading />}
-
-              {this.props.values.pratica_esportes === 1 && (
-                <Grid item xs={12} sm={6}>
-                  <InputLabel shrink id="esportes">
-                    Esportes
-                  </InputLabel>
-                  <Select
-                    value={{}}
-                    labelId="esportes"
-                    id="esportes"
-                    name="esportes"
-                    fullWidth
-                    displayEmpty
-                    // onChange={handleChange("esportes")}
-                    // onBlur={this.informacaoPagamento}
-                    helperText={touched.esportes ? errors.esportes : ""}
-                    error={touched.esportes && Boolean(errors.esportes)}
-                  >
-                    <MenuItem value="000">Selecione</MenuItem>
-                    {/* {this.state.dados_cotacao.bancos[0] instanceof Array
-                    ? this.state.dados_cotacao.bancos[0].map((banco, index) => (
-                      <MenuItem key={index} value={banco}>
-                        {Dictionary.banks[banco]}
-                      </MenuItem>
-                    ))
-                    : this.state.dados_cotacao.bancos.map((banco, index) => (
-                      <MenuItem key={index} value={banco}>
-                        {Dictionary.banks[banco]}
-                      </MenuItem>
-                    ))} */}
-                  </Select>
-                <Grid item xs={12}>
-                  <FormControl component="fieldset">
-                    <RadioGroup
-                      value={
-                        this.props.values.frequency ? this.props.values.frequency : ""
-                      }
-                      aria-label="frequency"
-                      name="frequency"
-                      className={checkValidateRadios("frequency", this.props)}
-                      onChange={handleChange("frequency")}
-                      onBlur={this.handleChange}
-                      helperText={touched.frequency ? errors.frequency : ""}
-                      error={touched.frequency && Boolean(errors.moradia)}
-                    >
-                      {/* <Grid item xs={12} sm container> */}
-                        <Grid item xs={12} sm={12}>
-                          <br />
-                          <p>Com que frequência?</p>
-                          <FormControlLabel
-                            value="frequencia"
-                            control={<Radio color="primary" />}
-                            label="até 3 vezes no ano"
-                          />
-                        </Grid>
-                        <Grid item xs={12} sm={12}>
-                          <FormControlLabel
-                            value="frequencia2"
-                            control={<Radio color="primary" />}
-                            label="acima de 3 vezes no ano"
-                          />
-                        </Grid>
-                    <br />
-                    <br />
-              <Grid item xs={12} sm={12}>
-                <Title text="Deseja incluir outro" bold="Esporte?" />
-                  <div className="buttons pb05">
-                    <button
-                    className={`btn-outline ${this.props.values.include_sports === 1 ? "active" : ""
-                      }`}
-
-                    type="button"
-                    onClick={
-                      this.handleChangeInclude()
-                    }
-                  >
-                    Sim
-                        </button>{" "}
-                  <button
-                    className={`btn-outline ${this.props.values.include_sports === 2 ? "active" : ""
-                      }`}
-                    type="button"
-                    onClick={
-                      this.handleChangeIncludeFalse()
-                    }
-                  >
-                    Não
-                  </button>
-                </div>
-              </Grid>
-
-              {loading && <Loading />}
-
-              {this.props.values.include_sports === 1 && (
-                <Grid item xs={12} sm={12}>
-                  <InputLabel shrink id="esportes">
-                    Esportes
-                  </InputLabel>
-                  <Select
-                    value={{}}
-                    labelId="esportes"
-                    id="esportes"
-                    name="esportes"
-                    fullWidth
-                    displayEmpty
-                    // onChange={handleChange("esportes")}
-                    // onBlur={this.informacaoPagamento}
-                    helperText={touched.esportes ? errors.esportes : ""}
-                    error={touched.esportes && Boolean(errors.esportes)}
-                  >
-                    <MenuItem value="000">Selecione</MenuItem>
-                    {/* {this.state.dados_cotacao.bancos[0] instanceof Array
-                    ? this.state.dados_cotacao.bancos[0].map((banco, index) => (
-                      <MenuItem key={index} value={banco}>
-                        {Dictionary.banks[banco]}
-                      </MenuItem>
-                    ))
-                    : this.state.dados_cotacao.bancos.map((banco, index) => (
-                      <MenuItem key={index} value={banco}>
-                        {Dictionary.banks[banco]}
-                      </MenuItem>
-                    ))} */}
-                  </Select>
-                <Grid item xs={12} sm={12}>
-                  <FormControl component="fieldset">
-                    <RadioGroup
-                      value={
-                        this.props.values.frequency ? this.props.values.frequency : ""
-                      }
-                      aria-label="frequency"
-                      name="frequency"
-                      className={checkValidateRadios("frequency", this.props)}
-                      onChange={handleChange("frequency")}
-                      onBlur={this.handleChange}
-                      helperText={touched.frequency ? errors.frequency : ""}
-                      error={touched.frequency && Boolean(errors.moradia)}
-                    >
-                      {/* <Grid item xs={12} sm container> */}
-                        <Grid item xs={12} sm={12}>
-                          <br />
-                          <p>Com que frequência?</p>
-                          <FormControlLabel
-                            value="frequencia"
-                            control={<Radio color="primary" />}
-                            label="até 3 vezes no ano"
-                          />
-                        </Grid>
-                        <Grid item xs={12} sm={12}>
-                          <FormControlLabel
-                            value="frequencia2"
-                            control={<Radio color="primary" />}
-                            label="acima de 3 vezes no ano"
-                          />
-                          <br />
-                          <br />
-
-                        </Grid>
-                    {/* </Grid> */}
-                  </RadioGroup>
-                </FormControl>
-              </Grid>
-            </Grid>)}
-                    {/* </Grid> */}
-                  </RadioGroup>
-                </FormControl>
-              </Grid>
-            </Grid>)}
-          </Grid>
-            <br />
-
-
-            {/* {
-              this.props.values.profissao && this.props.values.profissao.length > 0 &&
-              this.props.values.operadoras && this.props.values.operadoras.length > 0 &&
-              this.props.values.entities && this.props.values.entities.length > 0 &&
-              ( */}
                 <>
-                  {/* <div class="vidas">
-                    <Title text="Quantidade de" bold="vidas" />
-                  </div>
-                  <div class="texto-vidas">
-                    <p>
-                      Adicionar dependentes abaixo
 
-                  </p>
-                  </div>
-                  <div className="actions">
-                    <DialogDependents
-                      titleName="Adicionar Pessoas"
-                      className="bnt-next"
-                      setDependents={this.setDependents}
-                    />
-                  </div> */}
-
-
-
-
-                    <div className="actions about-actions">
-                      <Button
-                        type="submit"
-                        className="btn-next about-btn-next"
-                      >
-                        Quero uma cotação
-                  </Button>                 
-                  </div> 
                 </>
-    
-          </form>
+            </Grid>
+          </Grid>
+        </form>
           <div className="actions mt0">
-            <Link className="btn-back" to="/">
+            <Link className="btn-back" to="/cotacao">
               <KeyboardBackspaceIcon /> Voltar
             </Link>
           </div>
