@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { addUser } from "../../store/actions/user";
 import { FormatDocument, DateToTimestamp, GTM } from "../../helpers";
-import apiCEP from "../../services/cep/";
+import apiCEP from "../../services/cep";
 import Wrapper from "../../components/wrapper";
 import { Steps } from "../../components/steps";
 import Title from "../../components/Title";
@@ -15,6 +15,7 @@ import KeyboardBackspaceIcon from "@material-ui/icons/KeyboardBackspace";
 import Radio from "@material-ui/core/Radio";
 import RadioGroup from "@material-ui/core/RadioGroup";
 import FormControl from "@material-ui/core/FormControl";
+import FormGroup from "@material-ui/core/FormGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Switch from "@material-ui/core/Switch";
 import { Link, Redirect } from "react-router-dom";
@@ -47,7 +48,7 @@ import {
   onlyLetters,
   nameField,
 } from "../../helpers/user";
-import "./about.css"
+import "./questionario.css"
 
 import { checkValidateRadios } from "../../helpers";
 import Loading from "../../components/loading";
@@ -439,12 +440,47 @@ class About extends Component {
       <>
         <Wrapper>
           <Steps step1={true} />
-          <Title text="Cotação" bold="Seguro de Vida" />
-          <p></p>
-
+          <Title text="Dados do" bold="Beneficiário" />
+ 
           <form onSubmit={handleSubmit}>
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6}>
+              <p>Gostaria de identificar um Beneficiário?</p>
+              {loading && <Loading />}
+                <FormGroup row>
+                  <Grid container spacing={2}>
+                    <Grid item xs={12} sm={12}>
+                      <div className="buttons pb05">
+                        <button
+                          className={`btn-outline ${
+                            this.state.include_recipient == 1 ? "active" : ""
+                          }`}
+                          value={1}
+                          type="button"
+                          onClick={(e) =>
+                            this.handleChangePlate(e.target.value)
+                          }
+                        >
+                          Sim
+                        </button>{" "}
+                        <button
+                          className={`btn-outline ${
+                            this.state.include_recipient == 0 ? "active" : ""
+                          }`}
+                          value={0}
+                          type="button"
+                          onClick={(e) =>
+                            this.handleChangePlate(e.target.value)
+                          }
+                        >
+                          Não
+                        </button>
+                      </div>
+                    </Grid>
+                  </Grid>
+                </FormGroup>
+                {/* INPUT DO BENEFICARIO*/}
+
                 <TextField
                   value={
                     this.props.values.cpf ? this.props.values.cpf : usuario.cpf
@@ -564,11 +600,8 @@ class About extends Component {
                     options={bruf}
                     getOptionLabel={(option) => option.nome}
                     renderInput={(params) => <TextField {...params} style={{ marginTop: 0 }} label="Estado" margin="normal" helperText={touched.estado ? errors.estado : ""}
-                      error={touched.estado && Boolean(errors.estado)} />}
-
-
+                    error={touched.estado && Boolean(errors.estado)} />}
                     onChange={(event, newValue,) => {
-
                       if (newValue && newValue.cidades) {
                         this.props.values.estado = newValue.sigla
                         this.setState({ cidades: newValue.cidades })
