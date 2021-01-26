@@ -543,7 +543,7 @@ class About extends Component {
                   <MenuItem value="" disabled>
                     Selecione
                   </MenuItem>
-                  <MenuItem value="SOLTEIRO">Solteira</MenuItem>
+                  <MenuItem value="SOLTEIRO">Solteiro</MenuItem>
                   <MenuItem value="CASADO">Casado</MenuItem>
                   <MenuItem value="DIVORCIADO">Divorciado</MenuItem>
                   <MenuItem value="SEPARADO">Separado judicialmente</MenuItem>
