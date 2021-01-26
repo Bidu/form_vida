@@ -36,8 +36,8 @@ export class Steps extends Component {
                 aria-label="edit"
               >
                {localStorage.getItem("@bidu/user") != null || JSON.parse(localStorage.getItem("@bidu2/user")).length != 0 ?
-                <Link to="/veiculo"> 
-                  <DriveEtaIcon />
+                <Link to={`/cotacao/${localStorage.getItem("@bidu2/idcotacao")}`}>
+                <DriveEtaIcon />
                 </Link> : 
                 <Link>
                  <DescriptionIcon />
@@ -53,8 +53,8 @@ export class Steps extends Component {
                 aria-label="edit"
               >
                 {localStorage.getItem("@bidu/condutor") != null || JSON.parse(localStorage.getItem("@bidu2/condutor")).length != 0 ?
-                <Link to={`/cotacao/${localStorage.getItem("@bidu2/idcotacao")}`}>
-                  <DescriptionIcon color="darkGray" />
+                <Link to="/questionario">
+                <DescriptionIcon color="darkGray" />
                 </Link> :
                  <Link>
                  <CommentIcon />
@@ -70,7 +70,7 @@ export class Steps extends Component {
                 aria-label="edit"
               >
                 {this.props.transmission_return === "SUCESSO" ?
-                <Link to="/sucesso">
+                <Link to="/payment">
                   <PaymentIcon color="darkGray" />
                 </Link> :
                  <Link>
