@@ -550,8 +550,6 @@ class About extends Component {
                 </Select>
               </Grid>
               </Grid>
-              <br />
-              <br />
                 <Grid item xs={12} sm={12}>
                 <FormControlLabel
                   control={
@@ -567,6 +565,9 @@ class About extends Component {
                   label="Me considero uma pessoa politicamente exposta"
                 />
               </Grid>
+              <br />
+              <br />              
+              <Grid container spacing={3}>
               <Title text="Documento do" bold="Segurado" /> 
               <br />
               <br />              
@@ -644,6 +645,7 @@ class About extends Component {
                 </>
             </Grid>
           </Grid>
+      </Grid>
         </form>
           <div className="actions mt0">
             <Link className="btn-back" to="/cotacao">
