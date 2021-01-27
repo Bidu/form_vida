@@ -439,7 +439,7 @@ class About extends Component {
     return (
       <>
         <Wrapper>
-          <Steps step1={true} step2={true}  />
+          <Steps step1={true} step2={true} step3={true}  />
           <Title text="Dados do" bold="Beneficiário" /> 
           <form onSubmit={handleSubmit}>
             <Grid container spacing={3}>
@@ -542,11 +542,11 @@ class About extends Component {
                   <MenuItem value="" disabled>
                     Selecione
                   </MenuItem>
-                  <MenuItem value="SOLTEIRO">Solteiro</MenuItem>
-                  <MenuItem value="CASADO">Casado</MenuItem>
-                  <MenuItem value="DIVORCIADO">Divorciado</MenuItem>
-                  <MenuItem value="SEPARADO">Separado judicialmente</MenuItem>
-                  <MenuItem value="VIUVO">Viúvo</MenuItem>
+                  <MenuItem value="SOLTEIRO">Solteiro(a)</MenuItem>
+                  <MenuItem value="CASADO">Casado(a) ou União Estável</MenuItem>
+                  <MenuItem value="DIVORCIADO">Divorciado(a)</MenuItem>
+                  <MenuItem value="SEPARADO">Separado(a) judicialmente</MenuItem>
+                  <MenuItem value="VIUVO">Viúvo(a)</MenuItem>
                 </Select>
               </Grid>
               </Grid>
@@ -793,8 +793,30 @@ class About extends Component {
                   />
                 </Grid>
               }
-              {loading && <Loading />}       
+              {loading && <Loading />}
+              <br />
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  value={
+                    this.props.values.complemento
+                      ? this.props.values.complemento
+                      : ""
+                  }
+                  id="complemento"
+                  name="complemento"
+                  label="Complemento"
+                  placeholder="Digite aqui"
+                  fullWidth
+                  onChange={handleChange}
+                  onBlur={this.handleChange}
+                  helperText={touched.complemento ? errors.complemento : ""}
+                  error={touched.complemento && Boolean(errors.complemento)}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                />
               </Grid>       
+            </Grid>       
                 </RadioGroup>
               </FormControl>
               </Grid>
