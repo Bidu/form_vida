@@ -709,6 +709,92 @@ class About extends Component {
                       label="Correio + E-mail(Cartão do segurado impresso, e demais documentos digitais)"
                     />
                   </Grid>
+                  <Title text="Endereço do" bold="Segurado" />
+                  <Grid spacing={2}> 
+                  <Grid item xs={8} sm={6}>
+                   <TextField
+                  value={this.state.usuario.cep ? this.state.usuario.cep : ""}
+                  id="cep"
+                  label="CEP"
+                  placeholder="00000-000"
+                  fullWidth
+                  name="cep"
+                  // onChange={handleChange}
+                  onChange={(e) => e.target.value.length == 9 ? this.handleCEP(e) : ""}
+                  helperText={touched.cep ? errors.cep : ""}
+                  error={touched.cep && Boolean(errors.cep)}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  InputProps={{
+                    inputComponent: textMaskCEP,
+                  }}
+                />
+                { this.state.address == false && this.state.usuario.rua == "" ? (
+                  <p class="zip-error">Digite o nome da rua</p>
+                ) : "" }
+                {this.state.usuario.cep === undefined && (
+                  <p class="zip-error">CEP não encontrado</p>
+                )}
+              </Grid>
+              <br />
+              
+              <Grid item xs={4} sm={6}>
+                <TextField
+                  value={
+                    this.props.values.numero ? this.props.values.numero : ""
+                  }
+                  id="numero"
+                  name="numero"
+                  label="Número"
+                  placeholder="Digite aqui"
+                  fullWidth
+                  onChange={handleChange}
+                  onBlur={this.handleChange}
+                  helperText={touched.numero ? errors.numero : ""}
+                  error={touched.numero && Boolean(errors.numero)}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  InputProps={{
+                    inputComponent: textMaskNumber,
+                  }}
+                />
+              </Grid>
+              {this.state.usuario.rua && (
+                <Grid item xs={12} sm={6}>
+                  <div className="results">
+                    {this.state.usuario.rua}, {this.state.usuario.bairro} -{" "}
+                    {this.state.usuario.cidade}
+                  </div>
+                </Grid>
+              )}
+              {/* Se não tiver logradouro abre campo para digitar */}
+              { this.state.address == false && this.state.usuario.rua == "" &&
+                <Grid item xs={12} sm={6}>
+                  <TextField
+                    value={
+                      this.props.values.rua
+                        ? this.props.values.rua
+                        : ""
+                    }
+                    id="rua"
+                    name="rua"
+                    label="Logradouro"
+                    placeholder="Ex: Av, Rua..."
+                    fullWidth
+                    onChange={handleChange}
+                    onBlur={this.handleChange}
+                    helperText={touched.rua ? errors.rua : ""}
+                    error={touched.rua && Boolean(errors.rua)}
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
+                  />
+                </Grid>
+              }
+              {loading && <Loading />}       
+              </Grid>       
                 </RadioGroup>
               </FormControl>
               </Grid>
