@@ -99,6 +99,7 @@ class Questionario extends Component {
         pratica_esportes: 1,
         include_sports: 1,
         frequency: false,
+        foreign: 1,
       },
       dependents: [],
       storage: JSON.parse(localStorage.getItem("@bidu2/user")),
@@ -122,6 +123,7 @@ class Questionario extends Component {
       ...this.props.values,
       include_recipient: 0,
     });
+
     this.props.setValues({
       ...this.props.values,
       foreign: 0,
@@ -634,7 +636,7 @@ class Questionario extends Component {
                   </>
                 )}
                 <Title text="Dados" bold="Complementares" />
-                <Grid item xs={12} sm={6}>
+                <Grid item xs={12} sm={12}>
                   <InputLabel shrink id="formation">
                     Escolaridade
                   </InputLabel>
@@ -675,7 +677,7 @@ class Questionario extends Component {
                   </Select>
                 </Grid>
                 <br />
-                <Grid item xs={12} sm={6}>
+                <Grid item xs={12} sm={12}>
                   <InputLabel shrink id="estado_civil">
                     Estado Civil
                   </InputLabel>
@@ -725,29 +727,28 @@ class Questionario extends Component {
               </Grid>
               <br />
               <br />
-              <Grid container spacing={2}>
-                <FormGroup row>
-                  <Title text="Documento do" bold="Segurado" />
-                  <br />
-                  <br />
-                  <Grid item xs={12} sm={12}>
-                    <InputLabel shrink id="type_doc">
-                      Tipo do Documento
-                    </InputLabel>
-                    <Select
-                      value={{}}
-                      labelId="type_doc"
-                      id="type_doc"
-                      name="document"
-                      fullWidth
-                      displayEmpty
-                      // onChange={handleChange("esportes")}
-                      // onBlur={this.informacaoPagamento}
-                      helperText={touched.document ? errors.document : ""}
-                      error={touched.document && Boolean(errors.document)}
-                    >
-                      <MenuItem value="000">Selecione</MenuItem>
-                      {/* {this.state.dados_cotacao.bancos[0] instanceof Array
+              <Grid item xs={12} sm={12}>
+                <Title text="Documento do" bold="Segurado" />
+                <br />
+                <br />
+                <Grid item xs={6} sm={6}>
+                  <InputLabel shrink id="type_doc">
+                    Tipo do Documento
+                  </InputLabel>
+                  <Select
+                    value={{}}
+                    labelId="type_doc"
+                    id="type_doc"
+                    name="document"
+                    fullWidth
+                    displayEmpty
+                    // onChange={handleChange("esportes")}
+                    // onBlur={this.informacaoPagamento}
+                    helperText={touched.document ? errors.document : ""}
+                    error={touched.document && Boolean(errors.document)}
+                  >
+                    <MenuItem value="000">Selecione</MenuItem>
+                    {/* {this.state.dados_cotacao.bancos[0] instanceof Array
                     ? this.state.dados_cotacao.bancos[0].map((banco, index) => (
                       <MenuItem key={index} value={banco}>
                         {Dictionary.banks[banco]}
@@ -758,47 +759,46 @@ class Questionario extends Component {
                         {Dictionary.banks[banco]}
                       </MenuItem>
                     ))} */}
-                    </Select>
-                  </Grid>
-                  <br />
-                  <Grid item xs={12} sm={6}>
-                    <TextField
-                      value={
-                        this.props.values.numero ? this.props.values.numero : ""
-                      }
-                      id="numero"
-                      name="numero"
-                      label="Número"
-                      placeholder="Digite aqui"
-                      fullWidth
-                      onChange={handleChange}
-                      onBlur={this.handleChange}
-                      helperText={touched.numero ? errors.numero : ""}
-                      error={touched.numero && Boolean(errors.numero)}
-                      InputLabelProps={{
-                        shrink: true,
-                      }}
-                    />
-                  </Grid>
-                  <br />
-                  <Grid item xs={6} sm={6}>
-                    <InputLabel>Data de expedição</InputLabel>
-                    <TextField
-                      name="date_exp"
-                      id="date_exp"
-                      type="date"
-                      value={
-                        this.props.values.date_exp
-                          ? this.props.values.date_exp
-                          : ""
-                      }
-                      onChange={handleChange("date_exp")}
-                      onBlur={this.handleChange}
-                      helperText={touched.date_exp ? errors.date_exp : ""}
-                      error={touched.date_exp && Boolean(errors.date_exp)}
-                    />
-                  </Grid>
-                </FormGroup>
+                  </Select>
+                </Grid>
+                <br />
+                <Grid item xs={12} sm={6}>
+                  <TextField
+                    value={
+                      this.props.values.numero ? this.props.values.numero : ""
+                    }
+                    id="numero"
+                    name="numero"
+                    label="Número"
+                    placeholder="Digite aqui"
+                    fullWidth
+                    onChange={handleChange}
+                    onBlur={this.handleChange}
+                    helperText={touched.numero ? errors.numero : ""}
+                    error={touched.numero && Boolean(errors.numero)}
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
+                  />
+                </Grid>
+                <br />
+                <Grid item xs={12} sm={6}>
+                  <InputLabel>Data de expedição</InputLabel>
+                  <TextField
+                    name="date_exp"
+                    id="date_exp"
+                    type="date"
+                    value={
+                      this.props.values.date_exp
+                        ? this.props.values.date_exp
+                        : ""
+                    }
+                    onChange={handleChange("date_exp")}
+                    onBlur={this.handleChange}
+                    helperText={touched.date_exp ? errors.date_exp : ""}
+                    error={touched.date_exp && Boolean(errors.date_exp)}
+                  />
+                </Grid>
                 <br />
                 <Grid item xs={12} sm={12}>
                   <p>É estrangeiro?</p>
@@ -839,9 +839,36 @@ class Questionario extends Component {
                   {this.props.values.foreign === 1 && (
                     <>
                       <p>Possui RNE?</p>
+                      <Grid item xs={12} sm={12}>
+                        <div className="buttons pb05">
+                          <button
+                            className={`btn-outline ${
+                              this.state.foreign === 1 ? "active" : ""
+                            }`}
+                            value={1}
+                            type="button"
+                            onClick={(e) =>
+                              this.handleChangeForeign(e.target.value)
+                            }
+                          >
+                            Sim
+                          </button>{" "}
+                          <button
+                            className={`btn-outline ${
+                              this.state.foreign === 2 ? "active" : ""
+                            }`}
+                            value={2}
+                            type="button"
+                            onClick={(e) =>
+                              this.handleChangeForeignFalse(e.target.value)
+                            }
+                          >
+                            Não
+                          </button>
+                        </div>
+                      </Grid>
                     </>
                   )}
-
                   <Grid item xs={12} sm={12}>
                     <FormControl component="fieldset">
                       <RadioGroup
@@ -860,8 +887,8 @@ class Questionario extends Component {
                       >
                         {/* <Grid item xs={12} sm container> */}
                         <Grid item xs={12} sm={12}>
+                          <Title text="Envio da" bold="Apólice" />
                           <br />
-                          <p>Envio da Apólice</p>
                           <FormControlLabel
                             value="correio"
                             control={<Radio color="primary" />}
