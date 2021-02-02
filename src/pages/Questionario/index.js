@@ -34,10 +34,10 @@ import axios from "axios";
 import DialogDependents from "../../components/DialogDependents";
 import Birthday from "../../components/Birthday";
 import DialogAlert from "../../components/DialogAlert";
-import { bdQuali } from "../../services/bdQuali"
-import Autocomplete from '@material-ui/lab/Autocomplete';
+import { bdQuali } from "../../services/bdQuali";
+import Autocomplete from "@material-ui/lab/Autocomplete";
 import { bruf } from "../../services/bruf";
-import TermosUso from '../../components/TermosUso'
+import TermosUso from "../../components/TermosUso";
 import {
   textMaskPhone,
   textMaskNumber,
@@ -48,7 +48,7 @@ import {
   onlyLetters,
   nameField,
 } from "../../helpers/user";
-import "./questionario.css"
+import "./questionario.css";
 
 import { checkValidateRadios } from "../../helpers";
 import Loading from "../../components/loading";
@@ -56,11 +56,13 @@ import { CadastrarCotacaoBd } from "../../services/bd/CadastrarCotacao";
 
 import { createBrowserHistory } from "history";
 // import { entities } from "../../helpers/entities";
-class About extends Component {
+class Questionario extends Component {
   constructor(props) {
     super(props);
     this.state = {
       pratica_esportes: 0,
+      include_recipient: 0,
+      foreign: 0,
       loading: false,
       error: false,
       include_sports: 0,
@@ -101,13 +103,12 @@ class About extends Component {
       dependents: [],
       storage: JSON.parse(localStorage.getItem("@bidu2/user")),
       estados: [],
-      cidades: []
+      cidades: [],
     };
     this.handleCEP = this.handleCEP.bind(this);
   }
 
   async componentDidMount() {
-
     this.props.setValues({
       ...this.props.values,
       pratica_esportes: 0,
@@ -117,18 +118,25 @@ class About extends Component {
       include_sports: 0,
     });
 
-
+    this.props.setValues({
+      ...this.props.values,
+      include_recipient: 0,
+    });
+    this.props.setValues({
+      ...this.props.values,
+      foreign: 0,
+    });
 
     const storage = JSON.parse(localStorage.getItem("@bidu2/user"));
 
-    delete storage.entities
-    delete storage.entidade
-    delete storage.operadoras
-    delete storage.estado
-    delete storage.cidade
-    delete storage.dependents
-    this.props.values.operadoras = []
-    localStorage.setItem("@bidu2/user", JSON.stringify(storage))
+    delete storage.entities;
+    delete storage.entidade;
+    delete storage.operadoras;
+    delete storage.estado;
+    delete storage.cidade;
+    delete storage.dependents;
+    this.props.values.operadoras = [];
+    localStorage.setItem("@bidu2/user", JSON.stringify(storage));
 
     if (storage.length !== 0) {
       this.setState(storage);
@@ -164,7 +172,6 @@ class About extends Component {
     }
   };
 
-
   handleChangeInsurance = (value) => (event) => {
     event.preventDefault();
     this.setState({ pratica_esportes: value });
@@ -182,9 +189,7 @@ class About extends Component {
       ...this.props.values,
       pratica_esportes: 2,
       insurance: false,
-
     });
-
   };
   handleChangeInclude = (value) => (event) => {
     event.preventDefault();
@@ -203,9 +208,45 @@ class About extends Component {
       ...this.props.values,
       include_sports: 2,
       insurance: false,
-
     });
+  };
 
+  handleChangeRecipient = (value) => (event) => {
+    event.preventDefault();
+    this.setState({ include_recipient: value });
+    this.props.setValues({
+      ...this.props.values,
+      insurance: true,
+      include_recipient: 1,
+    });
+  };
+
+  handleChangeRecipientFalse = (value) => (event) => {
+    event.preventDefault();
+    this.setState({ include_recipient: value });
+    this.props.setValues({
+      ...this.props.values,
+      include_recipient: 2,
+      insurance: false,
+    });
+  };
+  handleChangeForeign = (value) => (event) => {
+    event.preventDefault();
+    this.setState({ foreign: value });
+    this.props.setValues({
+      ...this.props.values,
+      foreign: 2,
+      insurance: false,
+    });
+  };
+  handleChangeForeignFalse = (value) => (event) => {
+    event.preventDefault();
+    this.setState({ foreign: value });
+    this.props.setValues({
+      ...this.props.values,
+      foreign: 2,
+      insurance: false,
+    });
   };
   getAddress = async (e) => {
     this.setState({ loading: true });
@@ -248,10 +289,7 @@ class About extends Component {
       occupations: [],
       occupationsFalse: true,
     });
-    let occupations = await apiQualicorp.publicoAlvo(
-      estado,
-      cidade,
-    );
+    let occupations = await apiQualicorp.publicoAlvo(estado, cidade);
     if (occupations && occupations.data && occupations.data.length > 0) {
       this.setState({ occupations: occupations.data, loading: false });
     } else {
@@ -268,11 +306,11 @@ class About extends Component {
       entities: [],
       entitiesFalse: true,
     });
-    this.props.values.operadoras = []
+    this.props.values.operadoras = [];
     let entities = await apiQualicorp.entidades(profissao, uf, cidade);
 
     if (entities && entities.data && entities.data.length > 0) {
-      this.props.values.entities = entities.data
+      this.props.values.entities = entities.data;
 
       // entities.data.map((v) => {
       //   this.getOperator(v.id, uf, cidade)
@@ -299,15 +337,19 @@ class About extends Component {
     let operadoras = await apiQualicorp.operadoras(uf, cidade, entitie);
 
     if (operadoras && operadoras.data && operadoras.data.length > 0) {
-
-      let resOperadoras = [operadoras.data.map((v) => {
-        return {
-          id: v.id,
-          name: v.nome,
-          entite: entitie
-        }
-      })]
-      this.props.values.operadoras = [...this.props.values.operadoras, resOperadoras[0]]
+      let resOperadoras = [
+        operadoras.data.map((v) => {
+          return {
+            id: v.id,
+            name: v.nome,
+            entite: entitie,
+          };
+        }),
+      ];
+      this.props.values.operadoras = [
+        ...this.props.values.operadoras,
+        resOperadoras[0],
+      ];
 
       this.setState({
         operadoras: operadoras.data,
@@ -320,9 +362,7 @@ class About extends Component {
         operadorasFalse: false,
       });
     }
-  }
-
-
+  };
 
   handleChange = (event) => {
     if (event.target.name == "profissao") {
@@ -397,15 +437,10 @@ class About extends Component {
     this.setState({ redirect: true });
   };
 
-
-
   setDependents = (dependents) => {
-    this.setState({ dependents })
+    this.setState({ dependents });
     this.props.values.dependents = dependents;
-
-  }
-
-
+  };
 
   render() {
     const { loading, redirect, usuario, storage } = this.state;
@@ -429,8 +464,11 @@ class About extends Component {
       handleChange,
       handleSubmit,
       pratica_esportes,
-      include_sports
+      include_sports,
     } = this.props;
+
+    const { include_recipient } = this.state;
+    const { foreign } = this.state;
 
     if (this.props.status) {
       return <Redirect to="/cotacao" />;
@@ -439,38 +477,38 @@ class About extends Component {
     return (
       <>
         <Wrapper>
-          <Steps step1={true} step2={true} step3={true}  />
-          <Title text="Dados do" bold="Beneficiário" /> 
+          <Steps step1={true} step2={true} step3={true} />
+          <Title text="Dados do" bold="Beneficiário" />
           <form onSubmit={handleSubmit}>
             <Grid container spacing={3}>
               <Grid item xs={12} sm={6}>
-              <p>Gostaria de identificar um Beneficiário?</p>
-              {loading && <Loading />}
+                <p>Gostaria de identificar um Beneficiário?</p>
+                {loading && <Loading />}
                 <FormGroup row>
                   <Grid container spacing={2}>
                     <Grid item xs={12} sm={12}>
                       <div className="buttons pb05">
                         <button
                           className={`btn-outline ${
-                            this.state.include_recipient == 1 ? "active" : ""
+                            this.props.values.include_recipient === 1
+                              ? "active"
+                              : ""
                           }`}
                           value={1}
                           type="button"
-                          onClick={(e) =>
-                            this.handleChangePlate(e.target.value)
-                          }
+                          onClick={this.handleChangeRecipient()}
                         >
                           Sim
                         </button>{" "}
                         <button
                           className={`btn-outline ${
-                            this.state.include_recipient == 0 ? "active" : ""
+                            this.props.values.include_recipient === 2
+                              ? "active"
+                              : ""
                           }`}
-                          value={0}
+                          value={2}
                           type="button"
-                          onClick={(e) =>
-                            this.handleChangePlate(e.target.value)
-                          }
+                          onClick={this.handleChangeRecipientFalse()}
                         >
                           Não
                         </button>
@@ -479,78 +517,198 @@ class About extends Component {
                   </Grid>
                 </FormGroup>
                 {/* INPUT DO BENEFICARIO*/}
+                {this.props.values.include_recipient === 1 && (
+                  <>
+                    <Grid item xs={12} sm={12}>
+                      <TextField
+                        value={
+                          this.props.values.nome ? this.props.values.nome : ""
+                        }
+                        type="text"
+                        id="name"
+                        name="nome"
+                        label="Nome"
+                        placeholder="João da Silva"
+                        fullWidth
+                        onChange={handleChange}
+                        onBlur={this.handleChange}
+                        helperText={touched.nome ? errors.nome : ""}
+                        error={touched.nome && Boolean(errors.nome)}
+                        InputProps={{
+                          inputComponent: onlyLetters,
+                          autoComplete: "off",
+                        }}
+                        InputLabelProps={{
+                          shrink: true,
+                        }}
+                      />
+                    </Grid>
+                    <br />
+
+                    <Grid item xs={12} sm={12}>
+                      <InputLabel shrink id="grau_parentesco">
+                        Grau de Parentesco
+                      </InputLabel>
+                      <Select
+                        name="grau_parentesco"
+                        fullWidth
+                        displayEmpty
+                        labelId="grau_parentesco"
+                        id="grau_parentesco"
+                        value={
+                          this.props.values.grau_parentesco
+                            ? this.props.values.grau_parentesco
+                            : ""
+                        }
+                        onChange={handleChange("grau_parentesco")}
+                        onBlur={this.handleChange}
+                        helperText={
+                          touched.grau_parentesco ? errors.grau_parentesco : ""
+                        }
+                        error={
+                          touched.grau_parentesco &&
+                          Boolean(errors.grau_parentesco)
+                        }
+                      >
+                        <MenuItem value="" disabled>
+                          Selecione
+                        </MenuItem>
+                        <MenuItem value="CONJUGE">Côjuge</MenuItem>
+                        <MenuItem value="FILHOS">Filhos</MenuItem>
+                        <MenuItem value="PAI">Pai</MenuItem>
+                        <MenuItem value="MAE">Mãe</MenuItem>
+                        <MenuItem value="IRMAOS">Irmãos</MenuItem>
+                        <MenuItem value="OUTROS">Outros</MenuItem>
+                      </Select>
+                    </Grid>
+                    <br />
+                    <Grid item xs={12} sm={12}>
+                      <TextField
+                        value={
+                          this.props.values.percentual
+                            ? this.props.values.percentual
+                            : ""
+                        }
+                        id="percentual"
+                        name="percentual"
+                        label="Percentual"
+                        placeholder="Ex: 50"
+                        fullWidth
+                        onChange={handleChange}
+                        onBlur={this.handleChange}
+                        helperText={touched.percentual ? errors.percentual : ""}
+                        error={touched.percentual && Boolean(errors.percentual)}
+                        InputLabelProps={{
+                          shrink: true,
+                        }}
+                      />
+                    </Grid>
+                    <br />
+                    <Grid item xs={12} sm={12}>
+                      <InputLabel>Data de nascimento</InputLabel>
+                      <TextField
+                        name="date_birth_beneficiario"
+                        id="date_birth_beneficiario"
+                        type="date"
+                        value={
+                          this.props.values.date_birth_beneficiario
+                            ? this.props.values.date_birth_beneficiario
+                            : ""
+                        }
+                        onChange={handleChange("date_birth_beneficiario")}
+                        onBlur={this.handleChange}
+                        helperText={
+                          touched.date_birth_beneficiario
+                            ? errors.date_birth_beneficiario
+                            : ""
+                        }
+                        error={
+                          touched.date_birth_beneficiario &&
+                          Boolean(errors.date_birth_beneficiario)
+                        }
+                      />
+                    </Grid>
+                    <br />
+
+                    {}
+                  </>
+                )}
                 <Title text="Dados" bold="Complementares" />
-                <Grid item xs={12} sm={12}>
-                <InputLabel shrink id="formation">
-                  Escolaridade
-                </InputLabel>
-                <Select
-                  name="escolaridade"
-                  fullWidth
-                  displayEmpty
-                  labelId="escolaridade"
-                  id="escolaridade"
-                  value={
-                    this.props.values.escolaridade
-                      ? this.props.values.escolaridade
-                      : ""
-                  }
-                  onChange={handleChange("escolaridade")}
-                  onBlur={this.handleChange}
-                  helperText={touched.escolaridade ? errors.escolaridade : ""}
-                  error={touched.escolaridade && Boolean(errors.escolaridade)}
-                >
-                  <MenuItem className="txt-dark_gray" value="" disabled>
-                    Selecione
-                  </MenuItem>
-                  <MenuItem value="EDUCACAO_PRIMARIA">
-                    Ensino Fundamental
-                  </MenuItem>
-                  <MenuItem value="ENSINO_MEDIO">Ensino Médio</MenuItem>
-                  <MenuItem value="ENSINO_MEDIO_TECNICO">
-                    Ensino Técnico
-                  </MenuItem>
-                  <MenuItem value="ENSINO_SUPERIOR">Ensino Superior</MenuItem>
-                  <MenuItem value="ENSINO_SUPERIOR_TECNOLOGO">
-                    Ensino Superior Tecnólogo
-                  </MenuItem>
-                  <MenuItem value="POS_GRADUACAO">Pós-graduação</MenuItem>
-                  <MenuItem value="MESTRADO">Mestrado</MenuItem>
-                  <MenuItem value=">DOUTORADO">Doutorado</MenuItem>
-                  <MenuItem value="POS_DOUTORADO">Pós Doutorado</MenuItem>
-                </Select>
+                <Grid item xs={12} sm={6}>
+                  <InputLabel shrink id="formation">
+                    Escolaridade
+                  </InputLabel>
+                  <Select
+                    name="escolaridade"
+                    fullWidth
+                    displayEmpty
+                    labelId="escolaridade"
+                    id="escolaridade"
+                    value={
+                      this.props.values.escolaridade
+                        ? this.props.values.escolaridade
+                        : ""
+                    }
+                    onChange={handleChange("escolaridade")}
+                    onBlur={this.handleChange}
+                    helperText={touched.escolaridade ? errors.escolaridade : ""}
+                    error={touched.escolaridade && Boolean(errors.escolaridade)}
+                  >
+                    <MenuItem className="txt-dark_gray" value="" disabled>
+                      Selecione
+                    </MenuItem>
+                    <MenuItem value="EDUCACAO_PRIMARIA">
+                      Ensino Fundamental
+                    </MenuItem>
+                    <MenuItem value="ENSINO_MEDIO">Ensino Médio</MenuItem>
+                    <MenuItem value="ENSINO_MEDIO_TECNICO">
+                      Ensino Técnico
+                    </MenuItem>
+                    <MenuItem value="ENSINO_SUPERIOR">Ensino Superior</MenuItem>
+                    <MenuItem value="ENSINO_SUPERIOR_TECNOLOGO">
+                      Ensino Superior Tecnólogo
+                    </MenuItem>
+                    <MenuItem value="POS_GRADUACAO">Pós-graduação</MenuItem>
+                    <MenuItem value="MESTRADO">Mestrado</MenuItem>
+                    <MenuItem value=">DOUTORADO">Doutorado</MenuItem>
+                    <MenuItem value="POS_DOUTORADO">Pós Doutorado</MenuItem>
+                  </Select>
+                </Grid>
                 <br />
-                <br />
-                <Grid item xs={12} sm={12}>
-                <InputLabel shrink id="estado_civil">
-                  Estado Civil
-                </InputLabel>
-                <Select
-                  name="marital"
-                  fullWidth
-                  displayEmpty
-                  labelId="estado_civil"
-                  id="estado_civil"
-                  value={
-                    this.props.values.marital ? this.props.values.marital : ""
-                  }
-                  onChange={handleChange("marital")}
-                  onBlur={this.handleChange}
-                  helperText={touched.marital ? errors.marital : ""}
-                  error={touched.marital && Boolean(errors.marital)}
-                >
-                  <MenuItem value="" disabled>
-                    Selecione
-                  </MenuItem>
-                  <MenuItem value="SOLTEIRO">Solteiro(a)</MenuItem>
-                  <MenuItem value="CASADO">Casado(a) ou União Estável</MenuItem>
-                  <MenuItem value="DIVORCIADO">Divorciado(a)</MenuItem>
-                  <MenuItem value="SEPARADO">Separado(a) judicialmente</MenuItem>
-                  <MenuItem value="VIUVO">Viúvo(a)</MenuItem>
-                </Select>
+                <Grid item xs={12} sm={6}>
+                  <InputLabel shrink id="estado_civil">
+                    Estado Civil
+                  </InputLabel>
+                  <Select
+                    name="marital"
+                    fullWidth
+                    displayEmpty
+                    labelId="estado_civil"
+                    id="estado_civil"
+                    value={
+                      this.props.values.marital ? this.props.values.marital : ""
+                    }
+                    onChange={handleChange("marital")}
+                    onBlur={this.handleChange}
+                    helperText={touched.marital ? errors.marital : ""}
+                    error={touched.marital && Boolean(errors.marital)}
+                  >
+                    <MenuItem value="" disabled>
+                      Selecione
+                    </MenuItem>
+                    <MenuItem value="SOLTEIRO">Solteiro(a)</MenuItem>
+                    <MenuItem value="CASADO">
+                      Casado(a) ou União Estável
+                    </MenuItem>
+                    <MenuItem value="DIVORCIADO">Divorciado(a)</MenuItem>
+                    <MenuItem value="SEPARADO">
+                      Separado(a) judicialmente
+                    </MenuItem>
+                    <MenuItem value="VIUVO">Viúvo(a)</MenuItem>
+                  </Select>
+                </Grid>
               </Grid>
-              </Grid>
-                <Grid item xs={12} sm={12}>
+              <Grid item xs={12} sm={12}>
                 <FormControlLabel
                   control={
                     <Switch
@@ -566,29 +724,30 @@ class About extends Component {
                 />
               </Grid>
               <br />
-              <br />              
-              <Grid container spacing={2}>
-              <Title text="Documento do" bold="Segurado" /> 
               <br />
-              <br />              
-              <Grid item xs={12} sm={12}>
-                  <InputLabel shrink id="type_doc">
-                    Tipo do Documento
-                  </InputLabel>
-                  <Select
-                    value={{}}
-                    labelId="type_doc"
-                    id="type_doc"
-                    name="document"
-                    fullWidth
-                    displayEmpty
-                    // onChange={handleChange("esportes")}
-                    // onBlur={this.informacaoPagamento}
-                    helperText={touched.document ? errors.document : ""}
-                    error={touched.document && Boolean(errors.document)}
-                  >
-                    <MenuItem value="000">Selecione</MenuItem>
-                    {/* {this.state.dados_cotacao.bancos[0] instanceof Array
+              <Grid container spacing={2}>
+                <FormGroup row>
+                  <Title text="Documento do" bold="Segurado" />
+                  <br />
+                  <br />
+                  <Grid item xs={12} sm={12}>
+                    <InputLabel shrink id="type_doc">
+                      Tipo do Documento
+                    </InputLabel>
+                    <Select
+                      value={{}}
+                      labelId="type_doc"
+                      id="type_doc"
+                      name="document"
+                      fullWidth
+                      displayEmpty
+                      // onChange={handleChange("esportes")}
+                      // onBlur={this.informacaoPagamento}
+                      helperText={touched.document ? errors.document : ""}
+                      error={touched.document && Boolean(errors.document)}
+                    >
+                      <MenuItem value="000">Selecione</MenuItem>
+                      {/* {this.state.dados_cotacao.bancos[0] instanceof Array
                     ? this.state.dados_cotacao.bancos[0].map((banco, index) => (
                       <MenuItem key={index} value={banco}>
                         {Dictionary.banks[banco]}
@@ -599,93 +758,107 @@ class About extends Component {
                         {Dictionary.banks[banco]}
                       </MenuItem>
                     ))} */}
-                  </Select>
-                </Grid>
-                <br />  
-                <Grid item xs={12} sm={6}>
-                <TextField
-                  value={
-                    this.props.values.numero ? this.props.values.numero : ""
-                  }
-                  id="numero"
-                  name="numero"
-                  label="Número"
-                  placeholder="Digite aqui"
-                  fullWidth
-                  onChange={handleChange}
-                  onBlur={this.handleChange}
-                  helperText={touched.numero ? errors.numero : ""}
-                  error={touched.numero && Boolean(errors.numero)}
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                />
-              </Grid>
-              <br />  
-              <Grid item xs={6} sm={6}>
-                <InputLabel>Data de expedição</InputLabel>
-                <TextField
-                  name="date_exp"
-                  id="date_exp"
-                  type="date"
-                  value={this.props.values.date_exp ? this.props.values.date_exp : ""}
-                  onChange={handleChange("date_exp")}
-                  onBlur={this.handleChange}
-                  helperText={touched.date_exp ? errors.date_exp : ""}
-                  error={touched.date_exp && Boolean(errors.date_exp)}
-                />
-              </Grid>
-              <br />
-              <Grid item xs={12} sm={12}>
-              <p>É estrangeiro?</p>
-              {loading && <Loading />}
-                <FormGroup row>
-                  <Grid container spacing={2}>
-                    <Grid item xs={12} sm={12}>
-                      <div className="buttons pb05">
-                        <button
-                          className={`btn-outline ${
-                            this.state.foreign == 1 ? "active" : ""
-                          }`}
-                          value={1}
-                          type="button"
-                          onClick={(e) =>
-                            this.handleChangePlate(e.target.value)
-                          }
-                        >
-                          Sim
-                        </button>{" "}
-                        <button
-                          className={`btn-outline ${
-                            this.state.foreign == 0 ? "active" : ""
-                          }`}
-                          value={0}
-                          type="button"
-                          onClick={(e) =>
-                            this.handleChangePlate(e.target.value)
-                          }
-                        >
-                          Não
-                        </button>
-                      </div>
-                    </Grid>
+                    </Select>
+                  </Grid>
+                  <br />
+                  <Grid item xs={12} sm={6}>
+                    <TextField
+                      value={
+                        this.props.values.numero ? this.props.values.numero : ""
+                      }
+                      id="numero"
+                      name="numero"
+                      label="Número"
+                      placeholder="Digite aqui"
+                      fullWidth
+                      onChange={handleChange}
+                      onBlur={this.handleChange}
+                      helperText={touched.numero ? errors.numero : ""}
+                      error={touched.numero && Boolean(errors.numero)}
+                      InputLabelProps={{
+                        shrink: true,
+                      }}
+                    />
+                  </Grid>
+                  <br />
+                  <Grid item xs={6} sm={6}>
+                    <InputLabel>Data de expedição</InputLabel>
+                    <TextField
+                      name="date_exp"
+                      id="date_exp"
+                      type="date"
+                      value={
+                        this.props.values.date_exp
+                          ? this.props.values.date_exp
+                          : ""
+                      }
+                      onChange={handleChange("date_exp")}
+                      onBlur={this.handleChange}
+                      helperText={touched.date_exp ? errors.date_exp : ""}
+                      error={touched.date_exp && Boolean(errors.date_exp)}
+                    />
                   </Grid>
                 </FormGroup>
+                <br />
                 <Grid item xs={12} sm={12}>
-                  <FormControl component="fieldset">
-                    <RadioGroup
-                      value={
-                        this.props.values.frequency ? this.props.values.frequency : ""
-                      }
-                      aria-label="frequency"
-                      name="frequency"
-                      className={checkValidateRadios("frequency", this.props)}
-                      onChange={handleChange("frequency")}
-                      onBlur={this.handleChange}
-                      helperText={touched.frequency ? errors.frequency : ""}
-                      error={touched.frequency && Boolean(errors.moradia)}
-                    >
-                      {/* <Grid item xs={12} sm container> */}
+                  <p>É estrangeiro?</p>
+                  {loading && <Loading />}
+                  <FormGroup row>
+                    <Grid container spacing={2}>
+                      <Grid item xs={12} sm={12}>
+                        <div className="buttons pb05">
+                          <button
+                            className={`btn-outline ${
+                              this.state.foreign == 1 ? "active" : ""
+                            }`}
+                            value={1}
+                            type="button"
+                            onClick={(e) =>
+                              this.handleChangeForeign(e.target.value)
+                            }
+                          >
+                            Sim
+                          </button>{" "}
+                          <button
+                            className={`btn-outline ${
+                              this.state.foreign == 2 ? "active" : ""
+                            }`}
+                            value={2}
+                            type="button"
+                            onClick={(e) =>
+                              this.handleChangeForeignFalse(e.target.value)
+                            }
+                          >
+                            Não
+                          </button>
+                        </div>
+                      </Grid>
+                    </Grid>
+                  </FormGroup>
+                  {/* poussui rne */}
+                  {this.props.values.foreign === 1 && (
+                    <>
+                      <p>Possui RNE?</p>
+                    </>
+                  )}
+
+                  <Grid item xs={12} sm={12}>
+                    <FormControl component="fieldset">
+                      <RadioGroup
+                        value={
+                          this.props.values.frequency
+                            ? this.props.values.frequency
+                            : ""
+                        }
+                        aria-label="frequency"
+                        name="frequency"
+                        className={checkValidateRadios("frequency", this.props)}
+                        onChange={handleChange("frequency")}
+                        onBlur={this.handleChange}
+                        helperText={touched.frequency ? errors.frequency : ""}
+                        error={touched.frequency && Boolean(errors.moradia)}
+                      >
+                        {/* <Grid item xs={12} sm container> */}
                         <Grid item xs={12} sm={12}>
                           <br />
                           <p>Envio da Apólice</p>
@@ -701,130 +874,149 @@ class About extends Component {
                             control={<Radio color="primary" />}
                             label="E-mail(Resumo da apólice, cartão do segurado, boletos digitais)"
                           />
+                        </Grid>
+                        <Grid item xs={12} sm={12}>
+                          <FormControlLabel
+                            value="email_correio"
+                            control={<Radio color="primary" />}
+                            label="Correio + E-mail(Cartão do segurado impresso, e demais documentos digitais)"
+                          />
+                        </Grid>
+                        <Title text="Endereço do" bold="Segurado" />
+                        <Grid spacing={2}>
+                          <Grid item xs={8} sm={6}>
+                            <TextField
+                              value={
+                                this.state.usuario.cep
+                                  ? this.state.usuario.cep
+                                  : ""
+                              }
+                              id="cep"
+                              label="CEP"
+                              placeholder="00000-000"
+                              fullWidth
+                              name="cep"
+                              // onChange={handleChange}
+                              onChange={(e) =>
+                                e.target.value.length == 9
+                                  ? this.handleCEP(e)
+                                  : ""
+                              }
+                              helperText={touched.cep ? errors.cep : ""}
+                              error={touched.cep && Boolean(errors.cep)}
+                              InputLabelProps={{
+                                shrink: true,
+                              }}
+                              InputProps={{
+                                inputComponent: textMaskCEP,
+                              }}
+                            />
+                            {this.state.address == false &&
+                            this.state.usuario.rua == "" ? (
+                              <p class="zip-error">Digite o nome da rua</p>
+                            ) : (
+                              ""
+                            )}
+                            {this.state.usuario.cep === undefined && (
+                              <p class="zip-error">CEP não encontrado</p>
+                            )}
+                          </Grid>
+                          <br />
+
+                          <Grid item xs={4} sm={6}>
+                            <TextField
+                              value={
+                                this.props.values.numero
+                                  ? this.props.values.numero
+                                  : ""
+                              }
+                              id="numero"
+                              name="numero"
+                              label="Número"
+                              placeholder="Digite aqui"
+                              fullWidth
+                              onChange={handleChange}
+                              onBlur={this.handleChange}
+                              helperText={touched.numero ? errors.numero : ""}
+                              error={touched.numero && Boolean(errors.numero)}
+                              InputLabelProps={{
+                                shrink: true,
+                              }}
+                              InputProps={{
+                                inputComponent: textMaskNumber,
+                              }}
+                            />
+                          </Grid>
+                          {this.state.usuario.rua && (
+                            <Grid item xs={12} sm={6}>
+                              <div className="results">
+                                {this.state.usuario.rua},{" "}
+                                {this.state.usuario.bairro} -{" "}
+                                {this.state.usuario.cidade}
+                              </div>
+                            </Grid>
+                          )}
+                          {/* Se não tiver logradouro abre campo para digitar */}
+                          {this.state.address == false &&
+                            this.state.usuario.rua == "" && (
+                              <Grid item xs={12} sm={6}>
+                                <TextField
+                                  value={
+                                    this.props.values.rua
+                                      ? this.props.values.rua
+                                      : ""
+                                  }
+                                  id="rua"
+                                  name="rua"
+                                  label="Logradouro"
+                                  placeholder="Ex: Av, Rua..."
+                                  fullWidth
+                                  onChange={handleChange}
+                                  onBlur={this.handleChange}
+                                  helperText={touched.rua ? errors.rua : ""}
+                                  error={touched.rua && Boolean(errors.rua)}
+                                  InputLabelProps={{
+                                    shrink: true,
+                                  }}
+                                />
+                              </Grid>
+                            )}
+                          {loading && <Loading />}
+                          <br />
+                          <Grid item xs={12} sm={6}>
+                            <TextField
+                              value={
+                                this.props.values.complemento
+                                  ? this.props.values.complemento
+                                  : ""
+                              }
+                              id="complemento"
+                              name="complemento"
+                              label="Complemento"
+                              placeholder="Digite aqui"
+                              fullWidth
+                              onChange={handleChange}
+                              onBlur={this.handleChange}
+                              helperText={
+                                touched.complemento ? errors.complemento : ""
+                              }
+                              error={
+                                touched.complemento &&
+                                Boolean(errors.complemento)
+                              }
+                              InputLabelProps={{
+                                shrink: true,
+                              }}
+                            />
+                          </Grid>
+                        </Grid>
+                      </RadioGroup>
+                    </FormControl>
                   </Grid>
-                  <Grid item xs={12} sm={12}>
-                    <FormControlLabel
-                      value="email_correio"
-                      control={<Radio color="primary" />}
-                      label="Correio + E-mail(Cartão do segurado impresso, e demais documentos digitais)"
-                    />
-                  </Grid>
-                  <Title text="Endereço do" bold="Segurado" />
-                  <Grid spacing={2}> 
-                  <Grid item xs={8} sm={6}>
-                   <TextField
-                  value={this.state.usuario.cep ? this.state.usuario.cep : ""}
-                  id="cep"
-                  label="CEP"
-                  placeholder="00000-000"
-                  fullWidth
-                  name="cep"
-                  // onChange={handleChange}
-                  onChange={(e) => e.target.value.length == 9 ? this.handleCEP(e) : ""}
-                  helperText={touched.cep ? errors.cep : ""}
-                  error={touched.cep && Boolean(errors.cep)}
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                  InputProps={{
-                    inputComponent: textMaskCEP,
-                  }}
-                />
-                { this.state.address == false && this.state.usuario.rua == "" ? (
-                  <p class="zip-error">Digite o nome da rua</p>
-                ) : "" }
-                {this.state.usuario.cep === undefined && (
-                  <p class="zip-error">CEP não encontrado</p>
-                )}
-              </Grid>
-              <br />
-              
-              <Grid item xs={4} sm={6}>
-                <TextField
-                  value={
-                    this.props.values.numero ? this.props.values.numero : ""
-                  }
-                  id="numero"
-                  name="numero"
-                  label="Número"
-                  placeholder="Digite aqui"
-                  fullWidth
-                  onChange={handleChange}
-                  onBlur={this.handleChange}
-                  helperText={touched.numero ? errors.numero : ""}
-                  error={touched.numero && Boolean(errors.numero)}
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                  InputProps={{
-                    inputComponent: textMaskNumber,
-                  }}
-                />
-              </Grid>
-              {this.state.usuario.rua && (
-                <Grid item xs={12} sm={6}>
-                  <div className="results">
-                    {this.state.usuario.rua}, {this.state.usuario.bairro} -{" "}
-                    {this.state.usuario.cidade}
-                  </div>
                 </Grid>
-              )}
-              {/* Se não tiver logradouro abre campo para digitar */}
-              { this.state.address == false && this.state.usuario.rua == "" &&
-                <Grid item xs={12} sm={6}>
-                  <TextField
-                    value={
-                      this.props.values.rua
-                        ? this.props.values.rua
-                        : ""
-                    }
-                    id="rua"
-                    name="rua"
-                    label="Logradouro"
-                    placeholder="Ex: Av, Rua..."
-                    fullWidth
-                    onChange={handleChange}
-                    onBlur={this.handleChange}
-                    helperText={touched.rua ? errors.rua : ""}
-                    error={touched.rua && Boolean(errors.rua)}
-                    InputLabelProps={{
-                      shrink: true,
-                    }}
-                  />
-                </Grid>
-              }
-              {loading && <Loading />}
-              <br />
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  value={
-                    this.props.values.complemento
-                      ? this.props.values.complemento
-                      : ""
-                  }
-                  id="complemento"
-                  name="complemento"
-                  label="Complemento"
-                  placeholder="Digite aqui"
-                  fullWidth
-                  onChange={handleChange}
-                  onBlur={this.handleChange}
-                  helperText={touched.complemento ? errors.complemento : ""}
-                  error={touched.complemento && Boolean(errors.complemento)}
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                />
-              </Grid>       
-            </Grid>       
-                </RadioGroup>
-              </FormControl>
               </Grid>
             </Grid>
-          </Grid>
-        </Grid>
-      </Grid>
-        </form>
+          </form>
           <div className="actions mt0">
             <Link className="btn-back" to="/cotacao">
               <KeyboardBackspaceIcon /> Voltar
@@ -877,7 +1069,6 @@ const Form = withFormik({
     cidade,
     estado,
     frequency,
-    
   }) => {
     return {
       cpf: cpf || "",
@@ -889,7 +1080,6 @@ const Form = withFormik({
       cidade: cidade || "",
       estado: estado || "",
       frequency: frequency || "",
-    
     };
   },
 
@@ -914,22 +1104,22 @@ const Form = withFormik({
     telefone: Yup.string()
       .min(15, "O telefone deve ter no mínimo 11 dígitos")
       .required("Telefone é obrigatório"),
-    estado: Yup.string()
-      .required("Estado é obrigatório"),
+    estado: Yup.string().required("Estado é obrigatório"),
     // cidade: Yup.string()
     //   .required("Cidade é obrigatório"),
     profissao: Yup.string().required("Profissão é obrigatório"),
     date_birth: Yup.string()
       .required("Data de nascimento é obrigatório")
-      .test("date_birth", "Informe uma data entre ano de 1920 e a data atual!", (value) => {
-        let now = new Date()
-        now = `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`
-        if (value > now || value < "1920-01-01")
-          return false
-        else
-          return true
-      })
-
+      .test(
+        "date_birth",
+        "Informe uma data entre ano de 1920 e a data atual!",
+        (value) => {
+          let now = new Date();
+          now = `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`;
+          if (value > now || value < "1920-01-01") return false;
+          else return true;
+        }
+      ),
   }),
 
   handleSubmit: async (
@@ -940,6 +1130,6 @@ const Form = withFormik({
     setStatus(true);
     setSubmitting(false);
   },
-})(About);
+})(Questionario);
 
 export default connect(mapStateToProps, mapDispatchToProps)(Form);

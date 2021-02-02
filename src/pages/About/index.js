@@ -33,10 +33,10 @@ import axios from "axios";
 import DialogDependents from "../../components/DialogDependents";
 import Birthday from "../../components/Birthday";
 import DialogAlert from "../../components/DialogAlert";
-import { bdQuali } from "../../services/bdQuali"
-import Autocomplete from '@material-ui/lab/Autocomplete';
+import { bdQuali } from "../../services/bdQuali";
+import Autocomplete from "@material-ui/lab/Autocomplete";
 import { bruf } from "../../services/bruf";
-import TermosUso from '../../components/TermosUso'
+import TermosUso from "../../components/TermosUso";
 import {
   textMaskPhone,
   textMaskNumber,
@@ -47,7 +47,7 @@ import {
   onlyLetters,
   nameField,
 } from "../../helpers/user";
-import "./about.css"
+import "./about.css";
 
 import { checkValidateRadios } from "../../helpers";
 import Loading from "../../components/loading";
@@ -95,18 +95,17 @@ class About extends Component {
         moradia: false,
         pratica_esportes: 1,
         include_sports: 1,
-        frequency: false
+        frequency: false,
       },
       dependents: [],
       storage: JSON.parse(localStorage.getItem("@bidu2/user")),
       estados: [],
-      cidades: []
+      cidades: [],
     };
     this.handleCEP = this.handleCEP.bind(this);
   }
 
   async componentDidMount() {
-
     this.props.setValues({
       ...this.props.values,
       pratica_esportes: 0,
@@ -116,18 +115,16 @@ class About extends Component {
       include_sports: 0,
     });
 
-
-
     const storage = JSON.parse(localStorage.getItem("@bidu2/user"));
 
-    delete storage.entities
-    delete storage.entidade
-    delete storage.operadoras
-    delete storage.estado
-    delete storage.cidade
-    delete storage.dependents
-    this.props.values.operadoras = []
-    localStorage.setItem("@bidu2/user", JSON.stringify(storage))
+    delete storage.entities;
+    delete storage.entidade;
+    delete storage.operadoras;
+    delete storage.estado;
+    delete storage.cidade;
+    delete storage.dependents;
+    this.props.values.operadoras = [];
+    localStorage.setItem("@bidu2/user", JSON.stringify(storage));
 
     if (storage.length !== 0) {
       this.setState(storage);
@@ -163,7 +160,6 @@ class About extends Component {
     }
   };
 
-
   handleChangeInsurance = (value) => (event) => {
     event.preventDefault();
     this.setState({ pratica_esportes: value });
@@ -181,9 +177,7 @@ class About extends Component {
       ...this.props.values,
       pratica_esportes: 2,
       insurance: false,
-
     });
-
   };
   handleChangeInclude = (value) => (event) => {
     event.preventDefault();
@@ -202,9 +196,7 @@ class About extends Component {
       ...this.props.values,
       include_sports: 2,
       insurance: false,
-
     });
-
   };
   getAddress = async (e) => {
     this.setState({ loading: true });
@@ -247,10 +239,7 @@ class About extends Component {
       occupations: [],
       occupationsFalse: true,
     });
-    let occupations = await apiQualicorp.publicoAlvo(
-      estado,
-      cidade,
-    );
+    let occupations = await apiQualicorp.publicoAlvo(estado, cidade);
     if (occupations && occupations.data && occupations.data.length > 0) {
       this.setState({ occupations: occupations.data, loading: false });
     } else {
@@ -267,11 +256,11 @@ class About extends Component {
       entities: [],
       entitiesFalse: true,
     });
-    this.props.values.operadoras = []
+    this.props.values.operadoras = [];
     let entities = await apiQualicorp.entidades(profissao, uf, cidade);
 
     if (entities && entities.data && entities.data.length > 0) {
-      this.props.values.entities = entities.data
+      this.props.values.entities = entities.data;
 
       // entities.data.map((v) => {
       //   this.getOperator(v.id, uf, cidade)
@@ -298,15 +287,19 @@ class About extends Component {
     let operadoras = await apiQualicorp.operadoras(uf, cidade, entitie);
 
     if (operadoras && operadoras.data && operadoras.data.length > 0) {
-
-      let resOperadoras = [operadoras.data.map((v) => {
-        return {
-          id: v.id,
-          name: v.nome,
-          entite: entitie
-        }
-      })]
-      this.props.values.operadoras = [...this.props.values.operadoras, resOperadoras[0]]
+      let resOperadoras = [
+        operadoras.data.map((v) => {
+          return {
+            id: v.id,
+            name: v.nome,
+            entite: entitie,
+          };
+        }),
+      ];
+      this.props.values.operadoras = [
+        ...this.props.values.operadoras,
+        resOperadoras[0],
+      ];
 
       this.setState({
         operadoras: operadoras.data,
@@ -319,9 +312,7 @@ class About extends Component {
         operadorasFalse: false,
       });
     }
-  }
-
-
+  };
 
   handleChange = (event) => {
     if (event.target.name == "profissao") {
@@ -396,15 +387,10 @@ class About extends Component {
     this.setState({ redirect: true });
   };
 
-
-
   setDependents = (dependents) => {
-    this.setState({ dependents })
+    this.setState({ dependents });
     this.props.values.dependents = dependents;
-
-  }
-
-
+  };
 
   render() {
     const { loading, redirect, usuario, storage } = this.state;
@@ -428,7 +414,7 @@ class About extends Component {
       handleChange,
       handleSubmit,
       pratica_esportes,
-      include_sports
+      include_sports,
     } = this.props;
 
     if (this.props.status) {
@@ -492,7 +478,7 @@ class About extends Component {
                 />
               </Grid>
 
-              { }
+              {}
 
               <Grid item xs={12} sm={6}>
                 <TextField
@@ -544,7 +530,11 @@ class About extends Component {
                   name="date_birth"
                   id="date_birth"
                   type="date"
-                  value={this.props.values.date_birth ? this.props.values.date_birth : ""}
+                  value={
+                    this.props.values.date_birth
+                      ? this.props.values.date_birth
+                      : ""
+                  }
                   onChange={handleChange("date_birth")}
                   onBlur={this.handleChange}
                   helperText={touched.date_birth ? errors.date_birth : ""}
@@ -555,28 +545,31 @@ class About extends Component {
                 <FormControl component="fieldset">
                   <InputLabel shrink id="estado">
                     Estado
-              </InputLabel>
+                  </InputLabel>
                   <Autocomplete
-
                     id="estado"
                     name="estado"
                     clearOnEscape
                     options={bruf}
                     getOptionLabel={(option) => option.nome}
-                    renderInput={(params) => <TextField {...params} style={{ marginTop: 0 }} label="Estado" margin="normal" helperText={touched.estado ? errors.estado : ""}
-                      error={touched.estado && Boolean(errors.estado)} />}
-
-
-                    onChange={(event, newValue,) => {
-
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        style={{ marginTop: 0 }}
+                        label="Estado"
+                        margin="normal"
+                        helperText={touched.estado ? errors.estado : ""}
+                        error={touched.estado && Boolean(errors.estado)}
+                      />
+                    )}
+                    onChange={(event, newValue) => {
                       if (newValue && newValue.cidades) {
-                        this.props.values.estado = newValue.sigla
-                        this.setState({ cidades: newValue.cidades })
-                        console.log(newValue.cidades, "ESTADO")
-                      }
-                      else {
-                        this.setState({ cidades: [], occupations: [] })
-                        this.props.values.cidade = ""
+                        this.props.values.estado = newValue.sigla;
+                        this.setState({ cidades: newValue.cidades });
+                        console.log(newValue.cidades, "ESTADO");
+                      } else {
+                        this.setState({ cidades: [], occupations: [] });
+                        this.props.values.cidade = "";
                       }
                     }}
                     InputProps={{
@@ -659,29 +652,32 @@ class About extends Component {
                 <FormControl component="fieldset" className="price-quote">
                   <InputLabel shrink id="profissao">
                     Profissão
-                      </InputLabel>
+                  </InputLabel>
                   <Autocomplete
-
                     id="profissao"
                     name="profissao"
                     clearOnEscape
                     options={this.state.occupations}
                     getOptionLabel={(option) => option.nome}
                     disabled={this.state.occupations.length > 0 ? false : true}
-                    renderInput={(params) => <TextField {...params} style={{ marginTop: 0 }} label="Profissão" margin="normal" />}
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        style={{ marginTop: 0 }}
+                        label="Profissão"
+                        margin="normal"
+                      />
+                    )}
                     onChange={(event, newValue) => {
                       if (newValue) {
-
-                        this.props.values.profissao = newValue.id
+                        this.props.values.profissao = newValue.id;
                         this.getEntities(
                           this.props.values.profissao,
                           this.props.values.estado,
                           this.props.values.cidade
                         );
-
                       }
                     }}
-
                   />
                 </FormControl>
               </Grid>
@@ -761,9 +757,7 @@ class About extends Component {
                   displayEmpty
                   labelId="income"
                   id="income"
-                  value={
-                    this.props.values.renda ? this.props.values.renda : ""
-                  }
+                  value={this.props.values.renda ? this.props.values.renda : ""}
                   onChange={handleChange("renda")}
                   onBlur={this.handleChange}
                   helperText={touched.renda ? errors.renda : ""}
@@ -774,9 +768,15 @@ class About extends Component {
                   </MenuItem>
                   <MenuItem value="renda1">R$0,00</MenuItem>
                   <MenuItem value="renda2">de R$0,01 até R$1.500,00</MenuItem>
-                  <MenuItem value="renda3">de R$1.500,01 até R$ 3.000,00</MenuItem>
-                  <MenuItem value="renda4">de R$3.000,01 até R$ 6.000,00</MenuItem>
-                  <MenuItem value="renda5">de R$6.000,01 até R$ 10.000,00</MenuItem>
+                  <MenuItem value="renda3">
+                    de R$1.500,01 até R$ 3.000,00
+                  </MenuItem>
+                  <MenuItem value="renda4">
+                    de R$3.000,01 até R$ 6.000,00
+                  </MenuItem>
+                  <MenuItem value="renda5">
+                    de R$6.000,01 até R$ 10.000,00
+                  </MenuItem>
                   <MenuItem value="renda6">acima de R$ 10.000,00</MenuItem>
                 </Select>
               </Grid>
@@ -797,9 +797,11 @@ class About extends Component {
                   InputLabelProps={{
                     shrink: true,
                   }}
-                  InputProps={{
-                    // inputComponent: textMaskNumber,
-                  }}
+                  InputProps={
+                    {
+                      // inputComponent: textMaskNumber,
+                    }
+                  }
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -808,7 +810,11 @@ class About extends Component {
                   name="date_validity"
                   id="date_validity"
                   type="date"
-                  value={this.props.values.date_validity ? this.props.values.date_validity : ""}
+                  value={
+                    this.props.values.date_validity
+                      ? this.props.values.date_validity
+                      : ""
+                  }
                   onChange={handleChange("date_validity")}
                   onBlur={this.handleChange}
                   helperText={touched.date_validity ? errors.date_validity : ""}
@@ -861,23 +867,20 @@ class About extends Component {
                 <Title text="Pratica Esportes" bold="Radicais?" />
                 <div className="buttons pb05">
                   <button
-                    className={`btn-outline ${this.props.values.pratica_esportes === 1 ? "active" : ""
-                      }`}
-
+                    className={`btn-outline ${
+                      this.props.values.pratica_esportes === 1 ? "active" : ""
+                    }`}
                     type="button"
-                    onClick={
-                      this.handleChangeInsurance()
-                    }
+                    onClick={this.handleChangeInsurance()}
                   >
                     Sim
-                        </button>{" "}
+                  </button>{" "}
                   <button
-                    className={`btn-outline ${this.props.values.pratica_esportes === 0 ? "active" : ""
-                      }`}
+                    className={`btn-outline ${
+                      this.props.values.pratica_esportes === 0 ? "active" : ""
+                    }`}
                     type="button"
-                    onClick={
-                      this.handleChangeInsuranceFalse()
-                    }
+                    onClick={this.handleChangeInsuranceFalse()}
                   >
                     Não
                   </button>
@@ -916,21 +919,23 @@ class About extends Component {
                       </MenuItem>
                     ))} */}
                   </Select>
-                <Grid item xs={12}>
-                  <FormControl component="fieldset">
-                    <RadioGroup
-                      value={
-                        this.props.values.frequency ? this.props.values.frequency : ""
-                      }
-                      aria-label="frequency"
-                      name="frequency"
-                      className={checkValidateRadios("frequency", this.props)}
-                      onChange={handleChange("frequency")}
-                      onBlur={this.handleChange}
-                      helperText={touched.frequency ? errors.frequency : ""}
-                      error={touched.frequency && Boolean(errors.moradia)}
-                    >
-                      {/* <Grid item xs={12} sm container> */}
+                  <Grid item xs={12}>
+                    <FormControl component="fieldset">
+                      <RadioGroup
+                        value={
+                          this.props.values.frequency
+                            ? this.props.values.frequency
+                            : ""
+                        }
+                        aria-label="frequency"
+                        name="frequency"
+                        className={checkValidateRadios("frequency", this.props)}
+                        onChange={handleChange("frequency")}
+                        onBlur={this.handleChange}
+                        helperText={touched.frequency ? errors.frequency : ""}
+                        error={touched.frequency && Boolean(errors.moradia)}
+                      >
+                        {/* <Grid item xs={12} sm container> */}
                         <Grid item xs={12} sm={12}>
                           <br />
                           <p>Com que frequência?</p>
@@ -947,56 +952,61 @@ class About extends Component {
                             label="acima de 3 vezes no ano"
                           />
                         </Grid>
-                    <br />
-                    <br />
-              <Grid item xs={12} sm={12}>
-                <Title text="Deseja incluir outro" bold="Esporte?" />
-                  <div className="buttons pb05">
-                    <button
-                    className={`btn-outline ${this.props.values.include_sports === 1 ? "active" : ""
-                      }`}
+                        <br />
+                        <br />
+                        <Grid item xs={12} sm={12}>
+                          <Title text="Deseja incluir outro" bold="Esporte?" />
+                          <div className="buttons pb05">
+                            <button
+                              className={`btn-outline ${
+                                this.props.values.include_sports === 1
+                                  ? "active"
+                                  : ""
+                              }`}
+                              type="button"
+                              onClick={this.handleChangeInclude()}
+                            >
+                              Sim
+                            </button>{" "}
+                            <button
+                              className={`btn-outline ${
+                                this.props.values.include_sports === 2
+                                  ? "active"
+                                  : ""
+                              }`}
+                              type="button"
+                              onClick={this.handleChangeIncludeFalse()}
+                            >
+                              Não
+                            </button>
+                          </div>
+                        </Grid>
 
-                    type="button"
-                    onClick={
-                      this.handleChangeInclude()
-                    }
-                  >
-                    Sim
-                        </button>{" "}
-                  <button
-                    className={`btn-outline ${this.props.values.include_sports === 2 ? "active" : ""
-                      }`}
-                    type="button"
-                    onClick={
-                      this.handleChangeIncludeFalse()
-                    }
-                  >
-                    Não
-                  </button>
-                </div>
-              </Grid>
+                        {loading && <Loading />}
 
-              {loading && <Loading />}
-
-              {this.props.values.include_sports === 1 && (
-                <Grid item xs={12} sm={12}>
-                  <InputLabel shrink id="esportes">
-                    Esportes
-                  </InputLabel>
-                  <Select
-                    value={{}}
-                    labelId="esportes"
-                    id="esportes"
-                    name="esportes"
-                    fullWidth
-                    displayEmpty
-                    // onChange={handleChange("esportes")}
-                    // onBlur={this.informacaoPagamento}
-                    helperText={touched.esportes ? errors.esportes : ""}
-                    error={touched.esportes && Boolean(errors.esportes)}
-                  >
-                    <MenuItem value="000">Selecione</MenuItem>
-                    {/* {this.state.dados_cotacao.bancos[0] instanceof Array
+                        {this.props.values.include_sports === 1 && (
+                          <Grid item xs={12} sm={12}>
+                            <InputLabel shrink id="esportes">
+                              Esportes
+                            </InputLabel>
+                            <Select
+                              value={{}}
+                              labelId="esportes"
+                              id="esportes"
+                              name="esportes"
+                              fullWidth
+                              displayEmpty
+                              // onChange={handleChange("esportes")}
+                              // onBlur={this.informacaoPagamento}
+                              helperText={
+                                touched.esportes ? errors.esportes : ""
+                              }
+                              error={
+                                touched.esportes && Boolean(errors.esportes)
+                              }
+                            >
+                              <MenuItem value="000">Selecione</MenuItem>
+                              {/* {this.state.dados_cotacao.bancos[0] instanceof Array
                     ? this.state.dados_cotacao.bancos[0].map((banco, index) => (
                       <MenuItem key={index} value={banco}>
                         {Dictionary.banks[banco]}
@@ -1007,62 +1017,71 @@ class About extends Component {
                         {Dictionary.banks[banco]}
                       </MenuItem>
                     ))} */}
-                  </Select>
-                <Grid item xs={12} sm={12}>
-                  <FormControl component="fieldset">
-                    <RadioGroup
-                      value={
-                        this.props.values.frequency ? this.props.values.frequency : ""
-                      }
-                      aria-label="frequency"
-                      name="frequency"
-                      className={checkValidateRadios("frequency", this.props)}
-                      onChange={handleChange("frequency")}
-                      onBlur={this.handleChange}
-                      helperText={touched.frequency ? errors.frequency : ""}
-                      error={touched.frequency && Boolean(errors.moradia)}
-                    >
-                      {/* <Grid item xs={12} sm container> */}
-                        <Grid item xs={12} sm={12}>
-                          <br />
-                          <p>Com que frequência?</p>
-                          <FormControlLabel
-                            value="frequencia"
-                            control={<Radio color="primary" />}
-                            label="até 3 vezes no ano"
-                          />
-                        </Grid>
-                        <Grid item xs={12} sm={12}>
-                          <FormControlLabel
-                            value="frequencia2"
-                            control={<Radio color="primary" />}
-                            label="acima de 3 vezes no ano"
-                          />
-                          <br />
-                          <br />
-
-                        </Grid>
-                    {/* </Grid> */}
-                  </RadioGroup>
-                </FormControl>
-              </Grid>
-            </Grid>)}
-                    {/* </Grid> */}
-                  </RadioGroup>
-                </FormControl>
-              </Grid>
-            </Grid>)}
-          </Grid>
+                            </Select>
+                            <Grid item xs={12} sm={12}>
+                              <FormControl component="fieldset">
+                                <RadioGroup
+                                  value={
+                                    this.props.values.frequency
+                                      ? this.props.values.frequency
+                                      : ""
+                                  }
+                                  aria-label="frequency"
+                                  name="frequency"
+                                  className={checkValidateRadios(
+                                    "frequency",
+                                    this.props
+                                  )}
+                                  onChange={handleChange("frequency")}
+                                  onBlur={this.handleChange}
+                                  helperText={
+                                    touched.frequency ? errors.frequency : ""
+                                  }
+                                  error={
+                                    touched.frequency && Boolean(errors.moradia)
+                                  }
+                                >
+                                  {/* <Grid item xs={12} sm container> */}
+                                  <Grid item xs={12} sm={12}>
+                                    <br />
+                                    <p>Com que frequência?</p>
+                                    <FormControlLabel
+                                      value="frequencia"
+                                      control={<Radio color="primary" />}
+                                      label="até 3 vezes no ano"
+                                    />
+                                  </Grid>
+                                  <Grid item xs={12} sm={12}>
+                                    <FormControlLabel
+                                      value="frequencia2"
+                                      control={<Radio color="primary" />}
+                                      label="acima de 3 vezes no ano"
+                                    />
+                                    <br />
+                                    <br />
+                                  </Grid>
+                                  {/* </Grid> */}
+                                </RadioGroup>
+                              </FormControl>
+                            </Grid>
+                          </Grid>
+                        )}
+                        {/* </Grid> */}
+                      </RadioGroup>
+                    </FormControl>
+                  </Grid>
+                </Grid>
+              )}
+            </Grid>
             <br />
-
 
             {/* {
               this.props.values.profissao && this.props.values.profissao.length > 0 &&
               this.props.values.operadoras && this.props.values.operadoras.length > 0 &&
               this.props.values.entities && this.props.values.entities.length > 0 &&
               ( */}
-                <>
-                  {/* <div class="vidas">
+            <>
+              {/* <div class="vidas">
                     <Title text="Quantidade de" bold="vidas" />
                   </div>
                   <div class="texto-vidas">
@@ -1079,19 +1098,12 @@ class About extends Component {
                     />
                   </div> */}
 
-
-
-
-                    <div className="actions about-actions">
-                      <Button
-                        type="submit"
-                        className="btn-next about-btn-next"
-                      >
-                        Quero uma cotação
-                  </Button>                 
-                  </div> 
-                </>
-    
+              <div className="actions about-actions">
+                <Button type="submit" className="btn-next about-btn-next">
+                  Quero uma cotação
+                </Button>
+              </div>
+            </>
           </form>
           {/* <div className="actions mt0">
             <Link className="btn-back" to="/">
@@ -1144,9 +1156,7 @@ const Form = withFormik({
     date_birth,
     cidade,
     estado,
-    frequency
-
-
+    frequency,
   }) => {
     return {
       cpf: cpf || "",
@@ -1157,8 +1167,7 @@ const Form = withFormik({
       date_birth: date_birth || "",
       cidade: cidade || "",
       estado: estado || "",
-      frequency: frequency || ""
-
+      frequency: frequency || "",
     };
   },
 
@@ -1183,22 +1192,22 @@ const Form = withFormik({
     telefone: Yup.string()
       .min(15, "O telefone deve ter no mínimo 11 dígitos")
       .required("Telefone é obrigatório"),
-    estado: Yup.string()
-      .required("Estado é obrigatório"),
+    estado: Yup.string().required("Estado é obrigatório"),
     // cidade: Yup.string()
     //   .required("Cidade é obrigatório"),
     profissao: Yup.string().required("Profissão é obrigatório"),
     date_birth: Yup.string()
       .required("Data de nascimento é obrigatório")
-      .test("date_birth", "Informe uma data entre ano de 1920 e a data atual!", (value) => {
-        let now = new Date()
-        now = `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`
-        if (value > now || value < "1920-01-01")
-          return false
-        else
-          return true
-      })
-
+      .test(
+        "date_birth",
+        "Informe uma data entre ano de 1920 e a data atual!",
+        (value) => {
+          let now = new Date();
+          now = `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`;
+          if (value > now || value < "1920-01-01") return false;
+          else return true;
+        }
+      ),
   }),
 
   handleSubmit: async (
