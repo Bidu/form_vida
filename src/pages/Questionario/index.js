@@ -1044,6 +1044,11 @@ class Questionario extends Component {
               </Grid>
             </Grid>
           </form>
+          <div className="actions">
+            <Button type="submit" className="btn-next" disabled={isSubmitting}>
+              Próximo
+            </Button>
+          </div>
           <div className="actions mt0">
             <Link className="btn-back" to="/cotacao">
               <KeyboardBackspaceIcon /> Voltar
