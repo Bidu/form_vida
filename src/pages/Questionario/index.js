@@ -235,7 +235,7 @@ class Questionario extends Component {
     this.setState({ foreign: value });
     this.props.setValues({
       ...this.props.values,
-      foreign: 2,
+      foreign: 1,
       insurance: false,
     });
   };

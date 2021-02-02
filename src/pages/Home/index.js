@@ -11,16 +11,13 @@
 //         localStorage.setItem("@bidu2/user", JSON.stringify([]))
 //         localStorage.setItem("@bidu2/saude/plan", JSON.stringify([]))
 //     }, [])
-    
+
 //     const [voce, setVoce] = useState(false)
 //     const [familia, setFamilia] = useState(false)
 //     const [empresa, setEmpresa] = useState(false)
 
-
-
-
 //     return (
-       
+
 //         <Wrapper>
 //              {voce &&
 //                 <Redirect to="/sobre-voce" />
@@ -51,10 +48,10 @@
 //                         </Button>
 //                     </Grid>
 //                  </>
-                 
+
 //                  </Grid>
 //                  }
-                
+
 //                  {
 //                      familia &&
 //                      <Grid container spacing={3} className="gridFamily">
@@ -70,10 +67,10 @@
 //                                     Não
 //                                 </Button>
 //                             </Grid>
-                           
+
 //                         </Grid>
 //                  }
-                
+
 //           </Wrapper>
 //     )
 // }
