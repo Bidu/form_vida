@@ -99,7 +99,7 @@ class Questionario extends Component {
         pratica_esportes: 1,
         include_sports: 1,
         frequency: false,
-        foreign: 1,
+        foreign: 0,
       },
       dependents: [],
       storage: JSON.parse(localStorage.getItem("@bidu2/user")),
@@ -238,7 +238,7 @@ class Questionario extends Component {
     this.props.setValues({
       ...this.props.values,
       foreign: 1,
-      insurance: false,
+      insurance: true,
     });
   };
   handleChangeForeignFalse = (value) => (event) => {
@@ -467,10 +467,10 @@ class Questionario extends Component {
       handleSubmit,
       pratica_esportes,
       include_sports,
+      foreign,
     } = this.props;
 
     const { include_recipient } = this.state;
-    const { foreign } = this.state;
 
     if (this.props.status) {
       return <Redirect to="/cotacao" />;
@@ -809,25 +809,21 @@ class Questionario extends Component {
                         <div className="buttons pb05">
                           <button
                             className={`btn-outline ${
-                              this.state.foreign == 1 ? "active" : ""
+                              this.props.values.foreign === 1 ? "active" : ""
                             }`}
                             value={1}
                             type="button"
-                            onClick={(e) =>
-                              this.handleChangeForeign(e.target.value)
-                            }
+                            onClick={this.handleChangeForeign()}
                           >
                             Sim
                           </button>{" "}
                           <button
                             className={`btn-outline ${
-                              this.state.foreign == 2 ? "active" : ""
+                              this.props.values.foreign === 2 ? "active" : ""
                             }`}
                             value={2}
                             type="button"
-                            onClick={(e) =>
-                              this.handleChangeForeignFalse(e.target.value)
-                            }
+                            onClick={this.handleChangeForeignFalse()}
                           >
                             Não
                           </button>
