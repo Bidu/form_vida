@@ -68,6 +68,7 @@ class Questionario extends Component {
       include_sports: 0,
       loading: false,
       error: false,
+      possui_rne: 0,
       // request: true,
       //redirect: false,
       cep: "",
@@ -100,6 +101,7 @@ class Questionario extends Component {
         include_sports: 1,
         frequency: false,
         foreign: 0,
+        possui_rne: 0,
       },
       dependents: [],
       storage: JSON.parse(localStorage.getItem("@bidu2/user")),
@@ -127,6 +129,10 @@ class Questionario extends Component {
     this.props.setValues({
       ...this.props.values,
       foreign: 0,
+    });
+    this.props.setValues({
+      ...this.props.values,
+      possui_rne: 0,
     });
 
     const storage = JSON.parse(localStorage.getItem("@bidu2/user"));
@@ -247,6 +253,24 @@ class Questionario extends Component {
     this.props.setValues({
       ...this.props.values,
       foreign: 2,
+      insurance: false,
+    });
+  };
+  handleChangeRne = (value) => (event) => {
+    event.preventDefault();
+    this.setState({ possui_rne: value });
+    this.props.setValues({
+      ...this.props.values,
+      possui_rne: 1,
+      insurance: true,
+    });
+  };
+  handleChangeRneFalse = (value) => (event) => {
+    event.preventDefault();
+    this.setState({ possui_rne: value });
+    this.props.setValues({
+      ...this.props.values,
+      possui_rne: 2,
       insurance: false,
     });
   };
@@ -468,6 +492,7 @@ class Questionario extends Component {
       pratica_esportes,
       include_sports,
       foreign,
+      possui_rne,
     } = this.props;
 
     const { include_recipient } = this.state;
@@ -839,25 +864,21 @@ class Questionario extends Component {
                         <div className="buttons pb05">
                           <button
                             className={`btn-outline ${
-                              this.state.foreign === 1 ? "active" : ""
+                              this.state.poussi_rne === 1 ? "active" : ""
                             }`}
                             value={1}
                             type="button"
-                            onClick={(e) =>
-                              this.handleChangeForeign(e.target.value)
-                            }
+                            onClick={this.handleChangeRne()}
                           >
                             Sim
                           </button>{" "}
                           <button
                             className={`btn-outline ${
-                              this.state.foreign === 2 ? "active" : ""
+                              this.state.poussi_rne === 2 ? "active" : ""
                             }`}
                             value={2}
                             type="button"
-                            onClick={(e) =>
-                              this.handleChangeForeignFalse(e.target.value)
-                            }
+                            onClick={this.handleChangeRneFalse()}
                           >
                             Não
                           </button>
@@ -865,6 +886,94 @@ class Questionario extends Component {
                       </Grid>
                     </>
                   )}
+                  {this.props.values.possui_rne === 1 && (
+                    <>
+                      <Grid item xs={4} sm={6}>
+                        <TextField
+                          value={
+                            this.props.values.rne ? this.props.values.rne : ""
+                          }
+                          id="rne"
+                          name="rne"
+                          label="Número do RNE"
+                          placeholder="Digite aqui"
+                          fullWidth
+                          onChange={handleChange}
+                          onBlur={this.handleChange}
+                          helperText={touched.rne ? errors.rne : ""}
+                          error={touched.rne && Boolean(errors.rne)}
+                          InputLabelProps={{
+                            shrink: true,
+                          }}
+                        />
+                      </Grid>
+                    </>
+                  )}
+                  {this.props.values.possui_rne === 2 && (
+                    <>
+                      <Grid item xs={4} sm={6}>
+                        <TextField
+                          value={
+                            this.props.values.passaporte
+                              ? this.props.values.passaporte
+                              : ""
+                          }
+                          id="passaporte"
+                          name="passaporte"
+                          label="Número do Passapote"
+                          placeholder="Digite aqui"
+                          fullWidth
+                          onChange={handleChange}
+                          onBlur={this.handleChange}
+                          helperText={
+                            touched.passaporte ? errors.passaporte : ""
+                          }
+                          error={
+                            touched.passaporte && Boolean(errors.passaporte)
+                          }
+                          InputLabelProps={{
+                            shrink: true,
+                          }}
+                        />
+                      </Grid>
+                      <br />
+                      <Grid item xs={12} sm={6}>
+                        <InputLabel shrink id="pais_emissor">
+                          País Emissor
+                        </InputLabel>
+                        <Select
+                          value={{}}
+                          labelId="pais_emissor"
+                          id="pais_emissor"
+                          name="pais_emissor"
+                          fullWidth
+                          displayEmpty
+                          // onChange={handleChange("pais_emissor")}
+                          // onBlur={this.informacaoPagamento}
+                          helperText={
+                            touched.pais_emissor ? errors.pais_emissor : ""
+                          }
+                          error={
+                            touched.pais_emissor && Boolean(errors.pais_emissor)
+                          }
+                        >
+                          <MenuItem value="000">Selecione</MenuItem>
+                          {/* {this.state.dados_cotacao.bancos[0] instanceof Array
+                    ? this.state.dados_cotacao.bancos[0].map((banco, index) => (
+                      <MenuItem key={index} value={banco}>
+                        {Dictionary.banks[banco]}
+                      </MenuItem>
+                    ))
+                    : this.state.dados_cotacao.bancos.map((banco, index) => (
+                      <MenuItem key={index} value={banco}>
+                        {Dictionary.banks[banco]}
+                      </MenuItem>
+                    ))} */}
+                        </Select>
+                      </Grid>
+                    </>
+                  )}
+
                   <Grid item xs={12} sm={12}>
                     <FormControl component="fieldset">
                       <RadioGroup
