@@ -19,7 +19,7 @@ const Routes = () => (
       <Route exact path="/sobre-voce" component={About} forceRefresh={true} />
       <Route exact path="/cotacao" component={PriceQuote} />
       <Route exact path="/questionario" component={Questionario} />
-      {/* <Route exact path="/checkout" component={Checkout} /> */}
+      <Route exact path="/checkout" component={Checkout} />
       <Route exact path="/sucesso" component={Success} />
     </Switch>
   </BrowserRouter>

@@ -1015,44 +1015,46 @@ class Questionario extends Component {
                           />
                         </Grid>
                         <Title text="Endereço do" bold="Segurado" />
-                        <Grid spacing={2}>
-                          <Grid item xs={8} sm={6}>
-                            <TextField
-                              value={
-                                this.state.usuario.cep
-                                  ? this.state.usuario.cep
-                                  : ""
-                              }
-                              id="cep"
-                              label="CEP"
-                              placeholder="00000-000"
-                              fullWidth
-                              name="cep"
-                              // onChange={handleChange}
-                              onChange={(e) =>
-                                e.target.value.length == 9
-                                  ? this.handleCEP(e)
-                                  : ""
-                              }
-                              helperText={touched.cep ? errors.cep : ""}
-                              error={touched.cep && Boolean(errors.cep)}
-                              InputLabelProps={{
-                                shrink: true,
-                              }}
-                              InputProps={{
-                                inputComponent: textMaskCEP,
-                              }}
-                            />
-                            {this.state.address == false &&
-                            this.state.usuario.rua == "" ? (
-                              <p class="zip-error">Digite o nome da rua</p>
-                            ) : (
-                              ""
-                            )}
-                            {this.state.usuario.cep === undefined && (
-                              <p class="zip-error">CEP não encontrado</p>
-                            )}
-                          </Grid>
+                        <Grid spacing={3}>
+                          <FormGroup row>
+                            <Grid item xs={8} sm={6}>
+                              <TextField
+                                value={
+                                  this.state.usuario.cep
+                                    ? this.state.usuario.cep
+                                    : ""
+                                }
+                                id="cep"
+                                label="CEP"
+                                placeholder="00000-000"
+                                fullWidth
+                                name="cep"
+                                // onChange={handleChange}
+                                onChange={(e) =>
+                                  e.target.value.length == 9
+                                    ? this.handleCEP(e)
+                                    : ""
+                                }
+                                helperText={touched.cep ? errors.cep : ""}
+                                error={touched.cep && Boolean(errors.cep)}
+                                InputLabelProps={{
+                                  shrink: true,
+                                }}
+                                InputProps={{
+                                  inputComponent: textMaskCEP,
+                                }}
+                              />
+                              {this.state.address == false &&
+                              this.state.usuario.rua == "" ? (
+                                <p class="zip-error">Digite o nome da rua</p>
+                              ) : (
+                                ""
+                              )}
+                              {this.state.usuario.cep === undefined && (
+                                <p class="zip-error">CEP não encontrado</p>
+                              )}
+                            </Grid>
+                          </FormGroup>
                           <br />
 
                           <Grid item xs={4} sm={6}>
