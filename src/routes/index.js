@@ -17,10 +17,10 @@ const Routes = () => (
         <Redirect to="/sobre-voce" />
       </Route>
       <Route exact path="/sobre-voce" component={About} forceRefresh={true} />
-      <Route exact path="/cotacao" component={PriceQuote} />
-      <Route exact path="/questionario" component={Questionario} />
-      <Route exact path="/checkout" component={Checkout} />
-      <Route exact path="/sucesso" component={Success} />
+      <Route exact path="/cotacao/:id" component={PriceQuote} />
+      <Route exact path="/questionario/:id" component={Questionario} />
+      <Route exact path="/checkout/:id" component={Checkout} />
+      <Route exact path="/sucesso/:id" component={Success} />
     </Switch>
   </BrowserRouter>
 );
