@@ -15,14 +15,14 @@ import IconButton from "@material-ui/core/IconButton";
 import { Link } from "react-router-dom";
 import Loading from "../../components/loading";
 import { apiQualicorp } from "../../services/bdBo";
-import DialogAlert from '../../components/DialogAlert'
-import Select from '@material-ui/core/Select';
-import MenuItem from '@material-ui/core/MenuItem';
-import { createBrowserHistory } from 'history';
-import FormHelperText from '@material-ui/core/FormHelperText';
-import InputLabel from '@material-ui/core/InputLabel';
-import Drawer from '../../components/Drawer'
-import './priceQuote.css'
+import DialogAlert from "../../components/DialogAlert";
+import Select from "@material-ui/core/Select";
+import MenuItem from "@material-ui/core/MenuItem";
+import { createBrowserHistory } from "history";
+import FormHelperText from "@material-ui/core/FormHelperText";
+import InputLabel from "@material-ui/core/InputLabel";
+import Drawer from "../../components/Drawer";
+import "./priceQuote.css";
 
 export class PriceQuote extends Component {
   constructor(props) {
@@ -35,15 +35,14 @@ export class PriceQuote extends Component {
       customQuote: [],
       customQuoteCheck: false,
       filter: false,
-      redeReferenciadaHospital: []
+      redeReferenciadaHospital: [],
     };
     this.getCustomQuote = this.getCustomQuote.bind(this);
-
   }
 
   getCustomQuote = (customQuote) => {
     this.setState({
-      ...this.state,  
+      ...this.state,
       customQuoteCheck: true,
       customQuote,
     });
@@ -57,206 +56,199 @@ export class PriceQuote extends Component {
     });
 
     let entities = await apiQualicorp.entidades(uf, cidade, profissao);
-   
+
     if (entities && entities.data && entities.data.length > 0) {
-        return entities.data
-    } 
+      return entities.data;
+    }
   };
-  
+
   getOperator = async (entitie, uf, cidade) => {
     let operadoras = await apiQualicorp.operadoras(uf, cidade, entitie);
-    
+
     if (operadoras && operadoras.data && operadoras.data.length > 0) {
-         return operadoras.data
+      return operadoras.data;
     }
-  }
+  };
 
-  filter = (orderValuePlan = null , hospital = null) => {
-    
-      this.sortBy(orderValuePlan, hospital)
+  filter = (orderValuePlan = null, hospital = null) => {
+    this.sortBy(orderValuePlan, hospital);
+  };
 
-  }
+  // getCotacoes = async () => {
+  //   this.setState({
+  //     loading: true,
+  //   });
 
-  getCotacoes = async () => {
+  //   let user = JSON.parse(localStorage.getItem("@bidu2/user"))
+  //     if(
+  //       user &&
+  //       user.cidade != "" &&
+  //       user.cpf != "" &&
+  //       user.date_birth != "" &&
+  //       user.email != "" &&
+  //       user.estado != "" &&
+  //       user.nome != "" &&
+  //       user.entities.length > 0 &&
+  //       user.operadoras.length > 0 &&
+  //       user.profissao != "" &&
+  //       user.telefone != ""
+  //        )
+  //     {
+
+  //      let cotationAll = []
+  //       let beneficiarios = [
+  //         {
+  //           "chave": user.nome,
+  //           "dataNascimento": user.date_birth
+  //         }
+  //       ]
+
+  //       if(user.dependents)
+  //       {
+  //         user.dependents.map((item)=>{
+  //           beneficiarios.push({
+  //             "chave": item.nome,
+  //             "dataNascimento": item.nascimento
+  //           })
+  //         })
+  //       }
+
+  //       await Promise.all(user.operadoras.map(async (entidade) => {
+  //         await Promise.all( entidade.map( async (operadora) => {
+  //           let getPlan = {
+
+  //             "uf": user.estado,
+  //             "cidade": user.cidade ,
+  //             "entidade": operadora.entite,
+  //             "operadora": operadora.name,
+  //             "beneficiarios": beneficiarios
+  //           }
+
+  //          let plans =  await apiQualicorp.listarPlanos(getPlan)
+
+  //           if(plans && plans.data && plans.data.length > 0)
+  //           {
+  //             plans.data.map((item) => {
+  //               cotationAll.push(item)
+  //             })
+  //           }
+  //         }))
+  //       }))
+
+  //       this.setState({cotationAll, cotationFilter: cotationAll})
+  //       await this.getRedeReferenciada(cotationAll)
+  //     }
+  //     // this.sortBy(1)
+  //     this.setState({
+  //       loading: false,
+  //     });
+  // }
+
+  getRedeReferenciada = async (cotations) => {
+    let redeReferenciadaHospital = [];
+    let redeReferenciadaLaboratorio = [];
+
+    let res = await Promise.all(
+      cotations.map(async (e) => {
+        let res = await apiQualicorp.redeReferenciadas(
+          e.idProdutoFatura,
+          "hospital"
+        );
+        if (res.status == 200 && res.data && res.data.length > 0) {
+          res.data.map((vRedeReferenciada) => {
+            let index = redeReferenciadaHospital.findIndex(
+              (val) => val.id == vRedeReferenciada.id
+            );
+            if (index < 0) {
+              redeReferenciadaHospital.push({
+                id: vRedeReferenciada.id,
+                prestador: vRedeReferenciada.prestador,
+                tipoPrestador: vRedeReferenciada.tipoPrestador,
+                top: vRedeReferenciada.top,
+                bairro: vRedeReferenciada.bairro,
+                cep: vRedeReferenciada.cep,
+                cidade: vRedeReferenciada.cidade,
+                endereco: vRedeReferenciada.endereco,
+                estado: vRedeReferenciada.estado,
+                ddd: vRedeReferenciada.ddd,
+                telefone: vRedeReferenciada.telefone,
+                tipoAtendimento: [
+                  {
+                    tipos: vRedeReferenciada.tipoAtendimento,
+                    idProdutoFatura: e.idProdutoFatura,
+                  },
+                ],
+                idProdutoFatura: [e.idProdutoFatura],
+              });
+            } else {
+              redeReferenciadaHospital[index].idProdutoFatura.push(
+                e.idProdutoFatura
+              );
+              redeReferenciadaHospital[index].tipoAtendimento.push({
+                tipos: vRedeReferenciada.tipoAtendimento,
+                idProdutoFatura: e.idProdutoFatura,
+              });
+            }
+          });
+          // res.data = [...res.data, {idProdutoFatura: e.idProdutoFatura}]
+          // redeReferenciadaHospital = [...redeReferenciadaHospital, res.data]
+        }
+      })
+    );
+
+    if (res) this.setState({ redeReferenciadaHospital });
+  };
+
+  sortBy = (order, hospital) => {
     this.setState({
       loading: true,
     });
 
-    let user = JSON.parse(localStorage.getItem("@bidu2/user"))
-      if(
-        user &&
-        user.cidade != "" &&
-        user.cpf != "" &&
-        user.date_birth != "" &&
-        user.email != "" &&
-        user.estado != "" &&
-        user.nome != "" &&
-        user.entities.length > 0 &&
-        user.operadoras.length > 0 &&
-        user.profissao != "" &&
-        user.telefone != "" 
-         )
-      { 
-       
-       let cotationAll = []
-        let beneficiarios = [
-          {
-            "chave": user.nome,
-            "dataNascimento": user.date_birth
+    let cotationFilter = this.state.cotationAll;
+
+    let planosOrder = [];
+
+    if (hospital != null) {
+      let idProdutoFaturaHospitais = [];
+
+      hospital.map((hosp) => {
+        hosp.idProdutoFatura.map((prod) => {
+          let index = idProdutoFaturaHospitais.findIndex(
+            (val) => val.idProdutoFatura == prod
+          );
+          if (index < 0) {
+            idProdutoFaturaHospitais.push({
+              idProdutoFatura: prod,
+              count: 1,
+            });
+          } else {
+            idProdutoFaturaHospitais[index].count += 1;
           }
-        ] 
-
-        if(user.dependents)
-        {
-          user.dependents.map((item)=>{
-            beneficiarios.push({
-              "chave": item.nome,
-              "dataNascimento": item.nascimento
-            })
-          })
-        }
-    
-
-        await Promise.all(user.operadoras.map(async (entidade) => {
-          await Promise.all( entidade.map( async (operadora) => {
-            let getPlan = {
-          
-              "uf": user.estado,
-              "cidade": user.cidade ,
-              "entidade": operadora.entite,
-              "operadora": operadora.name,
-              "beneficiarios": beneficiarios
-            }
-           
-           let plans =  await apiQualicorp.listarPlanos(getPlan)
-    
-           
-            if(plans && plans.data && plans.data.length > 0)
-            {
-              plans.data.map((item) => {
-                cotationAll.push(item)
-              })
-            }
-          }))
-        }))
-        
-        this.setState({cotationAll, cotationFilter: cotationAll})
-        await this.getRedeReferenciada(cotationAll)
-      } 
-      // this.sortBy(1)
-      this.setState({
-        loading: false,
+        });
       });
-  }
 
+      //O MAP ACIMA INSERE EM idProdutoFaturaHospitais QUANTAS VEZES ELE REPETE
+      // NA LINHA ABAIXO EU EXTRAIO APENAS OS PRODUTOS QUE TENHAM EM TODOS OS HOSPITAIS, O PRODUTO QUE E ATENDIDO
+      // POR UM HOSPITAL E NAO POR OUTRO, É ELIMINADO
+      idProdutoFaturaHospitais = idProdutoFaturaHospitais.filter(
+        (v) => v.count == hospital.length
+      );
 
+      //ABAIXO ELE FILTRA OS PRODUTOS DA COTACAO PARA RENDERIZAR
+      idProdutoFaturaHospitais.map((prod) => {
+        cotationFilter.map((item) => {
+          if (prod.idProdutoFatura == item.idProdutoFatura) {
+            let index = planosOrder.findIndex(
+              (val) => val.idProdutoFatura == item.idProdutoFatura
+            );
+            if (index < 0) planosOrder.push(item);
+          }
+        });
+      });
 
-  getRedeReferenciada = async (cotations) => {
-   
-    let redeReferenciadaHospital = []
-    let redeReferenciadaLaboratorio = []
-
-    let res = await Promise.all( cotations.map( async (e) => {
-        let res = await apiQualicorp.redeReferenciadas(e.idProdutoFatura, "hospital")
-        if(res.status == 200 && res.data && res.data.length > 0)
-        {
-          res.data.map((vRedeReferenciada) =>{
-            let index = redeReferenciadaHospital.findIndex(val => val.id == vRedeReferenciada.id);
-            if(index < 0){
-                          redeReferenciadaHospital.push( 
-                                                      {
-                                                        id: vRedeReferenciada.id,
-                                                        prestador: vRedeReferenciada.prestador,
-                                                        tipoPrestador: vRedeReferenciada.tipoPrestador,
-                                                        top: vRedeReferenciada.top,
-                                                        bairro: vRedeReferenciada.bairro,
-                                                        cep: vRedeReferenciada.cep,
-                                                        cidade: vRedeReferenciada.cidade,
-                                                        endereco: vRedeReferenciada.endereco,
-                                                        estado: vRedeReferenciada.estado,
-                                                        ddd: vRedeReferenciada.ddd,
-                                                        telefone: vRedeReferenciada.telefone,
-                                                        tipoAtendimento: [{
-                                                                            tipos: vRedeReferenciada.tipoAtendimento,
-                                                                            idProdutoFatura: e.idProdutoFatura
-                                                                          }],
-                                                        idProdutoFatura:[e.idProdutoFatura]
-                                                      }
-                                                    )
-                            }
-            else{
-              redeReferenciadaHospital[index].idProdutoFatura.push(e.idProdutoFatura)
-              redeReferenciadaHospital[index].tipoAtendimento.push({                                        
-                                                                    tipos: vRedeReferenciada.tipoAtendimento,
-                                                                    idProdutoFatura: e.idProdutoFatura
-                                                                   })
-            }
-            
-          })
-          // res.data = [...res.data, {idProdutoFatura: e.idProdutoFatura}]
-          // redeReferenciadaHospital = [...redeReferenciadaHospital, res.data]
-        }
-    }))
-
-  if(res)
-    this.setState({redeReferenciadaHospital})
-
-  }
-
-
-
-  sortBy = (order, hospital) =>{
-    
-    this.setState({
-      loading: true
-    });
-
-
-    let cotationFilter = this.state.cotationAll
-
-    let planosOrder = []
-
-    if(hospital != null)
-    {
-      let idProdutoFaturaHospitais = []
-      
-
-      hospital.map((hosp)=>{
-          hosp.idProdutoFatura.map((prod)=>{
-              let index = idProdutoFaturaHospitais.findIndex( val => val.idProdutoFatura == prod)
-              if(index < 0)   
-                {
-                  idProdutoFaturaHospitais.push({
-                  idProdutoFatura: prod,
-                  count: 1
-                })
-              }
-              else{
-                idProdutoFaturaHospitais[index].count += 1
-              }
-          })})
-
-
-          //O MAP ACIMA INSERE EM idProdutoFaturaHospitais QUANTAS VEZES ELE REPETE
-          // NA LINHA ABAIXO EU EXTRAIO APENAS OS PRODUTOS QUE TENHAM EM TODOS OS HOSPITAIS, O PRODUTO QUE E ATENDIDO
-          // POR UM HOSPITAL E NAO POR OUTRO, É ELIMINADO
-          idProdutoFaturaHospitais = idProdutoFaturaHospitais.filter(v => v.count == hospital.length)
-
-          
-          //ABAIXO ELE FILTRA OS PRODUTOS DA COTACAO PARA RENDERIZAR
-          idProdutoFaturaHospitais.map( (prod) => {
-            cotationFilter.map((item) => {
-              if(prod.idProdutoFatura == item.idProdutoFatura)
-              {
-                let index = planosOrder.findIndex(val => val.idProdutoFatura == item.idProdutoFatura);
-                if( index < 0 )
-                planosOrder.push(item)
-              }
-            })})
-            
-            console.log(idProdutoFaturaHospitais.length, "FILTRO EM HOSP")
-            console.log(planosOrder.length, "FILTRO EM COTACAO")
-            console.log(this.state.cotationAll.length, "FILTRO EM COTACAO ALL")
+      console.log(idProdutoFaturaHospitais.length, "FILTRO EM HOSP");
+      console.log(planosOrder.length, "FILTRO EM COTACAO");
+      console.log(this.state.cotationAll.length, "FILTRO EM COTACAO ALL");
 
       //CODIGO PARA FILTRO DE HOSPITAIS COM ERRO, POIS SELECIONANDO MAIS DE UM HOSPITAL
       //ELE NAO TRAS O PLANO QUE TENHA OS DOIS, APENAS O PLANO QUE TENHA AO MENOS UM DOS HOSPITAIS
@@ -272,54 +264,39 @@ export class PriceQuote extends Component {
       //       })
       //     })
       // })
-
-
-
-
-    }
-    else{
+    } else {
       cotationFilter.map((item) => {
-        planosOrder.push(item)
-      })
+        planosOrder.push(item);
+      });
     }
 
-    this.setState({filter: order})
+    this.setState({ filter: order });
     switch (order) {
-
       case "0":
-        
         planosOrder = planosOrder.sort((a, b) => {
-          return b.valorTotal - a.valorTotal
-        })
+          return b.valorTotal - a.valorTotal;
+        });
         break;
       case "1":
         planosOrder = planosOrder.sort((a, b) => {
-          return a.valorTotal - b.valorTotal
-        })
+          return a.valorTotal - b.valorTotal;
+        });
         break;
       default:
         break;
-      }
-
- 
-    cotationFilter = planosOrder
-    this.setState({cotationFilter, loading: false})
-
-  }
-
-  async componentDidMount() {
-    
-   
-    await this.getCotacoes()
-
     }
-   
 
+    cotationFilter = planosOrder;
+    this.setState({ cotationFilter, loading: false });
+  };
+
+  // async componentDidMount() {
+  //   await this.getCotacoes();
+  // }
 
   OpenChat = (e) => {
     e.preventDefault();
     window.initiateCall(1);
-
   };
 
   ReloadCotacoes = () => {
@@ -331,36 +308,43 @@ export class PriceQuote extends Component {
       window.location.reload(false);
     }, 30000);
   };
-  
-  
+
   render() {
     //this.Ordenacao();
-    const { loading,  customQuote, customQuoteCheck } = this.state;
+    const { loading, customQuote, customQuoteCheck } = this.state;
     return (
       <>
-        <Wrapper >
-      
+        <Wrapper>
           <div className="price-quote">
-            <Steps step1={true} step2={true} step3={true} step4={true} step5={true} />
-            { !this.state.loading && <Title bold="Cotação" />} 
+            <Steps
+              step1={true}
+              step2={true}
+              step3={true}
+              step4={true}
+              step5={true}
+            />
+            {!this.state.loading && <Title bold="Cotação" />}
           </div>
           <div className="filter">
             <div>
-               <FormControl component="fieldset" className="price-quote">
-              
-               <Grid container spacing={2}>
-               {this.state.redeReferenciadaHospital.length > 0 &&
-                  <Drawer pushHospital = {this.state.redeReferenciadaHospital} filterOrder={(orderValue, hospital) => this.filter(orderValue, hospital)} />
-               }
-               
+              <FormControl component="fieldset" className="price-quote">
+                <Grid container spacing={2}>
+                  {this.state.redeReferenciadaHospital.length > 0 && (
+                    <Drawer
+                      pushHospital={this.state.redeReferenciadaHospital}
+                      filterOrder={(orderValue, hospital) =>
+                        this.filter(orderValue, hospital)
+                      }
+                    />
+                  )}
+
                   <FormHelperText></FormHelperText>
-                  </Grid>
+                </Grid>
               </FormControl>
             </div>
           </div>
-        <br />
-        {loading &&
-                <Loading />}
+          <br />
+          {loading && <Loading />}
           {this.state.cotationFilter.length == 0 && !this.state.loading && (
             <div className="loading-cotacoes">
               <IconButton onClick={this.ReloadCotacoes}>
@@ -368,24 +352,34 @@ export class PriceQuote extends Component {
                 <span>
                   Não retornou nenhuma cotação? <br />
                   Atualize a página.
-             </span>
+                </span>
               </IconButton>
             </div>
           )}
 
           <div className="quotations">
             <Grid container spacing={2}>
-               { this.state.cotationFilter &&  this.state.cotationFilter.length > 0 &&  this.state.cotationFilter.map((c, index) => (
-                        <>
-                          <ListPriceQuotation key={index} quote={c} redeReferenciada={"precisamos colocar o array da rede referenciada!"} getQuote={this.getCustomQuote} />
-                       </>
-               ))} 
-               
+              {this.state.cotationFilter &&
+                this.state.cotationFilter.length > 0 &&
+                this.state.cotationFilter.map((c, index) => (
+                  <>
+                    <ListPriceQuotation
+                      key={index}
+                      quote={c}
+                      redeReferenciada={
+                        "precisamos colocar o array da rede referenciada!"
+                      }
+                      getQuote={this.getCustomQuote}
+                    />
+                  </>
+                ))}
             </Grid>
-            { this.state.cotationFilter == false  && !this.state.loading &&
-                  
-                  <DialogAlert title="Ops!" message="Infelizmente ainda não encontramos um plano de saúde pra você😞!" />
-                }
+            {this.state.cotationFilter == false && !this.state.loading && (
+              <DialogAlert
+                title="Ops!"
+                message="Infelizmente ainda não encontramos um plano de saúde pra você😞!"
+              />
+            )}
           </div>
 
           <div className="more-options">
@@ -398,13 +392,13 @@ export class PriceQuote extends Component {
             </p>
             } */}
           </div>
-          { !this.state.loading &&
-          <div className="actions mt0">
-            <Link className="btn-back" to="/sobre-voce">
-              <KeyboardBackspaceIcon /> Voltar
-          </Link>
-          </div>
-        }
+          {!this.state.loading && (
+            <div className="actions mt0">
+              <Link className="btn-back" to="/sobre-voce">
+                <KeyboardBackspaceIcon /> Voltar
+              </Link>
+            </div>
+          )}
         </Wrapper>
       </>
     );

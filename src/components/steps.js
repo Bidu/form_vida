@@ -1,8 +1,11 @@
 import React, { Component } from "react";
 import PersonIcon from "@material-ui/icons/Person";
 import DriveEtaIcon from "@material-ui/icons/DriveEta";
+import QuestionAnswerIcon from "@material-ui/icons/QuestionAnswer";
 import DescriptionIcon from "@material-ui/icons/Description";
 import VerifiedUserIcon from "@material-ui/icons/VerifiedUser";
+import CommentIcon from "@material-ui/icons/Comment";
+import PaymentIcon from "@material-ui/icons/Payment";
 import Fab from "@material-ui/core/Fab";
 import Grid from "@material-ui/core/Grid";
 import { Link } from "react-router-dom";
@@ -21,11 +24,32 @@ export class Steps extends Component {
                 color="primary"
                 aria-label="edit"
               >
-                <Link >
+                <Link to="/">
                   <PersonIcon />
                 </Link>
               </Fab>
-            </li>        
+            </li>
+            <li class="flex-item">
+              <Fab
+                className={step2 ? "step-active" : "step-inactive"}
+                size="small"
+                color={step2 ? "primary" : "lightGray"}
+                aria-label="edit"
+              >
+                {localStorage.getItem("@bidu/user") != null ||
+                JSON.parse(localStorage.getItem("@bidu2/user")).length != 0 ? (
+                  <Link
+                    to={`/cotacao/${localStorage.getItem("@bidu2/idcotacao")}`}
+                  >
+                    <DescriptionIcon />
+                  </Link>
+                ) : (
+                  <Link>
+                    <DescriptionIcon />
+                  </Link>
+                )}
+              </Fab>
+            </li>
             <li class="flex-item">
               <Fab
                 className={step3 ? "step-active" : "step-inactive"}
@@ -33,17 +57,55 @@ export class Steps extends Component {
                 color={step3 ? "primary" : "lightGray"}
                 aria-label="edit"
               >
-                {localStorage.getItem("@bidu/condutor") != null || JSON.parse(localStorage.getItem("@bidu2/condutor")).length != 0 ?
-                <Link >
-                  <DescriptionIcon color="darkGray" />
-                </Link> :
-                 <Link>
-                 <DescriptionIcon />
-               </Link>
-                }
+                {localStorage.getItem("@bidu/condutor") != null ||
+                JSON.parse(localStorage.getItem("@bidu2/condutor")).length !=
+                  0 ? (
+                  <Link to="/questionario">
+                    <CommentIcon color="darkGray" />
+                  </Link>
+                ) : (
+                  <Link>
+                    <QuestionAnswerIcon />
+                  </Link>
+                )}
               </Fab>
             </li>
-           
+            <li class="flex-item">
+              <Fab
+                className={step4 ? "step-active" : "step-inactive"}
+                size="small"
+                color={step4 ? "primary" : "lightGray"}
+                aria-label="edit"
+              >
+                {this.props.transmission_return === "SUCESSO" ? (
+                  <Link to="/payment">
+                    <PaymentIcon color="darkGray" />
+                  </Link>
+                ) : (
+                  <Link>
+                    <PaymentIcon />
+                  </Link>
+                )}
+              </Fab>
+            </li>
+            <li class="flex-item">
+              <Fab
+                className={step5 ? "step-active" : "step-inactive"}
+                size="small"
+                color={step5 ? "primary" : "lightGray"}
+                aria-label="edit"
+              >
+                {this.props.transmission_return === "SUCESSO" ? (
+                  <Link to="/sucesso">
+                    <VerifiedUserIcon color="darkGray" />
+                  </Link>
+                ) : (
+                  <Link>
+                    <VerifiedUserIcon />
+                  </Link>
+                )}
+              </Fab>
+            </li>
           </ul>
         </div>
         <Grid container spacing={0} className="stepbar-grid">

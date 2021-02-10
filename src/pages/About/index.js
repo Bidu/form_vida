@@ -33,10 +33,10 @@ import axios from "axios";
 import DialogDependents from "../../components/DialogDependents";
 import Birthday from "../../components/Birthday";
 import DialogAlert from "../../components/DialogAlert";
-import { bdQuali } from "../../services/bdQuali"
-import Autocomplete from '@material-ui/lab/Autocomplete';
-import {bruf} from "../../services/bruf";
-import TermosUso from '../../components/TermosUso'
+import { bdQuali } from "../../services/bdQuali";
+import Autocomplete from "@material-ui/lab/Autocomplete";
+import { bruf } from "../../services/bruf";
+import TermosUso from "../../components/TermosUso";
 import {
   textMaskPhone,
   textMaskNumber,
@@ -47,18 +47,22 @@ import {
   onlyLetters,
   nameField,
 } from "../../helpers/user";
-import "./about.css"
+import "./about.css";
 
 import { checkValidateRadios } from "../../helpers";
 import Loading from "../../components/loading";
 import { CadastrarCotacaoBd } from "../../services/bd/CadastrarCotacao";
 
 import { createBrowserHistory } from "history";
-import { entities } from "../../helpers/entities";
+// import { entities } from "../../helpers/entities";
 class About extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      pratica_esportes: 0,
+      loading: false,
+      error: false,
+      include_sports: 0,
       loading: false,
       error: false,
       // request: true,
@@ -89,28 +93,38 @@ class About extends Component {
         profissao: "",
         escolaridade: "",
         moradia: false,
+        pratica_esportes: 1,
+        include_sports: 1,
+        frequency: false,
       },
       dependents: [],
       storage: JSON.parse(localStorage.getItem("@bidu2/user")),
       estados: [],
-      cidades: []
+      cidades: [],
     };
     this.handleCEP = this.handleCEP.bind(this);
   }
 
   async componentDidMount() {
-    
-    
+    this.props.setValues({
+      ...this.props.values,
+      pratica_esportes: 0,
+    });
+    this.props.setValues({
+      ...this.props.values,
+      include_sports: 0,
+    });
+
     const storage = JSON.parse(localStorage.getItem("@bidu2/user"));
-    
-    delete storage.entities 
-    delete storage.entidade 
-    delete storage.operadoras
-    delete storage.estado
-    delete storage.cidade
-    delete storage.dependents
-    this.props.values.operadoras = []
-    localStorage.setItem("@bidu2/user", JSON.stringify(storage))
+
+    delete storage.entities;
+    delete storage.entidade;
+    delete storage.operadoras;
+    delete storage.estado;
+    delete storage.cidade;
+    delete storage.dependents;
+    this.props.values.operadoras = [];
+    localStorage.setItem("@bidu2/user", JSON.stringify(storage));
 
     if (storage.length !== 0) {
       this.setState(storage);
@@ -134,7 +148,7 @@ class About extends Component {
       this.setState({
         usuario: {
           ...this.state.usuario,
-          cidade: "",          
+          cidade: "",
           estado: "",
 
           uf: "",
@@ -144,6 +158,45 @@ class About extends Component {
       this.props.values.rua = "";
       delete this.props.values.profissao;
     }
+  };
+
+  handleChangeInsurance = (value) => (event) => {
+    event.preventDefault();
+    this.setState({ pratica_esportes: value });
+    this.props.setValues({
+      ...this.props.values,
+      insurance: true,
+      pratica_esportes: 1,
+    });
+  };
+
+  handleChangeInsuranceFalse = (value) => (event) => {
+    event.preventDefault();
+    this.setState({ pratica_esportes: value });
+    this.props.setValues({
+      ...this.props.values,
+      pratica_esportes: 2,
+      insurance: false,
+    });
+  };
+  handleChangeInclude = (value) => (event) => {
+    event.preventDefault();
+    this.setState({ include_sports: value });
+    this.props.setValues({
+      ...this.props.values,
+      insurance: true,
+      include_sports: 1,
+    });
+  };
+
+  handleChangeIncludeFalse = (value) => (event) => {
+    event.preventDefault();
+    this.setState({ include_sports: value });
+    this.props.setValues({
+      ...this.props.values,
+      include_sports: 2,
+      insurance: false,
+    });
   };
   getAddress = async (e) => {
     this.setState({ loading: true });
@@ -186,12 +239,9 @@ class About extends Component {
       occupations: [],
       occupationsFalse: true,
     });
-    let occupations = await apiQualicorp.publicoAlvo(
-      estado,
-      cidade,
-    );
+    let occupations = await apiQualicorp.publicoAlvo(estado, cidade);
     if (occupations && occupations.data && occupations.data.length > 0) {
-      this.setState({ occupations: occupations.data, loading:false });
+      this.setState({ occupations: occupations.data, loading: false });
     } else {
       this.setState({
         occupations: [],
@@ -206,12 +256,12 @@ class About extends Component {
       entities: [],
       entitiesFalse: true,
     });
-    this.props.values.operadoras = []
+    this.props.values.operadoras = [];
     let entities = await apiQualicorp.entidades(profissao, uf, cidade);
-  
+
     if (entities && entities.data && entities.data.length > 0) {
-      this.props.values.entities = entities.data
-      
+      this.props.values.entities = entities.data;
+
       // entities.data.map((v) => {
       //   this.getOperator(v.id, uf, cidade)
       // })
@@ -237,13 +287,20 @@ class About extends Component {
     let operadoras = await apiQualicorp.operadoras(uf, cidade, entitie);
 
     if (operadoras && operadoras.data && operadoras.data.length > 0) {
+      let resOperadoras = [
+        operadoras.data.map((v) => {
+          return {
+            id: v.id,
+            name: v.nome,
+            entite: entitie,
+          };
+        }),
+      ];
+      this.props.values.operadoras = [
+        ...this.props.values.operadoras,
+        resOperadoras[0],
+      ];
 
-      let resOperadoras = [operadoras.data.map((v) => {return { id: v.id,
-                                                            name: v.nome,
-                                                            entite: entitie}
-                                                          })]                                                     
-      this.props.values.operadoras = [...this.props.values.operadoras, resOperadoras[0]]
-      
       this.setState({
         operadoras: operadoras.data,
         loading: false,
@@ -255,9 +312,7 @@ class About extends Component {
         operadorasFalse: false,
       });
     }
-  }
-
-
+  };
 
   handleChange = (event) => {
     if (event.target.name == "profissao") {
@@ -287,6 +342,30 @@ class About extends Component {
       },
     });
   };
+
+  handleChangeSports = (value) => {
+    // event.preventDefault();
+    this.setState({ pratica_esportes: value });
+    console.log(value);
+    this.props.setValues({
+      ...this.props.values,
+      pratica_esportes: value,
+    });
+
+    console.log(this.props);
+  };
+  handleChangeIncludeSports = (value) => {
+    // event.preventDefault();
+    this.setState({ include_sports: value });
+    console.log(value);
+    this.props.setValues({
+      ...this.props.values,
+      include_sports: value,
+    });
+
+    console.log(this.props);
+  };
+
   handleChangeSwitch = (name) => (event) => {
     this.setState({
       ...this.state,
@@ -308,14 +387,10 @@ class About extends Component {
     this.setState({ redirect: true });
   };
 
-
   setDependents = (dependents) => {
-    this.setState({dependents})
+    this.setState({ dependents });
     this.props.values.dependents = dependents;
-
-  }
-
-
+  };
 
   render() {
     const { loading, redirect, usuario, storage } = this.state;
@@ -338,6 +413,8 @@ class About extends Component {
       isSubmitting,
       handleChange,
       handleSubmit,
+      pratica_esportes,
+      include_sports,
     } = this.props;
 
     if (this.props.status) {
@@ -347,8 +424,8 @@ class About extends Component {
     return (
       <>
         <Wrapper>
-          <Steps step1={true} step2={true} />
-          <Title text="Plano de" bold="Saúde" />
+          <Steps step1={true} />
+          <Title text="Cotação" bold="Seguro de Vida" />
           <p></p>
 
           <form onSubmit={handleSubmit}>
@@ -446,55 +523,62 @@ class About extends Component {
                   }}
                 />
               </Grid>
-              
-               <Grid item xs={12} sm={6}>
+
+              <Grid item xs={12} sm={6}>
                 <InputLabel>Data de nascimento</InputLabel>
                 <TextField
                   name="date_birth"
                   id="date_birth"
                   type="date"
-                  value={this.props.values.date_birth ? this.props.values.date_birth : ""}
+                  value={
+                    this.props.values.date_birth
+                      ? this.props.values.date_birth
+                      : ""
+                  }
                   onChange={handleChange("date_birth")}
                   onBlur={this.handleChange}
                   helperText={touched.date_birth ? errors.date_birth : ""}
                   error={touched.date_birth && Boolean(errors.date_birth)}
                 />
               </Grid>
-              <Grid item xs={12} sm={3}>
-              <FormControl component="fieldset"> 
-               <InputLabel shrink id="estado">
-                Estado
-              </InputLabel>
-              <Autocomplete
-               
-                id="estado"
-                name="estado"
-                clearOnEscape
-                options={bruf}
-                getOptionLabel={(option) => option.nome}
-                renderInput={(params) => <TextField {...params} style={{marginTop:0}} label="Estado" margin="normal"  helperText={touched.estado ? errors.estado : ""}
-                error={touched.estado && Boolean(errors.estado)}/>}
-         
-      
-                onChange={(event, newValue,) => {
-                  
-                  if(newValue && newValue.cidades){
-                    this.props.values.estado = newValue.sigla
-                    this.setState({cidades: newValue.cidades})
-                    console.log(newValue.cidades, "ESTADO")
-                  }
-                  else{
-                    this.setState({cidades: [], occupations: []})
-                    this.props.values.cidade = ""
-                  }
-                }}
-                InputProps={{
-                  autoComplete: "off",
-                }}
-              />
-              </FormControl>
+              <Grid item xs={12} sm={6}>
+                <FormControl component="fieldset">
+                  <InputLabel shrink id="estado">
+                    Estado
+                  </InputLabel>
+                  <Autocomplete
+                    id="estado"
+                    name="estado"
+                    clearOnEscape
+                    options={bruf}
+                    getOptionLabel={(option) => option.nome}
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        style={{ marginTop: 0 }}
+                        label="Estado"
+                        margin="normal"
+                        helperText={touched.estado ? errors.estado : ""}
+                        error={touched.estado && Boolean(errors.estado)}
+                      />
+                    )}
+                    onChange={(event, newValue) => {
+                      if (newValue && newValue.cidades) {
+                        this.props.values.estado = newValue.sigla;
+                        this.setState({ cidades: newValue.cidades });
+                        console.log(newValue.cidades, "ESTADO");
+                      } else {
+                        this.setState({ cidades: [], occupations: [] });
+                        this.props.values.cidade = "";
+                      }
+                    }}
+                    InputProps={{
+                      autoComplete: "off",
+                    }}
+                  />
+                </FormControl>
               </Grid>
-              <Grid item xs={12} sm={3}>
+              {/* <Grid item xs={12} sm={3}>
                   <FormControl component="fieldset" className="price-quote"> 
                   <InputLabel shrink id="cidade">
                     Cidade
@@ -525,7 +609,7 @@ class About extends Component {
                     }}
                     />
                   </FormControl>
-              </Grid>
+              </Grid> */}
               {/* <Grid item xs={12} sm={6}>
                 <TextField
                   value={this.props.values.cep ? this.props.values.cep : ""}
@@ -553,7 +637,7 @@ class About extends Component {
              
               {this.state.usuario.rua && (
                 <> */}
-                  {/* <Grid item xs={12} sm={6}>
+              {/* <Grid item xs={12} sm={6}>
                     <TextField
                       value={`${this.state.usuario.rua}, ${this.state.usuario.bairro} - ${this.state.usuario.cidade}/${this.state.usuario.uf} `}
                       id=""
@@ -563,47 +647,50 @@ class About extends Component {
                       disabled
                     />
                   </Grid> */}
-                  {/* {this.state.occupations.length > 0 && ( */}
-                    <Grid item xs={12} sm={6}>
-                      <FormControl component="fieldset" className="price-quote"> 
-                      <InputLabel shrink id="profissao">
-                        Profissão
-                      </InputLabel>
-                      <Autocomplete
-                      
-                      id="profissao"
-                      name="profissao"
-                      clearOnEscape
-                      options={this.state.occupations}
-                      getOptionLabel={(option) => option.nome}
-                      disabled={this.state.occupations.length >  0 ? false : true}
-                      renderInput={(params) => <TextField {...params} style={{marginTop:0}} label="Profissão" margin="normal" />}
-                      onChange={(event, newValue) => {
-                        if(newValue)
-                        {
-                          
-                          this.props.values.profissao = newValue.id
-                          this.getEntities(
-                            this.props.values.profissao,
-                            this.props.values.estado,
-                            this.props.values.cidade
-                          );
-                          
-                        }
-                      }}
+              {/* {this.state.occupations.length > 0 && ( */}
+              <Grid item xs={12} sm={6}>
+                <FormControl component="fieldset" className="price-quote">
+                  <InputLabel shrink id="profissao">
+                    Profissão
+                  </InputLabel>
+                  <Autocomplete
+                    id="profissao"
+                    name="profissao"
+                    clearOnEscape
+                    options={this.state.occupations}
+                    getOptionLabel={(option) => option.nome}
+                    disabled={this.state.occupations.length > 0 ? false : true}
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        style={{ marginTop: 0 }}
+                        label="Profissão"
+                        margin="normal"
+                      />
+                    )}
+                    onChange={(event, newValue) => {
+                      if (newValue) {
+                        this.props.values.profissao = newValue.id;
+                        this.getEntities(
+                          this.props.values.profissao,
+                          this.props.values.estado,
+                          this.props.values.cidade
+                        );
+                      }
+                    }}
+                  />
+                </FormControl>
+              </Grid>
 
-                    />
-                    </FormControl>
-                    </Grid>
-                  {/* )} */}
-                  {/* {this.state.occupationsFalse == false && (
+              {/* )} */}
+              {/* {this.state.occupationsFalse == false && (
                     <DialogAlert
                       title="Ops!"
                       message="Erro ao obter a lista de profissões. Tente novamente mais tarde!"
                     />
                   )} */}
-                  
-                    <Grid item xs={12} sm={6}>
+
+              {/* <Grid item xs={12} sm={6}>
                       <InputLabel shrink id="gender">
                         Entidades
                       </InputLabel>
@@ -633,9 +720,109 @@ class About extends Component {
                             <MenuItem value={e.id}>{e.nome}</MenuItem>
                           ))}
                       </Select>
-                    </Grid>
+                    </Grid> */}
 
-                  {/* {this.state.entitiesFalse == false && (
+              <Grid item xs={12} sm={6}>
+                <InputLabel shrink id="gender">
+                  Gênero
+                </InputLabel>
+                <Select
+                  name="genero"
+                  fullWidth
+                  displayEmpty
+                  labelId="gender"
+                  id="gender"
+                  value={
+                    this.props.values.genero ? this.props.values.genero : ""
+                  }
+                  onChange={handleChange("genero")}
+                  onBlur={this.handleChange}
+                  helperText={touched.genero ? errors.genero : ""}
+                  error={touched.genero && Boolean(errors.genero)}
+                >
+                  <MenuItem value="" disabled>
+                    Selecione
+                  </MenuItem>
+                  <MenuItem value="MASCULINO">Masculino</MenuItem>
+                  <MenuItem value="FEMININO">Feminino</MenuItem>
+                </Select>
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <InputLabel shrink id="income">
+                  Renda Mensal
+                </InputLabel>
+                <Select
+                  name="renda"
+                  fullWidth
+                  displayEmpty
+                  labelId="income"
+                  id="income"
+                  value={this.props.values.renda ? this.props.values.renda : ""}
+                  onChange={handleChange("renda")}
+                  onBlur={this.handleChange}
+                  helperText={touched.renda ? errors.renda : ""}
+                  error={touched.renda && Boolean(errors.renda)}
+                >
+                  <MenuItem value="" disabled>
+                    Selecione a faixa salarial
+                  </MenuItem>
+                  <MenuItem value="renda1">R$0,00</MenuItem>
+                  <MenuItem value="renda2">de R$0,01 até R$1.500,00</MenuItem>
+                  <MenuItem value="renda3">
+                    de R$1.500,01 até R$ 3.000,00
+                  </MenuItem>
+                  <MenuItem value="renda4">
+                    de R$3.000,01 até R$ 6.000,00
+                  </MenuItem>
+                  <MenuItem value="renda5">
+                    de R$6.000,01 até R$ 10.000,00
+                  </MenuItem>
+                  <MenuItem value="renda6">acima de R$ 10.000,00</MenuItem>
+                </Select>
+              </Grid>
+              <Grid item xs={4} sm={6}>
+                <TextField
+                  value={
+                    this.props.values.capital ? this.props.values.capital : ""
+                  }
+                  id="capital"
+                  name="capital"
+                  label="Capital Segurado"
+                  placeholder="Ex: 150.000,00"
+                  fullWidth
+                  onChange={handleChange}
+                  onBlur={this.handleChange}
+                  helperText={touched.capital ? errors.capital : ""}
+                  error={touched.capital && Boolean(errors.capital)}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  InputProps={
+                    {
+                      // inputComponent: textMaskNumber,
+                    }
+                  }
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <InputLabel>Data de Vigência</InputLabel>
+                <TextField
+                  name="date_validity"
+                  id="date_validity"
+                  type="date"
+                  value={
+                    this.props.values.date_validity
+                      ? this.props.values.date_validity
+                      : ""
+                  }
+                  onChange={handleChange("date_validity")}
+                  onBlur={this.handleChange}
+                  helperText={touched.date_validity ? errors.date_validity : ""}
+                  error={touched.date_validity && Boolean(errors.date_validity)}
+                />
+              </Grid>
+
+              {/* {this.state.entitiesFalse == false && (
                     <DialogAlert
                       title="Ops!"
                       message="Erro ao obter a lista de entidades. Tente novamente mais tarde!"
@@ -674,59 +861,255 @@ class About extends Component {
                       </Select>
                     </Grid>
                   )} */}
-                {/* </> */}
+              {/* </> */}
               {/* )} */}
+              <Grid item xs={12} sm={12}>
+                <Title text="Pratica Esportes" bold="Radicais?" />
+                <div className="buttons pb05">
+                  <button
+                    className={`btn-outline ${
+                      this.props.values.pratica_esportes === 1 ? "active" : ""
+                    }`}
+                    type="button"
+                    onClick={this.handleChangeInsurance()}
+                  >
+                    Sim
+                  </button>{" "}
+                  <button
+                    className={`btn-outline ${
+                      this.props.values.pratica_esportes === 0 ? "active" : ""
+                    }`}
+                    type="button"
+                    onClick={this.handleChangeInsuranceFalse()}
+                  >
+                    Não
+                  </button>
+                </div>
+              </Grid>
 
               {loading && <Loading />}
+
+              {this.props.values.pratica_esportes === 1 && (
+                <Grid item xs={12} sm={6}>
+                  <InputLabel shrink id="esportes">
+                    Esportes
+                  </InputLabel>
+                  <Select
+                    value={{}}
+                    labelId="esportes"
+                    id="esportes"
+                    name="esportes"
+                    fullWidth
+                    displayEmpty
+                    // onChange={handleChange("esportes")}
+                    // onBlur={this.informacaoPagamento}
+                    helperText={touched.esportes ? errors.esportes : ""}
+                    error={touched.esportes && Boolean(errors.esportes)}
+                  >
+                    <MenuItem value="000">Selecione</MenuItem>
+                    {/* {this.state.dados_cotacao.bancos[0] instanceof Array
+                    ? this.state.dados_cotacao.bancos[0].map((banco, index) => (
+                      <MenuItem key={index} value={banco}>
+                        {Dictionary.banks[banco]}
+                      </MenuItem>
+                    ))
+                    : this.state.dados_cotacao.bancos.map((banco, index) => (
+                      <MenuItem key={index} value={banco}>
+                        {Dictionary.banks[banco]}
+                      </MenuItem>
+                    ))} */}
+                  </Select>
+                  <Grid item xs={12}>
+                    <FormControl component="fieldset">
+                      <RadioGroup
+                        value={
+                          this.props.values.frequency
+                            ? this.props.values.frequency
+                            : ""
+                        }
+                        aria-label="frequency"
+                        name="frequency"
+                        className={checkValidateRadios("frequency", this.props)}
+                        onChange={handleChange("frequency")}
+                        onBlur={this.handleChange}
+                        helperText={touched.frequency ? errors.frequency : ""}
+                        error={touched.frequency && Boolean(errors.moradia)}
+                      >
+                        {/* <Grid item xs={12} sm container> */}
+                        <Grid item xs={12} sm={12}>
+                          <br />
+                          <p>Com que frequência?</p>
+                          <FormControlLabel
+                            value="frequencia"
+                            control={<Radio color="primary" />}
+                            label="até 3 vezes no ano"
+                          />
+                        </Grid>
+                        <Grid item xs={12} sm={12}>
+                          <FormControlLabel
+                            value="frequencia2"
+                            control={<Radio color="primary" />}
+                            label="acima de 3 vezes no ano"
+                          />
+                        </Grid>
+                        <br />
+                        <br />
+                        <Grid item xs={12} sm={12}>
+                          <Title text="Deseja incluir outro" bold="Esporte?" />
+                          <div className="buttons pb05">
+                            <button
+                              className={`btn-outline ${
+                                this.props.values.include_sports === 1
+                                  ? "active"
+                                  : ""
+                              }`}
+                              type="button"
+                              onClick={this.handleChangeInclude()}
+                            >
+                              Sim
+                            </button>{" "}
+                            <button
+                              className={`btn-outline ${
+                                this.props.values.include_sports === 2
+                                  ? "active"
+                                  : ""
+                              }`}
+                              type="button"
+                              onClick={this.handleChangeIncludeFalse()}
+                            >
+                              Não
+                            </button>
+                          </div>
+                        </Grid>
+
+                        {loading && <Loading />}
+
+                        {this.props.values.include_sports === 1 && (
+                          <Grid item xs={12} sm={12}>
+                            <InputLabel shrink id="esportes">
+                              Esportes
+                            </InputLabel>
+                            <Select
+                              value={{}}
+                              labelId="esportes"
+                              id="esportes"
+                              name="esportes"
+                              fullWidth
+                              displayEmpty
+                              // onChange={handleChange("esportes")}
+                              // onBlur={this.informacaoPagamento}
+                              helperText={
+                                touched.esportes ? errors.esportes : ""
+                              }
+                              error={
+                                touched.esportes && Boolean(errors.esportes)
+                              }
+                            >
+                              <MenuItem value="000">Selecione</MenuItem>
+                              {/* {this.state.dados_cotacao.bancos[0] instanceof Array
+                    ? this.state.dados_cotacao.bancos[0].map((banco, index) => (
+                      <MenuItem key={index} value={banco}>
+                        {Dictionary.banks[banco]}
+                      </MenuItem>
+                    ))
+                    : this.state.dados_cotacao.bancos.map((banco, index) => (
+                      <MenuItem key={index} value={banco}>
+                        {Dictionary.banks[banco]}
+                      </MenuItem>
+                    ))} */}
+                            </Select>
+                            <Grid item xs={12} sm={12}>
+                              <FormControl component="fieldset">
+                                <RadioGroup
+                                  value={
+                                    this.props.values.frequency
+                                      ? this.props.values.frequency
+                                      : ""
+                                  }
+                                  aria-label="frequency"
+                                  name="frequency"
+                                  className={checkValidateRadios(
+                                    "frequency",
+                                    this.props
+                                  )}
+                                  onChange={handleChange("frequency")}
+                                  onBlur={this.handleChange}
+                                  helperText={
+                                    touched.frequency ? errors.frequency : ""
+                                  }
+                                  error={
+                                    touched.frequency && Boolean(errors.moradia)
+                                  }
+                                >
+                                  {/* <Grid item xs={12} sm container> */}
+                                  <Grid item xs={12} sm={12}>
+                                    <br />
+                                    <p>Com que frequência?</p>
+                                    <FormControlLabel
+                                      value="frequencia"
+                                      control={<Radio color="primary" />}
+                                      label="até 3 vezes no ano"
+                                    />
+                                  </Grid>
+                                  <Grid item xs={12} sm={12}>
+                                    <FormControlLabel
+                                      value="frequencia2"
+                                      control={<Radio color="primary" />}
+                                      label="acima de 3 vezes no ano"
+                                    />
+                                    <br />
+                                    <br />
+                                  </Grid>
+                                  {/* </Grid> */}
+                                </RadioGroup>
+                              </FormControl>
+                            </Grid>
+                          </Grid>
+                        )}
+                        {/* </Grid> */}
+                      </RadioGroup>
+                    </FormControl>
+                  </Grid>
+                </Grid>
+              )}
             </Grid>
             <br />
-            { 
-            this.props.values.profissao && this.props.values.profissao.length > 0 && 
-            this.props.values.operadoras && this.props.values.operadoras.length > 0 &&
-            this.props.values.entities && this.props.values.entities.length > 0 &&
-             (
-              <>
-                <div class="vidas">
-                  <Title text="Quantidade de" bold="vidas" />
-                </div>
-                <div class="texto-vidas">
-                  <p>
-                  Adicionar dependentes abaixo
+
+            {/* {
+              this.props.values.profissao && this.props.values.profissao.length > 0 &&
+              this.props.values.operadoras && this.props.values.operadoras.length > 0 &&
+              this.props.values.entities && this.props.values.entities.length > 0 &&
+              ( */}
+            <>
+              {/* <div class="vidas">
+                    <Title text="Quantidade de" bold="vidas" />
+                  </div>
+                  <div class="texto-vidas">
+                    <p>
+                      Adicionar dependentes abaixo
 
                   </p>
-                </div>
+                  </div>
                   <div className="actions">
                     <DialogDependents
                       titleName="Adicionar Pessoas"
                       className="bnt-next"
                       setDependents={this.setDependents}
                     />
-                  </div>
-                
-                  
-                
+                  </div> */}
 
-                <div className="actions about-actions">
-                  
-                  <TermosUso optinChange={(props) => this.setState({optin: props})}/>
-                  {this.state.optin == false &&
-                  <Button
-                    type="submit"
-                    className="btn-next about-btn-next"
-                    disabled={this.state.optin == false ? false : true }
-                  >
-                    Quero uma cotação
-                  </Button>
-                  }
-                </div>
-              </>
-              )}
+              <div className="actions about-actions">
+                <Button type="submit" className="btn-next about-btn-next">
+                  Quero uma cotação
+                </Button>
+              </div>
+            </>
           </form>
-          <div className="actions mt0">
+          {/* <div className="actions mt0">
             <Link className="btn-back" to="/">
               <KeyboardBackspaceIcon /> Voltar
             </Link>
-          </div>
+          </div> */}
         </Wrapper>
       </>
     );
@@ -772,8 +1155,8 @@ const Form = withFormik({
     profissao,
     date_birth,
     cidade,
-    estado
-  
+    estado,
+    frequency,
   }) => {
     return {
       cpf: cpf || "",
@@ -783,7 +1166,8 @@ const Form = withFormik({
       profissao: profissao || "",
       date_birth: date_birth || "",
       cidade: cidade || "",
-      estado: estado || ""
+      estado: estado || "",
+      frequency: frequency || "",
     };
   },
 
@@ -808,22 +1192,22 @@ const Form = withFormik({
     telefone: Yup.string()
       .min(15, "O telefone deve ter no mínimo 11 dígitos")
       .required("Telefone é obrigatório"),
-      estado: Yup.string()
-      .required("Estado é obrigatório"),
-      cidade: Yup.string()
-      .required("Cidade é obrigatório"),
+    estado: Yup.string().required("Estado é obrigatório"),
+    // cidade: Yup.string()
+    //   .required("Cidade é obrigatório"),
     profissao: Yup.string().required("Profissão é obrigatório"),
     date_birth: Yup.string()
-        .required("Data de nascimento é obrigatório")
-        .test("date_birth", "Informe uma data entre ano de 1920 e a data atual!", (value)=>{
-            let now = new Date()
-            now = `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`
-            if(value > now || value < "1920-01-01")
-              return false
-            else  
-              return true
-        })
-       
+      .required("Data de nascimento é obrigatório")
+      .test(
+        "date_birth",
+        "Informe uma data entre ano de 1920 e a data atual!",
+        (value) => {
+          let now = new Date();
+          now = `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`;
+          if (value > now || value < "1920-01-01") return false;
+          else return true;
+        }
+      ),
   }),
 
   handleSubmit: async (
