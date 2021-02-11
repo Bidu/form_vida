@@ -50,6 +50,8 @@ import {
 import "./about.css";
 
 import { checkValidateRadios } from "../../helpers";
+import { sports } from "../../helpers/sports";
+import { occupations } from "../../helpers/occupations";
 import Loading from "../../components/loading";
 import { CadastrarCotacaoBd } from "../../services/bd/CadastrarCotacao";
 
@@ -96,6 +98,8 @@ class About extends Component {
         pratica_esportes: 1,
         include_sports: 1,
         frequency: false,
+        esportes: "",
+        esportes2: "",
       },
       dependents: [],
       storage: JSON.parse(localStorage.getItem("@bidu2/user")),
@@ -106,6 +110,7 @@ class About extends Component {
   }
 
   async componentDidMount() {
+    this.props.values.profissao = "Selecione";
     this.props.setValues({
       ...this.props.values,
       pratica_esportes: 0,
@@ -649,39 +654,53 @@ class About extends Component {
                   </Grid> */}
               {/* {this.state.occupations.length > 0 && ( */}
               <Grid item xs={12} sm={6}>
-                <FormControl component="fieldset" className="price-quote">
-                  <InputLabel shrink id="profissao">
-                    Profissão
-                  </InputLabel>
-                  <Autocomplete
-                    id="profissao"
-                    name="profissao"
-                    clearOnEscape
-                    options={this.state.occupations}
-                    getOptionLabel={(option) => option.nome}
-                    disabled={this.state.occupations.length > 0 ? false : true}
-                    renderInput={(params) => (
-                      <TextField
-                        {...params}
-                        style={{ marginTop: 0 }}
-                        label="Profissão"
-                        margin="normal"
-                      />
-                    )}
-                    onChange={(event, newValue) => {
-                      if (newValue) {
-                        this.props.values.profissao = newValue.id;
-                        this.getEntities(
-                          this.props.values.profissao,
-                          this.props.values.estado,
-                          this.props.values.cidade
-                        );
-                      }
-                    }}
-                  />
-                </FormControl>
-              </Grid>
+                <InputLabel shrink id="gender">
+                  Profissão
+                </InputLabel>
+                <Select
+                  name="profissao"
+                  fullWidth
+                  displayEmpty
+                  labelId="profissao"
+                  id="profissao"
+                  value={
+                    this.props.values.profissao
+                      ? this.props.values.profissao
+                      : "Não informado"
+                  }
+                  onChange={handleChange("profissao")}
+                  onBlur={this.handleChange}
+                  helperText={touched.profissao ? errors.profissao : ""}
+                  error={touched.profissao && Boolean(errors.profissao)}
+                >
+                  <MenuItem value="Selecione" disabled>
+                    Selecione
+                  </MenuItem>
+                  {occupations.map((e, key) => (
+                    <MenuItem value={e.occupation}>{e.occupation}</MenuItem>
+                  ))}
+                </Select>
 
+                {/*                 <TextField
+                  value={
+                    this.props.values.profissao
+                      ? this.props.values.profissao
+                      : ""
+                  }
+                  id="profissao"
+                  name="profissao"
+                  label="Profissão"
+                  placeholder="Digite aqui"
+                  fullWidth
+                  onChange={handleChange}
+                  onBlur={this.handleChange}
+                  helperText={touched.profissao ? errors.profissao : ""}
+                  error={touched.profissao && Boolean(errors.profissao)}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                /> */}
+              </Grid>
               {/* )} */}
               {/* {this.state.occupationsFalse == false && (
                     <DialogAlert
@@ -901,23 +920,19 @@ class About extends Component {
                     name="esportes"
                     fullWidth
                     displayEmpty
-                    // onChange={handleChange("esportes")}
-                    // onBlur={this.informacaoPagamento}
+                    onChange={handleChange("esportes")}
+                    onBlur={this.handleChange}
+                    helperText={touched.esportes ? errors.esportes : ""}
+                    error={touched.esportes && Boolean(errors.esportes)}
                     helperText={touched.esportes ? errors.esportes : ""}
                     error={touched.esportes && Boolean(errors.esportes)}
                   >
-                    <MenuItem value="000">Selecione</MenuItem>
-                    {/* {this.state.dados_cotacao.bancos[0] instanceof Array
-                    ? this.state.dados_cotacao.bancos[0].map((banco, index) => (
-                      <MenuItem key={index} value={banco}>
-                        {Dictionary.banks[banco]}
-                      </MenuItem>
-                    ))
-                    : this.state.dados_cotacao.bancos.map((banco, index) => (
-                      <MenuItem key={index} value={banco}>
-                        {Dictionary.banks[banco]}
-                      </MenuItem>
-                    ))} */}
+                    <MenuItem value="Selecione" disabled>
+                      Selecione
+                    </MenuItem>
+                    {sports.map((e, key) => (
+                      <MenuItem value={e.sports}>{e.sports}</MenuItem>
+                    ))}
                   </Select>
                   <Grid item xs={12}>
                     <FormControl component="fieldset">
@@ -933,7 +948,7 @@ class About extends Component {
                         onChange={handleChange("frequency")}
                         onBlur={this.handleChange}
                         helperText={touched.frequency ? errors.frequency : ""}
-                        error={touched.frequency && Boolean(errors.moradia)}
+                        error={touched.frequency && Boolean(errors.frequency)}
                       >
                         {/* <Grid item xs={12} sm container> */}
                         <Grid item xs={12} sm={12}>
@@ -986,18 +1001,30 @@ class About extends Component {
 
                         {this.props.values.include_sports === 1 && (
                           <Grid item xs={12} sm={12}>
-                            <InputLabel shrink id="esportes">
+                            <InputLabel shrink id="esportes2">
                               Esportes
                             </InputLabel>
                             <Select
                               value={{}}
-                              labelId="esportes"
-                              id="esportes"
-                              name="esportes"
+                              labelId="esportes2"
+                              id="esportes2"
+                              name="esportes2"
                               fullWidth
                               displayEmpty
-                              // onChange={handleChange("esportes")}
-                              // onBlur={this.informacaoPagamento}
+                              onChange={handleChange("esportes2")}
+                              onBlur={this.handleChange}
+                              helperText={
+                                touched.esportes2 ? errors.esportes2 : ""
+                              }
+                              error={
+                                touched.esportes2 && Boolean(errors.esportes2)
+                              }
+                              helperText={
+                                touched.esportes2 ? errors.esportes2 : ""
+                              }
+                              error={
+                                touched.esportes2 && Boolean(errors.esportes2)
+                              }
                               helperText={
                                 touched.esportes ? errors.esportes : ""
                               }
@@ -1005,18 +1032,12 @@ class About extends Component {
                                 touched.esportes && Boolean(errors.esportes)
                               }
                             >
-                              <MenuItem value="000">Selecione</MenuItem>
-                              {/* {this.state.dados_cotacao.bancos[0] instanceof Array
-                    ? this.state.dados_cotacao.bancos[0].map((banco, index) => (
-                      <MenuItem key={index} value={banco}>
-                        {Dictionary.banks[banco]}
-                      </MenuItem>
-                    ))
-                    : this.state.dados_cotacao.bancos.map((banco, index) => (
-                      <MenuItem key={index} value={banco}>
-                        {Dictionary.banks[banco]}
-                      </MenuItem>
-                    ))} */}
+                              <MenuItem value="Selecione" disabled>
+                                Selecione
+                              </MenuItem>
+                              {sports.map((e, key) => (
+                                <MenuItem value={e.sports}>{e.sports}</MenuItem>
+                              ))}
                             </Select>
                             <Grid item xs={12} sm={12}>
                               <FormControl component="fieldset">
