@@ -111,6 +111,8 @@ class About extends Component {
 
   async componentDidMount() {
     this.props.values.profissao = "Selecione";
+    this.props.values.esportes = "Selecione";
+    this.props.values.esportes2 = "Selecione";
     this.props.setValues({
       ...this.props.values,
       pratica_esportes: 0,
@@ -420,6 +422,8 @@ class About extends Component {
       handleSubmit,
       pratica_esportes,
       include_sports,
+      esportes,
+      esportes2,
     } = this.props;
 
     if (this.props.status) {
@@ -914,7 +918,7 @@ class About extends Component {
                     Esportes
                   </InputLabel>
                   <Select
-                    value={{}}
+                    value={this.props.values.esportes}
                     labelId="esportes"
                     id="esportes"
                     name="esportes"
@@ -1005,7 +1009,7 @@ class About extends Component {
                               Esportes
                             </InputLabel>
                             <Select
-                              value={{}}
+                              value={this.props.values.esportes2}
                               labelId="esportes2"
                               id="esportes2"
                               name="esportes2"
