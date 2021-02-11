@@ -1,4 +1,4 @@
-FROM alpine
+FROM alpine:3.12
 EXPOSE 80
 ADD config-docker/default.conf /etc/nginx/conf.d/default.conf
 COPY . /var/www/form/htdocs
@@ -8,7 +8,7 @@ RUN apk add nginx && \
     apk add npm && \
     cd /var/www/form/htdocs && \
     npm install && \
-    npm run build && \
+    npm run build:dev && \
     apk del nodejs && \
     apk del npm && \
     mv /var/www/form/htdocs/build /var/www/form && \

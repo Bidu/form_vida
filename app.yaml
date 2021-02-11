@@ -1,5 +1,5 @@
 runtime: nodejs12
-service: form-saude
+service: form-vida
 handlers:
 -   url: /(.*\..+)$
     static_files: build/\1
