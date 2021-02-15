@@ -1,0 +1,552 @@
+[
+    {
+          communicationStatus: "SUCCESS",
+          executionTime: 171,
+          susep: 6190,
+          error: null,
+          quotationResult: [
+            {
+              protocolId: 3393118,
+              messages: [],
+              product: "Acidentes Pessoais Individual",
+              coverages: [
+                {
+                  description: "MORTE ACIDENTAL",
+                  value: 50000,
+                },
+                {
+                  description: "INVALIDEZ PERMANENTE TOTAL OU PARCIAL POR ACIDENTE",
+                  value: 50000,
+                },
+                {
+                  description: "DESPESAS MÉDICAS, HOSPITALARES E ODONTOLÓGICAS",
+                  value: 5000,
+                },
+              ],
+              assistances: [
+                {
+                  description: "FUNERAL TITULAR",
+                },
+                {
+                  description: "VIDA SAUDÁVEL",
+                },
+                {
+                  description: "DESCONTO FARMÁCIA",
+                },
+                {
+                  description: "REDE DE DESCONTOS",
+                },
+              ],
+              price: 312.74,
+              paymentPlans: [
+                {
+                  paymentMode: "DEBIT",
+                  installmentPlans: [
+                    {
+                      pricePerInstallment: 312.74,
+                      additionalValueFirstInstallment: null,
+                      numberOfInstallments: 1,
+                      totalInterestRate: null,
+                      interestRatePerInstallment: null,
+                      total: 312.74,
+                    },
+                    {
+                      pricePerInstallment: 27.43,
+                      additionalValueFirstInstallment: null,
+                      numberOfInstallments: 12,
+                      totalInterestRate: null,
+                      interestRatePerInstallment: null,
+                      total: 329.21,
+                    },
+                  ],
+                  paymentProviders: [],
+                },
+                {
+                  paymentMode: "BILLET",
+                  installmentPlans: [
+                    {
+                      pricePerInstallment: 312.74,
+                      additionalValueFirstInstallment: null,
+                      numberOfInstallments: 1,
+                      totalInterestRate: null,
+                      interestRatePerInstallment: null,
+                      total: 312.74,
+                    },
+                    {
+                      pricePerInstallment: 27.43,
+                      additionalValueFirstInstallment: null,
+                      numberOfInstallments: 12,
+                      totalInterestRate: null,
+                      interestRatePerInstallment: null,
+                      total: 329.21,
+                    },
+                  ],
+                  paymentProviders: [],
+                },
+                {
+                  paymentMode: "CREDITCARD",
+                  installmentPlans: [
+                    {
+                      pricePerInstallment: 312.74,
+                      additionalValueFirstInstallment: null,
+                      numberOfInstallments: 1,
+                      totalInterestRate: null,
+                      interestRatePerInstallment: null,
+                      total: 312.74,
+                    },
+                    {
+                      pricePerInstallment: 27.43,
+                      additionalValueFirstInstallment: null,
+                      numberOfInstallments: 12,
+                      totalInterestRate: null,
+                      interestRatePerInstallment: null,
+                      total: 329.21,
+                    },
+                  ],
+                  paymentProviders: [],
+                },
+              ],
+            },
+            {
+              protocolId: 3393114,
+              messages: [],
+              product: "Vida Homem Básico",
+              coverages: [
+                {
+                  description: "BÁSICA (MORTE)",
+                  value: 100000,
+                },
+                {
+                  description: "MORTE ACIDENTAL",
+                  value: 100000,
+                },
+                {
+                  description: "INVALIDEZ PERMANENTE TOTAL OU PARCIAL POR ACIDENTE",
+                  value: 100000,
+                },
+                {
+                  description: "DOENÇAS GRAVES - COMBO 3",
+                  value: 30000,
+                },
+                {
+                  description: "FUNERAL FAMILIAR",
+                  value: 5000,
+                },
+              ],
+              assistances: [
+                {
+                  description: "EINSTEIN CONECTA - ORIENTAÇÃO MÉDICA ONLINE",
+                },
+                {
+                  description: "VIDA SAUDÁVEL",
+                },
+                {
+                  description: "DESCONTO FARMÁCIA",
+                },
+                {
+                  description: "REDE DE DESCONTOS",
+                },
+              ],
+              price: 380.85,
+              paymentPlans: [
+                {
+                  paymentMode: "DEBIT",
+                  installmentPlans: [
+                    {
+                      pricePerInstallment: 380.85,
+                      additionalValueFirstInstallment: null,
+                      numberOfInstallments: 1,
+                      totalInterestRate: null,
+                      interestRatePerInstallment: null,
+                      total: 380.85,
+                    },
+                    {
+                      pricePerInstallment: 33.42,
+                      additionalValueFirstInstallment: null,
+                      numberOfInstallments: 12,
+                      totalInterestRate: null,
+                      interestRatePerInstallment: null,
+                      total: 401,
+                    },
+                  ],
+                  paymentProviders: [],
+                },
+                {
+                  paymentMode: "BILLET",
+                  installmentPlans: [
+                    {
+                      pricePerInstallment: 380.85,
+                      additionalValueFirstInstallment: null,
+                      numberOfInstallments: 1,
+                      totalInterestRate: null,
+                      interestRatePerInstallment: null,
+                      total: 380.85,
+                    },
+                    {
+                      pricePerInstallment: 33.42,
+                      additionalValueFirstInstallment: null,
+                      numberOfInstallments: 12,
+                      totalInterestRate: null,
+                      interestRatePerInstallment: null,
+                      total: 401,
+                    },
+                  ],
+                  paymentProviders: [],
+                },
+                {
+                  paymentMode: "CREDITCARD",
+                  installmentPlans: [
+                    {
+                      pricePerInstallment: 380.85,
+                      additionalValueFirstInstallment: null,
+                      numberOfInstallments: 1,
+                      totalInterestRate: null,
+                      interestRatePerInstallment: null,
+                      total: 380.85,
+                    },
+                    {
+                      pricePerInstallment: 33.42,
+                      additionalValueFirstInstallment: null,
+                      numberOfInstallments: 12,
+                      totalInterestRate: null,
+                      interestRatePerInstallment: null,
+                      total: 401,
+                    },
+                  ],
+                  paymentProviders: [],
+                },
+              ],
+            },
+            {
+              protocolId: 3393117,
+              messages: [],
+              product: "Vida Homem Intermediário",
+              coverages: [
+                {
+                  description: "BÁSICA (MORTE)",
+                  value: 100000,
+                },
+                {
+                  description: "MORTE ACIDENTAL",
+                  value: 100000,
+                },
+                {
+                  description: "INVALIDEZ PERMANENTE TOTAL OU PARCIAL POR ACIDENTE",
+                  value: 100000,
+                },
+                {
+                  description: "DOENÇAS GRAVES - COMBO 3",
+                  value: 30000,
+                },
+                {
+                  description: "FUNERAL FAMILIAR",
+                  value: 5000,
+                },
+              ],
+              assistances: [
+                {
+                  description: "EINSTEIN CONECTA - ORIENTAÇÃO MÉDICA ONLINE",
+                },
+                {
+                  description: "VIDA SAUDÁVEL",
+                },
+                {
+                  description: "DESCONTO FARMÁCIA",
+                },
+                {
+                  description: "REDE DE DESCONTOS",
+                },
+              ],
+              price: 380.85,
+              paymentPlans: [
+                {
+                  paymentMode: "DEBIT",
+                  installmentPlans: [
+                    {
+                      pricePerInstallment: 380.85,
+                      additionalValueFirstInstallment: null,
+                      numberOfInstallments: 1,
+                      totalInterestRate: null,
+                      interestRatePerInstallment: null,
+                      total: 380.85,
+                    },
+                    {
+                      pricePerInstallment: 33.42,
+                      additionalValueFirstInstallment: null,
+                      numberOfInstallments: 12,
+                      totalInterestRate: null,
+                      interestRatePerInstallment: null,
+                      total: 401,
+                    },
+                  ],
+                  paymentProviders: [],
+                },
+                {
+                  paymentMode: "BILLET",
+                  installmentPlans: [
+                    {
+                      pricePerInstallment: 380.85,
+                      additionalValueFirstInstallment: null,
+                      numberOfInstallments: 1,
+                      totalInterestRate: null,
+                      interestRatePerInstallment: null,
+                      total: 380.85,
+                    },
+                    {
+                      pricePerInstallment: 33.42,
+                      additionalValueFirstInstallment: null,
+                      numberOfInstallments: 12,
+                      totalInterestRate: null,
+                      interestRatePerInstallment: null,
+                      total: 401,
+                    },
+                  ],
+                  paymentProviders: [],
+                },
+                {
+                  paymentMode: "CREDITCARD",
+                  installmentPlans: [
+                    {
+                      pricePerInstallment: 380.85,
+                      additionalValueFirstInstallment: null,
+                      numberOfInstallments: 1,
+                      totalInterestRate: null,
+                      interestRatePerInstallment: null,
+                      total: 380.85,
+                    },
+                    {
+                      pricePerInstallment: 33.42,
+                      additionalValueFirstInstallment: null,
+                      numberOfInstallments: 12,
+                      totalInterestRate: null,
+                      interestRatePerInstallment: null,
+                      total: 401,
+                    },
+                  ],
+                  paymentProviders: [],
+                },
+              ],
+            },
+            {
+              protocolId: 3393115,
+              messages: [],
+              product: "Vida Homem Executivo",
+              coverages: [
+                {
+                  description: "BÁSICA (MORTE)",
+                  value: 100000,
+                },
+                {
+                  description: "MORTE ACIDENTAL",
+                  value: 100000,
+                },
+                {
+                  description: "INVALIDEZ PERMANENTE TOTAL OU PARCIAL POR ACIDENTE",
+                  value: 100000,
+                },
+                {
+                  description: "DOENÇAS GRAVES - COMBO 3",
+                  value: 30000,
+                },
+                {
+                  description: "FUNERAL FAMILIAR",
+                  value: 5000,
+                },
+              ],
+              assistances: [
+                {
+                  description: "EINSTEIN CONECTA - ORIENTAÇÃO MÉDICA ONLINE",
+                },
+                {
+                  description: "VIDA SAUDÁVEL",
+                },
+                {
+                  description: "DESCONTO FARMÁCIA",
+                },
+                {
+                  description: "REDE DE DESCONTOS",
+                },
+              ],
+              price: 380.85,
+              paymentPlans: [
+                {
+                  paymentMode: "DEBIT",
+                  installmentPlans: [
+                    {
+                      pricePerInstallment: 380.85,
+                      additionalValueFirstInstallment: null,
+                      numberOfInstallments: 1,
+                      totalInterestRate: null,
+                      interestRatePerInstallment: null,
+                      total: 380.85,
+                    },
+                    {
+                      pricePerInstallment: 33.42,
+                      additionalValueFirstInstallment: null,
+                      numberOfInstallments: 12,
+                      totalInterestRate: null,
+                      interestRatePerInstallment: null,
+                      total: 401,
+                    },
+                  ],
+                  paymentProviders: [],
+                },
+                {
+                  paymentMode: "BILLET",
+                  installmentPlans: [
+                    {
+                      pricePerInstallment: 380.85,
+                      additionalValueFirstInstallment: null,
+                      numberOfInstallments: 1,
+                      totalInterestRate: null,
+                      interestRatePerInstallment: null,
+                      total: 380.85,
+                    },
+                    {
+                      pricePerInstallment: 33.42,
+                      additionalValueFirstInstallment: null,
+                      numberOfInstallments: 12,
+                      totalInterestRate: null,
+                      interestRatePerInstallment: null,
+                      total: 401,
+                    },
+                  ],
+                  paymentProviders: [],
+                },
+                {
+                  paymentMode: "CREDITCARD",
+                  installmentPlans: [
+                    {
+                      pricePerInstallment: 380.85,
+                      additionalValueFirstInstallment: null,
+                      numberOfInstallments: 1,
+                      totalInterestRate: null,
+                      interestRatePerInstallment: null,
+                      total: 380.85,
+                    },
+                    {
+                      pricePerInstallment: 33.42,
+                      additionalValueFirstInstallment: null,
+                      numberOfInstallments: 12,
+                      totalInterestRate: null,
+                      interestRatePerInstallment: null,
+                      total: 401,
+                    },
+                  ],
+                  paymentProviders: [],
+                },
+              ],
+            },
+            {
+              protocolId: 3393116,
+              messages: [],
+              product: "Vida Homem Master",
+              coverages: [
+                {
+                  description: "BÁSICA (MORTE)",
+                  value: 100000,
+                },
+                {
+                  description: "MORTE ACIDENTAL",
+                  value: 100000,
+                },
+                {
+                  description: "INVALIDEZ PERMANENTE TOTAL OU PARCIAL POR ACIDENTE",
+                  value: 100000,
+                },
+                {
+                  description: "DOENÇAS GRAVES - COMBO 3",
+                  value: 30000,
+                },
+                {
+                  description: "FUNERAL FAMILIAR",
+                  value: 5000,
+                },
+              ],
+              assistances: [
+                {
+                  description: "EINSTEIN CONECTA - ORIENTAÇÃO MÉDICA ONLINE",
+                },
+                {
+                  description: "VIDA SAUDÁVEL",
+                },
+                {
+                  description: "DESCONTO FARMÁCIA",
+                },
+                {
+                  description: "REDE DE DESCONTOS",
+                },
+              ],
+              price: 380.85,
+              paymentPlans: [
+                {
+                  paymentMode: "DEBIT",
+                  installmentPlans: [
+                    {
+                      pricePerInstallment: 380.85,
+                      additionalValueFirstInstallment: null,
+                      numberOfInstallments: 1,
+                      totalInterestRate: null,
+                      interestRatePerInstallment: null,
+                      total: 380.85,
+                    },
+                    {
+                      pricePerInstallment: 33.42,
+                      additionalValueFirstInstallment: null,
+                      numberOfInstallments: 12,
+                      totalInterestRate: null,
+                      interestRatePerInstallment: null,
+                      total: 401,
+                    },
+                  ],
+                  paymentProviders: [],
+                },
+                {
+                  paymentMode: "BILLET",
+                  installmentPlans: [
+                    {
+                      pricePerInstallment: 380.85,
+                      additionalValueFirstInstallment: null,
+                      numberOfInstallments: 1,
+                      totalInterestRate: null,
+                      interestRatePerInstallment: null,
+                      total: 380.85,
+                    },
+                    {
+                      pricePerInstallment: 33.42,
+                      additionalValueFirstInstallment: null,
+                      numberOfInstallments: 12,
+                      totalInterestRate: null,
+                      interestRatePerInstallment: null,
+                      total: 401,
+                    },
+                  ],
+                  paymentProviders: [],
+                },
+                {
+                  paymentMode: "CREDITCARD",
+                  installmentPlans: [
+                    {
+                      pricePerInstallment: 380.85,
+                      additionalValueFirstInstallment: null,
+                      numberOfInstallments: 1,
+                      totalInterestRate: null,
+                      interestRatePerInstallment: null,
+                      total: 380.85,
+                    },
+                    {
+                      pricePerInstallment: 33.42,
+                      additionalValueFirstInstallment: null,
+                      numberOfInstallments: 12,
+                      totalInterestRate: null,
+                      interestRatePerInstallment: null,
+                      total: 401,
+                    },
+                  ],
+                  paymentProviders: [],
+                },
+              ],
+            },
+          ],
+        }
+    ]

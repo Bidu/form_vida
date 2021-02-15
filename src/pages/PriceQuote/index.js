@@ -32,6 +32,7 @@ export class PriceQuote extends Component {
       loading: false,
       cotationAll: [],
       cotationFilter: [],
+      payloadSucess: [],
       customQuote: [],
       customQuoteCheck: false,
       filter: false,
@@ -74,75 +75,618 @@ export class PriceQuote extends Component {
     this.sortBy(orderValuePlan, hospital);
   };
 
-  // getCotacoes = async () => {
-  //   this.setState({
-  //     loading: true,
-  //   });
-
-  //   let user = JSON.parse(localStorage.getItem("@bidu2/user"))
-  //     if(
-  //       user &&
-  //       user.cidade != "" &&
-  //       user.cpf != "" &&
-  //       user.date_birth != "" &&
-  //       user.email != "" &&
-  //       user.estado != "" &&
-  //       user.nome != "" &&
-  //       user.entities.length > 0 &&
-  //       user.operadoras.length > 0 &&
-  //       user.profissao != "" &&
-  //       user.telefone != ""
-  //        )
-  //     {
-
-  //      let cotationAll = []
-  //       let beneficiarios = [
-  //         {
-  //           "chave": user.nome,
-  //           "dataNascimento": user.date_birth
-  //         }
-  //       ]
-
-  //       if(user.dependents)
-  //       {
-  //         user.dependents.map((item)=>{
-  //           beneficiarios.push({
-  //             "chave": item.nome,
-  //             "dataNascimento": item.nascimento
-  //           })
-  //         })
-  //       }
-
-  //       await Promise.all(user.operadoras.map(async (entidade) => {
-  //         await Promise.all( entidade.map( async (operadora) => {
-  //           let getPlan = {
-
-  //             "uf": user.estado,
-  //             "cidade": user.cidade ,
-  //             "entidade": operadora.entite,
-  //             "operadora": operadora.name,
-  //             "beneficiarios": beneficiarios
-  //           }
-
-  //          let plans =  await apiQualicorp.listarPlanos(getPlan)
-
-  //           if(plans && plans.data && plans.data.length > 0)
-  //           {
-  //             plans.data.map((item) => {
-  //               cotationAll.push(item)
-  //             })
-  //           }
-  //         }))
-  //       }))
-
-  //       this.setState({cotationAll, cotationFilter: cotationAll})
-  //       await this.getRedeReferenciada(cotationAll)
-  //     }
-  //     // this.sortBy(1)
-  //     this.setState({
-  //       loading: false,
-  //     });
-  // }
+  getCotacoes = async () => {
+    let setPayloadSuccess = {
+      communicationStatus: "SUCCESS",
+      executionTime: 171,
+      susep: 6190,
+      error: null,
+      quotationResult: [
+        {
+          protocolId: 3393118,
+          messages: [],
+          product: "Acidentes Pessoais Individual",
+          coverages: [
+            {
+              description: "MORTE ACIDENTAL",
+              value: 50000,
+            },
+            {
+              description: "INVALIDEZ PERMANENTE TOTAL OU PARCIAL POR ACIDENTE",
+              value: 50000,
+            },
+            {
+              description: "DESPESAS MÉDICAS, HOSPITALARES E ODONTOLÓGICAS",
+              value: 5000,
+            },
+          ],
+          assistances: [
+            {
+              description: "FUNERAL TITULAR",
+            },
+            {
+              description: "VIDA SAUDÁVEL",
+            },
+            {
+              description: "DESCONTO FARMÁCIA",
+            },
+            {
+              description: "REDE DE DESCONTOS",
+            },
+          ],
+          price: 312.74,
+          paymentPlans: [
+            {
+              paymentMode: "DEBIT",
+              installmentPlans: [
+                {
+                  pricePerInstallment: 312.74,
+                  additionalValueFirstInstallment: null,
+                  numberOfInstallments: 1,
+                  totalInterestRate: null,
+                  interestRatePerInstallment: null,
+                  total: 312.74,
+                },
+                {
+                  pricePerInstallment: 27.43,
+                  additionalValueFirstInstallment: null,
+                  numberOfInstallments: 12,
+                  totalInterestRate: null,
+                  interestRatePerInstallment: null,
+                  total: 329.21,
+                },
+              ],
+              paymentProviders: [],
+            },
+            {
+              paymentMode: "BILLET",
+              installmentPlans: [
+                {
+                  pricePerInstallment: 312.74,
+                  additionalValueFirstInstallment: null,
+                  numberOfInstallments: 1,
+                  totalInterestRate: null,
+                  interestRatePerInstallment: null,
+                  total: 312.74,
+                },
+                {
+                  pricePerInstallment: 27.43,
+                  additionalValueFirstInstallment: null,
+                  numberOfInstallments: 12,
+                  totalInterestRate: null,
+                  interestRatePerInstallment: null,
+                  total: 329.21,
+                },
+              ],
+              paymentProviders: [],
+            },
+            {
+              paymentMode: "CREDITCARD",
+              installmentPlans: [
+                {
+                  pricePerInstallment: 312.74,
+                  additionalValueFirstInstallment: null,
+                  numberOfInstallments: 1,
+                  totalInterestRate: null,
+                  interestRatePerInstallment: null,
+                  total: 312.74,
+                },
+                {
+                  pricePerInstallment: 27.43,
+                  additionalValueFirstInstallment: null,
+                  numberOfInstallments: 12,
+                  totalInterestRate: null,
+                  interestRatePerInstallment: null,
+                  total: 329.21,
+                },
+              ],
+              paymentProviders: [],
+            },
+          ],
+        },
+        {
+          protocolId: 3393114,
+          messages: [],
+          product: "Vida Homem Básico",
+          coverages: [
+            {
+              description: "BÁSICA (MORTE)",
+              value: 100000,
+            },
+            {
+              description: "MORTE ACIDENTAL",
+              value: 100000,
+            },
+            {
+              description: "INVALIDEZ PERMANENTE TOTAL OU PARCIAL POR ACIDENTE",
+              value: 100000,
+            },
+            {
+              description: "DOENÇAS GRAVES - COMBO 3",
+              value: 30000,
+            },
+            {
+              description: "FUNERAL FAMILIAR",
+              value: 5000,
+            },
+          ],
+          assistances: [
+            {
+              description: "EINSTEIN CONECTA - ORIENTAÇÃO MÉDICA ONLINE",
+            },
+            {
+              description: "VIDA SAUDÁVEL",
+            },
+            {
+              description: "DESCONTO FARMÁCIA",
+            },
+            {
+              description: "REDE DE DESCONTOS",
+            },
+          ],
+          price: 380.85,
+          paymentPlans: [
+            {
+              paymentMode: "DEBIT",
+              installmentPlans: [
+                {
+                  pricePerInstallment: 380.85,
+                  additionalValueFirstInstallment: null,
+                  numberOfInstallments: 1,
+                  totalInterestRate: null,
+                  interestRatePerInstallment: null,
+                  total: 380.85,
+                },
+                {
+                  pricePerInstallment: 33.42,
+                  additionalValueFirstInstallment: null,
+                  numberOfInstallments: 12,
+                  totalInterestRate: null,
+                  interestRatePerInstallment: null,
+                  total: 401,
+                },
+              ],
+              paymentProviders: [],
+            },
+            {
+              paymentMode: "BILLET",
+              installmentPlans: [
+                {
+                  pricePerInstallment: 380.85,
+                  additionalValueFirstInstallment: null,
+                  numberOfInstallments: 1,
+                  totalInterestRate: null,
+                  interestRatePerInstallment: null,
+                  total: 380.85,
+                },
+                {
+                  pricePerInstallment: 33.42,
+                  additionalValueFirstInstallment: null,
+                  numberOfInstallments: 12,
+                  totalInterestRate: null,
+                  interestRatePerInstallment: null,
+                  total: 401,
+                },
+              ],
+              paymentProviders: [],
+            },
+            {
+              paymentMode: "CREDITCARD",
+              installmentPlans: [
+                {
+                  pricePerInstallment: 380.85,
+                  additionalValueFirstInstallment: null,
+                  numberOfInstallments: 1,
+                  totalInterestRate: null,
+                  interestRatePerInstallment: null,
+                  total: 380.85,
+                },
+                {
+                  pricePerInstallment: 33.42,
+                  additionalValueFirstInstallment: null,
+                  numberOfInstallments: 12,
+                  totalInterestRate: null,
+                  interestRatePerInstallment: null,
+                  total: 401,
+                },
+              ],
+              paymentProviders: [],
+            },
+          ],
+        },
+        {
+          protocolId: 3393117,
+          messages: [],
+          product: "Vida Homem Intermediário",
+          coverages: [
+            {
+              description: "BÁSICA (MORTE)",
+              value: 100000,
+            },
+            {
+              description: "MORTE ACIDENTAL",
+              value: 100000,
+            },
+            {
+              description: "INVALIDEZ PERMANENTE TOTAL OU PARCIAL POR ACIDENTE",
+              value: 100000,
+            },
+            {
+              description: "DOENÇAS GRAVES - COMBO 3",
+              value: 30000,
+            },
+            {
+              description: "FUNERAL FAMILIAR",
+              value: 5000,
+            },
+          ],
+          assistances: [
+            {
+              description: "EINSTEIN CONECTA - ORIENTAÇÃO MÉDICA ONLINE",
+            },
+            {
+              description: "VIDA SAUDÁVEL",
+            },
+            {
+              description: "DESCONTO FARMÁCIA",
+            },
+            {
+              description: "REDE DE DESCONTOS",
+            },
+          ],
+          price: 380.85,
+          paymentPlans: [
+            {
+              paymentMode: "DEBIT",
+              installmentPlans: [
+                {
+                  pricePerInstallment: 380.85,
+                  additionalValueFirstInstallment: null,
+                  numberOfInstallments: 1,
+                  totalInterestRate: null,
+                  interestRatePerInstallment: null,
+                  total: 380.85,
+                },
+                {
+                  pricePerInstallment: 33.42,
+                  additionalValueFirstInstallment: null,
+                  numberOfInstallments: 12,
+                  totalInterestRate: null,
+                  interestRatePerInstallment: null,
+                  total: 401,
+                },
+              ],
+              paymentProviders: [],
+            },
+            {
+              paymentMode: "BILLET",
+              installmentPlans: [
+                {
+                  pricePerInstallment: 380.85,
+                  additionalValueFirstInstallment: null,
+                  numberOfInstallments: 1,
+                  totalInterestRate: null,
+                  interestRatePerInstallment: null,
+                  total: 380.85,
+                },
+                {
+                  pricePerInstallment: 33.42,
+                  additionalValueFirstInstallment: null,
+                  numberOfInstallments: 12,
+                  totalInterestRate: null,
+                  interestRatePerInstallment: null,
+                  total: 401,
+                },
+              ],
+              paymentProviders: [],
+            },
+            {
+              paymentMode: "CREDITCARD",
+              installmentPlans: [
+                {
+                  pricePerInstallment: 380.85,
+                  additionalValueFirstInstallment: null,
+                  numberOfInstallments: 1,
+                  totalInterestRate: null,
+                  interestRatePerInstallment: null,
+                  total: 380.85,
+                },
+                {
+                  pricePerInstallment: 33.42,
+                  additionalValueFirstInstallment: null,
+                  numberOfInstallments: 12,
+                  totalInterestRate: null,
+                  interestRatePerInstallment: null,
+                  total: 401,
+                },
+              ],
+              paymentProviders: [],
+            },
+          ],
+        },
+        {
+          protocolId: 3393115,
+          messages: [],
+          product: "Vida Homem Executivo",
+          coverages: [
+            {
+              description: "BÁSICA (MORTE)",
+              value: 100000,
+            },
+            {
+              description: "MORTE ACIDENTAL",
+              value: 100000,
+            },
+            {
+              description: "INVALIDEZ PERMANENTE TOTAL OU PARCIAL POR ACIDENTE",
+              value: 100000,
+            },
+            {
+              description: "DOENÇAS GRAVES - COMBO 3",
+              value: 30000,
+            },
+            {
+              description: "FUNERAL FAMILIAR",
+              value: 5000,
+            },
+          ],
+          assistances: [
+            {
+              description: "EINSTEIN CONECTA - ORIENTAÇÃO MÉDICA ONLINE",
+            },
+            {
+              description: "VIDA SAUDÁVEL",
+            },
+            {
+              description: "DESCONTO FARMÁCIA",
+            },
+            {
+              description: "REDE DE DESCONTOS",
+            },
+          ],
+          price: 380.85,
+          paymentPlans: [
+            {
+              paymentMode: "DEBIT",
+              installmentPlans: [
+                {
+                  pricePerInstallment: 380.85,
+                  additionalValueFirstInstallment: null,
+                  numberOfInstallments: 1,
+                  totalInterestRate: null,
+                  interestRatePerInstallment: null,
+                  total: 380.85,
+                },
+                {
+                  pricePerInstallment: 33.42,
+                  additionalValueFirstInstallment: null,
+                  numberOfInstallments: 12,
+                  totalInterestRate: null,
+                  interestRatePerInstallment: null,
+                  total: 401,
+                },
+              ],
+              paymentProviders: [],
+            },
+            {
+              paymentMode: "BILLET",
+              installmentPlans: [
+                {
+                  pricePerInstallment: 380.85,
+                  additionalValueFirstInstallment: null,
+                  numberOfInstallments: 1,
+                  totalInterestRate: null,
+                  interestRatePerInstallment: null,
+                  total: 380.85,
+                },
+                {
+                  pricePerInstallment: 33.42,
+                  additionalValueFirstInstallment: null,
+                  numberOfInstallments: 12,
+                  totalInterestRate: null,
+                  interestRatePerInstallment: null,
+                  total: 401,
+                },
+              ],
+              paymentProviders: [],
+            },
+            {
+              paymentMode: "CREDITCARD",
+              installmentPlans: [
+                {
+                  pricePerInstallment: 380.85,
+                  additionalValueFirstInstallment: null,
+                  numberOfInstallments: 1,
+                  totalInterestRate: null,
+                  interestRatePerInstallment: null,
+                  total: 380.85,
+                },
+                {
+                  pricePerInstallment: 33.42,
+                  additionalValueFirstInstallment: null,
+                  numberOfInstallments: 12,
+                  totalInterestRate: null,
+                  interestRatePerInstallment: null,
+                  total: 401,
+                },
+              ],
+              paymentProviders: [],
+            },
+          ],
+        },
+        {
+          protocolId: 3393116,
+          messages: [],
+          product: "Vida Homem Master",
+          coverages: [
+            {
+              description: "BÁSICA (MORTE)",
+              value: 100000,
+            },
+            {
+              description: "MORTE ACIDENTAL",
+              value: 100000,
+            },
+            {
+              description: "INVALIDEZ PERMANENTE TOTAL OU PARCIAL POR ACIDENTE",
+              value: 100000,
+            },
+            {
+              description: "DOENÇAS GRAVES - COMBO 3",
+              value: 30000,
+            },
+            {
+              description: "FUNERAL FAMILIAR",
+              value: 5000,
+            },
+          ],
+          assistances: [
+            {
+              description: "EINSTEIN CONECTA - ORIENTAÇÃO MÉDICA ONLINE",
+            },
+            {
+              description: "VIDA SAUDÁVEL",
+            },
+            {
+              description: "DESCONTO FARMÁCIA",
+            },
+            {
+              description: "REDE DE DESCONTOS",
+            },
+          ],
+          price: 380.85,
+          paymentPlans: [
+            {
+              paymentMode: "DEBIT",
+              installmentPlans: [
+                {
+                  pricePerInstallment: 380.85,
+                  additionalValueFirstInstallment: null,
+                  numberOfInstallments: 1,
+                  totalInterestRate: null,
+                  interestRatePerInstallment: null,
+                  total: 380.85,
+                },
+                {
+                  pricePerInstallment: 33.42,
+                  additionalValueFirstInstallment: null,
+                  numberOfInstallments: 12,
+                  totalInterestRate: null,
+                  interestRatePerInstallment: null,
+                  total: 401,
+                },
+              ],
+              paymentProviders: [],
+            },
+            {
+              paymentMode: "BILLET",
+              installmentPlans: [
+                {
+                  pricePerInstallment: 380.85,
+                  additionalValueFirstInstallment: null,
+                  numberOfInstallments: 1,
+                  totalInterestRate: null,
+                  interestRatePerInstallment: null,
+                  total: 380.85,
+                },
+                {
+                  pricePerInstallment: 33.42,
+                  additionalValueFirstInstallment: null,
+                  numberOfInstallments: 12,
+                  totalInterestRate: null,
+                  interestRatePerInstallment: null,
+                  total: 401,
+                },
+              ],
+              paymentProviders: [],
+            },
+            {
+              paymentMode: "CREDITCARD",
+              installmentPlans: [
+                {
+                  pricePerInstallment: 380.85,
+                  additionalValueFirstInstallment: null,
+                  numberOfInstallments: 1,
+                  totalInterestRate: null,
+                  interestRatePerInstallment: null,
+                  total: 380.85,
+                },
+                {
+                  pricePerInstallment: 33.42,
+                  additionalValueFirstInstallment: null,
+                  numberOfInstallments: 12,
+                  totalInterestRate: null,
+                  interestRatePerInstallment: null,
+                  total: 401,
+                },
+              ],
+              paymentProviders: [],
+            },
+          ],
+        },
+      ],
+    };
+    this.setState({ payloadSucess: setPayloadSuccess });
+    //   this.setState({
+    //     loading: true,
+    //   });
+    //   let user = JSON.parse(localStorage.getItem("@bidu2/user"))
+    //     if(
+    //       user &&
+    //       user.cidade != "" &&
+    //       user.cpf != "" &&
+    //       user.date_birth != "" &&
+    //       user.email != "" &&
+    //       user.estado != "" &&
+    //       user.nome != "" &&
+    //       user.entities.length > 0 &&
+    //       user.operadoras.length > 0 &&
+    //       user.profissao != "" &&
+    //       user.telefone != ""
+    //        )
+    //     {
+    //      let cotationAll = []
+    //       let beneficiarios = [
+    //         {
+    //           "chave": user.nome,
+    //           "dataNascimento": user.date_birth
+    //         }
+    //       ]
+    //       if(user.dependents)
+    //       {
+    //         user.dependents.map((item)=>{
+    //           beneficiarios.push({
+    //             "chave": item.nome,
+    //             "dataNascimento": item.nascimento
+    //           })
+    //         })
+    //       }
+    //       await Promise.all(user.operadoras.map(async (entidade) => {
+    //         await Promise.all( entidade.map( async (operadora) => {
+    //           let getPlan = {
+    //             "uf": user.estado,
+    //             "cidade": user.cidade ,
+    //             "entidade": operadora.entite,
+    //             "operadora": operadora.name,
+    //             "beneficiarios": beneficiarios
+    //           }
+    //          let plans =  await apiQualicorp.listarPlanos(getPlan)
+    //           if(plans && plans.data && plans.data.length > 0)
+    //           {
+    //             plans.data.map((item) => {
+    //               cotationAll.push(item)
+    //             })
+    //           }
+    //         }))
+    //       }))
+    //       this.setState({cotationAll, cotationFilter: cotationAll})
+    //       await this.getRedeReferenciada(cotationAll)
+    //     }
+    //     // this.sortBy(1)
+    //     this.setState({
+    //       loading: false,
+    //     });
+  };
 
   getRedeReferenciada = async (cotations) => {
     let redeReferenciadaHospital = [];
@@ -290,9 +834,9 @@ export class PriceQuote extends Component {
     this.setState({ cotationFilter, loading: false });
   };
 
-  // async componentDidMount() {
-  //   await this.getCotacoes();
-  // }
+  async componentDidMount() {
+    await this.getCotacoes();
+  }
 
   OpenChat = (e) => {
     e.preventDefault();
@@ -319,9 +863,9 @@ export class PriceQuote extends Component {
             <Steps
               step1={true}
               step2={true}
-              step3={true}
-              step4={true}
-              step5={true}
+              // step3={true}
+              // step4={true}
+              // step5={true}
             />
             {!this.state.loading && <Title bold="Cotação" />}
           </div>
@@ -359,9 +903,9 @@ export class PriceQuote extends Component {
 
           <div className="quotations">
             <Grid container spacing={2}>
-              {this.state.cotationFilter &&
-                this.state.cotationFilter.length > 0 &&
-                this.state.cotationFilter.map((c, index) => (
+              {this.state.payloadSucess &&
+                this.state.payloadSucess.length > 0 &&
+                this.state.payloadSucess.map((c, index) => (
                   <>
                     <ListPriceQuotation
                       key={index}
