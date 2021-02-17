@@ -37,6 +37,7 @@ import { bdQuali } from "../../services/bdQuali";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import { bruf } from "../../services/bruf";
 import TermosUso from "../../components/TermosUso";
+import moment from "moment";
 import {
   textMaskPhone,
   textMaskNumber,
@@ -54,8 +55,10 @@ import { sports } from "../../helpers/sports";
 import { occupations } from "../../helpers/occupations";
 import Loading from "../../components/loading";
 import { CadastrarCotacaoBd } from "../../services/bd/CadastrarCotacao";
+import { Tokiolifequotation } from "../../CarbonTokio/Tokiolifequotation";
 
 import { createBrowserHistory } from "history";
+//import translatePayload from "../../../CarbonTokio/Tokiolifequotation";
 // import { entities } from "../../helpers/entities";
 class About extends Component {
   constructor(props) {
@@ -100,6 +103,7 @@ class About extends Component {
         frequency: false,
         esportes: "",
         esportes2: "",
+        capital: "",
       },
       dependents: [],
       storage: JSON.parse(localStorage.getItem("@bidu2/user")),
@@ -424,6 +428,7 @@ class About extends Component {
       include_sports,
       esportes,
       esportes2,
+      capital, 
     } = this.props;
 
     if (this.props.status) {
@@ -789,25 +794,25 @@ class About extends Component {
                   <MenuItem value="" disabled>
                     Selecione a faixa salarial
                   </MenuItem>
-                  <MenuItem value="renda1">R$0,00</MenuItem>
-                  <MenuItem value="renda2">de R$0,01 até R$1.500,00</MenuItem>
-                  <MenuItem value="renda3">
+                  <MenuItem value="ZERO">R$0,00</MenuItem>
+                  <MenuItem value="FIRST_RANGE">
+                    de R$0,01 até R$1.500,00
+                  </MenuItem>
+                  <MenuItem value="SECOND_RANGE">
                     de R$1.500,01 até R$ 3.000,00
                   </MenuItem>
-                  <MenuItem value="renda4">
+                  <MenuItem value="THIRD_RANGE">
                     de R$3.000,01 até R$ 6.000,00
                   </MenuItem>
-                  <MenuItem value="renda5">
+                  <MenuItem value="FOURTH_RANGE">
                     de R$6.000,01 até R$ 10.000,00
                   </MenuItem>
-                  <MenuItem value="renda6">acima de R$ 10.000,00</MenuItem>
+                  <MenuItem value="LAST_RANGE">acima de R$ 10.000,00</MenuItem>
                 </Select>
               </Grid>
               <Grid item xs={4} sm={6}>
                 <TextField
-                  value={
-                    this.props.values.capital ? this.props.values.capital : ""
-                  }
+                  value={this.props.values.capital = capitalSeg(this.props.values)}
                   id="capital"
                   name="capital"
                   label="Capital Segurado"
@@ -836,7 +841,7 @@ class About extends Component {
                   value={
                     this.props.values.date_validity
                       ? this.props.values.date_validity
-                      : ""
+                      : moment(Date.now()).format("YYYY-MM-DD")
                   }
                   onChange={handleChange("date_validity")}
                   onBlur={this.handleChange}
@@ -1124,7 +1129,10 @@ class About extends Component {
                   </div> */}
 
               <div className="actions about-actions">
-                <Button type="submit" className="btn-next about-btn-next">
+                <Button
+                  type="submit"
+                  className="btn-next about-btn-next"
+                >
                   Quero uma cotação
                 </Button>
               </div>
@@ -1161,6 +1169,21 @@ function mapStateToProps(state) {
   return {
     user: state.user.infos,
   };
+}
+
+function capitalSeg(valor) {
+  let validateCapital = "";
+  let capital = "";
+  if (valor.renda){
+  valor.renda == "ZERO" || valor.renda == "FIRST_RANGE"
+    ? capital = "R$ 70.000,00"
+    : validateCapital = false;
+  valor.renda == "SECOND_RANGE" ? capital = "R$ 150.000,00" : validateCapital = false;
+  valor.renda == "THIRD_RANGE" || valor.renda == "FOURTH_RANGE" || valor.renda == "LAST_RANGE"
+    ? capital = "R$ 200.000,00"
+    : validateCapital = false;
+  }
+  return capital;
 }
 
 const mapDispatchToProps = (dispatch) => {
@@ -1239,6 +1262,8 @@ const Form = withFormik({
     values,
     { props, setStatus, setValues, setSubmitting }
   ) => {
+    // const resposta = await aws(values);
+    // console.log("RESS", resposta)
     localStorage.setItem("@bidu2/user", [JSON.stringify(values)]);
     setStatus(true);
     setSubmitting(false);

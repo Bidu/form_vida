@@ -10,13 +10,13 @@ import Questionario from "../pages/Questionario";
 import Checkout from "../pages/Checkout";
 
 const Routes = () => (
-  <BrowserRouter forceRefresh={true}>
+  <BrowserRouter forceRefresh={false}>
     <Switch>
       {/*<Route exact path="/" component={Home} />*/}
       <Route exact path="/">
         <Redirect to="/sobre-voce" />
       </Route>
-      <Route exact path="/sobre-voce" component={About} forceRefresh={true} />
+      <Route exact path="/sobre-voce" component={About} forceRefresh={false} />
       <Route exact path="/cotacao" component={PriceQuote} />
       <Route exact path="/questionario/:id" component={Questionario} />
       <Route exact path="/checkout/:id" component={Checkout} />

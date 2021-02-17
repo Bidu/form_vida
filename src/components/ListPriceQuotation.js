@@ -487,7 +487,7 @@ export class ListPriceQuotation extends Component {
                       <figure className="seguradoras">
                         <img
                           alt="hdmi"
-                          src={cotacao.operadoraLogo}
+                          src={`${require("../assets/img/6190.svg")}`}
                         />
                       </figure>
                     </div>
@@ -499,7 +499,7 @@ export class ListPriceQuotation extends Component {
                           <span className="top-label">Valor total</span>
                           <span className="valor-total">
                             {ConvertCurrency(
-                              cotacao.valorTotal
+                              cotacao.quotationResult.price
                             )}
                           </span>
                         </>
@@ -507,7 +507,7 @@ export class ListPriceQuotation extends Component {
                       <Grid item xs={6} style={{padding: 0}}>
                         <>
                           <span className="top-label nome-plano">
-                            {cotacao.nomeAmigavel}
+                            {cotacao.quotationResult.product}
                           </span>
                         </>
                       </Grid>
