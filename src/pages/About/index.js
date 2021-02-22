@@ -37,6 +37,7 @@ import { bdQuali } from "../../services/bdQuali";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import { bruf } from "../../services/bruf";
 import TermosUso from "../../components/TermosUso";
+import moment from "moment";
 import {
   textMaskPhone,
   textMaskNumber,
@@ -50,10 +51,14 @@ import {
 import "./about.css";
 
 import { checkValidateRadios } from "../../helpers";
+import { sports } from "../../helpers/sports";
+import { occupations } from "../../helpers/occupations";
 import Loading from "../../components/loading";
 import { CadastrarCotacaoBd } from "../../services/bd/CadastrarCotacao";
+import { Tokiolifequotation } from "../../CarbonTokio/Tokiolifequotation";
 
 import { createBrowserHistory } from "history";
+//import translatePayload from "../../../CarbonTokio/Tokiolifequotation";
 // import { entities } from "../../helpers/entities";
 class About extends Component {
   constructor(props) {
@@ -63,6 +68,7 @@ class About extends Component {
       loading: false,
       error: false,
       include_sports: 0,
+      include_sports3: 0,
       loading: false,
       error: false,
       // request: true,
@@ -95,7 +101,14 @@ class About extends Component {
         moradia: false,
         pratica_esportes: 1,
         include_sports: 1,
+        include_sports3: 1,
         frequency: false,
+        frequency2: false,
+        frequency3: false,
+        esportes: "",
+        esportes2: "",
+        esportes3: "",
+        capital: "",
       },
       dependents: [],
       storage: JSON.parse(localStorage.getItem("@bidu2/user")),
@@ -106,6 +119,10 @@ class About extends Component {
   }
 
   async componentDidMount() {
+    this.props.values.profissao = "Selecione";
+    this.props.values.esportes = "Selecione";
+    this.props.values.esportes2 = "Selecione";
+    this.props.values.esportes3 = "Selecione";
     this.props.setValues({
       ...this.props.values,
       pratica_esportes: 0,
@@ -113,6 +130,10 @@ class About extends Component {
     this.props.setValues({
       ...this.props.values,
       include_sports: 0,
+    });
+    this.props.setValues({
+      ...this.props.values,
+      include_sports3: 0,
     });
 
     const storage = JSON.parse(localStorage.getItem("@bidu2/user"));
@@ -195,6 +216,25 @@ class About extends Component {
     this.props.setValues({
       ...this.props.values,
       include_sports: 2,
+      insurance: false,
+    });
+  };
+  handleChangeInclude3 = (value) => (event) => {
+    event.preventDefault();
+    this.setState({ include_sports3: value });
+    this.props.setValues({
+      ...this.props.values,
+      insurance: true,
+      include_sports3: 1,
+    });
+  };
+
+  handleChangeIncludeFalse3 = (value) => (event) => {
+    event.preventDefault();
+    this.setState({ include_sports3: value });
+    this.props.setValues({
+      ...this.props.values,
+      include_sports3: 2,
       insurance: false,
     });
   };
@@ -365,6 +405,17 @@ class About extends Component {
 
     console.log(this.props);
   };
+  handleChangeIncludeSports3 = (value) => {
+    // event.preventDefault();
+    this.setState({ include_sports3: value });
+    console.log(value);
+    this.props.setValues({
+      ...this.props.values,
+      include_sports3: value,
+    });
+
+    console.log(this.props);
+  };
 
   handleChangeSwitch = (name) => (event) => {
     this.setState({
@@ -415,6 +466,14 @@ class About extends Component {
       handleSubmit,
       pratica_esportes,
       include_sports,
+      include_sports3,
+      esportes,
+      esportes2,
+      esportes3,
+      frequency,
+      frequency2,
+      frequency3,
+      capital,
     } = this.props;
 
     if (this.props.status) {
@@ -649,39 +708,53 @@ class About extends Component {
                   </Grid> */}
               {/* {this.state.occupations.length > 0 && ( */}
               <Grid item xs={12} sm={6}>
-                <FormControl component="fieldset" className="price-quote">
-                  <InputLabel shrink id="profissao">
-                    Profissão
-                  </InputLabel>
-                  <Autocomplete
-                    id="profissao"
-                    name="profissao"
-                    clearOnEscape
-                    options={this.state.occupations}
-                    getOptionLabel={(option) => option.nome}
-                    disabled={this.state.occupations.length > 0 ? false : true}
-                    renderInput={(params) => (
-                      <TextField
-                        {...params}
-                        style={{ marginTop: 0 }}
-                        label="Profissão"
-                        margin="normal"
-                      />
-                    )}
-                    onChange={(event, newValue) => {
-                      if (newValue) {
-                        this.props.values.profissao = newValue.id;
-                        this.getEntities(
-                          this.props.values.profissao,
-                          this.props.values.estado,
-                          this.props.values.cidade
-                        );
-                      }
-                    }}
-                  />
-                </FormControl>
-              </Grid>
+                <InputLabel shrink id="gender">
+                  Profissão
+                </InputLabel>
+                <Select
+                  name="profissao"
+                  fullWidth
+                  displayEmpty
+                  labelId="profissao"
+                  id="profissao"
+                  value={
+                    this.props.values.profissao
+                      ? this.props.values.profissao
+                      : "Não informado"
+                  }
+                  onChange={handleChange("profissao")}
+                  onBlur={this.handleChange}
+                  helperText={touched.profissao ? errors.profissao : ""}
+                  error={touched.profissao && Boolean(errors.profissao)}
+                >
+                  <MenuItem value="Selecione" disabled>
+                    Selecione
+                  </MenuItem>
+                  {occupations.map((e, key) => (
+                    <MenuItem value={e.occupation}>{e.occupation}</MenuItem>
+                  ))}
+                </Select>
 
+                {/*                 <TextField
+                  value={
+                    this.props.values.profissao
+                      ? this.props.values.profissao
+                      : ""
+                  }
+                  id="profissao"
+                  name="profissao"
+                  label="Profissão"
+                  placeholder="Digite aqui"
+                  fullWidth
+                  onChange={handleChange}
+                  onBlur={this.handleChange}
+                  helperText={touched.profissao ? errors.profissao : ""}
+                  error={touched.profissao && Boolean(errors.profissao)}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                /> */}
+              </Grid>
               {/* )} */}
               {/* {this.state.occupationsFalse == false && (
                     <DialogAlert
@@ -766,24 +839,26 @@ class About extends Component {
                   <MenuItem value="" disabled>
                     Selecione a faixa salarial
                   </MenuItem>
-                  <MenuItem value="renda1">R$0,00</MenuItem>
-                  <MenuItem value="renda2">de R$0,01 até R$1.500,00</MenuItem>
-                  <MenuItem value="renda3">
+                  <MenuItem value="ZERO">R$0,00</MenuItem>
+                  <MenuItem value="FIRST_RANGE">
+                    de R$0,01 até R$1.500,00
+                  </MenuItem>
+                  <MenuItem value="SECOND_RANGE">
                     de R$1.500,01 até R$ 3.000,00
                   </MenuItem>
-                  <MenuItem value="renda4">
+                  <MenuItem value="THIRD_RANGE">
                     de R$3.000,01 até R$ 6.000,00
                   </MenuItem>
-                  <MenuItem value="renda5">
+                  <MenuItem value="FOURTH_RANGE">
                     de R$6.000,01 até R$ 10.000,00
                   </MenuItem>
-                  <MenuItem value="renda6">acima de R$ 10.000,00</MenuItem>
+                  <MenuItem value="LAST_RANGE">acima de R$ 10.000,00</MenuItem>
                 </Select>
               </Grid>
               <Grid item xs={4} sm={6}>
                 <TextField
                   value={
-                    this.props.values.capital ? this.props.values.capital : ""
+                    (this.props.values.capital = capitalSeg(this.props.values))
                   }
                   id="capital"
                   name="capital"
@@ -813,7 +888,7 @@ class About extends Component {
                   value={
                     this.props.values.date_validity
                       ? this.props.values.date_validity
-                      : ""
+                      : moment(Date.now()).format("YYYY-MM-DD")
                   }
                   onChange={handleChange("date_validity")}
                   onBlur={this.handleChange}
@@ -895,29 +970,25 @@ class About extends Component {
                     Esportes
                   </InputLabel>
                   <Select
-                    value={{}}
+                    value={this.props.values.esportes}
                     labelId="esportes"
                     id="esportes"
                     name="esportes"
                     fullWidth
                     displayEmpty
-                    // onChange={handleChange("esportes")}
-                    // onBlur={this.informacaoPagamento}
+                    onChange={handleChange("esportes")}
+                    onBlur={this.handleChange}
+                    helperText={touched.esportes ? errors.esportes : ""}
+                    error={touched.esportes && Boolean(errors.esportes)}
                     helperText={touched.esportes ? errors.esportes : ""}
                     error={touched.esportes && Boolean(errors.esportes)}
                   >
-                    <MenuItem value="000">Selecione</MenuItem>
-                    {/* {this.state.dados_cotacao.bancos[0] instanceof Array
-                    ? this.state.dados_cotacao.bancos[0].map((banco, index) => (
-                      <MenuItem key={index} value={banco}>
-                        {Dictionary.banks[banco]}
-                      </MenuItem>
-                    ))
-                    : this.state.dados_cotacao.bancos.map((banco, index) => (
-                      <MenuItem key={index} value={banco}>
-                        {Dictionary.banks[banco]}
-                      </MenuItem>
-                    ))} */}
+                    <MenuItem value="Selecione" disabled>
+                      Selecione
+                    </MenuItem>
+                    {sports.map((e, key) => (
+                      <MenuItem value={e.sports}>{e.sports}</MenuItem>
+                    ))}
                   </Select>
                   <Grid item xs={12}>
                     <FormControl component="fieldset">
@@ -933,7 +1004,7 @@ class About extends Component {
                         onChange={handleChange("frequency")}
                         onBlur={this.handleChange}
                         helperText={touched.frequency ? errors.frequency : ""}
-                        error={touched.frequency && Boolean(errors.moradia)}
+                        error={touched.frequency && Boolean(errors.frequency)}
                       >
                         {/* <Grid item xs={12} sm container> */}
                         <Grid item xs={12} sm={12}>
@@ -986,59 +1057,185 @@ class About extends Component {
 
                         {this.props.values.include_sports === 1 && (
                           <Grid item xs={12} sm={12}>
-                            <InputLabel shrink id="esportes">
+                            <InputLabel shrink id="esportes2">
                               Esportes
                             </InputLabel>
                             <Select
-                              value={{}}
-                              labelId="esportes"
-                              id="esportes"
-                              name="esportes"
+                              value={this.props.values.esportes2}
+                              labelId="esportes2"
+                              id="esportes2"
+                              name="esportes2"
                               fullWidth
                               displayEmpty
-                              // onChange={handleChange("esportes")}
-                              // onBlur={this.informacaoPagamento}
+                              onChange={handleChange("esportes2")}
+                              onBlur={this.handleChange}
                               helperText={
-                                touched.esportes ? errors.esportes : ""
+                                touched.esportes2 ? errors.esportes2 : ""
                               }
                               error={
-                                touched.esportes && Boolean(errors.esportes)
+                                touched.esportes2 && Boolean(errors.esportes2)
+                              }
+                              helperText={
+                                touched.esportes2 ? errors.esportes2 : ""
+                              }
+                              error={
+                                touched.esportes2 && Boolean(errors.esportes2)
+                              }
+                              helperText={
+                                touched.esportes2 ? errors.esportes2 : ""
+                              }
+                              error={
+                                touched.esportes2 && Boolean(errors.esportes2)
                               }
                             >
-                              <MenuItem value="000">Selecione</MenuItem>
-                              {/* {this.state.dados_cotacao.bancos[0] instanceof Array
-                    ? this.state.dados_cotacao.bancos[0].map((banco, index) => (
-                      <MenuItem key={index} value={banco}>
-                        {Dictionary.banks[banco]}
-                      </MenuItem>
-                    ))
-                    : this.state.dados_cotacao.bancos.map((banco, index) => (
-                      <MenuItem key={index} value={banco}>
-                        {Dictionary.banks[banco]}
-                      </MenuItem>
-                    ))} */}
+                              <MenuItem value="Selecione" disabled>
+                                Selecione
+                              </MenuItem>
+                              {sports.map((e, key) => (
+                                <MenuItem value={e.sports}>{e.sports}</MenuItem>
+                              ))}
                             </Select>
                             <Grid item xs={12} sm={12}>
                               <FormControl component="fieldset">
                                 <RadioGroup
                                   value={
-                                    this.props.values.frequency
-                                      ? this.props.values.frequency
+                                    this.props.values.frequency2
+                                      ? this.props.values.frequency2
                                       : ""
                                   }
-                                  aria-label="frequency"
-                                  name="frequency"
+                                  aria-label="frequency2"
+                                  name="frequency2"
                                   className={checkValidateRadios(
-                                    "frequency",
+                                    "frequency2",
                                     this.props
                                   )}
-                                  onChange={handleChange("frequency")}
+                                  onChange={handleChange("frequency2")}
                                   onBlur={this.handleChange}
                                   helperText={
-                                    touched.frequency ? errors.frequency : ""
+                                    touched.frequency2 ? errors.frequency2 : ""
                                   }
                                   error={
-                                    touched.frequency && Boolean(errors.moradia)
+                                    touched.frequency2 &&
+                                    Boolean(errors.frequency2)
+                                  }
+                                >
+                                  {/* <Grid item xs={12} sm container> */}
+                                  <Grid item xs={12} sm={12}>
+                                    <br />
+                                    <p>Com que frequência?</p>
+                                    <FormControlLabel
+                                      value="frequencia"
+                                      control={<Radio color="primary" />}
+                                      label="até 3 vezes no ano"
+                                    />
+                                  </Grid>
+                                  <Grid item xs={12} sm={12}>
+                                    <FormControlLabel
+                                      value="frequencia2"
+                                      control={<Radio color="primary" />}
+                                      label="acima de 3 vezes no ano"
+                                    />
+                                    <br />
+                                    <br />
+                                  </Grid>
+                                  {/* </Grid> */}
+                                </RadioGroup>
+                              </FormControl>
+                            </Grid>
+                          </Grid>
+                        )}
+                        <Grid item xs={12} sm={12}>
+                          <Title text="Deseja incluir outro" bold="Esporte?" />
+                          <div className="buttons pb05">
+                            <button
+                              className={`btn-outline ${
+                                this.props.values.include_sports3 === 1
+                                  ? "active"
+                                  : ""
+                              }`}
+                              type="button"
+                              onClick={this.handleChangeInclude3()}
+                            >
+                              Sim
+                            </button>{" "}
+                            <button
+                              className={`btn-outline ${
+                                this.props.values.include_sports3 === 2
+                                  ? "active"
+                                  : ""
+                              }`}
+                              type="button"
+                              onClick={this.handleChangeIncludeFalse3()}
+                            >
+                              Não
+                            </button>
+                          </div>
+                        </Grid>
+
+                        {loading && <Loading />}
+
+                        {this.props.values.include_sports3 === 1 && (
+                          <Grid item xs={12} sm={12}>
+                            <InputLabel shrink id="esportes3">
+                              Esportes
+                            </InputLabel>
+                            <Select
+                              value={this.props.values.esportes3}
+                              labelId="esportes3"
+                              id="esportes3"
+                              name="esportes3"
+                              fullWidth
+                              displayEmpty
+                              onChange={handleChange("esportes3")}
+                              onBlur={this.handleChange}
+                              helperText={
+                                touched.esportes3 ? errors.esportes3 : ""
+                              }
+                              error={
+                                touched.esportes3 && Boolean(errors.esportes3)
+                              }
+                              helperText={
+                                touched.esportes3 ? errors.esportes3 : ""
+                              }
+                              error={
+                                touched.esportes3 && Boolean(errors.esportes3)
+                              }
+                              helperText={
+                                touched.esportes3 ? errors.esportes3 : ""
+                              }
+                              error={
+                                touched.esportes3 && Boolean(errors.esportes3)
+                              }
+                            >
+                              <MenuItem value="Selecione" disabled>
+                                Selecione
+                              </MenuItem>
+                              {sports.map((e, key) => (
+                                <MenuItem value={e.sports}>{e.sports}</MenuItem>
+                              ))}
+                            </Select>
+                            <Grid item xs={12} sm={12}>
+                              <FormControl component="fieldset">
+                                <RadioGroup
+                                  value={
+                                    this.props.values.frequency3
+                                      ? this.props.values.frequency3
+                                      : ""
+                                  }
+                                  aria-label="frequency3"
+                                  name="frequency3"
+                                  className={checkValidateRadios(
+                                    "frequency3",
+                                    this.props
+                                  )}
+                                  onChange={handleChange("frequency3")}
+                                  onBlur={this.handleChange}
+                                  helperText={
+                                    touched.frequency3 ? errors.frequency3 : ""
+                                  }
+                                  error={
+                                    touched.frequency3 &&
+                                    Boolean(errors.frequency3)
                                   }
                                 >
                                   {/* <Grid item xs={12} sm container> */}
@@ -1138,6 +1335,25 @@ function mapStateToProps(state) {
   };
 }
 
+function capitalSeg(valor) {
+  let validateCapital = "";
+  let capital = "";
+  if (valor.renda) {
+    valor.renda == "ZERO" || valor.renda == "FIRST_RANGE"
+      ? (capital = "R$ 70.000,00")
+      : (validateCapital = false);
+    valor.renda == "SECOND_RANGE"
+      ? (capital = "R$ 150.000,00")
+      : (validateCapital = false);
+    valor.renda == "THIRD_RANGE" ||
+    valor.renda == "FOURTH_RANGE" ||
+    valor.renda == "LAST_RANGE"
+      ? (capital = "R$ 200.000,00")
+      : (validateCapital = false);
+  }
+  return capital;
+}
+
 const mapDispatchToProps = (dispatch) => {
   return {
     adicionaUser: (user) => dispatch(addUser(user)),
@@ -1214,6 +1430,8 @@ const Form = withFormik({
     values,
     { props, setStatus, setValues, setSubmitting }
   ) => {
+    // const resposta = await aws(values);
+    // console.log("RESS", resposta)
     localStorage.setItem("@bidu2/user", [JSON.stringify(values)]);
     setStatus(true);
     setSubmitting(false);
