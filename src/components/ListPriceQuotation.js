@@ -15,6 +15,7 @@ import Dictionary from "../helpers/Dictionary/Quote";
 import ErrorQuote from "./ErrorQuote";
 import ListPriceQuotationServices from "./ListPriceQuotationServices";
 import { apiQualicorp } from "../services/bdBo";
+import { Description } from "@material-ui/icons";
 
 
 const marks_fipe = {
@@ -478,7 +479,7 @@ export class ListPriceQuotation extends Component {
       return (
         <>
             {this.state.sucessoAddLead &&
-                <Redirect to="/sucesso" />
+                <Redirect to="/checkout" />
              }
                 <Grid key={cotacao.id} item xs={12} sm={6}>
                   
@@ -486,7 +487,7 @@ export class ListPriceQuotation extends Component {
                     <div className="logo-container">
                       <figure className="seguradoras">
                         <img
-                          alt="hdmi"
+                          alt="tokio"
                           src={`${require("../assets/img/6190.svg")}`}
                         />
                       </figure>
@@ -506,7 +507,7 @@ export class ListPriceQuotation extends Component {
                       </Grid>
                       <Grid item xs={6} style={{padding: 0}}>
                         <>
-                          <span className="top-label nome-plano">
+                          <span className="top-label nome-plano bold">
                             {cotacao.quotationResult.product}
                           </span>
                         </>
@@ -521,7 +522,7 @@ export class ListPriceQuotation extends Component {
                       <Grid item xs={3}>
                         <Grid className="txt-left bottom-idProtocolo">
                           <p className="ans-code">
-                           ANS {`${String(cotacao.codigoans).substring(0, 3)}.${String(cotacao.codigoans).substring(3, 6)}/${String(cotacao.codigoans).substring(6, 8)}-${String(cotacao.codigoans).substring(8, 11)}`}
+                          {cotacao.quotationResult.protocolId}
                           </p>
                         </Grid>
                       </Grid>
@@ -537,7 +538,7 @@ export class ListPriceQuotation extends Component {
                           onClick={ () =>  this.setPlanSelect(cotacao) }
                           
                         >
-                          ME CONTATE
+                          COMPRAR
                         </div>
                       </Grid>
 
@@ -571,17 +572,29 @@ export class ListPriceQuotation extends Component {
                 </div>
                 <div className="entry">
                   <p className="subtitle bold">
-                  Detalhes e assistências do seguro - {cotacao.idProdutoFatura}
+                  Detalhes de assistências e coberturas- {cotacao.quotationResult.protocolId}
                    <br/>
                   </p>
                   
                   <p>
-                    <span className="bold">Plano:</span>  {cotacao.nomePlano} <br/>
-                    <span className="bold"> Coparticipativo:</span> {cotacao.coparticipacao == true ? "SIM" : "NÃO"}<br/>
-                    <span className="bold"> Abrangência:</span> {cotacao.abrangencia}<br/>
-                    <span className="bold"> Acomodação:</span> {cotacao.acomodacao}<br/>
+                  {console.log("CAMILAAA", cotacao)}
+                    <span className="bold">Coberturas:</span> {cotacao.quotationResult.coverages.map((v,index)=>(
+                      <>
+                      <p key={index}><span>{v.description}: R$ {v.value} </span></p>
+                      </>
+                    
+                    ))} <br/>
+                   
+                    {/* <span className="bold"> Abrangências:</span> {cotacao.coparticipacao == true ? "SIM" : "NÃO"}<br/> */}
+                    <span className="bold"> Assistências:</span> {cotacao.quotationResult.assistances.map((v,index)=>(
+                      <>
+                      <p key={index}><span>{v.description} </span></p>
+                      </>
+                    
+                    ))} <br/>
+                    {/* <span className="bold"> Acomodação:</span> {cotacao.acomodacao}<br/>
                     <span className="bold"> Segmentação:</span> {cotacao.segmentacao}<br />
-                    <span className="bold"> Código ANS:</span> {cotacao.codigoans}<br />
+                    <span className="bold"> Código ANS:</span> {cotacao.codigoans}<br /> */}
                    </p>
                    <p>
                     <span className="bold">Total Rede  Referência:</span>
@@ -647,13 +660,13 @@ export class ListPriceQuotation extends Component {
                       {cotacao.resultadoCotacao.idProtocolo}
                     </p>
                   )} */}
-                   <p>
+                   {/* <p>
                     <span className="bold">Informações complementares: </span><br/>
                     <span>Planos de saúde por adesão são comercializados de acordo com a regra da ANS.</span><br/>
                     <span>A comercialização respeita a área de abrangência dos produtos de acordo com a regra das operadoras.</span><br/>
                     <span>A disponibilidade pode variar de acordo com a região.</span><br/>
                     <span>As informações são de responsabilidade da operadora.</span>
-                  </p>
+                  </p> */}
                 </div>
               </div>
             </div>

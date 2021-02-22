@@ -88,7 +88,7 @@ export class PriceQuote extends Component {
       console.log("CAMILA", requestAws);
       const payload = requestAws
       let newPayload = [];
-      if (payload[0].susep == 6190) {
+      if (payload[0].susep == 6190 && payload[0].quotationResult) {
         const indexPayload = payload[0].quotationResult.length;
         for (let i = 0; i < indexPayload; i++) {
           newPayload = [
@@ -365,7 +365,7 @@ export class PriceQuote extends Component {
           </div>
           <br />
           {loading && <Loading />}
-          {this.state.cotationFilter.length == 0 && !this.state.loading && (
+          {this.state.quotationResult == 0 && !this.state.loading && (
             <div className="loading-cotacoes">
               <IconButton onClick={this.ReloadCotacoes}>
                 <CachedIcon style={{ fontSize: 60, color: "#000000" }} />
@@ -394,7 +394,7 @@ export class PriceQuote extends Component {
                   </>
                 ))}
             </Grid>
-            {this.state.cotationFilter == false && !this.state.loading && (
+            {this.state.quotationResult == false && !this.state.loading && (
               <DialogAlert
                 title="Ops!"
                 message="Infelizmente ainda não encontramos um plano de saúde pra você😞!"

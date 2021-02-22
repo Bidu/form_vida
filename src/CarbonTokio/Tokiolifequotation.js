@@ -5,8 +5,11 @@ const Tokiolifequotation = {
       .replace("R$ ", "")
       .replace(".", "")
       .replace(",", ".");
+      const idCotacao = Math.floor(Math.random() * (10000000000000 - 1 + 1) + 1)
+      localStorage.setItem("@bidu2/idCotacao", JSON.stringify(idCotacao))
+
     const translateQuotation = {
-      callbackUrl: "https://cotacao.bidu.com.br/seguros/seguro-vida/quotation",
+      callbackUrl: `https://cotacao.bidu.com.br/seguros/seguro-vida/quotation/${idCotacao}`,
       bidu: true,
       insured: {
         name: dados_cotacao.nome,

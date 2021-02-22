@@ -53,8 +53,11 @@ import "./questionario.css";
 import { checkValidateRadios } from "../../helpers";
 import Loading from "../../components/loading";
 import { CadastrarCotacaoBd } from "../../services/bd/CadastrarCotacao";
+import { country } from "../../helpers/country";
+import orgaoExp, { orgaoexpedidor } from "../../helpers/orgaoexpedidor";
 
 import { createBrowserHistory } from "history";
+import countrys from "../../helpers/country";
 // import { entities } from "../../helpers/entities";
 class Questionario extends Component {
   constructor(props) {
@@ -600,12 +603,12 @@ class Questionario extends Component {
                         <MenuItem value="" disabled>
                           Selecione
                         </MenuItem>
-                        <MenuItem value="CONJUGE">Côjuge</MenuItem>
-                        <MenuItem value="FILHOS">Filhos</MenuItem>
-                        <MenuItem value="PAI">Pai</MenuItem>
-                        <MenuItem value="MAE">Mãe</MenuItem>
-                        <MenuItem value="IRMAOS">Irmãos</MenuItem>
-                        <MenuItem value="OUTROS">Outros</MenuItem>
+                        <MenuItem value="MARRIED">Côjuge</MenuItem>
+                        <MenuItem value="CHILD">Filho(a)</MenuItem>
+                        <MenuItem value="FATHER">Pai</MenuItem>
+                        <MenuItem value="MOTHER">Mãe</MenuItem>
+                        <MenuItem value="SIBLING">Irmão(a)</MenuItem>
+                        <MenuItem value="SAME">O próprio segurado</MenuItem>
                       </Select>
                     </Grid>
                     <br />
@@ -684,21 +687,16 @@ class Questionario extends Component {
                     <MenuItem className="txt-dark_gray" value="" disabled>
                       Selecione
                     </MenuItem>
-                    <MenuItem value="EDUCACAO_PRIMARIA">
-                      Ensino Fundamental
+                    <MenuItem value="LITERATE">Alfabetizado</MenuItem>
+                    <MenuItem value="'PRIMARY_EDUCATION'">
+                      Fundamental (1º Grau)
                     </MenuItem>
-                    <MenuItem value="ENSINO_MEDIO">Ensino Médio</MenuItem>
-                    <MenuItem value="ENSINO_MEDIO_TECNICO">
-                      Ensino Técnico
+                    <MenuItem value="SECONDARY_EDUCATION">
+                      Médio (2º Grau)
                     </MenuItem>
-                    <MenuItem value="ENSINO_SUPERIOR">Ensino Superior</MenuItem>
-                    <MenuItem value="ENSINO_SUPERIOR_TECNOLOGO">
-                      Ensino Superior Tecnólogo
-                    </MenuItem>
-                    <MenuItem value="POS_GRADUACAO">Pós-graduação</MenuItem>
-                    <MenuItem value="MESTRADO">Mestrado</MenuItem>
-                    <MenuItem value=">DOUTORADO">Doutorado</MenuItem>
-                    <MenuItem value="POS_DOUTORADO">Pós Doutorado</MenuItem>
+                    <MenuItem value="TERTIARY_EDUCATION">Superior</MenuItem>
+                    <MenuItem value="POST_GRADUATE">Pós-Graduação</MenuItem>
+                    <MenuItem value="NONE">Nenhum</MenuItem>
                   </Select>
                 </Grid>
                 <br />
@@ -723,15 +721,15 @@ class Questionario extends Component {
                     <MenuItem value="" disabled>
                       Selecione
                     </MenuItem>
-                    <MenuItem value="SOLTEIRO">Solteiro(a)</MenuItem>
-                    <MenuItem value="CASADO">
+                    <MenuItem value="SINGLE">Solteiro(a)</MenuItem>
+                    <MenuItem value="MARRIED">
                       Casado(a) ou União Estável
                     </MenuItem>
-                    <MenuItem value="DIVORCIADO">Divorciado(a)</MenuItem>
-                    <MenuItem value="SEPARADO">
+                    <MenuItem value="DIVORCED">Divorciado(a)</MenuItem>
+                    <MenuItem value="SEPARATED">
                       Separado(a) judicialmente
                     </MenuItem>
-                    <MenuItem value="VIUVO">Viúvo(a)</MenuItem>
+                    <MenuItem value="WIDOW">Viúvo(a)</MenuItem>
                   </Select>
                 </Grid>
               </Grid>
@@ -761,7 +759,7 @@ class Questionario extends Component {
                     Tipo do Documento
                   </InputLabel>
                   <Select
-                    value={{}}
+                    value={this.props.values.document}
                     labelId="type_doc"
                     id="type_doc"
                     name="document"
@@ -772,18 +770,12 @@ class Questionario extends Component {
                     helperText={touched.document ? errors.document : ""}
                     error={touched.document && Boolean(errors.document)}
                   >
-                    <MenuItem value="000">Selecione</MenuItem>
-                    {/* {this.state.dados_cotacao.bancos[0] instanceof Array
-                    ? this.state.dados_cotacao.bancos[0].map((banco, index) => (
-                      <MenuItem key={index} value={banco}>
-                        {Dictionary.banks[banco]}
-                      </MenuItem>
-                    ))
-                    : this.state.dados_cotacao.bancos.map((banco, index) => (
-                      <MenuItem key={index} value={banco}>
-                        {Dictionary.banks[banco]}
-                      </MenuItem>
-                    ))} */}
+                    <MenuItem value="Selecione" disabled>
+                      Selecione
+                    </MenuItem>
+                    {orgaoExp.map((e, key) => (
+                      <MenuItem value={e.orgao}>{e.orgao}</MenuItem>
+                    ))}
                   </Select>
                 </Grid>
                 <br />
@@ -824,6 +816,7 @@ class Questionario extends Component {
                     error={touched.date_exp && Boolean(errors.date_exp)}
                   />
                 </Grid>
+
                 <br />
                 <Grid item xs={12} sm={12}>
                   <p>É estrangeiro?</p>
@@ -942,7 +935,7 @@ class Questionario extends Component {
                           País Emissor
                         </InputLabel>
                         <Select
-                          value={{}}
+                          value={this.props.values.pais_emissor}
                           labelId="pais_emissor"
                           id="pais_emissor"
                           name="pais_emissor"
@@ -957,7 +950,12 @@ class Questionario extends Component {
                             touched.pais_emissor && Boolean(errors.pais_emissor)
                           }
                         >
-                          <MenuItem value="000">Selecione</MenuItem>
+                          <MenuItem value="Selecione" disabled>
+                            Selecione
+                          </MenuItem>
+                          {countrys.map((e, key) => (
+                            <MenuItem value={e.country}>{e.country}</MenuItem>
+                          ))}
                           {/* {this.state.dados_cotacao.bancos[0] instanceof Array
                     ? this.state.dados_cotacao.bancos[0].map((banco, index) => (
                       <MenuItem key={index} value={banco}>
