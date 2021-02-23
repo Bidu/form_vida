@@ -561,9 +561,8 @@ export class ListPriceQuotation extends Component {
                     {cotacao.quotationResult.coverages.map((v, index) => (
                       <>
                         <p key={index}>
-                          <span>
-                            {v.description}: R$ {v.value}{" "}
-                          </span>
+                          <span>{v.description}:</span>
+                          <span className="bold">R$ {v.value} </span>
                         </p>
                       </>
                     ))}{" "}
@@ -582,19 +581,19 @@ export class ListPriceQuotation extends Component {
                     <span className="bold"> Segmentação:</span> {cotacao.segmentacao}<br />
                     <span className="bold"> Código ANS:</span> {cotacao.codigoans}<br /> */}
                   </p>
-                  <p>
+                  {/* <p>
                     <span className="bold">Total Rede Referência:</span>
                   </p>
-                  <p>
+                  <p> */}
                     {/* <span className="bold">Hospital:</span> {cotacao.total_rede_referencia.Hospital}<br/>
                         <span className="bold">Laboratório:</span> {cotacao.total_rede_referencia.Laboratório}<br/>
                         <span className="bold">Maternidade:</span> {cotacao.total_rede_referencia.Maternidade}<br/>
                         <span className="bold">Pronto Socorro:</span> {cotacao.total_rede_referencia.["Pronto Socorro"]}<br/>              */}
-                  </p>
+                  {/* </p>
 
                   <p>
                     <span className="bold">Rede Referência: </span>
-                  </p>
+                  </p> */}
                   {/* {cotacao.rede_referencia
                     .map((q, index) => (
                       <p key={index}>
