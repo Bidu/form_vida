@@ -17,7 +17,6 @@ import ListPriceQuotationServices from "./ListPriceQuotationServices";
 import { apiQualicorp } from "../services/bdBo";
 import { Description } from "@material-ui/icons";
 
-
 const marks_fipe = {
   85: {
     style: {
@@ -211,7 +210,7 @@ export class ListPriceQuotation extends Component {
       cotacao: this.props.quote,
       loading: false,
       customQuote: this.props.quote,
-      sucessoAddLead: false
+      sucessoAddLead: false,
     };
     this.escExitLightbox = this.escExitLightbox.bind(this);
   }
@@ -318,7 +317,6 @@ export class ListPriceQuotation extends Component {
     e.preventDefault();
     this.setState({ lightbox_custom: true });
     this.lightboxBehaviorOpen();
-  
   };
 
   lightboxBehaviorClose() {
@@ -345,7 +343,6 @@ export class ListPriceQuotation extends Component {
   BtnLightboxDetailsOpen = () => {
     this.setState({ lightbox_details: true });
     this.lightboxBehaviorOpen();
-  
   };
   BtnLightboxAgreeClose = (e) => {
     e.preventDefault();
@@ -358,7 +355,6 @@ export class ListPriceQuotation extends Component {
       this.setState({ lightbox_agree: false });
       this.lightboxBehaviorClose();
     }
-   
   };
   BtnLightboxAgreeOpen = (e) => {
     this.setState({ lightbox_agree: true });
@@ -367,7 +363,6 @@ export class ListPriceQuotation extends Component {
   BtnRedirectCheckout = () => {
     localStorage.removeItem("@bidu2/transmissao");
     localStorage.removeItem("@bidu2/dados_cotacao");
-   
 
     this.lightboxBehaviorClose();
     this.setState({
@@ -377,8 +372,6 @@ export class ListPriceQuotation extends Component {
         susep: this.state.cotacao.susep,
       },
     });
-
-  
   };
 
   escExitLightbox(event) {
@@ -418,20 +411,16 @@ export class ListPriceQuotation extends Component {
     this.lightboxBehaviorClose();
   };
 
+  setPlanSelect = async (plan) => {
+    localStorage.setItem("@bidu2/saude/plan", JSON.stringify(plan));
+    let cotationSelect = {
+      plan: plan,
+      user: JSON.parse(localStorage.getItem("@bidu2/user")),
+    };
 
-  setPlanSelect = async (plan) =>{
-      localStorage.setItem("@bidu2/saude/plan", JSON.stringify(plan))
-      let cotationSelect = {
-        plan: plan,
-        user: JSON.parse(localStorage.getItem("@bidu2/user"))
-      }
-
-     let res = await  apiQualicorp.addLead(cotationSelect)
-     if(res.status == 200)
-      this.setState({sucessoAddLead: true})
-
-  }
-
+    let res = await apiQualicorp.addLead(cotationSelect);
+    if (res.status == 200) this.setState({ sucessoAddLead: true });
+  };
 
   render() {
     let { cotacao, customQuote } = this.state;
@@ -478,83 +467,73 @@ export class ListPriceQuotation extends Component {
     } else {
       return (
         <>
-            {this.state.sucessoAddLead &&
-                <Redirect to="/checkout" />
-             }
-                <Grid key={cotacao.id} item xs={12} sm={6}>
-                  
-                  <div className="list-price-quotation">
-                    <div className="logo-container">
-                      <figure className="seguradoras">
-                        <img
-                          alt="tokio"
-                          src={`${require("../assets/img/6190.svg")}`}
-                        />
-                      </figure>
-                    </div>
+          {this.state.sucessoAddLead && <Redirect to="/checkout" />}
+          <Grid key={cotacao.id} item xs={12} sm={6}>
+            <div className="list-price-quotation">
+              <div className="logo-container">
+                <figure className="seguradoras">
+                  <img
+                    alt="tokio"
+                    src={`${require("../assets/img/6190.svg")}`}
+                  />
+                </figure>
+              </div>
 
-                    
-                    <Grid item spacing={1} className="table-header" container>
-                      <Grid item xs={6}>
-                        <>
-                          <span className="top-label">Valor total</span>
-                          <span className="valor-total">
-                            {ConvertCurrency(
-                              cotacao.quotationResult.price
-                            )}
-                          </span>
-                        </>
-                      </Grid>
-                      <Grid item xs={6} style={{padding: 0}}>
-                        <>
-                          <span className="top-label nome-plano bold">
-                            {cotacao.quotationResult.product}
-                          </span>
-                        </>
-                      </Grid>
-                     
-                    
-                      
-                    </Grid>
+              <Grid item spacing={1} className="table-header" container>
+                <Grid item xs={6}>
+                  <>
+                    <span className="top-label">Valor total</span>
+                    <span className="valor-total">
+                      {ConvertCurrency(cotacao.quotationResult.price)}
+                    </span>
+                  </>
+                </Grid>
+                <Grid item xs={6} style={{ padding: 0 }}>
+                  <>
+                    <span className="top-label nome-plano bold">
+                      {cotacao.quotationResult.product}
+                    </span>
+                  </>
+                </Grid>
+              </Grid>
 
-                    <ListPriceQuotationServices cotacao={cotacao} />
-                    <Grid item spacing={0} className="table-footer" container>
-                      <Grid item xs={3}>
-                        <Grid className="txt-left bottom-idProtocolo">
-                          <p className="ans-code">
-                          {cotacao.quotationResult.protocolId}
-                          </p>
-                        </Grid>
-                      </Grid>
-                              <br/>
-                      <Grid
-                        item
-                        xs={6}
-                        className="txt-center relative itens-center px05 area-button-contate"
-                        // style={{top: '-20px'}}
-                      >
-                        <div
-                          className="btn-comprar"
-                          onClick={ () =>  this.setPlanSelect(cotacao) }
-                          
-                        >
-                          COMPRAR
-                        </div>
-                      </Grid>
-
-                      <Grid item xs={3} className="txt-right">
-                        <a
-                          title="Ver detalhes"
-                          onClick={(e) => this.BtnLightboxDetailsOpen(e)}
-                          className="bottom-links"
-                        >
-                          Ver detalhes
-                        </a>
-                      </Grid>
-                    </Grid>
+              <ListPriceQuotationServices cotacao={cotacao} />
+              <Grid item spacing={0} className="table-footer" container>
+                <Grid item xs={3}>
+                  <Grid className="txt-left bottom-idProtocolo">
+                    <p className="ans-code">
+                      {cotacao.quotationResult.protocolId}
+                    </p>
+                  </Grid>
+                </Grid>
+                <br />
+                <Grid
+                  item
+                  xs={6}
+                  className="txt-center relative itens-center px05 area-button-contate"
+                  // style={{top: '-20px'}}
+                >
+                  <div
+                    className="btn-comprar"
+                    onClick={() => this.setPlanSelect(cotacao)}
+                  >
+                    COMPRAR
                   </div>
                 </Grid>
-           
+
+                <Grid item xs={3} className="txt-right">
+                  <a
+                    title="Ver detalhes"
+                    onClick={(e) => this.BtnLightboxDetailsOpen(e)}
+                    className="bottom-links"
+                  >
+                    Ver detalhes
+                  </a>
+                </Grid>
+              </Grid>
+            </div>
+          </Grid>
+
           {lightbox_details && (
             <div
               className="custom lightbox"
@@ -572,40 +551,46 @@ export class ListPriceQuotation extends Component {
                 </div>
                 <div className="entry">
                   <p className="subtitle bold">
-                  Detalhes de assistências e coberturas- {cotacao.quotationResult.protocolId}
-                   <br/>
+                    Detalhes de assistências e coberturas-{" "}
+                    {cotacao.quotationResult.protocolId}
+                    <br />
                   </p>
-                  
+
                   <p>
-                  {console.log("CAMILAAA", cotacao)}
-                    <span className="bold">Coberturas:</span> {cotacao.quotationResult.coverages.map((v,index)=>(
+                    <span className="bold">Coberturas:</span>{" "}
+                    {cotacao.quotationResult.coverages.map((v, index) => (
                       <>
-                      <p key={index}><span>{v.description}: R$ {v.value} </span></p>
+                        <p key={index}>
+                          <span>
+                            {v.description}: R$ {v.value}{" "}
+                          </span>
+                        </p>
                       </>
-                    
-                    ))} <br/>
-                   
+                    ))}{" "}
+                    <br />
                     {/* <span className="bold"> Abrangências:</span> {cotacao.coparticipacao == true ? "SIM" : "NÃO"}<br/> */}
-                    <span className="bold"> Assistências:</span> {cotacao.quotationResult.assistances.map((v,index)=>(
+                    <span className="bold"> Assistências:</span>{" "}
+                    {cotacao.quotationResult.assistances.map((v, index) => (
                       <>
-                      <p key={index}><span>{v.description} </span></p>
+                        <p key={index}>
+                          <span>{v.description} </span>
+                        </p>
                       </>
-                    
-                    ))} <br/>
+                    ))}{" "}
+                    <br />
                     {/* <span className="bold"> Acomodação:</span> {cotacao.acomodacao}<br/>
                     <span className="bold"> Segmentação:</span> {cotacao.segmentacao}<br />
                     <span className="bold"> Código ANS:</span> {cotacao.codigoans}<br /> */}
-                   </p>
-                   <p>
-                    <span className="bold">Total Rede  Referência:</span>
                   </p>
-                      <p>
-                        {/* <span className="bold">Hospital:</span> {cotacao.total_rede_referencia.Hospital}<br/>
+                  <p>
+                    <span className="bold">Total Rede Referência:</span>
+                  </p>
+                  <p>
+                    {/* <span className="bold">Hospital:</span> {cotacao.total_rede_referencia.Hospital}<br/>
                         <span className="bold">Laboratório:</span> {cotacao.total_rede_referencia.Laboratório}<br/>
                         <span className="bold">Maternidade:</span> {cotacao.total_rede_referencia.Maternidade}<br/>
                         <span className="bold">Pronto Socorro:</span> {cotacao.total_rede_referencia.["Pronto Socorro"]}<br/>              */}
-                      </p>
-                   
+                  </p>
 
                   <p>
                     <span className="bold">Rede Referência: </span>
@@ -660,7 +645,7 @@ export class ListPriceQuotation extends Component {
                       {cotacao.resultadoCotacao.idProtocolo}
                     </p>
                   )} */}
-                   {/* <p>
+                  {/* <p>
                     <span className="bold">Informações complementares: </span><br/>
                     <span>Planos de saúde por adesão são comercializados de acordo com a regra da ANS.</span><br/>
                     <span>A comercialização respeita a área de abrangência dos produtos de acordo com a regra das operadoras.</span><br/>
