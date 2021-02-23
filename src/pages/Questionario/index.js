@@ -603,6 +603,7 @@ class Questionario extends Component {
                         <MenuItem value="" disabled>
                           Selecione
                         </MenuItem>
+                        <MenuItem value="PARTNER">Companheiro(a)</MenuItem>
                         <MenuItem value="MARRIED">Côjuge</MenuItem>
                         <MenuItem value="CHILD">Filho(a)</MenuItem>
                         <MenuItem value="FATHER">Pai</MenuItem>
