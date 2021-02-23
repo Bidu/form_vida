@@ -105,6 +105,16 @@ class Questionario extends Component {
         frequency: false,
         foreign: 0,
         possui_rne: 0,
+        nome: "",
+        grau_de_parentesco: "",
+        date_birth_beneficiario: "",
+        marital: "",
+        type_doc:"",
+        date_exp:"",
+        rne:"",
+        passaporte:"",
+        pais_emissor:"",
+        frequency:"",
       },
       dependents: [],
       storage: JSON.parse(localStorage.getItem("@bidu2/user")),
@@ -496,12 +506,22 @@ class Questionario extends Component {
       include_sports,
       foreign,
       possui_rne,
+      nome,
+      grau_de_parentesco,
+      date_birth_beneficiario,
+      marital,
+      type_doc,
+      date_exp,
+      rne,
+      passaporte,
+      pais_emissor,
+      frequency,
     } = this.props;
 
     const { include_recipient } = this.state;
 
     if (this.props.status) {
-      return <Redirect to="/cotacao" />;
+      return <Redirect to="/checkout" />;
     }
 
     return (
@@ -555,7 +575,7 @@ class Questionario extends Component {
                           this.props.values.nome ? this.props.values.nome : ""
                         }
                         type="text"
-                        id="name"
+                        id="nome"
                         name="nome"
                         label="Nome"
                         placeholder="João da Silva"
@@ -783,17 +803,17 @@ class Questionario extends Component {
                 <Grid item xs={12} sm={6}>
                   <TextField
                     value={
-                      this.props.values.numero ? this.props.values.numero : ""
+                      this.props.values.numero_doc ? this.props.values.numero_doc : ""
                     }
-                    id="numero"
-                    name="numero"
+                    id="numero_doc"
+                    name="numero_doc"
                     label="Número"
                     placeholder="Digite aqui"
                     fullWidth
                     onChange={handleChange}
                     onBlur={this.handleChange}
-                    helperText={touched.numero ? errors.numero : ""}
-                    error={touched.numero && Boolean(errors.numero)}
+                    helperText={touched.numero_doc ? errors.numero_doc : ""}
+                    error={touched.numero_doc && Boolean(errors.numero_doc)}
                     InputLabelProps={{
                       shrink: true,
                     }}
