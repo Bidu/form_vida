@@ -485,8 +485,6 @@ class About extends Component {
         <Wrapper>
           <Steps step1={true} />
           <Title text="Cotação" bold="Seguro de Vida" />
-          <p></p>
-
           <form onSubmit={handleSubmit}>
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6}>
@@ -1373,6 +1371,14 @@ const Form = withFormik({
     cidade,
     estado,
     frequency,
+    genero,
+    capital,
+    renda,
+    esportes,
+    esportes2,
+    esportes3,
+    frequency2,
+    frequency3,
   }) => {
     return {
       cpf: cpf || "",
@@ -1384,6 +1390,14 @@ const Form = withFormik({
       cidade: cidade || "",
       estado: estado || "",
       frequency: frequency || "",
+      genero: genero || "",
+      capital: capital || "",
+      renda: renda || "",
+      esportes: esportes || "",
+      esportes2: esportes2 || "",
+      esportes3: esportes3|| "",
+      frequency2: frequency2 || "",
+      frequency3: frequency3 || "",
     };
   },
 
@@ -1424,6 +1438,17 @@ const Form = withFormik({
           else return true;
         }
       ),
+      // genero: Yup.string().required("Genêro é obrigatório"),
+      // capital: Yup.string().required("Capital segurado é obrigatório"),
+      // renda: Yup.string().required("Renda mensal é obrigatório"),
+      // esportes: Yup.string().required("Esporte é obrigatório"),
+      // esportes2: Yup.string().required("Esporte é obrigatório"),
+      // esportes2: Yup.string().required("Esporte é obrigatório"),
+      // frequency: Yup.string().required("Frequência é obrigatório"),
+      // frequency2: Yup.string().required("Frequência é obrigatório"),
+      // frequency3: Yup.string().required("Frequência é obrigatório"),
+
+
   }),
 
   handleSubmit: async (

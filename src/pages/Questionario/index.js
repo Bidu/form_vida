@@ -521,7 +521,7 @@ class Questionario extends Component {
     const { include_recipient } = this.state;
 
     if (this.props.status) {
-      return <Redirect to="/checkout" />;
+      return <Redirect to={`/questionario/${localStorage.getItem("@bidu2/idCotacao")}`} />;
     }
 
     return (
@@ -684,7 +684,7 @@ class Questionario extends Component {
                     {}
                   </>
                 )}
-                <Title text="Dados" bold="Complementares" />
+                <Title text="Dados do" bold="Segurado" />
                 <Grid item xs={12} sm={12}>
                   <InputLabel shrink id="formation">
                     Escolaridade
@@ -1227,6 +1227,16 @@ const Form = withFormik({
     cidade,
     estado,
     frequency,
+    grau_parentesco,
+    percentual,
+    date_birth_beneficiario,
+    marital,
+    type_doc,
+    numero_doc,
+    date_exp,
+    rne,
+    passaporte,
+    pais_emissor,
   }) => {
     return {
       cpf: cpf || "",
@@ -1238,6 +1248,18 @@ const Form = withFormik({
       cidade: cidade || "",
       estado: estado || "",
       frequency: frequency || "",
+      nome: nome || "",
+      grau_parentesco: grau_parentesco || "",
+      percentual: percentual || "",
+      date_exp: percentual || "",
+      date_birth_beneficiario: date_birth_beneficiario || "",
+      marital: marital || "",
+      type_doc: type_doc || "",
+      rne: rne || "",
+      passaporte: passaporte || "",
+      pais_emissor: pais_emissor || "",
+      numero_doc: numero_doc || "",
+
     };
   },
 
@@ -1266,10 +1288,10 @@ const Form = withFormik({
     // cidade: Yup.string()
     //   .required("Cidade é obrigatório"),
     profissao: Yup.string().required("Profissão é obrigatório"),
-    date_birth: Yup.string()
+    date_birth_beneficiario: Yup.string()
       .required("Data de nascimento é obrigatório")
       .test(
-        "date_birth",
+        "date_birth_beneficiario",
         "Informe uma data entre ano de 1920 e a data atual!",
         (value) => {
           let now = new Date();
@@ -1278,6 +1300,16 @@ const Form = withFormik({
           else return true;
         }
       ),
+      // grau_parentesco: Yup.string().required("Grau de parentesco é obrigatório"),
+      // percentual: Yup.string().required("Percentual é obrigatório"),
+      // marital: Yup.string().required("Estado civil é obrigatório"),
+      // type_doc: Yup.string().required("Informar o tipo de documento é obrigatório"),
+      // numero_doc: Yup.string().required("Informar o número de documento é obrigatório"),
+      // rne: Yup.string().required("Informar o número do RNE é obrigatório"),
+      // passaporte: Yup.string().required("Informar no número do passaporte é obrigatório"),
+      // pais_emissor: Yup.string().required("País emissor é obrigatório"),
+      // frequency: Yup.string().required("Forma do envio da apólice é obrigatório"),
+
   }),
 
   handleSubmit: async (
