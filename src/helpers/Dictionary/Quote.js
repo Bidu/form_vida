@@ -58,6 +58,17 @@ module.exports = {
     "0085 - COOP. CENTRAL AILO": "085"
   }, 
   
+  payment:  {
+    DEBIT: "DÉBTO EM C/C",
+    BILLET: "Boleto",
+    CREDITCARD: "Cartão de crédit"
+  },
+  cards: {
+    Elo: "ELO",
+    Mastercard: "MASTERCARD",
+    Visa: "VISA"
+  },
+
   company: {
     1015: "SulAmérica",
     6190: "Tókio Marine",

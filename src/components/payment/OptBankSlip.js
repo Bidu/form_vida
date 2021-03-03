@@ -6,11 +6,12 @@ import Radio from "@material-ui/core/Radio";
 const OptBankSlip = (props) => (
   <Grid item xs={12} sm={4}>
     <FormControlLabel
-      value="BANK_SLIP"
+      value="BILLET"
       control={
         <Radio
           color="primary"
-          checked={props.checked === "BANK_SLIP" ? true : false}
+          checked={props.paymentMode === "BILLET" ? true : false}
+          onClick={ () => props.clickC(props.valor) }
         />
       }
       label="Boleto"

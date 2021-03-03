@@ -30,6 +30,7 @@ import * as Yup from "yup";
 import * as API from "../../services/bd/CadastrarCotacao";
 import { adicionarLeadCotacao } from "../../store/actions/addLeadBd";
 import { apiQualicorp } from "../../services/bdBo";
+import {Checkout as Payment} from "../../pages/Checkout"
 import axios from "axios";
 import DialogDependents from "../../components/DialogDependents";
 import Birthday from "../../components/Birthday";
@@ -58,6 +59,7 @@ import orgaoExp, { orgaoexpedidor } from "../../helpers/orgaoexpedidor";
 
 import { createBrowserHistory } from "history";
 import countrys from "../../helpers/country";
+import Checkout from "../Checkout";
 // import { entities } from "../../helpers/entities";
 class Questionario extends Component {
   constructor(props) {
@@ -530,8 +532,10 @@ class Questionario extends Component {
           <Steps step1={true} step2={true}  />
           <Title text="Dados do" bold="Beneficiário" />
           <form onSubmit={handleSubmit}>
+           
             <Grid container spacing={3}>
-              <Grid item xs={12} sm={6}>
+            <Payment/> 
+              <Grid item xs={6} sm={6}>
                 <p>Gostaria de identificar um Beneficiário?</p>
                 {loading && <Loading />}
                 <FormGroup row>
@@ -633,7 +637,7 @@ class Questionario extends Component {
                       </Select>
                     </Grid>
                     <br />
-                    <Grid item xs={12} sm={12}>
+                    <Grid item xs={6} sm={12}>
                       <TextField
                         value={
                           this.props.values.percentual
@@ -971,9 +975,9 @@ class Questionario extends Component {
                             touched.pais_emissor && Boolean(errors.pais_emissor)
                           }
                         >
-                          <MenuItem value="Selecione" disabled>
-                            Selecione
-                          </MenuItem>
+                        <MenuItem value="" disabled>
+                          Selecione
+                        </MenuItem>
                           {countrys.map((e, key) => (
                             <MenuItem value={e.country}>{e.country}</MenuItem>
                           ))}

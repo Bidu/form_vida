@@ -386,9 +386,6 @@ export class PriceQuote extends Component {
                     <ListPriceQuotation
                       key={index}
                       quote={c}
-                      redeReferenciada={
-                        "precisamos colocar o array da rede referenciada!"
-                      }
                       getQuote={this.getCustomQuote}
                     />
                   </>

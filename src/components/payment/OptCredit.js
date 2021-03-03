@@ -10,7 +10,8 @@ const OptCredit = (props) => (
       control={
         <Radio
           color="primary"
-          checked={props.checked === "CREDITCARD" ? true : false}
+          checked={props.paymentMode === "CREDITCARD" ? true : false}
+          onClick={ () => props.clickC(props.valor) }
         />
       }
       label="Cartão de crédito"

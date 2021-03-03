@@ -37,19 +37,24 @@ export class Checkout extends Component {
     // var history = createBrowserHistory();
     // window.ga('set', 'page', history.location.pathname + history.location.search);
     // window.ga('send', 'pageview');
-    const dados = JSON.parse(localStorage.getItem("@bidu2/dados_cotacao"));
+    const dados = JSON.parse(localStorage.getItem("@bidu2/saude/plan"));
 
     this.setState({
       ...this.state,
-      payment: dados.planosPagamento,
+      payment: dados.quotationResult.paymentPlans,
       susep: dados.susep,
       pay: dados.planosPagamento,
     });
   }
+  setMeioDePagamento = async (e) => {
+    console.log("PAGAMENTO", e);
 
+    await this.setState({ meioPagamento: e });
+  };
   handleChange = (event) => {
     this.setState({ ...this.state, pay: event.target.value });
 
+    console.log(event.target.value);
     //console.log(event.target.value);
 
     // /*Google Tag Manager*/
@@ -68,11 +73,11 @@ export class Checkout extends Component {
     return (
       <>
         <Wrapper>
-          <Steps step1={true} step2={true} step3={true} />
-          <div className="checkout">
+          {/* <Steps step1={true} step2={true} step3={true} /> */}
+          {/* <div className="checkout">
             <Title bold="Pagamento"></Title>
-          </div>
-          <ProductCard />
+          </div> */}
+          {/* <ProductCard /> */}
           <div className="mt1e5">
             <p className="bold">Opção de pagamento</p>
             <FormControl component="fieldset" className="">
@@ -85,15 +90,30 @@ export class Checkout extends Component {
                 <Grid container spacing={2}>
                   {payment instanceof Array && (
                     <>
-                      {payment.map((p) => {
-                        if (p === "CREDITCARD") {
-                          return <OptCredit checked={pay} />;
-                        } else if (p === "DEBIT") {
-                          return <OptDebit checked={pay} />;
-                        } else if (p === "BANK_SLIP") {
-                          return <OptBankSlip checked={pay} />;
-                        }
-                      })}
+                      {payment.map(
+                        (p) =>
+                          (p.paymentMode === "CREDITCARD" && (
+                            <OptCredit
+                              checked={p}
+                              valor={p}
+                              clickC={(res) => this.setMeioDePagamento(res)}
+                            />
+                          )) ||
+                          (p.paymentMode === "DEBIT" && (
+                            <OptDebit
+                              checked={p}
+                              valor={p}
+                              clickC={(res) => this.setMeioDePagamento(res)}
+                            />
+                          )) ||
+                          (p.paymentMode === "BILLET" && (
+                            <OptBankSlip
+                              checked={p}
+                              valor={p}
+                              clickC={(res) => this.setMeioDePagamento(res)}
+                            />
+                          ))
+                      )}
                     </>
                   )}
                   {pay === "CREDITCARD" && typeof payment === "string" && (
@@ -102,7 +122,7 @@ export class Checkout extends Component {
                   {pay === "DEBIT" && typeof payment === "string" && (
                     <OptDebit checked={pay} />
                   )}
-                  {pay === "BANK_SLIP" && typeof payment === "string" && (
+                  {pay === "BILLET" && typeof payment === "string" && (
                     <OptBankSlip checked={pay} />
                   )}
                 </Grid>
@@ -110,13 +130,25 @@ export class Checkout extends Component {
             </FormControl>
           </div>
 
-          {pay === "CREDITCARD" && <PayCreditCard />}
-          {pay === "DEBIT" && <PayAccountDebit />}
-          {pay === "BANK_SLIP" && <PayBankBill />}
+          {pay === "CREDITCARD" &&
+            this.state.meioPagamento &&
+            this.state.meioPagamento.paymentMode == "CREDITCARD" && (
+              <PayCreditCard creditopg={this.state.meioPagamento} />
+            )}
+          {pay === "DEBIT" &&
+            this.state.meioPagamento &&
+            this.state.meioPagamento.paymentMode == "DEBIT" && (
+              <PayAccountDebit contapg={this.state.meioPagamento} />
+            )}
+          {pay === "BILLET" && 
+          this.state.meioPagamento &&
+          this.state.meioPagamento.paymentMode == "BILLET" && (
+          <PayBankBill boletopg={this.state.meioPagamento}/>
+          )}
         </Wrapper>
-        <StepCompleted bold="Cotação" />
+        {/* <StepCompleted bold="Cotação" />
         <StepCompleted text="Sobre o" bold="veículo" />
-        <StepCompleted text="Sobre" bold="você" />
+        <StepCompleted text="Sobre" bold="você" /> */}
       </>
     );
   }

@@ -10,7 +10,8 @@ const OptDebit = (props) => (
       control={
         <Radio
           color="primary"
-          checked={props.checked === "DEBIT" ? true : false}
+          checked={props.paymentMode === "DEBIT" ? true : false}
+          onClick={ () => props.clickC(props.valor) }
         />
       }
       label="Débito Online"

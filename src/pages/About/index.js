@@ -92,6 +92,7 @@ class About extends Component {
         uf: "",
         complemento: "",
         date_birth: "",
+        date_validity:"",
         nasc_dia: "",
         nasc_mes: "",
         nasc_ano: "",
@@ -1379,6 +1380,7 @@ const Form = withFormik({
     esportes3,
     frequency2,
     frequency3,
+    date_validity,
   }) => {
     return {
       cpf: cpf || "",
@@ -1387,6 +1389,7 @@ const Form = withFormik({
       telefone: telefone || "",
       profissao: profissao || "",
       date_birth: date_birth || "",
+      date_validity: date_validity || "",
       cidade: cidade || "",
       estado: estado || "",
       frequency: frequency || "",

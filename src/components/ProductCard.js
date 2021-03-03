@@ -13,7 +13,7 @@ export class ProductCard extends Component {
     super(props);
     this.state = {
       lightbox_details: false,
-      dados_cotacao: JSON.parse(localStorage.getItem("@bidu2/dados_cotacao")),
+      dados_cotacao: JSON.parse(localStorage.getItem("@bidu2/user")),
     };
     this.escExitLightbox = this.escExitLightbox.bind(this);
   }
@@ -81,12 +81,12 @@ export class ProductCard extends Component {
           <div className="product">
             <div className="content">
               <div className="logo-container">
-                <figure className="logo-hdmi logo-cotacao">
+                {/* <figure className="logo-hdmi logo-cotacao">
                   <img
                     alt="hdmi"
-                    src={`${require(`../assets/img/${dados_cotacao.susep}.svg`)}`}
+                    // src={`${require(`../assets/img/${dados_cotacao.susep}.svg`)}`}
                   />
-                </figure>
+                </figure> */}
               </div>
               <div className="infos">
                 <div className="price">
