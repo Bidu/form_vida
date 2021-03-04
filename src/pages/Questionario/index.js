@@ -30,7 +30,7 @@ import * as Yup from "yup";
 import * as API from "../../services/bd/CadastrarCotacao";
 import { adicionarLeadCotacao } from "../../store/actions/addLeadBd";
 import { apiQualicorp } from "../../services/bdBo";
-import {Checkout as Payment} from "../../pages/Checkout"
+import Checkout from "../../pages/Checkout"
 import axios from "axios";
 import DialogDependents from "../../components/DialogDependents";
 import Birthday from "../../components/Birthday";
@@ -59,7 +59,7 @@ import orgaoExp, { orgaoexpedidor } from "../../helpers/orgaoexpedidor";
 
 import { createBrowserHistory } from "history";
 import countrys from "../../helpers/country";
-import Checkout from "../Checkout";
+// import Checkout from "../Checkout";
 // import { entities } from "../../helpers/entities";
 class Questionario extends Component {
   constructor(props) {
@@ -529,13 +529,13 @@ class Questionario extends Component {
     return (
       <>
         <Wrapper>
-          <Steps step1={true} step2={true}  />
-          <Title text="Dados do" bold="Beneficiário" />
+          <Steps step1={true} step2={true} step3={true} step4S={true} />
+          
           <form onSubmit={handleSubmit}>
-           
-            <Grid container spacing={3}>
-            <Payment/> 
+            <Grid container spacing={2}>
+            <Checkout/> 
               <Grid item xs={6} sm={6}>
+              <Title text="Dados do" bold="Beneficiário" />
                 <p>Gostaria de identificar um Beneficiário?</p>
                 {loading && <Loading />}
                 <FormGroup row>

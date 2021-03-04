@@ -98,6 +98,7 @@ function PayCreditCard(props) {
                       value={e.numberOfInstallments}
                     >{` ${e.numberOfInstallments} x R$ ${e.pricePerInstallment} `}</MenuItem>
                   ))}
+                  {console.log(parcela)}
               </Select>
             </Grid>
             <Grid item xs={6}>
@@ -137,6 +138,7 @@ function PayCreditCard(props) {
                 <MenuItem value="MASTERCARD">Mastercard</MenuItem>
                 <MenuItem value="VISA">Visa</MenuItem>
               </Select>
+              {console.log(bandeira)}
             </Grid>
             <Grid item xs={6} sm={6}>
               <p className="bold mb1">Número do Cartão</p>
@@ -168,6 +170,7 @@ function PayCreditCard(props) {
                   shrink: true,
                 }}
               />
+ 
             </Grid>
             <Grid item xs={6}>
               <p className="bold mb1">Validade do Cartão</p>
@@ -239,7 +242,7 @@ function PayCreditCard(props) {
             </Grid>
             <Grid item xs={6}>
               <p className="bold mb1">
-                Relação do titular do cartão com o segurado
+                Relação do Titular com o Segurado
               </p>
               <InputLabel shrink id="relacao_titular">
                 Selecione uma opção
