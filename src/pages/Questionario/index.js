@@ -30,7 +30,7 @@ import * as Yup from "yup";
 import * as API from "../../services/bd/CadastrarCotacao";
 import { adicionarLeadCotacao } from "../../store/actions/addLeadBd";
 import { apiQualicorp } from "../../services/bdBo";
-import Checkout from "../../pages/Checkout"
+import Checkout from "../../pages/Checkout";
 import axios from "axios";
 import DialogDependents from "../../components/DialogDependents";
 import Birthday from "../../components/Birthday";
@@ -111,12 +111,12 @@ class Questionario extends Component {
         grau_de_parentesco: "",
         date_birth_beneficiario: "",
         marital: "",
-        type_doc:"",
-        date_exp:"",
-        rne:"",
-        passaporte:"",
-        pais_emissor:"",
-        frequency:"",
+        type_doc: "",
+        date_exp: "",
+        rne: "",
+        passaporte: "",
+        pais_emissor: "",
+        frequency: "",
       },
       dependents: [],
       storage: JSON.parse(localStorage.getItem("@bidu2/user")),
@@ -523,19 +523,23 @@ class Questionario extends Component {
     const { include_recipient } = this.state;
 
     if (this.props.status) {
-      return <Redirect to={`/questionario/${localStorage.getItem("@bidu2/idCotacao")}`} />;
+      return (
+        <Redirect
+          to={`/questionario/${localStorage.getItem("@bidu2/idCotacao")}`}
+        />
+      );
     }
 
     return (
       <>
         <Wrapper>
-          <Steps step1={true} step2={true} step3={true} step4S={true} />
-          
+          <Steps step1={true} step2={true} step3={true} step4={true} />
+
           <form onSubmit={handleSubmit}>
             <Grid container spacing={2}>
-            <Checkout/> 
+              <Checkout />
               <Grid item xs={6} sm={6}>
-              <Title text="Dados do" bold="Beneficiário" />
+                <Title text="Dados do" bold="Beneficiário" />
                 <p>Gostaria de identificar um Beneficiário?</p>
                 {loading && <Loading />}
                 <FormGroup row>
@@ -807,7 +811,9 @@ class Questionario extends Component {
                 <Grid item xs={12} sm={6}>
                   <TextField
                     value={
-                      this.props.values.numero_doc ? this.props.values.numero_doc : ""
+                      this.props.values.numero_doc
+                        ? this.props.values.numero_doc
+                        : ""
                     }
                     id="numero_doc"
                     name="numero_doc"
@@ -975,9 +981,9 @@ class Questionario extends Component {
                             touched.pais_emissor && Boolean(errors.pais_emissor)
                           }
                         >
-                        <MenuItem value="" disabled>
-                          Selecione
-                        </MenuItem>
+                          <MenuItem value="" disabled>
+                            Selecione
+                          </MenuItem>
                           {countrys.map((e, key) => (
                             <MenuItem value={e.country}>{e.country}</MenuItem>
                           ))}
@@ -1171,14 +1177,18 @@ class Questionario extends Component {
                     </FormControl>
                   </Grid>
                 </Grid>
+                <div className="actions">
+                  <Button
+                    type="submit"
+                    className="btn-next"
+                    disabled={isSubmitting}
+                  >
+                    Próximo
+                  </Button>
+                </div>
               </Grid>
             </Grid>
           </form>
-          <div className="actions">
-            <Button type="submit" className="btn-next" disabled={isSubmitting}>
-              Próximo
-            </Button>
-          </div>
           <div className="actions mt0">
             <Link className="btn-back" to="/cotacao">
               <KeyboardBackspaceIcon /> Voltar
@@ -1263,7 +1273,6 @@ const Form = withFormik({
       passaporte: passaporte || "",
       pais_emissor: pais_emissor || "",
       numero_doc: numero_doc || "",
-
     };
   },
 
@@ -1304,16 +1313,15 @@ const Form = withFormik({
           else return true;
         }
       ),
-      // grau_parentesco: Yup.string().required("Grau de parentesco é obrigatório"),
-      // percentual: Yup.string().required("Percentual é obrigatório"),
-      // marital: Yup.string().required("Estado civil é obrigatório"),
-      // type_doc: Yup.string().required("Informar o tipo de documento é obrigatório"),
-      // numero_doc: Yup.string().required("Informar o número de documento é obrigatório"),
-      // rne: Yup.string().required("Informar o número do RNE é obrigatório"),
-      // passaporte: Yup.string().required("Informar no número do passaporte é obrigatório"),
-      // pais_emissor: Yup.string().required("País emissor é obrigatório"),
-      // frequency: Yup.string().required("Forma do envio da apólice é obrigatório"),
-
+    // grau_parentesco: Yup.string().required("Grau de parentesco é obrigatório"),
+    // percentual: Yup.string().required("Percentual é obrigatório"),
+    // marital: Yup.string().required("Estado civil é obrigatório"),
+    // type_doc: Yup.string().required("Informar o tipo de documento é obrigatório"),
+    // numero_doc: Yup.string().required("Informar o número de documento é obrigatório"),
+    // rne: Yup.string().required("Informar o número do RNE é obrigatório"),
+    // passaporte: Yup.string().required("Informar no número do passaporte é obrigatório"),
+    // pais_emissor: Yup.string().required("País emissor é obrigatório"),
+    // frequency: Yup.string().required("Forma do envio da apólice é obrigatório"),
   }),
 
   handleSubmit: async (
@@ -1323,6 +1331,7 @@ const Form = withFormik({
     localStorage.setItem("@bidu2/user", [JSON.stringify(values)]);
     setStatus(true);
     setSubmitting(false);
+    console.log("SUBMIT", values);
   },
 })(Questionario);
 

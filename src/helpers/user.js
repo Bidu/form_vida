@@ -30,6 +30,90 @@ export const textMaskPhone = (props) => {
     />
   );
 };
+
+
+export const checkDateBirth = (data) => {
+
+  if(data == "")
+   return false
+  if(String(data).length != 10)
+    return false
+
+
+  data = data.replace(/\//g, "-"); // substitui eventuais barras (ex. IE) "/" por hífen "-"
+  var data_array = data.split("-"); // quebra a data em array
+
+  // para o IE onde será inserido no formato dd/MM/yyyy
+  if (data_array[0].length != 4) {
+    data = data_array[2] + "-" + data_array[1] + "-" + data_array[0]; // remonto a data no formato yyyy/MM/dd
+  }
+
+  // comparo para ver se data possui 10 digitos 
+  
+
+  // comparo as datas e calculo a idade
+  var hoje = new Date();
+  var nasc = new Date(data);
+  var idade = hoje.getFullYear() - nasc.getFullYear();
+  var m = hoje.getMonth() - nasc.getMonth();
+  if (m < 0 || (m === 0 && hoje.getDate() < nasc.getDate())) idade--;
+
+  if (idade >= 0 && idade <= 120) {
+    return true;
+  }
+
+  // se for maior que 60 não vai acontecer nada!
+  return false;
+
+
+}
+
+
+
+export const textMaskDateBirth = (props) => {
+  const { inputRef, ...other } = props;
+  return (
+    <MaskedInput
+      {...other}
+      ref={inputRef}
+      mask={[
+        "",
+        /[1-9]/,
+        /\d/,
+        "/",
+        /\d/,
+        /\d/,      
+        "/",
+        /\d/,
+        /\d/,
+        /\d/,
+        /\d/,
+      ]}
+      placeholderChar={"\u2000"}
+      guide={false}
+      keepCharPositions={false}
+    />
+  );
+};
+export const onlyNumbers = (props) => {
+  const { inputRef, ...other } = props;
+  return (
+    <MaskedInput
+      {...other}
+      ref={inputRef}
+      mask={[
+        /[0-9]/,
+        /[0-9]/,
+        /[0-9]/,
+        /[0-9]/,      
+      ]}
+      placeholderChar={"\u2000"}
+      guide={false}
+      keepCharPositions={false}
+    />
+  );
+};
+
 export const onlyLetters = (props) => {
   const { inputRef, ...other } = props;
   return (
@@ -459,6 +543,7 @@ export const textMaskNumber= (props) => {
     />
   );
 };
+
 export const textMaskNumberOfLifes= (props) => {
   const { inputRef, ...other } = props;
   return (
@@ -770,28 +855,6 @@ export const textMaskDispositivoSeg = (props) => {
   );
 };
 
-// export const textMaskNumber= (props) => {
-//   const { inputRef, ...other } = props;
-//   return (
-//     <MaskedInput
-//       {...other}
-//       ref={inputRef}
-//       mask={[
-//         /[a-z\A-Z\d]/,
-//         /[a-z\A-Z\d]/,
-//         /[a-z\A-Z\d]/,
-//         /[a-z\A-Z\d]/,
-//         /[a-z\A-Z\d]/,
-//         /[a-z\A-Z\d]/,
-//         /[a-z\A-Z\d]/,      
-//       ]}
-//       placeholderChar={"\u2000"}
-//       guide={false}
-//       keepCharPositions={false}
-//     />
-//   );
-// };
-
 export function CheckCPF(cpf) {
   if (!cpf) {
     const cpft = "00000000000";
@@ -832,7 +895,7 @@ export function CheckCPF(cpf) {
 }
 export function CheckCNPJ(cnpj) {
   cnpj = cnpj.replace(/[^\d]+/g,'');
-  console.log("cnpj",cnpj)
+  // console.log("cnpj",cnpj)
   if(cnpj == '') return false;
  
   if (cnpj.length != 14)

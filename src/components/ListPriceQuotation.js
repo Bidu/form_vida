@@ -418,8 +418,7 @@ export class ListPriceQuotation extends Component {
       user: JSON.parse(localStorage.getItem("@bidu2/user")),
     };
 
-    let res = await apiQualicorp.addLead(cotationSelect);
-    if (res.status == 200) this.setState({ sucessoAddLead: true });
+    this.setState({ sucessoAddLead: true });
   };
 
   render() {
