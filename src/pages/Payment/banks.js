@@ -30,5 +30,5 @@ const banks = [
   { label: "0212 - BANCO ORIGINAL S/A", value: "212" },
   { label: "0356 - BANCO REAL", value: "356" },
   { label: "0085 - COOP. CENTRAL AILOS", value: "085" },
-];
-export default banks;
+];export default banks;
+
