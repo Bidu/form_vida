@@ -48,13 +48,13 @@ export function InputFormItem(props) {
       onBlur={(event) => {
         props.onBlur && props.onBlur(event);
       }}
-      margin="normal"
+      // margin="normal"
       fullWidth
     //   variant="outlined"
       // size="small"
       placeholder={placeholder || undefined}
       autoFocus={autoFocus || undefined}
-      autoComplete={autoComplete || undefined}
+      autocomplete="off"
       InputLabelProps={{
         shrink: true,
       }}

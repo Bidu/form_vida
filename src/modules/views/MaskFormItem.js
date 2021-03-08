@@ -4,7 +4,7 @@ import { TextField } from '@material-ui/core';
 import { useForm, useFormContext, Controller } from 'react-hook-form';
 import FormErrors from './formErrors';
 import InputMask from 'react-input-mask';
-
+import InputAdornment from '@material-ui/core/InputAdornment';
 export function InputFormItem(props) {
   // const { register, handleSubmit, control, reset } = useForm();
   const {
@@ -48,23 +48,29 @@ export function InputFormItem(props) {
 
   return (
 
-    <Controller
-      as={<InputMask mask={mask} maskChar=""
+    <Controller  
+      as={<InputMask mask={mask} maskChar="" 
+        // onChange={(event) => {
+        //   setForm(event.target.value)
+        // }}
         onBlur={(event) => {
           setValue(name, event.target.value)
         }}
         id={name}
         name={name}
         placeholder={placeholder}
-        disabled={false}
-
       >
         {(inputProps) => <TextField
           {...inputProps}
           type="text"
           label={label}
           required={required}
-          margin="normal"
+          placeholder={placeholder}
+          // margin="normal"
+          autocomplete="off"
+          InputProps={{
+            startAdornment: <InputAdornment position="start"></InputAdornment>,
+          }}
           fullWidth
           error={Boolean(errorMessage)}
           helperText={errorMessage || hint}
@@ -73,6 +79,7 @@ export function InputFormItem(props) {
       </InputMask>}
       control={control}
       mask={mask}
+     
       maskChar=""
       name={name}
     // defaultValue={""}
@@ -93,6 +100,7 @@ InputFormItem.propTypes = {
   label: PropTypes.string,
   hint: PropTypes.string,
   autoFocus: PropTypes.bool,
+  disabled: PropTypes.bool,
   prefix: PropTypes.string,
   placeholder: PropTypes.string,
   autoComplete: PropTypes.string,

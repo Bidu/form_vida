@@ -12,7 +12,7 @@ import {
   checkDateBirth,
   onlyLetters,
   nameField,
-} from "../../helpers/user";
+} from "../helpers/user";
 
 const yupFormSchemas = {
   generic(label) {

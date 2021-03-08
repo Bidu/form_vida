@@ -12,7 +12,8 @@ import { IconButton, InputLabel, TextField } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import { useFormContext } from 'react-hook-form';
 import Autocomplete from '@material-ui/lab/Autocomplete';
-
+import InputAdornment from '@material-ui/core/InputAdornment';
+import './AutoCompleteFormItem.css'
 const AUTOCOMPLETE_SERVER_FETCH_SIZE = 100;
 
 const useStyles = makeStyles();
@@ -143,8 +144,8 @@ function AutocompleteFormItem(props) {
     container: (provided) => ({
       ...provided,
       width: '100%',
-      marginTop: '16px',
-      marginBottom: '8px',
+      marginTop: '0',
+      marginBottom: '0',
     }),
     control: (provided) => ({
       ...provided,
@@ -154,20 +155,22 @@ function AutocompleteFormItem(props) {
 
   return (
     <>
-         <InputLabel>{label}</InputLabel>
+         {/* <InputLabel>{label}</InputLabel> */}
         <Autocomplete
           id={name}
           name={name}
           options={options}
           fullWidth
+         
+          // margin="normal"
           getOptionLabel={ (option) => option.label }
-          renderInput={(params) => <TextField {...params}
+          renderInput={(params) => <TextField {...params} label={label}  required={required}
             value={(e) => e.target.value}
-            // onChange={(event, newValue) => {
-            //   console.log(event.target.value)
-            // }}
+            // margin="normal"
+            placeholder={placeholder}
             InputProps={{
               ...params.InputProps,
+              startAdornment: <InputAdornment position="start"></InputAdornment>
               // endAdornment: (
               //   <React.Fragment>
               //     {load ? <CircularProgress color="inherit" size={20} /> : null}
@@ -181,17 +184,8 @@ function AutocompleteFormItem(props) {
             
           />}
           onChange={(event, newValue) => {
-            // props.onChange &&
-            // props.onChange(newValue.susep)
-
-            // handleSelectOne(newValue.susep)
            setValue(name, JSON.stringify(newValue))
-            // console.log(newValue)
-
           }}
-
-
-
         />
 
       {props.showCreate && props.hasPermissionToCreate ? (
