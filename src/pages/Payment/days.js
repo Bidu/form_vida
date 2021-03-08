@@ -1,4 +1,4 @@
-export const labels = [
+ const days = [
     {
       label: "1",
       value: "1"
@@ -98,3 +98,5 @@ export const labels = [
         value: "31"
       },
 ]
+
+export default days;

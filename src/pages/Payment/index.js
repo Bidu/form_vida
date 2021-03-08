@@ -81,8 +81,10 @@ useEffect(() =>{
           <form onSubmit={form.handleSubmit(onSubmit)}  autoComplete="off">
             
               <Title text="Dados do" bold="Pagamento" />
+              <p className="bold mb1">Débito em Conta corrente</p>
               <Grid container spacing={2} >
-                <RenderForm inputs={inputsForm} xs={12} sm={6}  center={true} />
+                
+                <RenderForm inputs={inputsForm} xs={12} sm={3}  center={true} />
                 </Grid>
 
               {loading && <Loading />}

@@ -51,26 +51,6 @@ const inputsFormDocument = [
 
                     ]
     },
-
-    {
-        "name": "insured_authorize_sms",
-        "error": error,
-        "label": "Autorizo o envio de informações por SMS",
-        "type": "radio",
-        "required": true,
-        "options": [
-                        {
-                            "label": "Sim",
-                            "value": "yes"
-                        },
-                        {
-                            "label": "Não",
-                            "value": "no"
-                        },
-
-                    ]
-    },
- 
            
             
        
