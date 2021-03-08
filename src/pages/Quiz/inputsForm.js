@@ -6,25 +6,6 @@ import orgaoExp from './orgaoExpedidor'
 const error = "Preenchimento obrigatório"
 const inputsForm = [
     {
-        "name": "gender",
-        "error": error,
-        "label": "Gênero",
-        "type": "radio",
-        "required": true,
-        "options": [
-                        {
-                            "label": "Masculino",
-                            "value": "male"
-                        },
-                        {
-                            "label": "Feminino",
-                            "value": "female"
-                        },
-                       
-
-                    ]
-    },
-    {
         "name": "estado_civil",
         "error": error,
         "label": "Estado Civil",
@@ -47,14 +28,6 @@ const inputsForm = [
         "type": "autocomplete",
         "required": true,
         "options": occupations
-    },
-    {
-        "name": "residential_proposal_insured_complement_monthly_income",
-        "error": error,
-        "label": "Faixa de renda mensal",
-        "type": "autocomplete",
-        "required": true,
-        "options": insuredComplementMonthlyIncome
     },
     {
         "name": "residential_proposal_insured_complement_politically_exposed",
