@@ -1159,6 +1159,13 @@ p.validate-radio-button.bold {
 .btn-outline.active {
   background-color: #00f1e7; }
 
+  .radio-button {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  
+
 .actions {
   display: flex;
   flex-direction: column;

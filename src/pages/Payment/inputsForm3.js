@@ -15,7 +15,7 @@ const inputsForm3 = [
         "options": banks, 
     },
     {
-        "name": "invoice_day",
+        "name": "invoice_day3",
         "error": error,
         "label": "Melhor data de pagamento do boleto",
         "type": "autocomplete",
@@ -24,7 +24,7 @@ const inputsForm3 = [
     },
     
     {
-        "name": "effective_date",
+        "name": "effective_date3",
         "label": "Início da Vigência",
         "error": error,
         "type": "text",

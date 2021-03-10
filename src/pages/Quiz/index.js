@@ -117,7 +117,7 @@ useEffect(() =>{
   };
 
   if(redirect)
-   return <Redirect to="/sobre-imovel" />;
+   return <Redirect to="/checkout/:id" />;
 
 
   return (

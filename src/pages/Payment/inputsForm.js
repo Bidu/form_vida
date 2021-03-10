@@ -69,7 +69,7 @@ const inputsForm = [
         "options": days, 
     },
     {
-        "name": "effective_date",
+        "name": "effective_date3",
         "label": "Início da Vigência",
         "error": error,
         "type": "text",
@@ -78,10 +78,11 @@ const inputsForm = [
         "required": true,
         "test": "início da vigência"
     },
+
     {
         "name": "relationship",
         "error": error,
-        "label": "Relação do titular da conta com o segurado",
+        "label": "Relação do titular da conta com segurado",
         "type": "autocomplete",
         "required": true,
         "options": relantionship, 

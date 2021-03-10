@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react';
-import PropTypes from 'prop-types';
-import FormErrors from './formErrors';
+import React, { useEffect } from "react";
+import PropTypes from "prop-types";
+import FormErrors from "./formErrors";
 
 import {
   FormLabel,
@@ -9,8 +9,8 @@ import {
   FormControlLabel,
   FormControl,
   FormHelperText,
-} from '@material-ui/core';
-import { useFormContext, Controller } from 'react-hook-form';
+} from "@material-ui/core";
+import { useFormContext, Controller } from "react-hook-form";
 
 function RadioFormItem(props) {
   const {
@@ -23,8 +23,7 @@ function RadioFormItem(props) {
     row,
     check,
     valueDefined,
-    render
-    
+    render,
   } = props;
 
   const {
@@ -45,58 +44,57 @@ function RadioFormItem(props) {
     errors,
     touched,
     isSubmitted,
-    externalErrorMessage,
+    externalErrorMessage
   );
-
-
 
   const formHelperText = errorMessage || hint;
 
   return (
-    render == false || true &&
-  
-     <Controller
-      as={  <FormControl
-        required={required}
-        error={String(errorMessage)}
-        component="fieldset"
-        size="small"
-      >
-          <FormLabel component="legend">{label}</FormLabel>
-          <RadioGroup
-            id={name}
-            name={name}
-            onChange={(e) => {
-              setValue(name, e.target.value, { shouldValidate: true });
-              props.onChange && props.onChange(e.target.value);
-            }}
-            onBlur={(event) => {
-              props.onBlur && props.onBlur(event);
-            }}
-            row={row}
+    render == false ||
+    (true && (
+      <Controller
+        as={
+          <FormControl
+            required={required}
+            error={String(errorMessage)}
+            component="fieldset"
+            size="small"
           >
-            {options.map((option) => (
-           
-              <FormControlLabel
-                key={option.value}
-                value={String(option.value)}
-                control={<Radio size="small" checked={check} />}
-                label={option.label}
-                
-              />
-            ))}
-          </RadioGroup>
-          {formHelperText && (
-            <FormHelperText style={{ marginTop: 0 }}>
-              {formHelperText}
-            </FormHelperText>
-          )}
-        </FormControl>}
-      control={control}
-      name={name}
-    // defaultValue={""}
-    />
-  
+            <FormLabel component="legend">{label}</FormLabel>
+            <RadioGroup
+              className="radio-button"
+              id={name}
+              name={name}
+              onChange={(e) => {
+                setValue(name, e.target.value, { shouldValidate: true });
+                props.onChange && props.onChange(e.target.value);
+              }}
+              onBlur={(event) => {
+                props.onBlur && props.onBlur(event);
+              }}
+              row={row}
+            >
+              {options.map((option) => (
+                <FormControlLabel
+                  key={option.value}
+                  value={String(option.value)}
+                  control={<Radio size="small" checked={check} />}
+                  label={option.label}
+                />
+              ))}
+            </RadioGroup>
+            {formHelperText && (
+              <FormHelperText style={{ marginTop: 0 }}>
+                {formHelperText}
+              </FormHelperText>
+            )}
+          </FormControl>
+        }
+        control={control}
+        name={name}
+        // defaultValue={""}
+      />
+    ))
   );
 }
 
@@ -111,7 +109,7 @@ RadioFormItem.propTypes = {
   hint: PropTypes.string,
   required: PropTypes.bool,
   externalErrorMessage: PropTypes.string,
-  value: true
+  value: true,
 };
 
 export default RadioFormItem;

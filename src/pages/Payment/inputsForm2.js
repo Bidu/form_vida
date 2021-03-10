@@ -7,7 +7,7 @@ import bandeira from './bandeira';
 const error = "Preenchimento obrigatório"
 const inputsForm2 = [
     {
-        "name": "parcels",
+        "name": "parcels2",
         "error": error,
         "label": "Parcelas",
         "type": "autocomplete",
@@ -23,7 +23,7 @@ const inputsForm2 = [
         "options": bandeira, 
     },
     {
-        "name": "number_card",
+        "name": "number_card2",
         "label": "Número do Cartão",
         "error": error,
         "type": "text",
@@ -33,7 +33,7 @@ const inputsForm2 = [
         "test": "número do cartão"
     },
     {
-        "name": "name",
+        "name": "name_titular",
         "label": "Nome do titular do Cartão",
         "error": error,
         "type": "text",
@@ -52,7 +52,18 @@ const inputsForm2 = [
         "test": "data de validade"
     },
     {
-        "name": "invoice_day",
+        "name": "effective_date2",
+        "label": "Início da Vigência",
+        "error": error,
+        "type": "text",
+        "mask": "99/99/9999",
+        "placeholder": "dd/mm/aaaa",
+        "required": true,
+        "test": "início da vigência"
+    },
+
+    {
+        "name": "invoice_day2",
         "error": error,
         "label": "Dia da Fatura",
         "type": "autocomplete",
@@ -60,9 +71,9 @@ const inputsForm2 = [
         "options": days, 
     },
     {
-        "name": "relationship",
+        "name": "relationship2",
         "error": error,
-        "label": "Relação do titular da conta com o segurado",
+        "label": "Relação do titular com o segurado",
         "type": "autocomplete",
         "required": true,
         "options": relantionship, 
@@ -70,7 +81,7 @@ const inputsForm2 = [
 
    
     {
-        "name": "name",
+        "name": "name2",
         "label": "Nome completo do titular da conta",
         "error": error,
         "type": "text",
@@ -80,7 +91,7 @@ const inputsForm2 = [
     },
 
     {
-        "name": "cpf",
+        "name": "cpf2",
         "label": "CPF do titular da conta",
         "error": error,
         "type": "text",

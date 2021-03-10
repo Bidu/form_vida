@@ -69,19 +69,19 @@ function Payment(props) {
             < br/>
             <p className="bold mb1">Débito em Conta corrente</p>
             <Grid container spacing={2}>
-              <RenderForm inputs={inputsForm} xs={12} sm={3} center={true} />
+              <RenderForm inputs={inputsForm} xs={12} sm={6}  />
             </Grid>
             <br />
             <br />
             <p className="bold mb1">Cartão de Crédito </p>
             <Grid container spacing={2}>
-              <RenderForm inputs={inputsForm2} xs={12} sm={4} center={true} />
+              <RenderForm inputs={inputsForm2} xs={12} sm={6} center={true} />
             </Grid>
             <br />
             <br />
             <p className="bold mb1">Boleto</p>
             <Grid container spacing={2}>
-              <RenderForm inputs={inputsForm3} xs={12} sm={3} center={true} />
+              <RenderForm inputs={inputsForm3} xs={12} sm={4} center={true} />
             </Grid>
 
 
