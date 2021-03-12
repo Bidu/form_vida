@@ -57,6 +57,7 @@ const Tokiolifequotation = {
     const data = await model
       .invokeLambda(insurer, quote)
       .then((data) => {
+        console.log("PAULO", data)
         console.log("SUCESS", data.Payload);
         json = JSON.parse(data.Payload);
         return json;
@@ -64,6 +65,7 @@ const Tokiolifequotation = {
       .catch((err) => {
         console.log("[ERROR]", err);
       });
+      console.log("JSON", json)
     return [json];
   },
 };

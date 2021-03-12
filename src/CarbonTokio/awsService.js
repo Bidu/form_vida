@@ -1,8 +1,9 @@
 const AWS = require("aws-sdk");
 AWS.config.update({
-  accessKeyId: "AKIA36QDJI7LKOHCVSFH",
-  secretAccessKey: "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",
-  region: "us-east-2",
+  accessKeyId: "AKIA36QDJI7LKNN5SUOM",
+  secretAccessKey: "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",
+  // region: "sa-east-1",
+  region: "us-east-2"
 });
 
 const model =  {
@@ -12,6 +13,7 @@ const model =  {
       Payload: JSON.stringify(event),
     };
     const result = await new AWS.Lambda().invoke(params).promise();
+    console.log("RESULT",JSON.stringify(event))
     return result;
   },
 };

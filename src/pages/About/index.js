@@ -26,7 +26,7 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import { withFormik } from "formik";
 import * as Yup from "yup";
-import * as API from "../../services/bd/CadastrarCotacao";
+import * as API from "../../services/bd/APIBanco";
 import { adicionarLeadCotacao } from "../../store/actions/addLeadBd";
 import { apiQualicorp } from "../../services/bdBo";
 import axios from "axios";
@@ -36,6 +36,8 @@ import DialogAlert from "../../components/DialogAlert";
 import { bdQuali } from "../../services/bdQuali";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import { bruf } from "../../services/bruf";
+import apiBdBo from "../../services/bd/APIBanco"
+
 import TermosUso from "../../components/TermosUso";
 import moment from "moment";
 import {
@@ -54,7 +56,7 @@ import { checkValidateRadios } from "../../helpers";
 import { sports } from "../../helpers/sports";
 import { occupations } from "../../helpers/occupations";
 import Loading from "../../components/loading";
-import { CadastrarCotacaoBd } from "../../services/bd/CadastrarCotacao";
+import { CadastrarCotacaoBd } from "../../services/bd/APIBanco";
 import { Tokiolifequotation } from "../../CarbonTokio/Tokiolifequotation";
 
 import { createBrowserHistory } from "history";
@@ -478,7 +480,7 @@ class About extends Component {
     } = this.props;
 
     if (this.props.status) {
-      return <Redirect to="/cotacao" />;
+      return <Redirect to={`/cotacao/${localStorage.getItem("@bidu2/idCotacao")}`} />;
     }
 
     return (
@@ -1294,6 +1296,14 @@ class About extends Component {
                     />
                   </div> */}
 
+              <div className="warning-validation warning-left mt1">
+                {localStorage.getItem("@error") && 
+                  <div>
+                    <strong>Atenção!</strong>- Preenchimento obrigatório dos
+                    campos destacados.
+                  </div>
+                }
+            </div>
               <div className="actions about-actions">
                 <Button type="submit" className="btn-next about-btn-next">
                   Quero uma cotação
@@ -1461,6 +1471,59 @@ const Form = withFormik({
     // const resposta = await aws(values);
     // console.log("RESS", resposta)
     localStorage.setItem("@bidu2/user", [JSON.stringify(values)]);
+    const segurado = {
+      nome: values.nome,
+      documento: values.cpf,
+      email: values.email,
+      dataNascimento: values.date_birth,
+      profissoes: values.profissao,
+      genero: values.genero
+    }
+
+    const dataSave = await apiBdBo.cadastrarSegurado(segurado)
+    if(dataSave[0].status !== "SUCESSO"){
+      localStorage.setItem("@error", true)
+      return false
+    }
+    localStorage.setItem("@error", false)
+    const valor = JSON.parse(localStorage.getItem("@bidu2/user"));
+    let requestAws = {};
+    const valorAws = await Tokiolifequotation.translatePayload(valor);
+
+    requestAws = await Tokiolifequotation.requestAws(valorAws);
+  
+    const payload = requestAws
+    let newPayload = [];
+    if (payload[0].susep == 6190 && payload[0].quotationResult) {
+      const indexPayload = payload[0].quotationResult.length;
+      for (let i = 0; i < indexPayload; i++) {
+        newPayload = [
+          ...newPayload,
+          {
+            communicationStatus: payload[0].communicationStatus,
+            executionTime: payload[0].executionTime,
+            susep: payload[0].susep,
+            error: payload[0].error,
+            quotationResult: payload[0].quotationResult[i],
+          },
+        ];
+      }
+      
+
+    } else {
+      newPayload = payload[0]
+    }
+    const data = {
+      id_cotacao: localStorage.getItem("@bidu2/idCotacao"),
+      payload: JSON.stringify(newPayload),
+      status: payload[0].communicationStatus,
+      product_id: 3
+    }
+    const quotationSave = await apiBdBo.respostaCotacao(data)
+    console.log("NEMPAYLOAD", newPayload)
+    console.log("QUOTATION", quotationSave[0])
+  
+    console.log("DATA", dataSave)
     setStatus(true);
     setSubmitting(false);
   },

@@ -17,7 +17,7 @@ const Routes = () => (
         <Redirect to="/sobre-voce" />
       </Route>
       <Route exact path="/sobre-voce" component={About} forceRefresh={false} />
-      <Route exact path="/cotacao" component={PriceQuote} />
+      <Route exact path="/cotacao/:id" component={PriceQuote} />
       <Route exact path="/questionario/:id" component={Quiz} />
       <Route exact path="/checkout/:id" component={Payment} />
       <Route exact path="/sucesso/:id" component={Success} />

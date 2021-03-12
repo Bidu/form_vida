@@ -37,15 +37,15 @@ const inputsFormDocument = [
         "options": [
                         {
                             "label": "Correio + E-mail (Cartão do Segurado impresso e demais documentos digitais)",
-                            "value": "0"
-                        },
-                        {
-                            "label": "E-mail (Resumo da Apólice, cartão do segurado e boleto digitais)",
                             "value": "1"
                         },
                         {
-                            "label": "Correio (Resumo da Apólice, cartão do segurado e boleto impressos)",
+                            "label": "E-mail (Resumo da Apólice, cartão do segurado e boleto digitais)",
                             "value": "2"
+                        },
+                        {
+                            "label": "Correio (Resumo da Apólice, cartão do segurado e boleto impressos)",
+                            "value": "3"
                         },
 
 

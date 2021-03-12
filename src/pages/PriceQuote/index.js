@@ -24,6 +24,7 @@ import InputLabel from "@material-ui/core/InputLabel";
 import Drawer from "../../components/Drawer";
 import "./priceQuote.css";
 import { Tokiolifequotation } from "../../CarbonTokio/Tokiolifequotation";
+import apiBdBo from "../../services/bd/APIBanco"
 
 export class PriceQuote extends Component {
   constructor(props) {
@@ -80,30 +81,45 @@ export class PriceQuote extends Component {
     this.setState({
       loading: true,
     });
-      const valor = JSON.parse(localStorage.getItem("@bidu2/user"));
-      let requestAws = {};
-      const valorAws = await Tokiolifequotation.translatePayload(valor);
-      console.log("OLAAAR", valorAws);
-      requestAws = await Tokiolifequotation.requestAws(valorAws);
-      console.log("CAMILA", requestAws);
-      const payload = requestAws
-      let newPayload = [];
-      if (payload[0].susep == 6190 && payload[0].quotationResult) {
-        const indexPayload = payload[0].quotationResult.length;
-        for (let i = 0; i < indexPayload; i++) {
-          newPayload = [
-            ...newPayload,
-            {
-              communicationStatus: payload[0].communicationStatus,
-              executionTime: payload[0].executionTime,
-              susep: payload[0].susep,
-              error: payload[0].error,
-              quotationResult: payload[0].quotationResult[i],
-            },
-          ];
-        }
-      }
-    this.setState({ payloadSucess: newPayload, loading:false});
+      // const valor = JSON.parse(localStorage.getItem("@bidu2/user"));
+      // let requestAws = {};
+      // const valorAws = await Tokiolifequotation.translatePayload(valor);
+      // console.log("OLAAAR", valorAws);
+      // requestAws = await Tokiolifequotation.requestAws(valorAws);
+      // console.log("CAMILA", requestAws);
+      // const payload = requestAws
+      // let newPayload = [];
+      // if (payload[0].susep == 6190 && payload[0].quotationResult) {
+      //   const indexPayload = payload[0].quotationResult.length;
+      //   for (let i = 0; i < indexPayload; i++) {
+      //     newPayload = [
+      //       ...newPayload,
+      //       {
+      //         communicationStatus: payload[0].communicationStatus,
+      //         executionTime: payload[0].executionTime,
+      //         susep: payload[0].susep,
+      //         error: payload[0].error,
+      //         quotationResult: payload[0].quotationResult[i],
+      //       },
+      //     ];
+      //   }
+        
+
+      // } else {
+      //   newPayload = payload[0]
+      // }
+      // const data = {
+      //   id_cotacao: localStorage.getItem("@bidu2/idCotacao"),
+      //   payload: JSON.stringify(newPayload),
+      //   status: payload[0].communicationStatus,
+      //   product_id: 3
+      // }
+      // const quotationSave = await apiBdBo.respostaCotacao(data)
+      // console.log("NEMPAYLOAD", newPayload)
+      // console.log("QUOTATION", quotationSave[0])
+      const requestQuotation = await apiBdBo.recuperarCotacao(localStorage.getItem("@bidu2/idCotacao"), 3)
+    console.log("REQ", requestQuotation[0].body)
+    this.setState({ payloadSucess: requestQuotation[0].body[0], loading:false});
 
 
     //   let user = JSON.parse(localStorage.getItem("@bidu2/user"))

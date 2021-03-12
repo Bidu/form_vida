@@ -30,7 +30,7 @@ const inputsForm = [
         "options": occupations
     },
     {
-        "name": "residential_proposal_insured_complement_politically_exposed",
+        "name": "politically_exposed",
         "error": error,
         "label": "Pessoa politicamente exposta?",
         "type": "radio",

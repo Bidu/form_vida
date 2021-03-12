@@ -1,5 +1,5 @@
 import { ADD_LEAD } from "./types";
-import * as API from "../../services/bd/CadastrarCotacao";
+import * as API from "../../services/bd/APIBanco";
 
 const addLead = (pre_lead) => ({
   type: ADD_LEAD,

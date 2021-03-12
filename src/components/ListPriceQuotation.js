@@ -466,7 +466,7 @@ export class ListPriceQuotation extends Component {
     } else {
       return (
         <>
-          {this.state.sucessoAddLead && <Redirect to={`/questionario/${localStorage.getItem("@bidu2/idCotacao")}`} />}
+          {this.state && <Redirect to={`/questionario/${localStorage.getItem("@bidu2/idCotacao")}`} />}
           <Grid key={cotacao.id} item xs={12} sm={6}>
             <div className="list-price-quotation">
               <div className="logo-container">
